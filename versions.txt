@@ -1,5 +1,5 @@
-Version 1.7.4.2 Alpha 5
-(14-Aug-2012)
+Version 1.7.4.2
+(16-Aug-2012)
 ---------------
 = Bugfixes =
 * Bug [3540397] - "Accept-Encoding: gzip" not in Roborumble HTTP Headers.
@@ -9,7 +9,7 @@ Version 1.7.4.2 Alpha 5
 * Bug [3547611] - New bots not given priority.
 
 = Changes =
-* The built-in RoboRumble@Home client is now able to decompress "gzip" and "deflate" content with HTTP connections if the RoboRumble server supports it.
+* The built-in RoboRumble@Home client is now able to decompress "gzip" and "deflate" content with HTTP connections with RoboRumble serverers that supports it.
 
 Version 1.7.4.1
 (02-Jul-2012)
