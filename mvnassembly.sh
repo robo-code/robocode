@@ -6,4 +6,4 @@ if [ ! -f $dp0/tools/lib/maven-*-uber.jar ]; then
    $dp0/tools/loadTools.sh
 fi
 
-./mvn.sh clean install ant:ant -DskipTests=false $*
+$dp0/tools/bin/mvn.sh clean install ant:ant -DskipTests=false $*

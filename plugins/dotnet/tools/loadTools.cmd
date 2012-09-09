@@ -1,4 +1,9 @@
 @echo off
+
+if not exist "%~dp0/lib/" (
+   mkdir "%~dp0/lib/"
+)
+
 java -cp "%~dp0/../../../tools/loader" Loader http://jni4net.googlecode.com/svn/mvnrepo/net/sf/jni4net/jni4net.n/0.8.6.0/ "%~dp0/lib/" jni4net.n-0.8.6.0.dll
 java -cp "%~dp0/../../../tools/loader" Loader http://jni4net.googlecode.com/svn/mvnrepo/net/sf/jni4net/jni4net.n.w32.v20/0.8.6.0/ "%~dp0/lib/" jni4net.n.w32.v20-0.8.6.0.dll
 java -cp "%~dp0/../../../tools/loader" Loader http://jni4net.googlecode.com/svn/mvnrepo/net/sf/jni4net/jni4net.n.w64.v20/0.8.6.0/ "%~dp0/lib/" jni4net.n.w64.v20-0.8.6.0.dll
