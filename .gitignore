@@ -1,2 +1,5 @@
 .metadata
 target
+build.xml
+maven-build.xml
+maven-build.properties

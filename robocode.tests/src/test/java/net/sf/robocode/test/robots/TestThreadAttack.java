@@ -12,6 +12,8 @@
 package net.sf.robocode.test.robots;
 
 
+import org.junit.Ignore;
+
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import robocode.control.events.TurnEndedEvent;
@@ -20,6 +22,7 @@ import robocode.control.events.TurnEndedEvent;
 /**
  * @author Pavel Savara (original)
  */
+@Ignore("Please run explicitly if you did something to security or timing")
 public class TestThreadAttack extends RobocodeTestBed {
 	boolean messagedMax;
 	boolean messagedUnknown;
