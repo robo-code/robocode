@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry including="**/*.java" kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
 	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.8/picocontainer-2.8.jar"/>
