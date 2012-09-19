@@ -1,3 +1,10 @@
+Version 1.7.4.3 Alpha
+(19-Sep-2012)
+---------------
+= Changes =
+* Robocode sources are now put on GitHub: https://github.com/robo-code/robocode
+* Upgraded the .NET plugin to use Visual Studio Express 2010.
+
 Version 1.7.4.2
 (16-Aug-2012)
 ---------------
