@@ -1,6 +1,9 @@
 Version 1.7.4.3 Alpha
-(19-Sep-2012)
+(21-Sep-2012)
 ---------------
+= Bug fixes =
+* #344 BattleAdaptor missing in robocode.control.events
+
 = Changes =
 * Robocode sources are now put on GitHub: https://github.com/robo-code/robocode
 * Upgraded the .NET plugin to use Visual Studio Express 2010.
