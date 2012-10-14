@@ -76,7 +76,7 @@
     </fileSets>
     <files>
         <file>
-            <source>../versions.txt</source>
+            <source>../versions.md</source>
         </file>
     </files>
 </assembly>

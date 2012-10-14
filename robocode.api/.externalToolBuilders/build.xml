@@ -12,7 +12,7 @@
 		</copy>
 
 		<!-- Copy required versions.txt into launch dir -->
-		<copy todir="${launch-dir}" file="${basedir}/robocode/versions.txt"/>
+		<copy todir="${launch-dir}" file="${basedir}/robocode/versions.md"/>
 
 		<!-- Create libs/robocode.jar file (for Robot Editor etc.) -->
 		<jar destfile="${launch-dir}/libs/robocode.jar" basedir="${basedir}/robocode/robocode.api/target/classes"/>

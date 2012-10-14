@@ -48,7 +48,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                                     <filtering>false</filtering>
                                     <includes>
                                         <!-- actually this is bit more complicated than usual, because of quirks with IDEA -->
-                                        <include>versions.txt</include>
+                                        <include>versions.md</include>
                                     </includes>
                                 </resource>
                             </resources>

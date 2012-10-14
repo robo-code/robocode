@@ -32,7 +32,7 @@ import java.net.URLConnection;
  */
 public final class VersionManager implements IVersionManager {
 
-	private static final String VERSIONS_TXT = "versions.txt";
+	private static final String VERSIONS_TXT = "versions.md";
 	private static final String UNKNOWN_VERSION = "unknown";
 
 	private static Version version;
@@ -139,7 +139,7 @@ public final class VersionManager implements IVersionManager {
 				in = new BufferedReader(new InputStreamReader(is));
 
 				versionString = in.readLine();
-				while (versionString != null && !versionString.substring(0, 8).equalsIgnoreCase("Version ")) {
+				while (versionString != null && !versionString.startsWith("## Version ")) {
 					versionString = in.readLine();
 				}
 			}
@@ -161,7 +161,7 @@ public final class VersionManager implements IVersionManager {
 
 		if (versionString != null && !versionString.equals(UNKNOWN_VERSION)) {
 			try {
-				version = versionString.substring(7);
+				version = versionFileLineToVersion(versionString);
 			} catch (Exception ignore) {}
 		}
 		if (version.equals(UNKNOWN_VERSION)) {
@@ -210,9 +210,19 @@ public final class VersionManager implements IVersionManager {
 
 		if (versionString != null && !versionString.equals(UNKNOWN_VERSION)) {
 			try {
-				version = versionString.substring(7);
+				version = versionFileLineToVersion(versionString);
 			} catch (Exception ignore) {}
 		}
 		return version;
+	}
+
+	private static String versionFileLineToVersion(String versionFileLine) {
+		String version = versionFileLine.substring("## Version ".length());
+
+		int index = version.indexOf('(');
+		if (index >= 0) {
+			version = version.substring(0, index);
+		}
+		return version.trim();
 	}
 }

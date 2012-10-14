@@ -1,4 +1,4 @@
-## Version 1.7.4.3 Alpha (10-Oct-2012)
+## Version 1.7.4.3 Alpha (14-Oct-2012)
 
 ### Bug Fixes
 * [Bug-344][]: BattleAdaptor missing in ``robocode.control.events``.
@@ -135,6 +135,7 @@
 * [Bug-304][]: ``setColor(null)`` causes NPE.
 * [Bug-305][]: TeamRumble priority battles bug.
 * [Bug-306][]: Rumble sh scripts for launching do not handle spaces in path.
+* [Bug-307][]: Console output cannot handle non-ascii names.
 * [Bug-308][]: ``ConcurrentModificationException`` in ``URLJarCollector``.
 * [Bug-309][]: robot in development generates * into filename.
 * [Bug-310][]: Interface Robot skips turns at end of round.
@@ -764,6 +765,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 * [Bug-146][]: Spammy output when running roborumble.
 	* Output from RoboRumble was spammy when outputting log after the first battle.
 * ``java.lang.IllegalArgumentException: Line unsupported: interface Clip supporting format`` could occur when starting Robocode.
+* [Bug-81][]: Replay recording does not record paintings.
 
 ### New Features
 * [Req-24][]: Recording of battles. (fully implemented)
@@ -1040,7 +1042,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 
 ### Bug Fixes
 * [Bug-115][]: AWTException with RoboRumble on OS X.
-* [Bug-97][]: Exceeption when packaging robots.
+* [Bug-97][]: Exception when packaging robots.
 
 ### Changes
 * [Req-58][]: HitRobotEvent - damage.
@@ -1376,6 +1378,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 ## Version 1.3 (17-May-2007) Now featuring the RoboRumble client
 
 ### Bug Fixes
+* [Bug-78][]: Robots are disabled with no timer or countdown.
 * [Bug-74][]: Java FilePermission error during startup.
 	* The Event Dispatch Thread was denied access by the Robocode Security Manager.
 * [Bug-75][]: ``getTeammates()`` problem.
@@ -1517,6 +1520,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 ## Version 1.2.5 (18-Feb-2007)
 
 ### Bug Fixes
+* [Bug-65][]: Cannot run robocode after installation.
 * [Bug-63][]: BulletHitBullet only destroys one bullet.
 	* When two bullets collided, one of the bullets was not destroyed, but continued.
 * [Bug-64][]: Exception when referencing length of an array of ``String``.
@@ -1905,6 +1909,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 * [Bug-12][]: Autoextract hangs on Mac 10.3.9.
 * [Bug-13][]: Compiling may fail - Mac 10.3.9.
 	* Issues with installing and compiling under Mac 10.3.9 were fixed.
+* [Bug-18][]: Blank console in battles between two bots.
 * [Req-2][]: Keep window size of "New battle" window.
 	* The window position and sizes were not loaded properly from the windows.properties file.
 	* The battle window is no longer reset every time a new battle is started, and the window size and position is now saved into the windows.properties file.
@@ -1943,6 +1948,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 * [Bug-9][]: Screen flickers using Sun JDK1.5.0 in Linux.
 * [Bug-8][]: Opening of the Robocode API help.
 	* Help menu updated.
+* [Bug-9][]: Screen flickers using Sun JDK1.5.0 in Linux.
 * [Bug-10][]: Eclipse compile problem (Java 1.5) in ``RobocodeClassLoader``.
 * Links in Help menu fixed, so you are able to browse the API etc.
 	* Updated with links for "RoboWiki", "Yahoo Group: Robocode", and "Robocode Repository".
@@ -2528,6 +2534,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-15]:  http://sourceforge.net/p/robocode/bugs/15/   ("Visible ground" option is not saved)
 [Bug-16]:  http://sourceforge.net/p/robocode/bugs/16/   (Too many skipped turn because of CPU speed detection)
 [Bug-17]:  http://sourceforge.net/p/robocode/bugs/17/   (Robot editor's window list retains old windows)
+[Bug-18]:  http://sourceforge.net/p/robocode/bugs/18/   (Blank console in battles between two bots)
 [Bug-19]:  http://sourceforge.net/p/robocode/bugs/19/   (Confused updater)
 [Bug-21]:  http://sourceforge.net/p/robocode/bugs/21/   (Replace function generates extra tab)
 [Bug-22]:  http://sourceforge.net/p/robocode/bugs/22/   (Bad buildJikes.sh in 1.1.)
@@ -2566,6 +2573,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-62]:  http://sourceforge.net/p/robocode/bugs/62/   (Memory "Leak")
 [Bug-63]:  http://sourceforge.net/p/robocode/bugs/63/   (BulletHitBullet only destroys one bullet)
 [Bug-64]:  http://sourceforge.net/p/robocode/bugs/64/   (Exception when referencing length of an array of String)
+[Bug-65]:  http://sourceforge.net/p/robocode/bugs/65/   (Cannot run robocode after installation)
 [Bug-66]:  http://sourceforge.net/p/robocode/bugs/66/   (Crash: starting a new round while et.Predator 1.8 is playing)
 [Bug-67]:  http://sourceforge.net/p/robocode/bugs/67/   (Some issues with MessageEvent + priority)
 [Bug-68]:  http://sourceforge.net/p/robocode/bugs/68/   (Preferences not saved)
@@ -2580,6 +2588,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-78]:  http://sourceforge.net/p/robocode/bugs/78/   (Robots are disabled with no timer or countdown)
 [Bug-79]:  http://sourceforge.net/p/robocode/bugs/79/   (Output displayed in bursts)
 [Bug-80]:  http://sourceforge.net/p/robocode/bugs/80/   (Results file is empty with the command line)
+[Bug-81]:  http://sourceforge.net/p/robocode/bugs/80/   (Replay recording does not record paintings)
 [Bug-82]:  http://sourceforge.net/p/robocode/bugs/82/   (Undo comment does not change font color of code)
 [Bug-83]:  http://sourceforge.net/p/robocode/bugs/83/   (Ranking Panel Does not update number of competitors)
 [Bug-84]:  http://sourceforge.net/p/robocode/bugs/84/   (Preferences page problem on machine w/out sound card)
@@ -2594,7 +2603,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-94]:  http://sourceforge.net/p/robocode/bugs/94/   (Inconsistent Behavoir of RobocodeEngine.setVisible())
 [Bug-95]:  http://sourceforge.net/p/robocode/bugs/95/   (OutOfMemory: Robots are Being Left on the Stack)
 [Bug-96]:  http://sourceforge.net/p/robocode/bugs/96/   (Initializing Label even when no display)
-[Bug-97]:  http://sourceforge.net/p/robocode/bugs/97/   (Exceeption when packaging robots)
+[Bug-97]:  http://sourceforge.net/p/robocode/bugs/97/   (Exception when packaging robots)
 [Bug-98]:  http://sourceforge.net/p/robocode/bugs/98/   (When minimized doesn't show actual tps)
 [Bug-99]:  http://sourceforge.net/p/robocode/bugs/99/   (Clicking on a bottom area results in ClassCastException)
 [Bug-100]: http://sourceforge.net/p/robocode/bugs/100/  (Double-clicking "restart")
@@ -2755,6 +2764,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-304]: http://sourceforge.net/p/robocode/bugs/304/  (setColor(null) causes NPE)
 [Bug-305]: http://sourceforge.net/p/robocode/bugs/305/  (TeamRumble priority battles bug)
 [Bug-306]: http://sourceforge.net/p/robocode/bugs/306/  (Rumble sh scripts for launching do not handle spaces in path)
+[Bug-307]: http://sourceforge.net/p/robocode/bugs/306/  (Console output cannot handle non-ascii names)
 [Bug-308]: http://sourceforge.net/p/robocode/bugs/308/  (ConcurrentModificationException in URLJarCollector)
 [Bug-309]: http://sourceforge.net/p/robocode/bugs/309/  (robot in development generates * into filename)
 [Bug-310]: http://sourceforge.net/p/robocode/bugs/310/  (Interface Robot skips turns at end of round)
