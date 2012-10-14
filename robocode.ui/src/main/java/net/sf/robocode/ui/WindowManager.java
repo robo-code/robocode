@@ -144,7 +144,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public int getFPS() {
-		return awtAdaptor.getFPS();
+		return isIconified() ? 0 : awtAdaptor.getFPS();
 	}
 
 	public RobocodeFrame getRobocodeFrame() {
