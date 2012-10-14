@@ -139,7 +139,6 @@ public class BattleView extends Canvas {
 	@Override
 	public void paint(Graphics g) {
 		final ITurnSnapshot lastSnapshot = windowManager.getLastSnapshot();
-
 		if (lastSnapshot != null) {
 			update(lastSnapshot);
 		} else {
@@ -163,7 +162,7 @@ public class BattleView extends Canvas {
 			initialize();
 		}
 
-		if (!isDisplayable() || (getWidth() <= 0) || (getHeight() <= 0)) {
+		if (windowManager.isIconified() || !isDisplayable() || (getWidth() <= 0) || (getHeight() <= 0)) {
 			return;
 		}
 

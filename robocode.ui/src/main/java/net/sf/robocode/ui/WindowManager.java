@@ -127,6 +127,10 @@ public class WindowManager implements IWindowManagerExt {
 		return isSlave;
 	}
 
+	public boolean isIconified() {
+		return robocodeFrame.isIconified();
+	}
+
 	public boolean isShowResultsEnabled() {
 		return properties.getOptionsCommonShowResults() && showResults;
 	}

@@ -2,6 +2,7 @@
 
 ### Bug Fixes
 * [Bug-344][]: BattleAdaptor missing in ``robocode.control.events``.
+* [Bug-345][]: Graphics still being rendered when minimized.
 
 ### Changes
 * Robocode sources are now put on [GitHub](https://github.com/robo-code/robocode).
@@ -2788,6 +2789,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-341]: http://sourceforge.net/p/robocode/bugs/341/  (InteractiveRobots gets error "After the event was added...")
 [Bug-342]: http://sourceforge.net/p/robocode/bugs/342/  (New bots not given priority)
 [Bug-344]: http://sourceforge.net/p/robocode/bugs/344/  (BattleAdaptor missing in robocode.control.events)
+[Bug-345]: http://sourceforge.net/p/robocode/bugs/345/  (Graphics still being rendered when minimized)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
