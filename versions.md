@@ -1,13 +1,15 @@
-## Version 1.7.4.3 Alpha (14-Oct-2012)
+## Version 1.7.4.3 Alpha (23-Oct-2012)
 
 ### Bug Fixes
 * [Bug-344][]: BattleAdaptor missing in ``robocode.control.events``.
 * [Bug-345][]: Graphics still being rendered when minimized.
+* [Bug-333][]: .NET runs release dll not debug dll so can't debug.
+	* Implemented a work-around so that the local robot repository is rebuild when removing a development path.
 
 ### Changes
 * Robocode sources are now put on [GitHub](https://github.com/robo-code/robocode).
 * Upgraded the .NET plugin to use Visual Studio Express 2010.
-* The versions.txt has been changed:
+* The versions.txt has been changed to versions.md:
 	* The versions.txt was converted into [Markdown][] syntax in order to make it easier to convert into e.g. HTML, and because GitHub will automatically translate it into HTML when viewing this file in a browser.
 		* Thus, this file has been renamed from 'versions.txt' into 'versions.md'.
 		* The web page with the new versions.md can be viewed [here](https://github.com/robo-code/robocode/blob/master/versions.md).
@@ -2781,6 +2783,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-328]: http://sourceforge.net/p/robocode/bugs/328/  (Issue with the robocode.dll + # chars in the path for a dll)
 [Bug-331]: http://sourceforge.net/p/robocode/bugs/331/  (RoboRumble client has infinite timeout)
 [Bug-332]: http://sourceforge.net/p/robocode/bugs/332/  (Use OpenGL backend under linux)
+[Bug-333]: http://sourceforge.net/p/robocode/bugs/333/  (.NET runs release dll not debug dll so can't debug)
 [Bug-334]: http://sourceforge.net/p/robocode/bugs/334/  (Snapshot API never shows bullets in "HIT_WALL" status)
 [Bug-337]: http://sourceforge.net/p/robocode/bugs/337/  (Hangups with New Editor in 1.7.4.0)
 [Bug-338]: http://sourceforge.net/p/robocode/bugs/338/  ("Accept-Encoding: gzip" not in Roborumble HTTP Headers)

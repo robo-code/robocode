@@ -95,12 +95,12 @@ public class RepositoryManager implements IRepositoryManager {
 		return refreshed;
 	}
 
-	public void reload(boolean forced) {
+	public void reload(boolean rebuild) {
 		// Bug fix [2867326] - Lockup on start if too many bots in robots dir (cont'd).
 		URLJarCollector.enableGc(true);
 		URLJarCollector.gc();
 
-		if (forced) {
+		if (rebuild) {
 			Logger.logMessage("Rebuilding robot database...");
 			db = new Database(this);
 		} else if (db == null) {
@@ -304,7 +304,7 @@ public class RepositoryManager implements IRepositoryManager {
 
 				if (lastEnabledDevelPaths == null || !enabledDevelPaths.equals(lastEnabledDevelPaths)) {
 					lastEnabledDevelPaths = enabledDevelPaths;
-					reload(false);
+					reload(true);
 				}
 			}
 		}
