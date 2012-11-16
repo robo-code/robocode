@@ -265,7 +265,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showJavaDocumentation() {
-		showInBrowser("http://java.sun.com/j2se/1.5.0/docs");
+		showInBrowser("http://docs.oracle.com/javase/1.5.0/docs/");
 	}
 
 	public void showRobocodeHome() {
@@ -276,8 +276,8 @@ public class WindowManager implements IWindowManagerExt {
 		showInBrowser("http://robowiki.net");
 	}
 
-	public void showYahooGroupRobocode() {
-		showInBrowser("http://groups.yahoo.com/group/robocode");
+	public void showGoogleGroupRobocode() {
+		showInBrowser("https://groups.google.com/forum/?fromgroups#!forum/robocode");
 	}
 
 	public void showRobocodeRepository() {

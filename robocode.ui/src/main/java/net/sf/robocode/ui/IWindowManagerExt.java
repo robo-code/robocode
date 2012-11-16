@@ -45,7 +45,7 @@ public interface IWindowManagerExt extends IWindowManager {
 
 	void showRoboWiki();
 
-	void showYahooGroupRobocode();
+	void showGoogleGroupRobocode();
 
 	void showRobocodeRepository();
 

@@ -98,7 +98,7 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem helpAboutMenuItem;
 	private JMenuItem helpRobocodeMenuItem;
 	private JMenuItem helpRoboWikiMenuItem;
-	private JMenuItem helpYahooGroupRobocodeMenuItem;
+	private JMenuItem helpGoogleGroupRobocodeMenuItem;
 	private JMenuItem helpRobocodeRepositoryMenuItem;
 
 	private class EventHandler implements ActionListener, MenuListener {
@@ -167,8 +167,8 @@ public class MenuBar extends JMenuBar {
 				helpRobocodeHomeMenuItemActionPerformed();
 			} else if (source == mb.getHelpRoboWikiMenuItem()) {
 				helpRoboWikiMenuItemActionPerformed();
-			} else if (source == mb.getHelpYahooGroupRobocodeMenuItem()) {
-				helpYahooGroupRobocodeActionPerformed();
+			} else if (source == mb.getHelpGoogleGroupRobocodeMenuItem()) {
+				helpGoogleGroupRobocodeActionPerformed();
 			} else if (source == mb.getHelpRobocodeRepositoryMenuItem()) {
 				helpRobocodeRepositoryActionPerformed();
 			} else if (source == mb.getHelpCheckForNewVersionMenuItem()) {
@@ -594,7 +594,7 @@ public class MenuBar extends JMenuBar {
 			helpMenu.add(new JSeparator());
 			helpMenu.add(getHelpOnlineHelpMenuItem());
 			helpMenu.add(getHelpRoboWikiMenuItem());
-			helpMenu.add(getHelpYahooGroupRobocodeMenuItem());
+			helpMenu.add(getHelpGoogleGroupRobocodeMenuItem());
 			helpMenu.add(getHelpFaqMenuItem());
 			helpMenu.add(new JSeparator());
 			helpMenu.add(getHelpRobocodeMenuItem());
@@ -694,14 +694,14 @@ public class MenuBar extends JMenuBar {
 		return helpRoboWikiMenuItem;
 	}
 
-	private JMenuItem getHelpYahooGroupRobocodeMenuItem() {
-		if (helpYahooGroupRobocodeMenuItem == null) {
-			helpYahooGroupRobocodeMenuItem = new JMenuItem();
-			helpYahooGroupRobocodeMenuItem.setText("Yahoo Group for Robocode");
-			helpYahooGroupRobocodeMenuItem.setMnemonic('Y');
-			helpYahooGroupRobocodeMenuItem.addActionListener(eventHandler);
+	private JMenuItem getHelpGoogleGroupRobocodeMenuItem() {
+		if (helpGoogleGroupRobocodeMenuItem == null) {
+			helpGoogleGroupRobocodeMenuItem = new JMenuItem();
+			helpGoogleGroupRobocodeMenuItem.setText("Google Group for Robocode");
+			helpGoogleGroupRobocodeMenuItem.setMnemonic('Y');
+			helpGoogleGroupRobocodeMenuItem.addActionListener(eventHandler);
 		}
-		return helpYahooGroupRobocodeMenuItem;
+		return helpGoogleGroupRobocodeMenuItem;
 	}
 
 	private JMenuItem getHelpRobocodeRepositoryMenuItem() {
@@ -889,8 +889,8 @@ public class MenuBar extends JMenuBar {
 		windowManager.showRoboWiki();
 	}
 
-	private void helpYahooGroupRobocodeActionPerformed() {
-		windowManager.showYahooGroupRobocode();
+	private void helpGoogleGroupRobocodeActionPerformed() {
+		windowManager.showGoogleGroupRobocode();
 	}
 
 	private void helpRobocodeRepositoryActionPerformed() {

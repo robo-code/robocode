@@ -1,4 +1,4 @@
-## Version 1.7.4.3 Alpha (23-Oct-2012)
+## Version 1.7.4.3 (17-Nov-2012)
 
 ### Bug Fixes
 * [Bug-344][]: BattleAdaptor missing in ``robocode.control.events``.
