@@ -51,7 +51,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                                 it comes with installation of SHFB
                                 -->
                                 <exec dir="target" executable="cmd.exe" failonerror="false">
-                                    <arg line="/c %SystemRoot%\Microsoft.NET\Framework\v3.5\MSBuild.exe /p:Configuration=Release ../controlAPI.shfbproj" />
+                                    <arg line="/c %SystemRoot%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /p:Configuration=Release ../controlAPI.shfbproj" />
                                 </exec>
                             </tasks>
                         </configuration>
