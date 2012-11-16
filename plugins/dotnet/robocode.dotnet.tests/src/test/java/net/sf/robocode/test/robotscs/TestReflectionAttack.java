@@ -22,7 +22,8 @@ import robocode.control.events.TurnEndedEvent;
  */
 public class TestReflectionAttack extends RobocodeTestBed {
 
-	private boolean messagedAccessDenied;
+	private boolean securityException;
+	private boolean fieldAccessException;
 	
 	@Override
 	public String getRobotNames() {
@@ -36,17 +37,19 @@ public class TestReflectionAttack extends RobocodeTestBed {
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
 		if (out.contains("System.Security.SecurityException")) {
-			messagedAccessDenied = true;	
-		}	
+ 			securityException = true;	
+		} else if (out.contains("System.FieldAccessException")) {
+			fieldAccessException = true;
+		}
 	}
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue("Reflection is not allowed", messagedAccessDenied);
+		Assert.assertTrue("Reflection is not allowed", securityException || fieldAccessException);
 	}
 
 	@Override
 	protected int getExpectedErrors() {
-		return 1; // Security error must be reported as an error
+		return securityException ? 1 : 0; // Security error must be reported as an error
 	}
 }
