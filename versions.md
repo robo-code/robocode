@@ -1,3 +1,5 @@
+## Version 1.8.0 Alpha (18-Nov-2012)
+
 ## Version 1.7.4.3 (17-Nov-2012)
 
 ### Bug Fixes
