@@ -49,7 +49,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                     <![CDATA[<h1>Robocode Testing Framework ${project.version}</h1>]]>
 </doctitle>
                 <links>
-                    <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+                    <link>http://docs.oracle.com/javase/6/docs/api/</link>
                     <link>http://junit.sourceforge.net/javadoc</link>
                     <link>http://robocode.sourceforge.net/docs/robocode</link>
                 </links>
