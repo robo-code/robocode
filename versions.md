@@ -1,5 +1,11 @@
 ## Version 1.8.0 Alpha (18-Nov-2012)
 
+## Version 1.7.4.4 (21-Nov-2012)
+
+### Bug fix
+* [Bug-347][]: /bin/sh^M bad interpreter.
+	* All .sh and .command files contained the Windows ^M characters so these files could not be executed.
+
 ## Version 1.7.4.3 (17-Nov-2012)
 
 ### Bug Fixes
@@ -2795,6 +2801,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-342]: http://sourceforge.net/p/robocode/bugs/342/  (New bots not given priority)
 [Bug-344]: http://sourceforge.net/p/robocode/bugs/344/  (BattleAdaptor missing in robocode.control.events)
 [Bug-345]: http://sourceforge.net/p/robocode/bugs/345/  (Graphics still being rendered when minimized)
+[Bug-347]: http://sourceforge.net/p/robocode/bugs/347/  (/bin/sh^M bad interpreter)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
