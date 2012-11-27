@@ -39,7 +39,7 @@ namespace net.sf.robocode.dotnet
             }
             string userHome = Environment.GetEnvironmentVariable("USERPROFILE");
             string version = typeof (BridgeSetup).Assembly.GetName().Version.ToString();
-            setup.AddClassPath(userHome + @"/.m2/repository/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar");
+            setup.AddClassPath(userHome + @"/.m2/repository/org/picocontainer/picocontainer/2.14.2/picocontainer-2.14.2.jar");
             setup.AddClassPath(userHome + @"/.m2/repository/net/sf/jni4net/jni4net.j/" + version + "/jni4net.j-" +
                                version + ".jar");
             setup.AddClassPath(prefix + "../../robocode.api/target/Test-classes");

@@ -1,12 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
   <name>robocode.dotnet.tests</name>
-  <comment/>
+  <comment>NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
   <projects>
-    <project>robocode.dotnet.api</project>
     <project>robocode.dotnet.host</project>
     <project>robocode.dotnet.nhost</project>
-    <project>robocode.dotnet.robotscs</project>
+    <project>robocode.dotnet.api</project>
+    <project>robocode.dotnet.control.api</project>
     <project>robocode.dotnet.samples</project>
+    <project>robocode.dotnet.robotscs</project>
   </projects>
   <buildSpec>
     <buildCommand>

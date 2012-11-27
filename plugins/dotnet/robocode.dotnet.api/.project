@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
   <name>robocode.dotnet.api</name>
-  <comment>.NET Robot API for Robocode</comment>
+  <comment>.NET Robot API for Robocode. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
   <projects/>
   <buildSpec/>
   <natures/>

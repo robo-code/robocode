@@ -12,8 +12,9 @@
 package net.sf.robocode.test.robots;
 
 
-import junit.framework.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import robocode.control.events.BattleFinishedEvent;

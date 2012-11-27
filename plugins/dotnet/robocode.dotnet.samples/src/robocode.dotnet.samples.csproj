@@ -8,8 +8,8 @@
     <ProjectGuid>{80857B97-6397-487B-A9F5-B07026DCBB66}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>samplecs</RootNamespace>
-    <AssemblyName>samplescs-1.7.2.2</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AssemblyName>samplescs-1.8.0.0</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

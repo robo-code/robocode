@@ -1,4 +1,4 @@
-## Version 1.8.0 Alpha (18-Nov-2012)
+## Version 1.8.0.0 Alpha (27-Nov-2012)
 
 ## Version 1.7.4.4 (21-Nov-2012)
 

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>robocode</RootNamespace>
     <AssemblyName>robocode</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\tools\keys\robocode.snk</AssemblyOriginatorKeyFile>
@@ -157,7 +157,7 @@
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)\robocode.dotnet.host\target"</PostBuildEvent>
     <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
-echo [assembly: System.Reflection.AssemblyVersion("1.7.2.2")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
+echo [assembly: System.Reflection.AssemblyVersion("1.8.0.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
 </PreBuildEvent>
   </PropertyGroup>
 </Project>

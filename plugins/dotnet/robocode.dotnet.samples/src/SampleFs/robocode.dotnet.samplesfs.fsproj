@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>func</RootNamespace>
     <AssemblyName>SampleFs</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <Name>robocode.dotnet.samplesfs</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
