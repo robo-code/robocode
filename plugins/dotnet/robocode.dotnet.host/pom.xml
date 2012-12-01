@@ -8,7 +8,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<parent>
 		<groupId>net.sf.robocode</groupId>
 		<artifactId>robocode.dotnet</artifactId>
-		<version>${robocode.nversion}</version>
+		<version>${robocode.dotnet.version}</version>
 	</parent>
 	<dependencies>
 		<dependency>
@@ -24,8 +24,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<dependency>
 			<groupId>net.sf.robocode</groupId>
 			<artifactId>robocode.dotnet.nhost</artifactId>
-			<version>${robocode.nversion}</version>
-			<type>dotnet:library</type>
+			<version>${robocode.dotnet.version}</version>
+			<type>dotnet-library</type>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jni4net</groupId>
@@ -36,31 +36,31 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<groupId>net.sf.jni4net</groupId>
 			<artifactId>jni4net.n</artifactId>
 			<version>0.8.6.0</version>
-			<type>dotnet:library</type>
+			<type>dotnet-library</type>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jni4net</groupId>
 			<artifactId>jni4net.n.w32.v20</artifactId>
 			<version>0.8.6.0</version>
-			<type>dotnet:library</type>
+			<type>dotnet-library</type>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jni4net</groupId>
 			<artifactId>jni4net.n.w64.v20</artifactId>
 			<version>0.8.6.0</version>
-			<type>dotnet:library</type>
+			<type>dotnet-library</type>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jni4net</groupId>
 			<artifactId>jni4net.n.w32.v40</artifactId>
 			<version>0.8.6.0</version>
-			<type>dotnet:library</type>
+			<type>dotnet-library</type>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jni4net</groupId>
 			<artifactId>jni4net.n.w64.v40</artifactId>
 			<version>0.8.6.0</version>
-			<type>dotnet:library</type>
+			<type>dotnet-library</type>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -84,57 +84,73 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									groupId="net.sf.jni4net"
 									artifactId="jni4net.n"
 									version="0.8.6.0"
-									type="dotnet:library" />
-								<copy file="${jni4net.n}" todir="target" />
+									type="dotnet-library" />
+								<copy
+									file="${jni4net.n}"
+									todir="target" />
 								<resolveArtifact
 									property="jni4net.n.w32.v20"
 									groupId="net.sf.jni4net"
 									artifactId="jni4net.n.w32.v20"
 									version="0.8.6.0"
-									type="dotnet:library" />
-								<copy file="${jni4net.n.w32.v20}" todir="target" />
+									type="dotnet-library" />
+								<copy
+									file="${jni4net.n.w32.v20}"
+									todir="target" />
 								<resolveArtifact
 									property="jni4net.n.w64.v20"
 									groupId="net.sf.jni4net"
 									artifactId="jni4net.n.w64.v20"
 									version="0.8.6.0"
-									type="dotnet:library" />
-								<copy file="${jni4net.n.w64.v20}" todir="target" />
+									type="dotnet-library" />
+								<copy
+									file="${jni4net.n.w64.v20}"
+									todir="target" />
 								<resolveArtifact
 									property="jni4net.n.w32.v40"
 									groupId="net.sf.jni4net"
 									artifactId="jni4net.n.w32.v40"
 									version="0.8.6.0"
-									type="dotnet:library" />
-								<copy file="${jni4net.n.w32.v40}" todir="target" />
+									type="dotnet-library" />
+								<copy
+									file="${jni4net.n.w32.v40}"
+									todir="target" />
 								<resolveArtifact
 									property="jni4net.n.w64.v40"
 									groupId="net.sf.jni4net"
 									artifactId="jni4net.n.w64.v40"
 									version="0.8.6.0"
-									type="dotnet:library" />
-								<copy file="${jni4net.n.w64.v40}" todir="target" />
+									type="dotnet-library" />
+								<copy
+									file="${jni4net.n.w64.v40}"
+									todir="target" />
 								<resolveArtifact
 									property="robocode.dotnet.nhost"
 									groupId="net.sf.robocode"
 									artifactId="robocode.dotnet.nhost"
-									version="${robocode.nversion}"
-									type="dotnet:library" />
-								<copy file="${robocode.dotnet.nhost}" todir="target" />
+									version="${robocode.dotnet.version}"
+									type="dotnet-library" />
+								<copy
+									file="${robocode.dotnet.nhost}"
+									todir="target" />
 								<resolveArtifact
 									property="robocode.dotnet.api"
 									groupId="net.sf.robocode"
 									artifactId="robocode.dotnet.api"
-									version="${robocode.nversion}"
-									type="dotnet:library" />
-								<copy file="${robocode.dotnet.api}" tofile="target/robocode.dll" />
+									version="${robocode.dotnet.version}"
+									type="dotnet-library" />
+								<copy
+									file="${robocode.dotnet.api}"
+									todir="target" />
 								<resolveArtifact
 									property="robocode.dotnet.control.api"
 									groupId="net.sf.robocode"
 									artifactId="robocode.dotnet.control.api"
-									version="${robocode.nversion}"
-									type="dotnet:library" />
-								<copy file="${robocode.dotnet.control.api}" tofile="target/robocode.control.dll" />
+									version="${robocode.dotnet.version}"
+									type="dotnet-library" />
+								<copy
+									file="${robocode.dotnet.control.api}"
+									todir="target" />
 							</tasks>
 						</configuration>
 						<goals>

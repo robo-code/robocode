@@ -37,7 +37,7 @@ public class Module extends BaseModule {
 		try {
 
 			String libsDir;
-			final String version = ContainerBase.getComponent(IVersionManagerBase.class).getVersionN();
+//			final String version = ContainerBase.getComponent(IVersionManagerBase.class).getVersionN();
 
 			final java.security.CodeSource source = Module.class.getProtectionDomain().getCodeSource();
 			final File file = new File(source.getLocation().toURI()).getCanonicalFile();
@@ -50,8 +50,8 @@ public class Module extends BaseModule {
 				throw new Error("Can't find " + file);
 			}
 
-  			final String nhost = libsDir + "/robocode.dotnet.nhost-" + version + ".dll";
-  			final String ncontrol = libsDir + "/robocode.control.dll";
+  			final String nhost = libsDir + "/robocode.dotnet.nhost.dll";
+  			final String ncontrol = libsDir + "/robocode.dotnet.control.api.dll";
 	
 				Bridge.init(new File(libsDir));
 				// Bridge.setVerbose(true);
@@ -69,6 +69,7 @@ public class Module extends BaseModule {
 			Container.cache.addComponent("robocode.host.cs", DotnetHost.class);
 			Container.cache.addComponent("robocode.host.vb", DotnetHost.class);
 			Container.cache.addComponent("robocode.host.dotnet", DotnetHost.class);
+
 		} catch (Throwable e) {
 			Logger.logError(e);
 			throw new Error("Can't initialize .NET Robocode", e);
@@ -78,5 +79,4 @@ public class Module extends BaseModule {
 	public void afterLoaded(List<IModule> allModules) {
 		net.sf.robocode.dotnet.nhost.ModuleN.InitN();
 	}
-
 }

@@ -4,7 +4,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>robocode.dotnet</artifactId>
 	<name>.NET Robocode</name>
-	<version>${robocode.nversion}</version>
+	<version>${robocode.dotnet.version}</version>
 	<packaging>pom</packaging>
 	<parent>
 		<groupId>net.sf.robocode</groupId>
@@ -14,9 +14,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	</parent>
 	<repositories>
 		<repository>
-			<id>net.sf.jni4net</id>
+			<id>jni4net.repo</id>
 			<name>jni4net Repository</name>
 			<url>http://jni4net.googlecode.com/svn/mvnrepo</url>
+		</repository>
+		<repository>
+			<id>aduna.repo</id>
+			<name>Aduna Repository</name>
+			<url>http://repository.aduna-software.org/maven2/</url>
 		</repository>
 	</repositories>
 	<modules>
@@ -36,20 +41,24 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.sonatype.nmaven.plugins</groupId>
-					<artifactId>maven-dotnet-compiler-plugin</artifactId>
+					<groupId>org.apache.npanday.plugins</groupId>
+					<artifactId>maven-compile-plugin</artifactId>
+					<version>1.4.0-incubating</version>
 					<extensions>true</extensions>
-					<version>0.17robocode</version>
-				</plugin>
-				<plugin>
-					<groupId>org.sonatype.nmaven.plugins</groupId>
-					<artifactId>maven-dotnet-test-plugin</artifactId>
-					<version>0.17robocode</version>
+					<configuration>
+						<vendor>MICROSOFT</vendor>
+						<frameworkVersion>3.5</frameworkVersion>
+						<testFrameworkVersion>3.5</testFrameworkVersion>
+						<vendorVersion>3.5</vendorVersion>
+						<unsafe>true</unsafe>
+						<warn>0</warn>
+						<nowarn>1591</nowarn>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
 					<artifactId>maven-antrun-extended-plugin</artifactId>
-					<version>1.39</version>
+					<version>1.43</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
