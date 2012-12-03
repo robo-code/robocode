@@ -1,4 +1,7 @@
-## Version 1.8.0.0 Alpha (27-Nov-2012)
+## Version 1.8.0.0 Alpha (04-Dec-2012)
+
+### Changes
+* The icon for Robocode was upgraded to a 256x256 pixel resolution.
 
 ## Version 1.7.4.4 (21-Nov-2012)
 
