@@ -6,8 +6,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<name>Robot Testing Framework</name>
 	<packaging>pom</packaging>
 	<parent>
-		<artifactId>robocode</artifactId>
 		<groupId>net.sf.robocode</groupId>
+		<artifactId>robocode</artifactId>
 		<version>${robocode.version}</version>
 		<relativePath>../..</relativePath>
 	</parent>
