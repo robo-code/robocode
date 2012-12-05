@@ -7,4 +7,3 @@ if [ ! -f $dp0/tools/lib/maven-*-uber.jar ]; then
 fi
 
 $dp0/tools/bin/mvn.sh $*
-
