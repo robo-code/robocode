@@ -14,7 +14,6 @@ package net.sf.robocode.recording;
 
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.settings.ISettingsManager;
 import robocode.BattleResults;
@@ -26,12 +25,17 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (original)
  */
 public class BattleRecorder {
+
+	private static final Logger logger = Logger.getLogger(BattleRecorder.class);
+
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
 
 	private final RecordManager recordmanager;
@@ -139,7 +143,7 @@ public class BattleRecorder {
 							new SerializableOptions(true));
 				}
 			} catch (IOException e) {
-				Logger.logError(e);
+				logger.error(e.getLocalizedMessage(), e);
 			}
 		}
 	}

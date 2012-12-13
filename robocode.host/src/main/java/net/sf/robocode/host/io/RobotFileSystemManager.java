@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -37,6 +39,9 @@ import java.util.jar.JarFile;
  * @author Robert D. Maupin (contributor)
  */
 public class RobotFileSystemManager {
+
+	private static final Logger logger = Logger.getLogger(RobotFileSystemManager.class);
+
 	private final IHostedThread robotProxy;
 	private long quotaUsed;
 	private boolean quotaMessagePrinted;
@@ -245,7 +250,7 @@ public class RobotFileSystemManager {
 				updateDataFilesFromJar();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
 

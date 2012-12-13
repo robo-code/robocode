@@ -104,7 +104,6 @@ import net.sf.robocode.battle.peer.TeamPeer;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
@@ -122,6 +121,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * The {@code Battle} class is used for controlling a battle.
@@ -136,6 +137,8 @@ import java.util.regex.Pattern;
  * @author Pavel Savara (contributor)
  */
 public final class Battle extends BaseBattle {
+
+	private static final Logger logger = Logger.getLogger(Battle.class);
 
 	private static final int DEBUG_TURN_WAIT_MILLIS = 10 * 60 * 1000; // 10 seconds
 
@@ -368,6 +371,8 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void initializeBattle() {
+		logger.info("Battle started");
+
 		super.initializeBattle();
 
 		parallelOn = System.getProperty("PARALLEL", "false").equals("true");
@@ -406,6 +411,9 @@ public final class Battle extends BaseBattle {
 		hostManager.resetThreadManager();
 
 		super.finalizeBattle();
+
+		logger.info("Battle ended");
+		logger.info("--------------");
 	}
 
 	@Override
@@ -458,9 +466,9 @@ public final class Battle extends BaseBattle {
 			robotPeer.startRound(waitMillis, waitNanos);
 		}
 
-		Logger.logMessage(""); // puts in a new-line in the log message
-
 		final ITurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets, false);
+
+		logger.info("Round " + (getRoundNum() + 1) + "...");
 
 		eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum()));
 	}
@@ -476,7 +484,7 @@ public final class Battle extends BaseBattle {
 
 		bullets.clear();
 
-		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), currentTime, totalTurns));
+		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), currentTime, totalTurns));		
 	}
 
 	@Override
@@ -518,6 +526,7 @@ public final class Battle extends BaseBattle {
 			if (isAborted()) {
 				for (RobotPeer robotPeer : getRobotsAtRandom()) {
 					if (robotPeer.isAlive()) {
+						// Print to robot console -> System.out is redirected
 						robotPeer.println("SYSTEM: game aborted.");
 					}
 				}
@@ -534,6 +543,7 @@ public final class Battle extends BaseBattle {
 						if (!robotPeer.isWinner()) {
 							robotPeer.getRobotStatistics().scoreLastSurvivor();
 							robotPeer.setWinner(true);
+							// Print to robot console -> System.out is redirected
 							robotPeer.println("SYSTEM: " + robotPeer.getNameForEvent(robotPeer) + " wins the round.");
 							robotPeer.addEvent(new WinEvent());
 							if (robotPeer.getTeamPeer() != null) {

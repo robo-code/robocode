@@ -14,11 +14,10 @@
 package robocode.control;
 
 
-import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logWarning;
-
 import java.lang.reflect.Field;
 import java.util.Random;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -30,6 +29,9 @@ import java.util.Random;
  * @since 1.6.1
  */
 public class RandomFactory {
+
+	private static final Logger logger = Logger.getLogger(RandomFactory.class);
+
 	private static Random randomNumberGenerator;
 
 	private static boolean warningNotSupportedLogged;
@@ -64,7 +66,7 @@ public class RandomFactory {
 				logWarningNotSupported();
 				randomNumberGenerator = new Random();
 			} catch (IllegalAccessException e) {
-				logError(e);
+				logger.error(e.getLocalizedMessage(), e);
 				randomNumberGenerator = new Random();
 			}
 		}
@@ -91,7 +93,7 @@ public class RandomFactory {
 		} catch (NoSuchFieldException e) {
 			logWarningNotSupported();
 		} catch (IllegalAccessException e) {
-			logError(e);
+			logger.error(e.getLocalizedMessage(), e);
 		}
 
 		// TODO ZAMO using Robot classloader inject seed also for all instances being created by robots
@@ -113,10 +115,9 @@ public class RandomFactory {
 	 */
 	private static void logWarningNotSupported() {
 		if (!(warningNotSupportedLogged || System.getProperty("RANDOMSEED", "none").equals("none"))) {
-			logWarning(
-					"The deterministic random generator feature is not supported by this JVM:\n"
-							+ System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.name") + " "
-							+ System.getProperty("java.vm.version"));
+			logger.warn("The deterministic random generator feature is not supported by this JVM:\n"
+					+ System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.name") + " "
+					+ System.getProperty("java.vm.version"));
 
 			warningNotSupportedLogged = true;
 		}

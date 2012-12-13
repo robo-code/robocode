@@ -24,12 +24,10 @@ package robocode;
 
 import net.sf.robocode.peer.IRobotStatics;
 import net.sf.robocode.security.IHiddenEventHelper;
-import net.sf.robocode.io.Logger;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
 import java.io.Serializable;
-
 
 // XXX Remember to update the .NET version whenever a change is made to this class!
 
@@ -41,6 +39,7 @@ import java.io.Serializable;
  */
 public abstract class Event implements Comparable<Event>, Serializable {
 	private static final long serialVersionUID = 1L;
+
 	private static final int DEFAULT_PRIORITY = 80;
 
 	private long time;
@@ -123,8 +122,8 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 */
 	public void setTime(long newTime) {
 		if (addedToQueue) {
-			Logger.printlnToRobotsConsole(
-					"SYSTEM: The time of an event cannot be changed after it has been added the event queue.");
+			// Print to robot console -> System.out is redirected
+			System.out.println("SYSTEM: The time of an event cannot be changed after it has been added the event queue.");
 		} else {
 			time = newTime;
 		}
@@ -158,8 +157,8 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 */
 	public final void setPriority(int newPriority) {
 		if (addedToQueue) {
-			Logger.printlnToRobotsConsole(
-					"SYSTEM: The priority of an event cannot be changed after it has been added the event queue.");
+			// Print to robot console -> System.out is redirected
+			System.out.println("SYSTEM: The priority of an event cannot be changed after it has been added the event queue.");
 		} else {
 			setPriorityHidden(newPriority);
 		}
@@ -192,12 +191,14 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	// This method must be invisible on Robot API
 	private void setPriorityHidden(int newPriority) {
 		if (newPriority < 0) {
-			Logger.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
-			Logger.printlnToRobotsConsole("SYSTEM: Priority for " + this.getClass().getName() + " will be 0");
+			// Print to robot console -> System.out is redirected
+			System.out.println("SYSTEM: Priority must be between 0 and 99");
+			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 0");
 			newPriority = 0;
 		} else if (newPriority > 99) {
-			Logger.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
-			Logger.printlnToRobotsConsole("SYSTEM: Priority for " + this.getClass().getName() + " will be 99");
+			// Print to robot console -> System.out is redirected
+			System.out.println("SYSTEM: Priority must be between 0 and 99");
+			System.out.println("SYSTEM: Priority for " + this.getClass().getName() + " will be 99");
 			newPriority = 99;
 		}
 		priority = newPriority;

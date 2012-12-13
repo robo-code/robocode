@@ -15,9 +15,7 @@ package net.sf.robocode.repository.items;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
-import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.repository.RobotType;
 import net.sf.robocode.repository.root.ClassPathRoot;
@@ -41,6 +39,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
@@ -48,6 +48,8 @@ import java.util.Set;
  */
 public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 	private static final long serialVersionUID = 1L;
+
+	private static final Logger logger = Logger.getLogger(RobotItem.class);
 
 	// Allowed maximum length for a robot's full package name
 	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
@@ -128,7 +130,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			try {
 				propertiesURL = new URL(path);
 			} catch (MalformedURLException e) {
-				Logger.logError(e);
+				logger.error(e.getLocalizedMessage(), e);
 			}
 			if (isInvalidURL(propertiesURL)) {
 				propertiesURL = null;
@@ -143,7 +145,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			try {
 				classURL = new URL(path);
 			} catch (MalformedURLException e) {
-				Logger.logError(e);
+				logger.error(e.getLocalizedMessage(), e);
 			}
 			if (isInvalidURL(classURL)) {
 				classURL = null;
@@ -379,15 +381,14 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 			if (rootPackage.equalsIgnoreCase("robocode")) {
 				if (!silent) {
-					logError("Robot " + fullClassName + " ignored.  You cannot use package " + rootPackage);
+					logger.error("Robot " + fullClassName + " ignored.  You cannot use package " + rootPackage);
 				}
 				return false;
 			}
 
 			if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
 				if (!silent) {
-					logError(
-							"Robot " + fullClassName + " has package name too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
+					logger.error("Robot " + fullClassName + " has package name too long.  " + MAX_FULL_PACKAGE_NAME_LENGTH
 							+ " characters maximum please.");
 				}
 				return false;
@@ -396,8 +397,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 
 		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
 			if (!silent) {
-				logError(
-						"Robot " + fullClassName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
+				logger.error("Robot " + fullClassName + " has classname too long.  " + MAX_SHORT_CLASS_NAME_LENGTH
 						+ " characters maximum please.");
 			}
 			return false;
@@ -443,7 +443,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 			fos = new FileOutputStream(file);
 			saveProperties(fos);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 		} finally {
 			FileUtil.cleanupStream(fos);
 		}

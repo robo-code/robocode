@@ -25,7 +25,6 @@ package net.sf.robocode.ui.packager;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.ui.dialog.WizardPanel;
 
@@ -33,6 +32,9 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Caret;
+
+import org.apache.log4j.Logger;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,6 +52,9 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class FilenamePanel extends WizardPanel {
+	
+	private static final Logger logger = Logger.getLogger(FilenamePanel.class);
+
 	private final RobotPackager robotPackager;
 
 	private final EventHandler eventHandler = new EventHandler();
@@ -89,7 +94,7 @@ public class FilenamePanel extends WizardPanel {
 
 			if (!outgoingFile.exists()) {
 				if (!outgoingFile.mkdirs()) {
-					Logger.logError("Cannot create: " + outgoingFile);
+					logger.error("Cannot create: " + outgoingFile);
 				}
 			}
 			String jarName = "myrobots.jar";
@@ -183,9 +188,9 @@ public class FilenamePanel extends WizardPanel {
 			// Immediately reasserts the exception by interrupting the caller thread itself
 			Thread.currentThread().interrupt();
 
-			e.printStackTrace();
+			logger.warn(e.getLocalizedMessage(), e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
 

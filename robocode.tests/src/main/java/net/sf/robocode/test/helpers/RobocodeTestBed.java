@@ -13,8 +13,9 @@
 package net.sf.robocode.test.helpers;
 
 
-import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.RobocodeLogManager;
 
+import org.apache.log4j.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,8 +43,10 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	public static boolean isDumpingPositions = false;
 	public static boolean isDumpingTurns = false;
 	public static boolean isDumpingOutput = true;
-	public static boolean isDumpingErrors = true;
-	public static boolean isDumpingMessages = true;
+	public static boolean isDumpingErrors = false;
+	public static boolean isDumpingMessages = false;
+
+	private Level originalLogLevel;
 
 	static {
 		System.setProperty("EXPERIMENTAL", "true");
@@ -58,21 +61,21 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 				throw new Error("Unknown directory");
 			}
 		} catch (IOException e) {
-			e.printStackTrace(Logger.realErr);
+			e.printStackTrace(System.err);
 		}
 		System.setProperty("ROBOTPATH", robotsPath + "/target/classes");
 
 		engine = new RobocodeEngine(new BattleAdaptor() {
 			public void onBattleMessage(BattleMessageEvent event) {
 				if (isDumpingMessages) {
-					Logger.realOut.println(event.getMessage());
+					System.out.println(event.getMessage());
 				}
 				messages++;
 			}
 
 			public void onBattleError(BattleErrorEvent event) {
 				if (isDumpingErrors) {
-					Logger.realErr.println(event.getError());
+					System.err.println(event.getError());
 				}
 				errorText.append("----------err #");
 				errorText.append(errors);
@@ -97,21 +100,21 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		if (isDumpingTurns) {
-			Logger.realOut.println("turn " + event.getTurnSnapshot().getTurn());
+			System.out.println("turn " + event.getTurnSnapshot().getTurn());
 		}
 		for (IRobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
 			if (isDumpingPositions) {
-				Logger.realOut.print(robot.getVeryShortName());
-				Logger.realOut.print(" X:");
-				Logger.realOut.print(robot.getX());
-				Logger.realOut.print(" Y:");
-				Logger.realOut.print(robot.getY());
-				Logger.realOut.print(" V:");
-				Logger.realOut.print(robot.getVelocity());
-				Logger.realOut.println();
+				System.out.print(robot.getVeryShortName());
+				System.out.print(" X:");
+				System.out.print(robot.getX());
+				System.out.print(" Y:");
+				System.out.print(robot.getY());
+				System.out.print(" V:");
+				System.out.print(robot.getVelocity());
+				System.out.println();
 			}
 			if (isDumpingOutput) {
-				Logger.realOut.print(robot.getOutputStreamSnapshot());
+				System.out.print(robot.getOutputStreamSnapshot());
 			}
 		}
 	}
@@ -185,9 +188,13 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		return 0;
 	}
 
-	protected void runSetup() {}
+	protected void runSetup() {
+		originalLogLevel = RobocodeLogManager.setLevel(Level.ERROR);
+	}
 
-	protected void runTeardown() {}
+	protected void runTeardown() {
+		RobocodeLogManager.setLevel(originalLogLevel);
+	}
 
 	protected void runBattle(String robotList, int numRounds, String initialPositions) {
 		final RobotSpecification[] robotSpecifications = engine.getLocalRepository(robotList);

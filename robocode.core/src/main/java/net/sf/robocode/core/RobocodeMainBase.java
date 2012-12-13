@@ -13,21 +13,25 @@ package net.sf.robocode.core;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import robocode.control.events.IBattleListener;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 
+import org.apache.log4j.Logger;
+
 
 /**
- * There are entrypoints called with reflection from HiddenAccess in robocode.api module,
- * they cross classloaders boundaries.
+ * There are entry points called with reflection from HiddenAccess in robocode.api module,
+ * they cross class loaders boundaries.
  * 
  * @author Pavel Savara (original)
  */
 public abstract class RobocodeMainBase implements Runnable {
+
+	private static final Logger logger = Logger.getLogger(RobocodeMainBase.class);
+
 	public abstract void loadSetup(String[] args);
 
 	public abstract void initForRobocodeEngine(IBattleListener listener);
@@ -35,7 +39,7 @@ public abstract class RobocodeMainBase implements Runnable {
 	public abstract void cleanup();
 
 	// -----------
-	// entrypoints called with reflection from HiddenAccess in robocode.api module
+	// entry points called with reflection from HiddenAccess in robocode.api module
 	// -----------
 
 	public static void robocodeMain(Object args) {
@@ -47,7 +51,7 @@ public abstract class RobocodeMainBase implements Runnable {
 		// Make sure ALL uncaught exceptions are logged
 		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {
-				Logger.logError("UncaughtException on thread " + t.getClass(), e);
+				logger.error("UncaughtException on thread: " + t.getClass(), e);
 			}
 		});
 
@@ -82,9 +86,8 @@ public abstract class RobocodeMainBase implements Runnable {
 			} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
 				throw new RuntimeException('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
 			}
-
 		} catch (IOException e) {
-			System.err.println(e);
+			logger.error(e.getLocalizedMessage(), e);
 			return;
 		}
 

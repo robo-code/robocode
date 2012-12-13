@@ -69,7 +69,14 @@ under the License.
     <orderEntry type="module" module-name="robocode.installer"/>  
     <orderEntry type="module" module-name="robocode.ui.editor"/>  
     <orderEntry type="module" module-name="robocode.ui"/>  
-    <orderEntry type="module" module-name="robocode.sound"/> 
+    <orderEntry type="module" module-name="robocode.sound"/>  
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar!/"/>
+        </CLASSES>
+      </library>
+    </orderEntry>
   </component>  
   <component name="ModuleRootManager"/>  
   <!-- If it's a war project:

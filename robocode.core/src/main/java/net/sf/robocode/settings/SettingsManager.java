@@ -36,8 +36,6 @@ package net.sf.robocode.settings;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
 
 import java.awt.*;
 import java.io.File;
@@ -49,6 +47,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -57,6 +57,9 @@ import java.util.List;
  */
 // TODO ZAMO, refactor, split by modules
 public class SettingsManager implements ISettingsManager {
+	
+	private static final Logger logger = Logger.getLogger(SettingsManager.class);
+
 	// Default SFX files
 	private final static String
 			DEFAULT_FILE_GUNSHOT_SFX = "/net/sf/robocode/sound/sounds/zap.wav",
@@ -170,9 +173,9 @@ public class SettingsManager implements ISettingsManager {
 			in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 			this.load(in);
 		} catch (FileNotFoundException e) {
-			logError("No " + FileUtil.getRobocodeConfigFile().getName() + ". Using defaults.");
+			logger.warn("Could not read config file: " + FileUtil.getRobocodeConfigFile().getName() + ". Using defaults.");
 		} catch (IOException e) {
-			logError("Error while reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
+			logger.error("Error while reading config file: " + FileUtil.getRobocodeConfigFile().getName(), e);
 		} finally {
 			if (in != null) {
 				// noinspection EmptyCatchBlock
@@ -191,7 +194,7 @@ public class SettingsManager implements ISettingsManager {
 
 			this.store(out, "Robocode Properties");
 		} catch (IOException e) {
-			Logger.logError(e);
+			logger.error(e.getLocalizedMessage(), e);
 		} finally {
 			if (out != null) {
 				// noinspection EmptyCatchBlock
@@ -740,7 +743,7 @@ public class SettingsManager implements ISettingsManager {
 		try {
 			versionChecked = dateFormat.parse(props.getProperty(VERSIONCHECKED));
 		} catch (Exception e) {
-			Logger.logMessage("Initializing version check date.");
+			logger.info("Initializing version check date.");
 			setVersionChecked(new Date());
 		}
 
@@ -773,7 +776,7 @@ public class SettingsManager implements ISettingsManager {
 			try {
 				listener.settingChanged(name);
 			} catch (Exception e) {
-				Logger.logError(e);
+				logger.error(e.getLocalizedMessage(), e);
 			}
 		}
 	}

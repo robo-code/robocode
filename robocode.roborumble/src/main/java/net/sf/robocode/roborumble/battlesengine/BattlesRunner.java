@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2012 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2012 Albert PÃ©rez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  *
  * Contributors:
- *     Albert Pérez
+ *     Albert PÃ©rez
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5
@@ -24,15 +24,15 @@
 package net.sf.robocode.roborumble.battlesengine;
 
 
-import net.sf.robocode.io.Logger;
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 import robocode.control.*;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
-import robocode.control.events.BattleErrorEvent;
 
 import java.io.*;
 import java.util.*;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -40,11 +40,14 @@ import java.util.*;
  * Reads a file with the battles to be runned and outputs the results in another file.
  * Controlled by properties files.
  *
- * @author Albert Pérez (original)
+ * @author Albert PÃ©rez (original)
  * @author Flemming N. Larsen (contributor)
  * @author Joachim Hofer (contributor)
  */
 public class BattlesRunner {
+	
+	private final static Logger logger = Logger.getLogger(BattlesRunner.class);
+	
 	private final String inputfile;
 	private final int numrounds;
 	private final int fieldlen;
@@ -111,7 +114,7 @@ public class BattlesRunner {
 
 			String enemies = getEnemies(melee, param);
 
-			System.out.println("Fighting battle " + (index) + " ... " + enemies);
+			logger.info("Fighting battle " + (index) + " ... " + enemies);
 
 			final RobotSpecification[] robotsList = engine.getLocalRepository(enemies);
 
@@ -130,7 +133,7 @@ public class BattlesRunner {
 					}
 				}
 			} else {
-				System.err.println("Skipping battle because can't load robots: " + enemies);
+				logger.warn("Skipping battle because can't load robots: " + enemies);
 			}
 			index++;
 		}
@@ -162,8 +165,7 @@ public class BattlesRunner {
 		try {
 			return new PrintStream(new BufferedOutputStream(new FileOutputStream(outfile, true)), true);
 		} catch (IOException e) {
-			System.out.println("Not able to open output file ... Aborting");
-			System.out.println(e);
+			logger.error("Not able to open output file ... Aborting", e);
 			return null;
 		}
 	}
@@ -179,8 +181,7 @@ public class BattlesRunner {
 				robots.add(record);
 			}
 		} catch (IOException e) {
-			System.out.println("Battles input file not found ... Aborting");
-			System.out.println(e);
+			logger.error("Battles input file not found ... Aborting", e);
 			return true;
 		} finally {
 			if (br != null) {
@@ -223,26 +224,18 @@ public class BattlesRunner {
 			}
 		}
 		if (melee) {
-			System.out.println(
-					"RESULT = " + results[0].getRobot().getNameAndVersion() + " wins, "
-					+ results[1].getRobot().getNameAndVersion() + " is second.");
+			logger.info("RESULT = " + results[0].getRobot().getNameAndVersion() + " wins, "	+ results[1].getRobot().getNameAndVersion() + " is second.");
 		} else {
 			RobotSpecification winnerBot = results[0].getRobot();
 			String winnerBotName = winnerBot.getTeamId() != null
 					? winnerBot.getTeamId().replaceAll(BOT_INDEX_PATTERN, "")
 					: winnerBot.getNameAndVersion(); 
 
-			System.out.println(
-					"RESULT = " + winnerBotName + " wins " + results[0].getScore() + " to " + results[1].getScore());
+			logger.info("RESULT = " + winnerBotName + " wins " + results[0].getScore() + " to " + results[1].getScore());
 		}
 	}
 
 	class BattleObserver extends BattleAdaptor {
-		@Override
-		public void onBattleError(final BattleErrorEvent event) {
-			Logger.realErr.println(event.getError());
-		}
-
 		@Override
 		public void onBattleCompleted(final BattleCompletedEvent event) {
 			lastResults = RobotResults.convertResults(event.getSortedResults());

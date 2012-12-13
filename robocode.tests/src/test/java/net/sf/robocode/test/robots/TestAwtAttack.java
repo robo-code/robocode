@@ -12,7 +12,6 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Test;
@@ -73,7 +72,7 @@ public class TestAwtAttack extends RobocodeTestBed {
 
 		Runnable doCheck = new Runnable() {
 			public void run() {
-				Logger.logMessage("works still!!!");
+				System.out.println("works still!!!");
 			}
 		};
 

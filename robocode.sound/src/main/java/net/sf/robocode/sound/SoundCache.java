@@ -17,9 +17,10 @@
 package net.sf.robocode.sound;
 
 
-import net.sf.robocode.io.Logger;
-
 import javax.sound.sampled.*;
+
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -35,6 +36,8 @@ import java.util.Map;
  * @author Flemming N. Larsen (contributor)
  */
 class SoundCache {
+
+	private static final Logger logger = Logger.getLogger(SoundCache.class);
 
 	/**
 	 * Table containing all sound clips
@@ -153,9 +156,7 @@ class SoundCache {
 			clones = new ClipClones(mixer, data, numClones);
 			soundTable.put(key, clones);
 		} catch (LineUnavailableException e) {
-			Logger.logError(
-					"The audio mixer " + mixer.getMixerInfo().getName()
-					+ " does not support the audio format of the sound clip: " + resourceName);
+			logger.error("The audio mixer " + mixer.getMixerInfo().getName() + " does not support the audio format of the sound clip: " + resourceName);
 		}
 	}
 
@@ -170,7 +171,7 @@ class SoundCache {
 		URL url = SoundCache.class.getResource(resourceName);
 
 		if (url == null) {
-			Logger.logError("Could not load sound because of invalid resource name: " + resourceName);
+			logger.error("Could not load sound because of invalid resource name: " + resourceName);
 			return null;
 		}
 		try {
@@ -178,7 +179,7 @@ class SoundCache {
 
 			data = new SoundData(ais);
 		} catch (Exception e) {
-			Logger.logError("Error while reading sound from resource: " + resourceName, e);
+			logger.error("Error while reading sound from resource: " + resourceName, e);
 			data = null;
 		}
 		return data;

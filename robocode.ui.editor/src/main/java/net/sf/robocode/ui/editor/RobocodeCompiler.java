@@ -19,12 +19,13 @@ package net.sf.robocode.ui.editor;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.ui.dialog.ConsoleDialog;
 import net.sf.robocode.ui.dialog.WindowUtil;
 
 import java.io.File;
 import java.io.IOException;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -32,6 +33,8 @@ import java.io.IOException;
  * @author Flemming N. Larsen (contributor)
  */
 public class RobocodeCompiler {
+	
+	private static final Logger logger = Logger.getLogger(RobocodeCompiler.class);
 
 	private final String compilerBinary;
 	private final RobocodeEditor editor;
@@ -64,7 +67,7 @@ public class RobocodeCompiler {
 			StringBuffer command = new StringBuffer(compilerBinary).append(' ').append(compilerOptions).append(' ').append(compilerClassPath).append(' ').append(
 					fileName);
 
-			Logger.logMessage("Compile command: " + command);
+			logger.info("Compile command: " + command);
 
 			ProcessBuilder pb = new ProcessBuilder(command.toString().split(" "));
 

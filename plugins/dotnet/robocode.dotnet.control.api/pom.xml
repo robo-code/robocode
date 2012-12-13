@@ -37,7 +37,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 					<finalName>robocode.control.dll</finalName>
 				</configuration>
 			</plugin>
-			<plugin>
+<!--			<plugin>
 				<groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
 				<artifactId>maven-antrun-extended-plugin</artifactId>
 				<executions>
@@ -47,10 +47,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 							<tasks>
 								<copy file="target/comments.xml" tofile="target/robocode.control.xml" />
 								<copy file="target/robocode.dotnet.control.api.dll" tofile="target/robocode.control.dll"/>
-								<!--
+								<!-
                                 for this to run, one must have SHFBROOT environment variable set properly.
                                 it comes with installation of SHFB
-                                -->
+                                ->
 								<exec dir="target" executable="cmd.exe" failonerror="false">
 									<arg line="/c %SystemRoot%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /p:Configuration=Release ../controlAPI.shfbproj" />
 								</exec>
@@ -61,7 +61,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 		</plugins>
 	</build>
 </project>

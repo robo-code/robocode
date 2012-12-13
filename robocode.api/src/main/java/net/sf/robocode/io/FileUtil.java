@@ -18,9 +18,9 @@
 package net.sf.robocode.io;
 
 
-import static net.sf.robocode.io.Logger.logError;
-
 import java.io.*;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -31,6 +31,8 @@ import java.io.*;
  */
 public class FileUtil {
 
+	private static final Logger logger = Logger.getLogger(FileUtil.class);
+
 	// Current working directory
 	private static File cwd;
 
@@ -38,10 +40,9 @@ public class FileUtil {
 	static {
 		try {
 			final String wd = System.getProperty("WORKINGDIRECTORY", "");
-
 			FileUtil.setCwd(new File(wd));
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -158,17 +159,17 @@ public class FileUtil {
 						if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
 							deleteDir(file);
 							if (file.exists() && !file.delete()) {
-								Logger.logError("Cannot delete: " + file);
+								logger.error("Cannot delete: " + file);
 							}
 						} else {
-							Logger.logWarning(file + " may be a symlink. Ignoring.");
+							logger.warn("The file " + file + " may be a symlink. Ignoring.");
 						}
 					} catch (IOException e) {
-						Logger.logWarning("Cannot determine canonical file for " + file + ". Ignoring.");
+						logger.warn("Cannot determine canonical file for " + file + ". Ignoring.");
 					}
 				} else {
 					if (file.exists() && !file.delete()) {
-						Logger.logError("Cannot delete: " + file);
+						logger.error("Cannot delete: " + file);
 					}
 				}
 			}
@@ -186,7 +187,7 @@ public class FileUtil {
 	public static File createDir(File dir) {
 		if (dir != null && !dir.exists()) {
 			if (!dir.mkdir()) {
-				Logger.logError("Cannot create dir: " + dir);
+				logger.error("Cannot create dir: " + dir);
 			}
 		}
 		return dir;
@@ -314,14 +315,14 @@ public class FileUtil {
 			try {
 				((Flushable) stream).flush();
 			} catch (IOException e) {
-				logError(e);
+				logger.error(e.getLocalizedMessage(), e);
 			}
 		}
 		if (stream instanceof Closeable) {
 			try {
 				((Closeable) stream).close();
 			} catch (IOException e) {
-				logError(e);
+				logger.error(e.getLocalizedMessage(), e);
 			}
 		}
 	}

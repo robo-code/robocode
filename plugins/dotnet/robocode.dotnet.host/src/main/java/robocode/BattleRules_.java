@@ -20,6 +20,7 @@ public final class BattleRules_ {
 		return robocode.BattleRules_.staticType;
 	}
     
+    @SuppressWarnings("unused") // Used for initializing jni4net
 	private static void InitJNI(net.sf.jni4net.inj.INJEnv env, system.Type staticType) {
 		robocode.BattleRules_.staticType = staticType;
 	}

@@ -15,7 +15,6 @@ package net.sf.robocode.host;
 import net.sf.robocode.host.proxies.*;
 import net.sf.robocode.host.security.*;
 import net.sf.robocode.host.jarjar.JarJarURLConnection;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.repository.RobotType;
@@ -45,8 +44,8 @@ public class HostManager implements IHostManager {
 	}
 
 	private static void initStreams() {
-		PrintStream sysout = new SecurePrintStream(Logger.realOut, true);
-		PrintStream syserr = new SecurePrintStream(Logger.realErr, true);
+		PrintStream sysout = new SecurePrintStream(System.out, true);
+		PrintStream syserr = new SecurePrintStream(System.err, true);
 		InputStream sysin = new SecureInputStream(System.in);
 
 		System.setOut(sysout);

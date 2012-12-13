@@ -13,7 +13,6 @@ package net.sf.robocode.serialization;
 
 
 import net.sf.robocode.core.ContainerBase;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.Event;
@@ -26,6 +25,8 @@ import java.nio.CharBuffer;
 import java.nio.charset.*;
 import java.util.Dictionary;
 import java.util.Hashtable;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -76,6 +77,8 @@ public final class RbSerializer {
 	public final static byte MouseReleasedEvent_TYPE = 53;
 	public final static byte MouseWheelMovedEvent_TYPE = 54;
 	public final static byte RoundEndedEvent_TYPE = 55;
+
+	private static final Logger logger = Logger.getLogger(RbSerializer.class);
 
 	private final static ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
 	private static Dictionary<Class<?>, Byte> classToType = new Hashtable<Class<?>, Byte>();
@@ -503,11 +506,11 @@ public final class RbSerializer {
 				classToType.put(realClass, type);
 			}
 		} catch (NoSuchMethodException e) {
-			Logger.logError(e);
+			logger.error(e.getLocalizedMessage(), e);
 		} catch (InvocationTargetException e) {
-			Logger.logError(e);
+			logger.error(e.getLocalizedMessage(), e);
 		} catch (IllegalAccessException e) {
-			Logger.logError(e);
+			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -536,7 +539,7 @@ public final class RbSerializer {
 
 			return rbs.deserialize(in);
 		} catch (IOException e) {
-			Logger.logError(e);
+			logger.error(e.getLocalizedMessage(), e);
 			return null;
 		}
 	}

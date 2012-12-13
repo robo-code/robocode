@@ -12,7 +12,6 @@
 package net.sf.robocode.repository.root;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.Database;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
@@ -24,6 +23,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Represents a class path root
@@ -31,6 +32,8 @@ import java.util.ArrayList;
  */
 public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
+
+	private static final Logger logger = Logger.getLogger(ClassPathRoot.class);
 
 	private final File projectPath;
 
@@ -69,7 +72,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 							modified.add(pathname.lastModified());
 						}
 					} catch (MalformedURLException e) {
-						Logger.logError(e);
+						logger.error(e.getLocalizedMessage(), e);
 						return false;
 					}
 				}

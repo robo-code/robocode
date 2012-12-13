@@ -10,6 +10,7 @@
     <project>robocode.dotnet.host</project>
     <project>robocode.dotnet.nhost</project>
     <project>robocode.dotnet.samples</project>
+    <project>robocode.dotnet.robotscs</project>
   </projects>
   <buildSpec>
     <buildCommand>

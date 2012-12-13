@@ -13,14 +13,13 @@ package net.sf.robocode.battle;
 
 
 import net.sf.robocode.battle.events.BattleEventDispatcher;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
-import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.settings.ISettingsManager;
 import robocode.BattleRules;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
+
+import org.apache.log4j.Logger;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -32,6 +31,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class BaseBattle implements IBattle, Runnable {
 
+	private static final Logger logger = Logger.getLogger(BaseBattle.class);
+	
 	// Maximum turns to display the battle when battle ended
 	private final static int TURNS_DISPLAYED_AFTER_ENDING = 30;
 	private final static int MAX_TPS = 10000;
@@ -207,19 +208,13 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 			while (!isAborted && roundNum < getNumRounds()) {
 				try {
-
 					preloadRound();
-
 					initializeRound();
-
 					runRound();
-
 					finalizeRound();
-
 					cleanupRound();
-
 				} catch (Exception e) {
-					logError("Exception running a battle round", e);
+					logger.error(e.getLocalizedMessage(), e);
 					isAborted = true;
 				}
 
@@ -230,7 +225,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 			cleanup();
 		} catch (Throwable e) {
-			logError("Exception running a battle: ", e);
+			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -255,13 +250,11 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	protected void preloadRound() {
-		logMessage("----------------------");
-		Logger.logMessage("Round " + (roundNum + 1) + " initializing..", false);
+		logger.info("Round " + (roundNum + 1) + " preloading...");
 	}
 
 	protected void initializeRound() {
-		logMessage("");
-		logMessage("Let the games begin!");
+		logger.info("Round " + (roundNum + 1) + " initializing...");
 
 		roundOver = false;
 		endTimer = 0;
@@ -292,10 +285,12 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		return (endTimer > 5 * TURNS_DISPLAYED_AFTER_ENDING);
 	}
 
-	protected void finalizeRound() {}
+	protected void finalizeRound() {
+		logger.info("Round " + (roundNum + 1) + " finalizing...");		
+	}
 
 	protected void cleanupRound() {
-		logMessage("Round " + (roundNum + 1) + " cleaning up.");
+		logger.info("Round " + (roundNum + 1) + " cleanup...");
 	}
 
 	protected void initializeTurn() {
@@ -388,15 +383,13 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 	private void processCommand() {
-		Command command = pendingCommands.poll();
-
-		while (command != null) {
+		Command command;
+		while ((command = pendingCommands.poll()) != null) {
 			try {
 				command.execute();
 			} catch (Exception e) {
-				logError(e);
+				logger.error(e.getLocalizedMessage(), e);
 			}
-			command = pendingCommands.poll();
 		}
 	}
 
@@ -499,10 +492,10 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 		battleThread.getThreadGroup().enumerate(systemThreads, false);
 
-		logMessage("Threads: ------------------------");
+		System.out.println("Threads: ------------------------");
 		for (Thread thread : systemThreads) {
 			if (thread != null) {
-				logError(thread.getName());
+				System.out.println(thread.getName());
 			}
 		}
 	}

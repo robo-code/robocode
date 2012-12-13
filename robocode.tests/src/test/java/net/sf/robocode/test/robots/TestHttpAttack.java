@@ -15,6 +15,7 @@ package net.sf.robocode.test.robots;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Assert;
 import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.IRobotSnapshot;
 
 
 /**
@@ -33,8 +34,13 @@ public class TestHttpAttack extends RobocodeTestBed {
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
 
-		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
-
+		String out = "";
+		for (IRobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
+			if (robot.getName().equals("tested.robots.HttpAttack")) {
+				out = robot.getOutputStreamSnapshot();
+				break;
+			}
+		}
 		if (out.contains("access denied (java.net.SocketPermission")) {
 			messagedAccessDenied = true;	
 		}	

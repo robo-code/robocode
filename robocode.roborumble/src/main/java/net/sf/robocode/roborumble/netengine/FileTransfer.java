@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2012 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2012 Albert PÃ©rez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  *
  * Contributors:
- *     Albert Pérez
+ *     Albert PÃ©rez
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Completely rewritten to be fully multi-threaded so that download is not
@@ -24,6 +24,8 @@ import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
 
+import org.apache.log4j.Logger;
+
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 
@@ -34,6 +36,8 @@ import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
  */
 public class FileTransfer {
 
+	private static final Logger logger = Logger.getLogger(FileTransfer.class);
+	
 	private final static int DEFAULT_CONNECTION_TIMEOUT = 10000; // 10 seconds
 	private final static int DEFAULT_READ_TIMEOUT = 10000; // 10 seconds
 	private final static int DEFAULT_SESSION_TIMEOUT = 10000; // 10 seconds
@@ -363,7 +367,7 @@ public class FileTransfer {
 					try {
 						in.close();
 					} catch (final IOException e) {
-						e.printStackTrace();
+						logger.error(e.getLocalizedMessage(), e);
 					}
 				}
 				// Make sure the output stream is closed
@@ -371,7 +375,7 @@ public class FileTransfer {
 					try {
 						out.close();
 					} catch (final IOException e) {
-						e.printStackTrace();
+						logger.error(e.getLocalizedMessage(), e);
 					}
 				}
 			}
@@ -497,14 +501,14 @@ public class FileTransfer {
 				try {
 					in.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.error(e.getLocalizedMessage(), e);
 				}
 			}
 			if (out != null) {
 				try {
 					out.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.error(e.getLocalizedMessage(), e);
 				}
 			}
 		}

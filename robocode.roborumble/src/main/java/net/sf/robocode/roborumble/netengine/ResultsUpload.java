@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2012 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2012 Albert PÃ©rez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  *
  * Contributors:
- *     Albert Pérez
+ *     Albert PÃ©rez
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5
@@ -30,15 +30,19 @@ import java.net.URLConnection;
 import java.util.Properties;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Class used for uploading results to a server.
  * Controlled by properties files.
  *
- * @author Albert Pérez (original)
+ * @author Albert PÃ©rez (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class ResultsUpload {
+	
+	private final static Logger logger = Logger.getLogger(ResultsUpload.class);
 
 	private final String client;
 	private final String resultsfile;
@@ -119,7 +123,7 @@ public class ResultsUpload {
 				}
 			}
 		} catch (IOException e) {
-			System.out.println("Can't open result file for upload");
+			logger.error("Can't open result file for upload", e);
 			return;
 		} finally {
 			if (br != null) {
@@ -135,8 +139,7 @@ public class ResultsUpload {
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(tempdir + "results.txt")), false);
 		} catch (IOException e) {
-			System.out.println("Not able to open output file ... Aborting");
-			System.out.println(e);
+			logger.error("Not able to open output file ... Aborting", e);
 			return;
 		}
 
@@ -146,8 +149,7 @@ public class ResultsUpload {
 		try {
 			battlesnum = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesnumfile)), false);
 		} catch (IOException e) {
-			System.out.println("Not able to open battles number file ... Aborting");
-			System.out.println(e);
+			logger.error("Not able to open battles number file ... Aborting", e);
 
 			outtxt.close();
 			return;
@@ -159,8 +161,7 @@ public class ResultsUpload {
 		try {
 			prioritybattles = new PrintStream(new BufferedOutputStream(new FileOutputStream(priority)), false);
 		} catch (IOException e) {
-			System.out.println("Not able to open priorities file ... Aborting");
-			System.out.println(e);
+			logger.error("Not able to open priorities file ... Aborting", e);
 
 			outtxt.close();
 			battlesnum.close();
@@ -223,15 +224,14 @@ public class ResultsUpload {
 		// delete results file
 		File r = new File(resultsfile);
 		boolean b = r.delete();
-
 		if (!b) {
-			System.out.println("Unable to delete results file.");
+			logger.error("Unable to delete results file");
 		}
 
 		// copy temp file into results file if there was some error
 		if (errorsfound) {
 			if (!FileTransfer.copy(tempdir + "results.txt", resultsfile)) {
-				System.out.println("Error when copying results errors file.");
+				logger.error("Error when copying results errors file");
 			}
 		}
 	}
@@ -242,7 +242,7 @@ public class ResultsUpload {
 			outtxt.println(bot1);
 			outtxt.println(bot2);
 		}
-		System.out.println("Unable to upload results " + match + " " + bot1 + " " + bot2);
+		logger.error("Unable to upload results " + match + " " + bot1 + " " + bot2);
 	}
 
 	private boolean senddata(String game, String data, PrintStream outtxt, boolean saveonerror, Vector<String> results, int i, PrintStream battlesnum, PrintStream prioritybattles) {
@@ -276,9 +276,8 @@ public class ResultsUpload {
 			while ((line = bufferedReader.readLine()) != null) {
 				if (line.indexOf("OK") != -1) {
 					ok = true;
-					System.out.println(line);
+					logger.info(line);
 				} else if (line.indexOf("<") != -1 && line.indexOf(">") != -1) {
-					// System.out.println(line);
 					// Save the number of battles for the bots into battlesnum !!!!!!!!!!!!!
 					String bot1 = results.get(i * 3 + 1);
 
@@ -308,7 +307,7 @@ public class ResultsUpload {
 						prioritybattles.println(battle);
 					}
 				} else {
-					System.out.println(line);
+					logger.info(line);
 				}
 			}
 			if (!ok) {
@@ -318,7 +317,8 @@ public class ResultsUpload {
 				}
 			}
 		} catch (IOException e) {
-			System.out.println(e);
+			logger.error(e.getLocalizedMessage(), e);
+
 			if (saveonerror) {
 				errorsfound = true;
 			}

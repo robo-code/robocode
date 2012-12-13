@@ -12,7 +12,6 @@
 package net.sf.robocode.repository.root;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.Database;
 
 import java.io.File;
@@ -20,12 +19,16 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
+
+	private static final Logger logger = Logger.getLogger(BaseRoot.class);
 
 	protected transient Database db;
 	protected final File rootPath;
@@ -41,7 +44,7 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 			url = rootPath.toURI().toURL();
 		} catch (MalformedURLException e) {
 			url = null;
-			Logger.logError(e);
+			logger.error(e.getLocalizedMessage(), e);
 		}
 		this.rootURL = url;
 	}

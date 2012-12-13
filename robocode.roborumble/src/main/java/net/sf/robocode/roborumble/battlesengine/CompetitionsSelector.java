@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2012 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2012 Albert PÃ©rez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  *
  * Contributors:
- *     Albert Pérez
+ *     Albert PÃ©rez
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Removed unused imports
@@ -33,7 +33,7 @@ import java.util.Properties;
  * another file.
  * Controlled by properties files.
  *
- * @author Albert Pérez (original)
+ * @author Albert PÃ©rez (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class CompetitionsSelector {

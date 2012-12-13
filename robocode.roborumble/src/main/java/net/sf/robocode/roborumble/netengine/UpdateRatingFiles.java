@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2012 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003, 2012 Albert PÃ©rez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  *
  * Contributors:
- *     Albert Pérez
+ *     Albert PÃ©rez
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5
@@ -30,16 +30,20 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Class used for updating the local rating files.
  * Controlled by properties files.
  *
- * @author Albert Pérez (original)
+ * @author Albert PÃ©rez (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class UpdateRatingFiles {
 
+	private static final Logger logger = Logger.getLogger(UpdateRatingFiles.class);
+	
 	private String game;
 	private final String minibots;
 	private final String microbots;
@@ -87,7 +91,7 @@ public class UpdateRatingFiles {
 				battles.add(record);
 			}
 		} catch (IOException e) {
-			System.out.println("Can't open # battles file ... Aborting # battles update");
+			logger.error("Can't open # battles file ... Aborting # battles update", e);
 			return false;
 		} finally {
 			if (br != null) {

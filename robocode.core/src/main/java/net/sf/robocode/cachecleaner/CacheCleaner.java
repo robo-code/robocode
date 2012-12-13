@@ -17,11 +17,12 @@ package net.sf.robocode.cachecleaner;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
 
 import java.io.File;
 import java.io.IOException;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -32,6 +33,9 @@ import java.io.IOException;
  * @author Flemming N. Larsen (minor optimizations)
  */
 public final class CacheCleaner {
+
+	private static final Logger logger = Logger.getLogger(CacheCleaner.class);
+	
 	private CacheCleaner() {}
 
 	public static void main(String[] args) {
@@ -51,15 +55,15 @@ public final class CacheCleaner {
 
 		repositoryManager.reload(true);
 
-		Logger.logMessage("Cleaning done.");
+		logger.info("Cleaning done.");
 	}
 
 	private static void deleteFile(String filename) {
-		Logger.logMessage("Deleting " + filename + "...");
+		logger.info("Deleting " + filename + "...");
 		try {
 			recursivelyDelete(new File(filename));
-		} catch (IOException ex) {
-			Logger.logError(ex.getMessage());
+		} catch (IOException e) {
+			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
 

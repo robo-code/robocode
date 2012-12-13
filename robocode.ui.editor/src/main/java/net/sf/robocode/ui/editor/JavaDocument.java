@@ -29,6 +29,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 
+import org.apache.log4j.Logger;
+
 
 // FIXME: Column in status bar does not take tab size into account
 
@@ -46,6 +48,8 @@ import javax.swing.text.*;
 @SuppressWarnings("serial")
 public class JavaDocument extends StyledDocument {
 
+	private static Logger logger = Logger.getLogger(JavaDocument.class);
+	
 	/** The text pane this document is used with necessary for setting the caret position when auto indenting */
 	private final EditorPane textPane;
 
@@ -577,7 +581,7 @@ public class JavaDocument extends StyledDocument {
 				try {
 					performSyntaxHighlighting();
 				} catch (BadLocationException e) {
-					e.printStackTrace();
+					logger.error(e.getLocalizedMessage(), e);
 				}
 			}
 		});

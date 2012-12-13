@@ -12,7 +12,6 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,7 +39,7 @@ public class TestFileWrite extends RobocodeTestBed {
 	protected void runSetup() {
 		if (file.exists()) {
 			if (!file.delete()) {
-				Logger.logError("Can't delete" + file);
+				System.err.println("Can't delete: " + file);
 			}
 		}
 	}
@@ -49,7 +48,7 @@ public class TestFileWrite extends RobocodeTestBed {
 	protected void runTeardown() {
 		Assert.assertTrue(file.exists());
 		if (!file.delete()) {
-			Logger.logError("Can't delete" + file);
+			System.err.println("Can't delete: " + file);
 		}
 	}
 }

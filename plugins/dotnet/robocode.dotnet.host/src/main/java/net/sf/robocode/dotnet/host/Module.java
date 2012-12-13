@@ -15,21 +15,23 @@ package net.sf.robocode.dotnet.host;
 import net.sf.robocode.core.*;
 import net.sf.robocode.dotnet.repository.items.handlers.DotnetPropertiesHandler;
 import net.sf.robocode.dotnet.repository.root.handlers.DllHandler;
-import net.sf.robocode.manager.IVersionManagerBase;
-import net.sf.robocode.io.Logger;
 import net.sf.jni4net.Bridge;
 
 import java.io.File;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 
 /**
  * @author Pavel Savara (original)
  */
 public class Module extends BaseModule {
+
+	private static final Logger logger = Logger.getLogger(Module.class);
+
 	static {
 		// .NET proxies and their interfaces must be loaded in system class loader in order to call native methods
-
 		Init();
 	}
 
@@ -70,9 +72,9 @@ public class Module extends BaseModule {
 			Container.cache.addComponent("robocode.host.vb", DotnetHost.class);
 			Container.cache.addComponent("robocode.host.dotnet", DotnetHost.class);
 
-		} catch (Throwable e) {
-			Logger.logError(e);
-			throw new Error("Can't initialize .NET Robocode", e);
+		} catch (Throwable t) {
+			logger.error(t.getLocalizedMessage(), t);
+			throw new Error("Can't initialize .NET Robocode", t);
 		}
 	}
 

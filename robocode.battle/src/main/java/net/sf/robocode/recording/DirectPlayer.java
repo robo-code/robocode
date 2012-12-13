@@ -16,7 +16,6 @@ package net.sf.robocode.recording;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.serialization.XmlReader;
@@ -28,13 +27,15 @@ import robocode.control.snapshot.ITurnSnapshot;
 import java.io.*;
 import java.util.zip.ZipInputStream;
 
-import static net.sf.robocode.io.Logger.logError;
+import org.apache.log4j.Logger;
 
 
 /**
  * Utility class for replaying records without intermediate temp file and complexity
  */
 public class DirectPlayer {
+
+	private static final Logger logger = Logger.getLogger(DirectPlayer.class);
 
 	public void playRecord(String recordFilename, BattleRecordFormat format, BattleEventDispatcher eventDispatcher) {
 		BattleRecordInfo recordInfo;
@@ -78,7 +79,7 @@ public class DirectPlayer {
 								}
 								eventDispatcher.onTurnEnded(new TurnEndedEvent(turn));
 							} catch (ClassNotFoundException e) {
-								logError(e);
+								logger.error(e.getLocalizedMessage(), e);
 							}
 						}
 						totalTurns += recordInfo.turnsInRounds[i];
@@ -96,13 +97,13 @@ public class DirectPlayer {
 				recordInfo = root.recordInfo;
 			}
 		} catch (IOException e) {
-			logError(e);
+			logger.error(e.getLocalizedMessage(), e);
 			recordInfo = null;
 		} catch (ClassNotFoundException e) {
 			if (e.getMessage().contains("robocode.recording.BattleRecordInfo")) {
-				Logger.logError("Sorry, backward compatibility with record from version 1.6 is not provided.");
+				logger.error("Sorry, backward compatibility with record from version 1.6 is not provided.");
 			} else {
-				logError(e);
+				logger.error(e.getLocalizedMessage(), e);
 			}
 			recordInfo = null;
 		} finally {

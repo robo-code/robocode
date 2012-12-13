@@ -18,12 +18,14 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
+
+import org.apache.log4j.Logger;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,6 +43,8 @@ import java.net.URL;
  */
 @SuppressWarnings("serial")
 public class TeamCreator extends JDialog implements WizardListener {
+
+	private static final Logger logger = Logger.getLogger(TeamCreator.class);
 
 	private JPanel teamCreatorContentPane;
 
@@ -161,7 +165,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 		}
 		if (!f.getParentFile().exists()) {
 			if (!f.getParentFile().mkdirs()) {
-				Logger.logError("Can't create " + f.getParentFile().toString());
+				logger.error("Can't create: " + f.getParentFile());
 			}
 		}
 

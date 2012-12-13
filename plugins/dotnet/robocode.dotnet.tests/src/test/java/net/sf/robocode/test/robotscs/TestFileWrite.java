@@ -12,11 +12,9 @@
 package net.sf.robocode.test.robotscs;
 
 
-import net.sf.robocode.core.Container;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import net.sf.robocode.version.IVersionManager;
-import net.sf.robocode.version.VersionManager;
+
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,6 +26,8 @@ import java.io.File;
  */
 public class TestFileWrite extends RobocodeTestBed {
 
+	private static final Logger logger = Logger.getLogger(TestFileWrite.class);
+	
 	@Test
 	public void run() {
 		super.run();
@@ -43,7 +43,7 @@ public class TestFileWrite extends RobocodeTestBed {
 		file = new File("../../../robocode.tests.robots/target/classes/.data/SampleCs/count.dat");
 		if (file.exists()) {
 			if (!file.delete()) {
-				Logger.logError("Can't delete" + file);
+				logger.error("Can't delete: " + file);
 			}
 		}
 	}
@@ -52,7 +52,7 @@ public class TestFileWrite extends RobocodeTestBed {
 	protected void runTeardown() {
 		Assert.assertTrue(file.exists());
 		if (!file.delete()) {
-			Logger.logError("Can't delete" + file);
+			logger.error("Can't delete: " + file);
 		}
 	}
 }

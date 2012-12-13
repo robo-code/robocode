@@ -18,7 +18,6 @@ package net.sf.robocode.ui.editor;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
 
 import javax.swing.*;
@@ -28,6 +27,8 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.Document;
+
+import org.apache.log4j.Logger;
 
 import java.awt.Font;
 import java.io.BufferedWriter;
@@ -45,6 +46,8 @@ import java.util.StringTokenizer;
  */
 @SuppressWarnings("serial")
 public class EditWindow extends JInternalFrame {
+
+	private static final Logger logger = Logger.getLogger(EditWindow.class);
 
 	private String fileName;
 	private String robotName;
@@ -135,8 +138,8 @@ public class EditWindow extends JInternalFrame {
 					setModified(true);					
 				}
 			});
-		} catch (Throwable e) {
-			Logger.logError(e);
+		} catch (Throwable t) {
+			logger.error(t.getLocalizedMessage(), t);
 		}
 	}
 
@@ -255,7 +258,7 @@ public class EditWindow extends JInternalFrame {
 					}
 				}
 			} catch (IOException e) {
-				Logger.logError("Unable to check reasonable filename: ", e);
+				logger.error("Unable to check reasonable filename: " + reasonableFilename, e);
 			}
 		}
 
@@ -336,7 +339,7 @@ public class EditWindow extends JInternalFrame {
 
 			if (ok == JOptionPane.YES_OPTION) {
 				if (!f.exists() && !f.mkdirs()) {
-					Logger.logError("Cannot create: " + f);
+					logger.error("Cannot create: " + f);
 				}
 				f = new File(saveDir);
 			}

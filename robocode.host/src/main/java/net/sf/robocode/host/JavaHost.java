@@ -17,8 +17,6 @@ import net.sf.robocode.host.proxies.*;
 import net.sf.robocode.peer.IRobotStatics;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.repository.RobotType;
-import static net.sf.robocode.io.Logger.logError;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.Droid;
@@ -33,11 +31,16 @@ import java.awt.*;
 import java.security.AccessControlException;
 import java.lang.reflect.Method;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class JavaHost implements IHost {
+	
+	private static final Logger logger = Logger.getLogger(JavaHost.class);
+
 	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
 		return new RobotClassLoader(robotRepositoryItem.getClassPathURL(), robotRepositoryItem.getFullClassName());
 	}
@@ -70,7 +73,7 @@ public class JavaHost implements IHost {
 			return loader.getReferencedClasses();
 
 		} catch (ClassNotFoundException e) {
-			Logger.logError(e);
+			logger.error(e.getLocalizedMessage(), e);
 			return new String[0];
 		} finally {
 			if (loader != null) {
@@ -94,9 +97,9 @@ public class JavaHost implements IHost {
 
 		} catch (Throwable t) {
 			if (message) {
-				logError("Got an error with " + robotRepositoryItem.getFullClassName() + ": " + t); // just message here
+				logger.error("Got an error with " + robotRepositoryItem.getFullClassName() + ": " + t); // just message here
 				if (t.getMessage() != null && t.getMessage().contains("Bad version number in .class file")) {
-					logError("Maybe you run robocode with Java 1.5 and robot was compiled for later Java version ?");
+					logger.error("Maybe you run robocode on Java 6, but the robot is compiled for later Java version?");
 				}
 			}
 			return RobotType.INVALID;

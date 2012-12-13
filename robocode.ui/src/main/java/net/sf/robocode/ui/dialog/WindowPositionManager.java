@@ -19,7 +19,6 @@ package net.sf.robocode.ui.dialog;
 
 
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 
 import java.awt.*;
 import java.awt.event.ComponentEvent;
@@ -31,12 +30,16 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class WindowPositionManager implements ComponentListener {
+
+	private static final Logger logger = Logger.getLogger(WindowPositionManager.class);
 
 	private Properties windowPositions;
 
@@ -54,9 +57,9 @@ public class WindowPositionManager implements ComponentListener {
 				in = new FileInputStream(FileUtil.getWindowConfigFile());
 				windowPositions.load(in);
 			} catch (FileNotFoundException e) {
-				Logger.logMessage("Creating " + FileUtil.getWindowConfigFile().getName() + " file");
+				logger.info("Creating file: " + FileUtil.getWindowConfigFile().getName());
 			} catch (Exception e) {
-				Logger.logError(e);
+				logger.error(e.getLocalizedMessage(), e);
 			} finally {
 				if (in != null) {
 					try {
@@ -122,7 +125,7 @@ public class WindowPositionManager implements ComponentListener {
 
 			getWindowPositions().store(out, "Robocode window sizes");
 		} catch (IOException e) {
-			Logger.logWarning("Unable to save window positions: " + e);
+			logger.warn("Unable to save window positions", e);
 		} finally {
 			if (out != null) {
 				try {

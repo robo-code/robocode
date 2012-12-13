@@ -58,10 +58,8 @@ import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
+import net.sf.robocode.io.BattleListenerLogAppender;
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.recording.BattlePlayer;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
@@ -77,6 +75,8 @@ import robocode.control.events.IBattleListener;
 import java.io.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -87,6 +87,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Pavel Savara (contributor)
  */
 public class BattleManager implements IBattleManager {
+
+	private static final Logger logger = Logger.getLogger(BattleManager.class);
+
 	private final ISettingsManager properties;
 	private final IHostManager hostManager;
 	private final ICpuManager cpuManager;
@@ -111,7 +114,7 @@ public class BattleManager implements IBattleManager {
 		this.cpuManager = cpuManager;
 		this.hostManager = hostManager;
 		this.battleEventDispatcher = battleEventDispatcher;
-		Logger.setLogListener(battleEventDispatcher);
+		BattleListenerLogAppender.setLogListener(battleEventDispatcher);
 	}
 
 	public synchronized void cleanup() {
@@ -149,8 +152,6 @@ public class BattleManager implements IBattleManager {
 
 	private void startNewBattleImpl(RobotSpecification[] battlingRobotsList, boolean waitTillOver, boolean enableCLIRecording) {
 		stop(true);
-
-		logMessage("Preparing battle...");
 
 		final boolean recording = (properties.getOptionsCommonEnableReplayRecording()
 				&& System.getProperty("TESTING", "none").equals("none"))
@@ -210,13 +211,13 @@ public class BattleManager implements IBattleManager {
 		if (!recordManager.hasRecord()) {
 			return;
 		}
-		logMessage("Preparing replay...");
+		logger.info("Preparing replay...");
 
 		if (battle != null && battle.isRunning()) {
 			battle.stop(true);
 		}
 
-		Logger.setLogListener(battleEventDispatcher);
+		BattleListenerLogAppender.setLogListener(battleEventDispatcher);
 
 		recordManager.detachRecorder();
 		battle = Container.createComponent(BattlePlayer.class);
@@ -262,11 +263,11 @@ public class BattleManager implements IBattleManager {
 
 	public void saveBattleProperties() {
 		if (battleProperties == null) {
-			logError("Cannot save null battle properties");
+			logger.error("Cannot save 'null' battle properties");
 			return;
 		}
 		if (battleFilename == null) {
-			logError("Cannot save battle to null path, use setBattleFilename()");
+			logger.error("Cannot save battle to 'null' path, use setBattleFilename()");
 			return;
 		}
 		FileOutputStream out = null;
@@ -276,7 +277,7 @@ public class BattleManager implements IBattleManager {
 
 			battleProperties.store(out, "Battle Properties");
 		} catch (IOException e) {
-			logError("IO Exception saving battle properties: " + e);
+			logger.error("IO Exception when saving battle properties", e);
 		} finally {
 			FileUtil.cleanupStream(out);
 		}
@@ -285,14 +286,13 @@ public class BattleManager implements IBattleManager {
 	public BattleProperties loadBattleProperties() {
 		BattleProperties res = new BattleProperties();
 		FileInputStream in = null;
-
 		try {
 			in = new FileInputStream(getBattleFilename());
 			res.load(in);
 		} catch (FileNotFoundException e) {
-			logError("No file " + battleFilename + " found, using defaults.");
+			logger.warn("No file " + battleFilename + " found, using defaults.");
 		} catch (IOException e) {
-			logError("Error while reading " + getBattleFilename() + ": " + e);
+			logger.error("Error while reading battle file: " + getBattleFilename(), e);
 		} finally {
 			FileUtil.cleanupStream(in);
 		}
@@ -388,7 +388,7 @@ public class BattleManager implements IBattleManager {
 	public synchronized void resumeBattle() {
 		if (--pauseCount < 0) {
 			pauseCount = 0;
-			logError("SYSTEM: pause game bug!");
+			logger.error("Pause/Resume game bug!");
 		} else if (pauseCount == 0) {
 			if (battle != null && battle.isRunning()) {
 				battle.resume();

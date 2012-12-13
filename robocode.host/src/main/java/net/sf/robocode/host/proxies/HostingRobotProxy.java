@@ -17,8 +17,6 @@ import net.sf.robocode.host.io.RobotFileSystemManager;
 import net.sf.robocode.host.io.RobotOutputStream;
 import net.sf.robocode.host.security.RobotThreadManager;
 import net.sf.robocode.host.*;
-import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.BadBehavior;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.IRobotPeer;
@@ -36,6 +34,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 
 // XXX Remember to update the .NET version whenever a change is made to this class!
 
@@ -43,6 +43,8 @@ import java.util.Set;
  * @author Pavel Savara (original)
  */
 public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
+
+	private static final Logger logger = Logger.getLogger(HostingRobotProxy.class);
 
 	private final IRobotRepositoryItem robotSpecification;
 
@@ -54,7 +56,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	protected IBasicRobot robot;
 	protected final IRobotPeer peer;
-	protected IRobotClassLoader robotClassLoader;
+	protected IRobotClassLoader RobotClassLoader;
 
 	protected final RobotStatics statics;
 	protected RobotOutputStream out;
@@ -67,8 +69,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		this.hostManager = hostManager;
 		this.robotSpecification = robotSpecification;
 
-		robotClassLoader = getHost(robotSpecification).createLoader(robotSpecification);
-		robotClassLoader.setRobotProxy(this);
+		RobotClassLoader = getHost(robotSpecification).createLoader(robotSpecification);
+		RobotClassLoader.setRobotProxy(this);
 
 		out = new RobotOutputStream();
 		robotThreadManager = new RobotThreadManager(this);
@@ -102,9 +104,9 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		robotThreadManager = null;
 
 		// Cleanup and remove class manager
-		if (robotClassLoader != null) {
-			robotClassLoader.cleanup();
-			robotClassLoader = null;
+		if (RobotClassLoader != null) {
+			RobotClassLoader.cleanup();
+			RobotClassLoader = null;
 		}
 	}
 
@@ -128,8 +130,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		return robotFileSystemManager;
 	}
 	
-	public ClassLoader getRobotClassloader() {
-		return (ClassLoader) robotClassLoader;
+	public ClassLoader getRobotClassLoader() {
+		return (ClassLoader) RobotClassLoader;
 	}
 
 	// -----------
@@ -160,8 +162,9 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	private void loadClassBattle() {
 		try {
-			robotClassLoader.loadRobotMainClass(true);
+			RobotClassLoader.loadRobotMainClass(true);
 		} catch (Throwable e) {
+			// Print to robot console -> System.out is redirected
 			println("SYSTEM: Could not load " + statics.getName() + " : ");
 			println(e);
 			drainEnergy();
@@ -172,8 +175,9 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		robot = null;
 		try {
 			threadManager.setLoadingRobot(this);
-			robot = robotClassLoader.createRobotInstance();
+			robot = RobotClassLoader.createRobotInstance();
 			if (robot == null) {
+				// Print to robot console -> System.out is redirected
 				println("SYSTEM: Skipping robot: " + statics.getName());
 				return false;
 			}
@@ -181,18 +185,23 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			robot.setPeer((IBasicRobotPeer) this);
 			eventManager.setRobot(robot);
 		} catch (IllegalAccessException e) {
+			// Print to robot console -> System.out is redirected
 			println("SYSTEM: Unable to instantiate this robot: " + e);
 			println("SYSTEM: Is your constructor marked public?");
 			println(e);
+
 			robot = null;
-			logError(e);
+			logger.error(e); // Don't change this as tests might fail!
+
 			return false;
-		} catch (Throwable e) {
+		} catch (Throwable t) {
+			// Print to robot console -> System.out is redirected
 			println("SYSTEM: An error occurred during initialization of " + statics.getName());
-			println("SYSTEM: " + e);
-			println(e);
+			println("SYSTEM: " + t);
+			println(t);
+
 			robot = null;
-			logError(e);
+			logger.error(t); // Don't change this as tests might fail!
 			return false;
 		} finally {
 			threadManager.setLoadingRobot(null);
@@ -230,6 +239,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			} catch (WinException e) {// Do nothing
 			} catch (AbortedException e) {// Do nothing
 			} catch (DeathException e) {
+				// Print to robot console -> System.out is redirected
 				println("SYSTEM: " + statics.getName() + " has died");
 			} catch (DisabledException e) {
 				drainEnergy();
@@ -240,19 +250,20 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 				} else {
 					msg = ": " + msg;
 				}
+				// Print to robot console -> System.out is redirected
 				println("SYSTEM: Robot disabled: " + msg);
-				logMessage("Robot disabled: " + statics.getName());
+				logger.info("Robot disabled: " + statics.getName());
 			} catch (Exception e) {
 				drainEnergy();
 				println(e);
-				logMessage(statics.getName() + ": Exception: " + e); // without stack here
+				logger.info(statics.getName() + ": Exception: " + e); // without stack here
 			} catch (Throwable t) {
 				drainEnergy();
 				if (t instanceof ThreadDeath) {
-					logMessage(statics.getName() + " stopped successfully.");
+					logger.info(statics.getName() + " had been stopped successfully.");
 				} else {
 					println(t);
-					logMessage(statics.getName() + ": Throwable: " + t); // without stack here
+					logger.info(statics.getName() + ": Throwable: " + t); // without stack here
 				}
 			} finally {
 				waitForBattleEndImpl();
@@ -296,7 +307,9 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			}
 			if (!securityViolations.contains(key)) {
 				securityViolations.add(key);
-				logError(message);
+
+				logger.error(message);
+				// Print to robot console -> System.out is redirected
 				println("SYSTEM: " + message);
 
 				if (securityViolations.size() == 1) {

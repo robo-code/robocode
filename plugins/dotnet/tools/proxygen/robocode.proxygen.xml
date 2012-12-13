@@ -21,7 +21,6 @@
 		<MethodModifier MethodName="values" Signature="()[Lnet/sf/robocode/peer/BadBehavior;" Skip="true"/>
 	</JavaClass>
 	<JavaClass TypeName="net.sf.robocode.peer.IRobotPeer"/>
-	<JavaClass TypeName="net.sf.robocode.io.Logger"/>
 	<JavaClass TypeName="net.sf.robocode.serialization.RbSerializer"/>
 	<JavaClass TypeName="net.sf.robocode.serialization.ISerializableHelper"/>
 	<JavaClass TypeName="net.sf.robocode.core.ContainerBase"/>

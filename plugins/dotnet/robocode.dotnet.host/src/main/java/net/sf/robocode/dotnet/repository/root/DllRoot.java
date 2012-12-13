@@ -24,7 +24,6 @@ import net.sf.robocode.repository.Database;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.ui.IWindowManager;
 
 import java.io.UnsupportedEncodingException;
@@ -35,6 +34,8 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.lang.String;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author Pavel Savara (original)
@@ -42,6 +43,8 @@ import java.lang.String;
 public class DllRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
+	private static final Logger logger = Logger.getLogger(DllRoot.class);
+	
 	private URL dllURL;
 	private String dllUrlNoSeparator;
 	private long lastModified;
@@ -52,13 +55,13 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 			dllUrlNoSeparator = rootPath.toURI().toString();
 			dllURL = new URL(dllUrlNoSeparator + "!/");
 		} catch (MalformedURLException e) {
-			Logger.logError(e);
+			logger.error(e.getLocalizedMessage(), e);
 		}
 
 		try {
 			dllUrlNoSeparator = URLDecoder.decode(dllUrlNoSeparator, "UTF8");
 		} catch (UnsupportedEncodingException e) {
-			Logger.logError(e);
+			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -100,7 +103,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 				items.add(item);
 			}
 		} catch (MalformedURLException e) {
-			Logger.logError(e);
+			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
 

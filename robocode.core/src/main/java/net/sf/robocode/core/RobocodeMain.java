@@ -34,7 +34,6 @@ import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
-import net.sf.robocode.io.Logger;
 import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
@@ -53,6 +52,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Robocode - A programming game involving battling AI tanks.<br>
@@ -64,6 +65,8 @@ import java.io.PrintStream;
  * @see <a target="_top" href="http://robocode.sourceforge.net">robocode.sourceforge.net</a>
  */
 public final class RobocodeMain extends RobocodeMainBase {
+
+	private static final Logger logger = Logger.getLogger(RobocodeMain.class);
 
 	private final Setup setup;
 	private final BattleObserver battleObserver = new BattleObserver();
@@ -155,7 +158,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			// Note: At this point the GUI should be opened (if enabled) before starting the battle from a battle file
 			if (setup.battleFilename != null) {
 				if (setup.replayFilename != null) {
-					System.err.println("You cannot run both a battle and replay a battle record in the same time.");
+					logger.fatal("You cannot run both a battle and replay a battle record in the same time.");
 					System.exit(8);
 				}
 
@@ -165,7 +168,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 				if (new File(battleManager.getBattleFilename()).exists()) {
 					battleManager.startNewBattle(battleManager.loadBattleProperties(), false, enableCLIRecording);
 				} else {
-					System.err.println("The specified battle file '" + setup.battleFilename + "' was not found");
+					logger.fatal("The specified battle file '" + setup.battleFilename + "' was not found");
 					System.exit(8);
 				}
 			} else if (setup.replayFilename != null) {
@@ -179,12 +182,12 @@ public final class RobocodeMain extends RobocodeMainBase {
 				if (new File(setup.replayFilename).exists()) {
 					battleManager.replay();
 				} else {
-					System.err.println("The specified battle record file '" + setup.replayFilename + "' was not found");
+					logger.fatal("The specified battle record file '" + setup.replayFilename + "' was not found");
 					System.exit(8);
 				}
 			}
-		} catch (Throwable e) {
-			Logger.logError(e);
+		} catch (Throwable t) {
+			logger.fatal(t.getLocalizedMessage(), t);
 		}
 	}
 
@@ -192,14 +195,15 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 		final String nosecMessage = "Robocode is running without a security manager.\n"
 				+ "Robots have full access to your system.\n" + "You should only run robots which you trust!";
+
 		final String exMessage = "Robocode is running in experimental mode.\n"
 				+ "Robots have access to their IRobotPeer interfaces.\n" + "You should only run robots which you trust!";
 
 		if (System.getProperty("NOSECURITY", "false").equals("true")) {
-			Logger.logMessage(nosecMessage);
+			logger.info(nosecMessage);
 		}
 		if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
-			Logger.logMessage(exMessage);
+			logger.info(exMessage);
 		}
 		if (windowManager != null) {
 			if (System.getProperty("NOSECURITY", "false").equals("true")) {
@@ -247,7 +251,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			} else if (args[i].equals("-tps") && (i < args.length + 1)) {
 				setup.tps = Integer.parseInt(args[i + 1]);
 				if (setup.tps < 1) {
-					Logger.logError("tps must be > 0");
+					logger.fatal("tps must be > 0");
 					System.exit(8);
 				}
 				i++;
@@ -269,7 +273,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 				printUsage();
 				System.exit(0);
 			} else {
-				Logger.logError("Not understood: " + args[i]);
+				logger.fatal("Not understood: " + args[i]);
 				printUsage();
 				System.exit(8);
 			}
@@ -277,10 +281,10 @@ public final class RobocodeMain extends RobocodeMainBase {
 		File robotsDir = FileUtil.getRobotsDir();
 
 		if (robotsDir == null) {
-			System.err.println("No valid robot directory is specified");
+			logger.fatal("No valid robot directory is specified");
 			System.exit(8);
 		} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
-			System.err.println('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
+			logger.fatal('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
 			System.exit(8);
 		}
 
@@ -296,7 +300,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 		try {
 			FileUtil.setCwd(new File(robocodeDir));
 		} catch (IOException e) {
-			System.err.println(robocodeDir + " is not a valid directory to start Robocode in.");
+			logger.fatal(robocodeDir + " is not a valid directory to start Robocode in.");
 			System.exit(8);
 		}
 	}
@@ -341,15 +345,14 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 		try {
 			if (setup.resultsFilename == null) {
-				out = Logger.realOut;
+				out = System.out;
 			} else {
 				File f = new File(setup.resultsFilename);
-	
 				try {
 					fos = new FileOutputStream(f);
 					out = new PrintStream(fos);
 				} catch (IOException e) {
-					Logger.logError(e);
+					logger.error(e.getLocalizedMessage(), e);
 				}
 			}
 			if (out != null) {
@@ -363,7 +366,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 			}
 		} finally {
 			FileUtil.cleanupStream(out);
-			FileUtil.cleanupStream(fos);			
+			FileUtil.cleanupStream(fos);
 		}
 	}
 	
@@ -387,16 +390,6 @@ public final class RobocodeMain extends RobocodeMainBase {
 			if (setup.recordXmlFilename != null) {
 				recordManager.saveRecord(setup.recordXmlFilename, BattleRecordFormat.XML, new SerializableOptions(false));
 			}
-		}
-
-		@Override
-		public void onBattleMessage(BattleMessageEvent event) {
-			Logger.realOut.println(event.getMessage());
-		}
-
-		@Override
-		public void onBattleError(BattleErrorEvent event) {
-			Logger.realErr.println(event.getError());
 		}
 	}
 

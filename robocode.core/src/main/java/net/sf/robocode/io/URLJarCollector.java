@@ -24,6 +24,8 @@ import java.util.jar.JarFile;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * This ugly class is helping with closing of robot .jar files when used with URL, URLConnection and useCaches=true
@@ -36,6 +38,9 @@ import java.io.IOException;
  * @author Flemming N. Larsen (contributor)
  */
 public class URLJarCollector {
+
+	private static final Logger logger = Logger.getLogger(URLJarCollector.class);
+	
 	static Object factory;
 	static HashMap<?, ?> fileCache;
 	static HashMap<?, ?> urlCache;
@@ -74,12 +79,12 @@ public class URLJarCollector {
 			jarFileURL.setAccessible(true);
 
 			localSunJVM = true;
-		} catch (ClassNotFoundException ignore) {
-			Logger.logError(ignore);
-		} catch (NoSuchFieldException ignore) {
-			Logger.logError(ignore);
-		} catch (IllegalAccessException ignore) {
-			Logger.logError(ignore);
+		} catch (ClassNotFoundException e) {
+			logger.error(e.getLocalizedMessage(), e);
+		} catch (NoSuchFieldException e) {
+			logger.error(e.getLocalizedMessage(), e);
+		} catch (IllegalAccessException e) {
+			logger.error(e.getLocalizedMessage(), e);
 		}
 		sunJVM = localSunJVM;
 	}
@@ -181,7 +186,7 @@ public class URLJarCollector {
 					try {
 						jarFile.close();
 					} catch (IOException e) {
-						Logger.logError(e);
+						logger.error(e.getLocalizedMessage(), e);
 					}
 				}
 			}
@@ -190,26 +195,26 @@ public class URLJarCollector {
 
 	public static void dumpSunFileCache() {
 		if (sunJVM) {
-			Logger.logMessage("Dumping fileCache...");
+			logger.info("Dumping fileCache...");
 			for (Object url : fileCache.keySet()) {
 				final JarFile jarFile = (JarFile) fileCache.get(url);
 
-				Logger.logMessage("fileCache dump: url=" + url + ", jarFile.getName()=" + jarFile.getName());
+				logger.info("fileCache dump: url=" + url + ", jarFile.getName()=" + jarFile.getName());
 			}
-			Logger.logMessage("fileCache size: " + fileCache.size());
+			logger.info("fileCache size: " + fileCache.size());
 		}
 	}
 
 	public static void dumpSunUrlCache() {
 		if (sunJVM) {
-			Logger.logMessage("Dumping urlCache...");
+			logger.info("Dumping urlCache...");
 			for (Object urlJarFile : urlCache.keySet()) {
 				final URL url = (URL) urlCache.get(urlJarFile);
 				final JarFile jarFile = (JarFile) urlJarFile;
 
-				Logger.logMessage("urlCache dump: url=" + url + ", jarFile.getName()=" + jarFile.getName());
+				logger.info("urlCache dump: url=" + url + ", jarFile.getName()=" + jarFile.getName());
 			}
-			Logger.logMessage("urlCache size: " + urlCache.size());
+			logger.info("urlCache size: " + urlCache.size());
 		}
 	}
 }
