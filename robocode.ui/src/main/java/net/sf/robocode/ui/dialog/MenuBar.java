@@ -676,7 +676,7 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem getHelpJavaDocumentationMenuItem() {
 		if (helpJavaDocumentationMenuItem == null) {
 			helpJavaDocumentationMenuItem = new JMenuItem();
-			helpJavaDocumentationMenuItem.setText("Java 5.0 documentation");
+			helpJavaDocumentationMenuItem.setText("Java 6 documentation");
 			helpJavaDocumentationMenuItem.setMnemonic('J');
 			helpJavaDocumentationMenuItem.addActionListener(eventHandler);
 		}

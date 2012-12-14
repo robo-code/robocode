@@ -265,7 +265,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showJavaDocumentation() {
-		showInBrowser("http://docs.oracle.com/javase/1.5.0/docs/");
+		showInBrowser("http://docs.oracle.com/javase/6/docs/api/");
 	}
 
 	public void showRobocodeHome() {

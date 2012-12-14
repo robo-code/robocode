@@ -59,7 +59,7 @@ supports the developer much better than the robot editor in Robocode.
 The fact that Robocode runs on the Java platform makes it possible to
 run it on any operating system with Java pre-installed, meaning that it
 will be able to run on Windows, Linux, Mac OS, but also UNIX and
-variants of UNIX. Note that Java 5.0 or newer must be installed on the
+variants of UNIX. Note that Java 6 or newer must be installed on the
 system before Robocode is able to run. See the [System
 Requirements](#system-requirements) for more information.
 
@@ -106,7 +106,7 @@ Savara.
 
 ### 3. SYSTEM REQUIREMENTS
 
-In order to run Robocode, Java 5.0 Standard Edition (SE) or a newer
+In order to run Robocode, Java 6 Standard Edition (SE) or a newer
 version of Java must be installed on your system. Both the Java Runtime
 Environment (JRE) and the Java Developer Kit (JDK) can be used. Note
 that the JRE does not include the standard Java compiler (javac), but

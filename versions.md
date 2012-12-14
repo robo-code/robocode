@@ -1,6 +1,7 @@
-## Version 1.8.0.0 Alpha (04-Dec-2012)
+## Version 1.8.0.0 Alpha (15-Dec-2012)
 
 ### Changes
+* Robocode has been updated to Java 6, and hence this will be the new minimum requirement for running Robocode from this version.
 * The icon for Robocode was upgraded to a 256x256 pixel resolution.
 
 ## Version 1.7.4.4 (21-Nov-2012)

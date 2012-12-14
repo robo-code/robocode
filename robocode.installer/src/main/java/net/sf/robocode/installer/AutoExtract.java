@@ -338,11 +338,11 @@ public class AutoExtract implements ActionListener {
 	}
 	
 	private static boolean install(File suggestedDir) {
-		// Verify that the Java version is version 5 (1.5.0) or newer
+		// Verify that the Java version is version 6 (1.6.0) or newer
 		if (javaVersion.startsWith("1.") && javaVersion.charAt(2) < '5') {
-			final String message = "Robocode requires Java 5.0 (1.5.0) or newer.\n"
+			final String message = "Robocode requires Java 6 (1.6.0) or newer.\n"
 					+ "Your system is currently running Java " + javaVersion + ".\n"
-					+ "If you have not installed (or activated) at least\n" + "JRE 5.0 or JDK 5.0, please do so.";
+					+ "If you have not installed (or activated) at least\n" + "JRE 6 or JDK 6, please do so.";
 
 			JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
 			System.err.println(message);
