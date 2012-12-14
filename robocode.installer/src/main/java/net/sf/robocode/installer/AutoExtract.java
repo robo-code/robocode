@@ -109,14 +109,14 @@ public class AutoExtract implements ActionListener {
 				try {
 					br.close();
 				} catch (IOException e) {
-					e.printStackTrace(System.err);
+					e.printStackTrace();
 				}
 			}
 			if (isr != null) {
 				try {
 					isr.close();
 				} catch (IOException e) {
-					e.printStackTrace(System.err);
+					e.printStackTrace();
 				}
 			}
 		}
@@ -302,7 +302,7 @@ public class AutoExtract implements ActionListener {
 				try {
 					jarIS.close();
 				} catch (IOException e) {
-					e.printStackTrace(System.err);
+					e.printStackTrace();
 				}
 			}
 		}
@@ -469,7 +469,7 @@ public class AutoExtract implements ActionListener {
 								System.err.println("Can't delete: " + file);
 							}
 						} else {
-							System.out.println("Warning: The file " + file + " may be a symlink. It has been ignored");
+							System.out.println("Warning: " + file + " may be a symlink. It has been ignored");
 						}
 					} catch (IOException e) {
 						System.out.println(
@@ -627,10 +627,10 @@ public class AutoExtract implements ActionListener {
 					System.err.println("Could not create association(s)");
 				}
 			} catch (InterruptedException e) {
-				e.printStackTrace(System.err);
+				e.printStackTrace();
 			}
 		} catch (IOException e) {
-			e.printStackTrace(System.err);
+			e.printStackTrace();
 		} finally {
 			if (out != null) {
 				out.close();

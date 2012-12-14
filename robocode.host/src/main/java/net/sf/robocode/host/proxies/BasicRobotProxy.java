@@ -187,7 +187,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 			if (res >= MAX_SET_CALL_COUNT) {
 				isDisabled = true;
-				// Print to robot console -> System.out is redirected
 				println("SYSTEM: You have made " + res + " calls to setXX methods without calling execute()");
 				throw new DisabledException("Too many calls to setXX methods");
 			}
@@ -200,7 +199,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 			if (res >= MAX_GET_CALL_COUNT) {
 				isDisabled = true;
-				// Print to robot console -> System.out is redirected
 				println("SYSTEM: You have made " + res + " calls to getXX methods without calling execute()");
 				throw new DisabledException("Too many calls to getXX methods");
 			}
@@ -480,7 +478,6 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	protected final Bullet setFireImpl(double power) {
 		if (Double.isNaN(power)) {
-			// Print to robot console -> System.out is redirected
 			println("SYSTEM: You cannot call fire(NaN)");
 			return null;
 		}

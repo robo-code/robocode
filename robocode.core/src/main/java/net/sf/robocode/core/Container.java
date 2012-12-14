@@ -12,7 +12,7 @@
 package net.sf.robocode.core;
 
 
-import org.apache.log4j.Logger;
+import net.sf.robocode.io.Logger;
 import org.picocontainer.Characteristics;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
@@ -34,9 +34,9 @@ import java.net.MalformedURLException;
  *
  * we have three types of classLoaders.
  * 1) System class loader. Is loaded by default and is parent of loaders below. It contains this container class. All content of robot.api module. All general java stuff.
- * 2) EngineClassLoader. Is used as isolation of all other robocode modules from system class loader. Anything loaded by engine is loaded there. We use single instance of this loader.
+ * 2) EngineClassLoader. Is used as isolation of all other robocode modules from system classloader. Anything loaded by engine is loaded there. We use single instance of this loader.
  * 3) RobotClassLoader. Is used by robots. It will load every class on robot's private classPath. It blocks malicious attempts of references to robocode engine classes. We use multiple instances of this loader.
- * - communication between classes from different class loaders must be done using interfaces or data types from system classLoader
+ * - communication between classes from different classloaders must be done using interfaces or data types from system classLoader
  * - this class must not reference any class of EngineClassLoader scope
  *
  * Dependency injection
@@ -47,9 +47,6 @@ import java.net.MalformedURLException;
  * @author Pavel Savara (original)
  */
 public final class Container extends ContainerBase {
-	
-	private static final Logger logger = Logger.getLogger(Container.class);
-	
 	public static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
 	private static final String classPath = System.getProperties().getProperty("robocode.class.path", null);
 
@@ -81,7 +78,6 @@ public final class Container extends ContainerBase {
 		for (String path : cp) {
 			if (path.toLowerCase().contains("robocode.core")) {
 				loadFromPath(path);
-				break;
 			}
 		}
 		for (String path : cp) {
@@ -89,8 +85,8 @@ public final class Container extends ContainerBase {
 		}
 
 		if (known.size() < 2) {
-			logger.fatal("Main modules not loaded, something went wrong. We have only " + known.size() + " modules");
-			logger.fatal("Class path: " + classPath);
+			Logger.logError("Main modules not loaded, something went wrong. We have only " + known.size() + " modules");
+			Logger.logError("Class path: " + classPath);
 			throw new Error("Main modules not loaded");
 		}
 
@@ -121,7 +117,7 @@ public final class Container extends ContainerBase {
 					// load other .jar files in location
 					final File dir = new File(path.substring(0, i));
 
-					logger.info("Loading plugins from " + dir.toString());
+					Logger.logMessage("Loading plugins from " + dir.toString());
 					loadJars(dir);
 				} else {
 					String name = getModuleName(path);
@@ -132,7 +128,7 @@ public final class Container extends ContainerBase {
 				}
 			}
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		}
 	}
 
@@ -161,15 +157,15 @@ public final class Container extends ContainerBase {
 			if (moduleInstance instanceof IModule) {
 				modules.add((IModule) moduleInstance);
 			}
-			logger.info("Loaded " + module);
+			Logger.logMessage("Loaded " + module);
 			known.add(module);
 			return true;
 		} catch (ClassNotFoundException ignore) {// it is not our module ?
 			// Logger.logMessage("Can't load " + module);
 		} catch (IllegalAccessException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		} catch (InstantiationException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		}
 		return false;
 	}
@@ -233,20 +229,20 @@ public final class Container extends ContainerBase {
 			try {
 				urls[i] = f.getCanonicalFile().toURI().toURL();
 			} catch (MalformedURLException e) {
-				logger.error(e.getLocalizedMessage(), e);
+				Logger.logError(e);
 			} catch (IOException e) {
-				logger.error(e.getLocalizedMessage(), e);
+				Logger.logError(e);
 			}
 		}
 		return urls;
 	}
 
-	protected <T> T getBaseComponent(final Class<T> clazz) {
-		return cache.getComponent(clazz);
+	protected <T> T getBaseComponent(final Class<T> tClass) {
+		return cache.getComponent(tClass);
 	}
 
-	public static <T> T getComponent(java.lang.Class<T> clazz) {
-		return cache.getComponent(clazz);
+	public static <T> T getComponent(java.lang.Class<T> tClass) {
+		return cache.getComponent(tClass);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -254,8 +250,8 @@ public final class Container extends ContainerBase {
 		return (T) cache.getComponent(name);
 	}
 
-	public static <T> T getComponent(java.lang.Class<T> clazz, String className) {
-		final List<T> list = cache.getComponents(clazz);
+	public static <T> T getComponent(java.lang.Class<T> tClass, String className) {
+		final List<T> list = cache.getComponents(tClass);
 
 		for (T component : list) {
 			if (component.getClass().getName().endsWith(className)) {
@@ -265,11 +261,11 @@ public final class Container extends ContainerBase {
 		return null;
 	}
 
-	public static <T> java.util.List<T> getComponents(java.lang.Class<T> clazz) {
-		return cache.getComponents(clazz);
+	public static <T> java.util.List<T> getComponents(java.lang.Class<T> tClass) {
+		return cache.getComponents(tClass);
 	}
 
-	public static <T> T createComponent(java.lang.Class<T> clazz) {
-		return factory.as(Characteristics.NO_CACHE).getComponent(clazz);
+	public static <T> T createComponent(java.lang.Class<T> tClass) {
+		return factory.as(Characteristics.NO_CACHE).getComponent(tClass);
 	}
 }

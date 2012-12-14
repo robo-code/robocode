@@ -15,6 +15,7 @@ package net.sf.robocode.repository.packager;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.TeamItem;
 import net.sf.robocode.version.IVersionManager;
@@ -33,15 +34,11 @@ import java.util.jar.Manifest;
 import java.net.URL;
 import java.net.URLDecoder;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * @author Pavel Savara (original)
  */
 public class JarCreator {
-
-	private static final Logger logger = Logger.getLogger(JarCreator.class);
 
 	public static String createPackage(File target, boolean includeSources, List<RobotItem> robots, List<TeamItem> teams, URL web, String desc, String author, String version) {
 		final IHostManager host = Container.getComponent(IHostManager.class);
@@ -88,7 +85,7 @@ public class JarCreator {
 				}
 			}
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		} finally {
 			FileUtil.cleanupStream(jarout);
 			FileUtil.cleanupStream(fos);

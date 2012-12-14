@@ -16,14 +16,14 @@ package net.sf.robocode.ui.editor;
 
 import net.sf.robocode.core.ContainerBase;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.manager.IVersionManagerBase;
+import static net.sf.robocode.io.Logger.logError;
+import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.ui.dialog.ConsoleDialog;
 import net.sf.robocode.ui.dialog.WindowUtil;
 
 import javax.swing.*;
-
-import org.apache.log4j.Logger;
-
 import java.io.*;
 
 
@@ -32,8 +32,6 @@ import java.io.*;
  * @author Flemming N. Larsen (contributor)
  */
 public class RobocodeCompilerFactory {
-	
-	private static final Logger logger = Logger.getLogger(RobocodeCompilerFactory.class);
 
 	private static final String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator + "libs"
 			+ File.separator + "robocode.jar" + File.pathSeparator
@@ -49,7 +47,7 @@ public class RobocodeCompilerFactory {
 				return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
 						getCompilerProperties().getCompilerOptions(), getCompilerProperties().getCompilerClasspath());
 			}
-			logger.error("Unable to create compiler.");
+			logError("Unable to create compiler.");
 			return null;
 		}
 		return new RobocodeCompiler(editor, getCompilerProperties().getCompilerBinary(),
@@ -68,13 +66,13 @@ public class RobocodeCompilerFactory {
 				in = new FileInputStream(file);
 				compilerProperties.load(in);
 				if (compilerProperties.getRobocodeVersion() == null) {
-					logger.info("Setting up new compiler.");
+					logMessage("Setting up new compiler.");
 					compilerProperties.setCompilerBinary("");
 				}
 			} catch (FileNotFoundException e) {
-				logger.warn("Compiler configuration file was not found. A new one will be created.");
+				logMessage("Compiler configuration file was not found. A new one will be created.");
 			} catch (IOException e) {
-				logger.error("Error while reading file: " + file, e);
+				logError("Error while reading " + file, e);
 			} finally {
 				if (in != null) {
 					try {
@@ -174,9 +172,10 @@ public class RobocodeCompilerFactory {
 
 		try {
 			out = new FileOutputStream(FileUtil.getCompilerConfigFile());
+
 			getCompilerProperties().store(out, "Robocode Compiler Properties");
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		} finally {
 			FileUtil.cleanupStream(out);
 		}
@@ -212,7 +211,7 @@ public class RobocodeCompilerFactory {
 			result = (p.exitValue() == 0);
 
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			logError(e);
 		} catch (InterruptedException e) {
 			// Immediately reasserts the exception by interrupting the caller thread itself
 			Thread.currentThread().interrupt();

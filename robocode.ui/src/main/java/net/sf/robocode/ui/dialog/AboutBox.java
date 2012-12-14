@@ -20,9 +20,6 @@ import net.sf.robocode.version.IVersionManager;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-
-import org.apache.log4j.Logger;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,8 +53,6 @@ public final class AboutBox extends JDialog {
 	// Tag used for transparent.png 1x1 px url replacement
 	private final static String TAG_TRANSPARENT = "\\Q{$transparent}\\E";
 
-	private static Logger logger = Logger.getLogger(AboutBox.class);
-	
 	// Robocode version
 	private final String robocodeVersion;
 	// Robocode icon URL
@@ -116,7 +111,7 @@ public final class AboutBox extends JDialog {
 				try {
 					BrowserManager.openURL(event.getURL().toExternalForm());
 				} catch (IOException e) {
-					logger.error(e.getLocalizedMessage(), e);
+					e.printStackTrace();
 				}
 			}
 		}
@@ -149,8 +144,10 @@ public final class AboutBox extends JDialog {
 	private JEditorPane getMainPanel() {
 		if (mainPanel == null) {
 			String aaFontSettings = System.getProperty("awt.useSystemAAFontSettings");
+
 			if (aaFontSettings != null) {
 				mainPanel = new JEditorPane("text/html; charset=ISO-8859-1", getHtmlText());
+				System.out.println(aaFontSettings);
 			} else {
 				mainPanel = new JEditorPane("text/html; charset=ISO-8859-1", getHtmlText()) {
 					@Override

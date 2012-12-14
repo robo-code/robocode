@@ -165,7 +165,6 @@ public class ConsoleScrollPane extends JScrollPane {
 				append(line + "\n");
 			}
 		} catch (IOException e) {
-			// Print to robot console -> System.out is redirected
 			append("SYSTEM: IOException: " + e);
 		}
 		scrollToBottom();

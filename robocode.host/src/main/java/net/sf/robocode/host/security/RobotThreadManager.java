@@ -27,6 +27,10 @@ package net.sf.robocode.host.security;
 
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
+import net.sf.robocode.io.Logger;
+import static net.sf.robocode.io.Logger.logError;
+import static net.sf.robocode.io.Logger.logMessage;
+import static net.sf.robocode.io.Logger.logWarning;
 import robocode.exception.RobotException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -35,16 +39,12 @@ import java.security.PrivilegedAction;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class RobotThreadManager {
-
-	private static final Logger logger = Logger.getLogger(RobotThreadManager.class);
 
 	private final IHostedThread robotProxy;
 	private Thread runThread;
@@ -64,10 +64,10 @@ public class RobotThreadManager {
 					runThreadGroup.destroy();
 				}
 			} else {
-				logger.warn("Could not destroy: " + runThread.getName());
+				Logger.logWarning("Could not destroy " + runThread.getName());
 			}
 		} catch (Exception e) {
-			logger.error("Could not destroy: " + runThreadGroup.getName(), e);
+			Logger.logError("Could not destroy " + runThreadGroup.getName(), e);
 		}
 	}
 
@@ -104,10 +104,10 @@ public class RobotThreadManager {
 			runThread = new Thread(runThreadGroup, robotProxy, robotProxy.getStatics().getName());
 			runThread.setDaemon(true);
 			runThread.setPriority(Thread.NORM_PRIORITY - 1);
-			runThread.setContextClassLoader(this.robotProxy.getRobotClassLoader());
+			runThread.setContextClassLoader(this.robotProxy.getRobotClassloader());
 			runThread.start();
 		} catch (Exception e) {
-			logger.error("Could not start thread", e);
+			logError("Exception starting thread", e);
 		}
 	}
 
@@ -137,12 +137,14 @@ public class RobotThreadManager {
 
 		if (isAlive) {
 			if (!System.getProperty("NOSECURITY", "false").equals("true")) {
-				logger.error("Robot " + robotProxy.getStatics().getName() + " is not stopping. Forcing a stop.");
+				logError("Robot " + robotProxy.getStatics().getName() + " is not stopping.  Forcing a stop.");
 
 				// Force the robot to stop
 				return forceStop();
 			} else {
-				logger.error("Robot " + robotProxy.getStatics().getName() + " is still running. Not stopping it because security is off.");
+				logError(
+						"Robot " + robotProxy.getStatics().getName()
+						+ " is still running.  Not stopping it because security is off.");
 			}
 		}
 
@@ -185,9 +187,11 @@ public class RobotThreadManager {
 				stop(t);
 			}
 			if (t.isAlive()) {
-				logger.warn("Unable to stop thread: " + runThread.getName());
+				// noinspection deprecation
+				// t.suspend();
+				logWarning("Unable to stop thread: " + runThread.getName());
 			} else {
-				logger.info(robotProxy.getStatics().getName() + " has been stopped.");
+				logMessage(robotProxy.getStatics().getName() + " has been stopped.");
 			}
 			return 1;
 		}
@@ -213,7 +217,7 @@ public class RobotThreadManager {
 			try {
 				t.setPriority(Thread.MIN_PRIORITY);
 			} catch (NullPointerException e) {
-				logger.error("Sometimes this occurs in the Java core?!", e);
+				logError("Sometimes this occurs in the Java core?!", e);
 			}
 			t.interrupt();
 			try {
@@ -228,7 +232,8 @@ public class RobotThreadManager {
 	private void waitForStop(Thread thread) {
 		for (int j = 0; j < 100 && thread.isAlive(); j++) {
 			if (j == 50) {
-				logger.info("Waiting for robot " + robotProxy.getStatics().getName() + " to stop thread " + thread.getName());
+				logMessage(
+						"Waiting for robot " + robotProxy.getStatics().getName() + " to stop thread " + thread.getName());
 			}
 			try {
 				Thread.sleep(10);
@@ -326,7 +331,7 @@ public class RobotThreadManager {
 						sunToolkit.getDeclaredMethod("dispose").invoke(appContext);	
 
 					} catch (Exception e) {
-						logger.error(e.getLocalizedMessage(), e);
+						logError(e);
 					} finally {
 						// Signal that the AppContext for the current thread has been disposed (finish)
 						if (disposal != null) {
@@ -341,7 +346,7 @@ public class RobotThreadManager {
 
 			return true;
 		} catch (ClassNotFoundException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			logError(e);			
 		}
 		return false;
 		// end: same as AppContext.dispose();

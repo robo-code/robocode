@@ -66,6 +66,7 @@
 package net.sf.robocode.battle.peer;
 
 
+import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.battle.Battle;
 import net.sf.robocode.battle.BoundingRectangle;
 import net.sf.robocode.host.IHostManager;
@@ -73,6 +74,7 @@ import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.host.events.EventManager;
 import net.sf.robocode.host.events.EventQueue;
 import net.sf.robocode.host.proxies.IHostingRobotProxy;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.*;
 import net.sf.robocode.repository.IRobotRepositoryItem;
 import net.sf.robocode.security.HiddenAccess;
@@ -98,8 +100,6 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * RobotPeer is an object that deals with game mechanics and rules, and makes
@@ -117,8 +117,6 @@ import org.apache.log4j.Logger;
  * @author "Positive" (contributor)
  */
 public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
-
-	private static final Logger logger = Logger.getLogger(RobotPeer.class);
 
 	public static final int
 			WIDTH = 40,
@@ -679,7 +677,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
 
-					logger.info("Wait for " + getName() + " interrupted.");
+					logMessage("Wait for " + getName() + " interrupted.");
 				}
 			}
 		}
@@ -694,12 +692,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			if (isAlive()) {
 				addEvent(new SkippedTurnEvent(battle.getTime()));
 			}
-			// Print to robot console -> System.out is redirected
 			println("SYSTEM: " + getShortName() + " skipped turn " + battle.getTime());
 
 			if ((!isIORobot && skippedTurns > MAX_SKIPPED_TURNS)
 					|| (isIORobot && skippedTurns > MAX_SKIPPED_TURNS_WITH_IO)) {
-				// Print to robot console -> System.out is redirected
 				println("SYSTEM: " + getShortName() + " has not performed any actions in a reasonable amount of time.");
 				println("SYSTEM: No score will be generated.");
 				setHalt(true);
@@ -803,6 +799,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public void startRound(long waitMillis, int waitNanos) {
+		Logger.logMessage(".", false);
+
 		statistics.initialize();
 
 		ExecCommands newExecCommands = new ExecCommands();
@@ -813,7 +811,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		currentCommands = newExecCommands;
 		int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
-
 		RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
 				currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),
 				currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others,
@@ -827,14 +824,14 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				// Wait for the robot to go to sleep (take action)
 				isSleeping.wait(waitMillis, waitNanos);
 			} catch (InterruptedException e) {
-				logger.info("Wait for " + getName() + " interrupted.");
+				logMessage("Wait for " + getName() + " interrupted.");
 
 				// Immediately reasserts the exception by interrupting the caller thread itself
 				Thread.currentThread().interrupt();
 			}
 		}
 		if (!isSleeping() && !battle.isDebugging()) {
-			logger.error("The robot " + getName() + " is still not started after " + waitMillis + " ms... giving up.");
+			logMessage("\n" + getName() + " still has not started after " + waitMillis + " ms... giving up.");
 		}
 	}
 
@@ -861,7 +858,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		for (BulletCommand bulletCmd : bulletCommands) {
 			if (Double.isNaN(bulletCmd.getPower())) {
-				// Print to robot console -> System.out is redirected
 				println("SYSTEM: You cannot call fire(NaN)");
 				continue;
 			}
@@ -1053,7 +1049,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 								final double bonus = statistics.scoreRammingKill(otherRobot.getName());
 
 								if (bonus > 0) {
-									// Print to robot console -> System.out is redirected
 									println(
 											"SYSTEM: Ram bonus for killing " + this.getNameForEvent(otherRobot) + ": "
 											+ (int) (bonus + .5));
@@ -1290,7 +1285,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			}
 		}
 		if (Double.isNaN(bodyHeading)) {
-			logger.error("How is robot body heading NaN here?");
+			Logger.realErr.println("HOW IS HEADING NAN HERE");
 		}
 	}
 
@@ -1537,7 +1532,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			message.append(" This ").append(repositoryItem.isTeam() ? "team" : "robot").append(
 					" has been banned and will not be allowed to participate in battles.");
 		}
-		logger.info(message.toString());
+
+		logMessage(message.toString());
 	}
 
 	public void updateEnergy(double delta) {

@@ -6,6 +6,5 @@
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="src" path="/robocode.core"/>
   <classpathentry kind="src" path="/robocode.api"/>
-  <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.14.2/picocontainer-2.14.2.jar"/>
 </classpath>

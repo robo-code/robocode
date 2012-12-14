@@ -12,6 +12,7 @@
 package net.sf.robocode.robotpaint;
 
 
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.serialization.RbSerializer;
 
 import java.awt.*;
@@ -1391,7 +1392,6 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			try {
 				processQueuedCall(g);
 			} catch (Exception e) {
-				// Print to robot console -> System.out and System.err is being redirected
 				e.printStackTrace();
 				// FOR-DEBUG } catch (Error e) {
 				// FOR-DEBUG 	calls.position(lastPos - 4);
@@ -1935,7 +1935,6 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 		if (!recovered) {
 			if (unrecoveredBufferOverflowCount++ == 1) { // Prevent spamming 
-				// Print to robot console -> System.out is being redirected
 				System.out.println(
 						"SYSTEM: This robot is painting too much between actions.\n" + "SYSTEM: Max. buffer capacity ("
 						+ MAX_BUFFER_SIZE + " bytes per turn) has been reached.\n"
@@ -2308,8 +2307,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	}
 
 	private void notSupportedWarn() {
-		// Print to robot console -> System.out is being redirected
-		System.out.println("SYSTEM: Operation is not supported in Robocode.");
+		Logger.printlnToRobotsConsole("SYSTEM: We are sorry. Operation is not supported in Robocode.");
 	}
 
 	// --------------------------------------------------------------------------

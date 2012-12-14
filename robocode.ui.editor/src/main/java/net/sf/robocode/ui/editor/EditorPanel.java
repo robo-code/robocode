@@ -25,8 +25,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.Utilities;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * Editor panel containing editor pane in a scroll pane, a line number area, and a statusTextField text field.
@@ -36,8 +34,6 @@ import org.apache.log4j.Logger;
 @SuppressWarnings("serial")
 public class EditorPanel extends JPanel {
 
-	private static final Logger logger = Logger.getLogger(EditorPanel.class);
-	
 	private JTextField statusTextField;
 	private final EditorPane editorPane;
 	private final LineNumberArea lineNumberArea;
@@ -111,7 +107,7 @@ public class EditorPanel extends JPanel {
 				rn++;
 			}
 		} catch (BadLocationException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			e.printStackTrace();
 		}
 		return rn;
 	}
@@ -120,7 +116,7 @@ public class EditorPanel extends JPanel {
 		try {
 			return pos - Utilities.getRowStart(editor, pos) + 1;
 		} catch (BadLocationException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			e.printStackTrace();
 		}
 		return -1;
 	}

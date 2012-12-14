@@ -28,6 +28,7 @@
 package net.sf.robocode.battle;
 
 
+import net.sf.robocode.io.Logger;
 import robocode.BattleResults;
 
 import java.io.FileOutputStream;
@@ -36,8 +37,6 @@ import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.Date;
-
-import org.apache.log4j.Logger;
 
 
 /**
@@ -49,9 +48,6 @@ import org.apache.log4j.Logger;
  */
 @SuppressWarnings("serial")
 public class BattleResultsTableModel extends javax.swing.table.AbstractTableModel {
-
-	private static final Logger logger = Logger.getLogger(BattleResultsTableModel.class); 
-	
 	private String title;
 	private final BattleResults[] results;
 	private final int numRounds;
@@ -253,7 +249,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			out.close();
 
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		}
 	}
 

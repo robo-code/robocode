@@ -12,10 +12,9 @@
 package net.sf.robocode.ui.gfx;
 
 
+import net.sf.robocode.io.Logger;
+
 import javax.imageio.ImageIO;
-
-import org.apache.log4j.Logger;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
@@ -31,8 +30,6 @@ import java.net.URL;
  */
 public class ImageUtil {
 
-	private static final Logger logger = Logger.getLogger(ImageUtil.class);
-
 	/**
 	 * Returns an image resource.
 	 *
@@ -41,23 +38,27 @@ public class ImageUtil {
 	 */
 	public static Image getImage(String filename) {
 		URL url = ImageUtil.class.getResource(filename);
-		if (url == null) {
-			logger.error("Could not load image because of invalid filename: " + filename);
-		} else {
-			try {
-				final BufferedImage result = ImageIO.read(url);
 
-				if (result == null) {
-					final String message = "Could not load image: " + filename;
-					logger.error(message);
-					throw new Error(message);
-				}
-				return result;
-			} catch (IOException e) {
-				logger.error("Could not load image: " + filename);
-			}
+		if (url == null) {
+			Logger.logError("Could not load image because of invalid filename: " + filename);
+			return null;
 		}
-		return null;
+
+		try {
+			final BufferedImage result = ImageIO.read(url);
+
+			if (result == null) {
+				final String message = "Could not load image: " + filename;
+
+				Logger.logError(message);
+				throw new Error();
+			}
+			return result;
+		} catch (IOException e) {
+			Logger.logError("Could not load image: " + filename);
+			return null;
+		}
+
 	}
 
 	/**

@@ -71,14 +71,7 @@ under the License.
           <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/org/picocontainer/picocontainer/2.14.2/picocontainer-2.14.2.jar!/"/>
         </CLASSES>
       </library> 
-    </orderEntry>  
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar!/"/>
-        </CLASSES>
-      </library>
-    </orderEntry>
+    </orderEntry> 
   </component>  
   <component name="ModuleRootManager"/>  
   <!-- If it's a war project:

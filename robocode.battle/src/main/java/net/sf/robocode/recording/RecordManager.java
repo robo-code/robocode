@@ -15,6 +15,8 @@ package net.sf.robocode.recording;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
+import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.serialization.XmlReader;
@@ -33,16 +35,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * @author Pavel Savara (original)
  */
 public class RecordManager implements IRecordManager {
-	
-	private static final Logger logger = Logger.getLogger(RecordManager.class);
-
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
 
 	private final ISettingsManager properties;
@@ -76,7 +73,7 @@ public class RecordManager implements IRecordManager {
 		cleanupStreams();
 		if (tempFile != null && tempFile.exists()) {
 			if (tempFile.delete() == false) {
-				logger.error("Could not delete temp file: " + tempFile);
+				Logger.logError("Could not delete temp file");
 			}
 			tempFile = null;
 		}
@@ -114,14 +111,14 @@ public class RecordManager implements IRecordManager {
 				tempFile.deleteOnExit();
 			} else {
 				if (!tempFile.delete()) {
-					logger.error("Could not delete temp file: " + tempFile);
+					Logger.logError("Could not delete temp file");
 				}
 				if (!tempFile.createNewFile()) {
 					throw new Error("Temp file creation failed");					
 				}
 			}
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			logError(e);
 			throw new Error("Temp file creation failed", e);
 		}
 	}
@@ -132,12 +129,12 @@ public class RecordManager implements IRecordManager {
 			bufferedReadStream = new BufferedInputStream(fileReadStream);
 			objectReadStream = new ObjectInputStream(bufferedReadStream);
 		} catch (FileNotFoundException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			logError(e);
 			fileReadStream = null;
 			bufferedReadStream = null;
 			objectReadStream = null;
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			logError(e);
 			fileReadStream = null;
 			bufferedReadStream = null;
 			objectReadStream = null;
@@ -145,17 +142,19 @@ public class RecordManager implements IRecordManager {
 	}
 
 	public ITurnSnapshot readSnapshot(int currentTime) {
-		if (objectReadStream != null) {
-			try {
-				// TODO: implement seek to currentTime, warn you. Turns don't have same size in bytes
-				return (ITurnSnapshot) objectReadStream.readObject();
-			} catch (EOFException e) {
-				logger.error(e.getLocalizedMessage(), e);
-			} catch (Exception e) {
-				logger.error(e.getLocalizedMessage(), e);
-			}
+		if (objectReadStream == null) {
+			return null;
 		}
-		return null;
+		try {
+			// TODO implement seek to currentTime, warn you. turns don't have same size in bytes
+			return (ITurnSnapshot) objectReadStream.readObject();
+		} catch (EOFException e) {
+			logError(e);
+			return null;
+		} catch (Exception e) {
+			logError(e);
+			return null;
+		}
 	}
 
 	public void loadRecord(String recordFilename, BattleRecordFormat format) {
@@ -201,7 +200,7 @@ public class RecordManager implements IRecordManager {
 
 								oos.writeObject(turn);
 							} catch (ClassNotFoundException e) {
-								logger.error(e.getLocalizedMessage(), e);
+								logError(e);
 							}
 						}
 					}
@@ -214,20 +213,19 @@ public class RecordManager implements IRecordManager {
 				root.oos = new ObjectOutputStream(bos);
 				XmlReader.deserialize(xis, root);
 				if (root.lastException != null) {
-					Exception e = root.lastException;
-					logger.error(e.getLocalizedMessage(), e);
+					logError(root.lastException);
 				}
 				recordInfo = root.recordInfo;
 			}
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			logError(e);
 			createTempFile();
 			recordInfo = null;
 		} catch (ClassNotFoundException e) {
 			if (e.getMessage().contains("robocode.recording.BattleRecordInfo")) {
-				logger.error("Sorry, backward compatibility with record from version 1.6 is not provided.");
+				Logger.logError("Sorry, backward compatibility with record from version 1.6 is not provided.");
 			} else {
-				logger.error(e.getLocalizedMessage(), e);
+				logError(e);
 			}
 			createTempFile();
 			recordInfo = null;
@@ -373,7 +371,7 @@ public class RecordManager implements IRecordManager {
 									turn.writeXml(xwr, options);
 								}
 							} catch (ClassNotFoundException e) {
-								logger.error(e.getLocalizedMessage(), e);
+								logError(e);
 							}
 						}
 						if (isbin) {
@@ -393,7 +391,7 @@ public class RecordManager implements IRecordManager {
 			}
 
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			logError(e);
 			recorder = new BattleRecorder(this, properties);
 			createTempFile();
 		} finally {
@@ -420,7 +418,7 @@ public class RecordManager implements IRecordManager {
 			bufferedWriteStream = new BufferedOutputStream(fileWriteStream, 1024 * 1024);
 			objectWriteStream = new ObjectOutputStream(bufferedWriteStream);
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			logError(e);
 		}
 
 		recordInfo = new BattleRecordInfo();
@@ -448,7 +446,7 @@ public class RecordManager implements IRecordManager {
 			recordInfo.roundsCount = round + 1;
 			objectWriteStream.writeObject(turn);
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			logError(e);
 		}
 	}
 }

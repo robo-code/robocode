@@ -12,12 +12,13 @@
 package net.sf.robocode.battle.events;
 
 
+import static net.sf.robocode.io.Logger.logError;
+
+import net.sf.robocode.io.Logger;
 import robocode.control.events.*;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.apache.log4j.Logger;
 
 
 /**
@@ -26,9 +27,6 @@ import org.apache.log4j.Logger;
  * @since 1.6.1
  */
 public class BattleEventDispatcher implements IBattleListener {
-
-	private static final Logger logger = Logger.getLogger(BattleEventDispatcher.class);
-	
 	// This list is guaranteed to be thread-safe, which is necessary as it will be accessed
 	// by both the battle thread and battle manager thread. If this list is not thread-safe
 	// then ConcurentModificationExceptions will occur from time to time.
@@ -38,6 +36,7 @@ public class BattleEventDispatcher implements IBattleListener {
 
 	public void addListener(IBattleListener listener) {
 		assert (listener != null);
+
 		listeners.add(listener);
 	}
 
@@ -50,8 +49,8 @@ public class BattleEventDispatcher implements IBattleListener {
 		for (IBattleListener listener : listeners) {
 			try {
 				listener.onBattleStarted(event);
-			} catch (Throwable t) {
-				logger.error(listener.getClass() + ".onBattleStarted()", t);
+			} catch (Throwable ex) {
+				logError("onBattleStarted " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -60,8 +59,8 @@ public class BattleEventDispatcher implements IBattleListener {
 		for (IBattleListener listener : listeners) {
 			try {
 				listener.onBattleCompleted(event);
-			} catch (Throwable t) {
-				logger.error(listener.getClass() + ".onBattleCompleted()", t);
+			} catch (Throwable ex) {
+				logError("onBattleCompleted " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -70,8 +69,8 @@ public class BattleEventDispatcher implements IBattleListener {
 		for (IBattleListener listener : listeners) {
 			try {
 				listener.onBattleFinished(event);
-			} catch (Throwable t) {
-				logger.error(listener.getClass() + ".onBattleFinished()", t);
+			} catch (Throwable ex) {
+				logError("onBattleFinished " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -80,8 +79,8 @@ public class BattleEventDispatcher implements IBattleListener {
 		for (IBattleListener listener : listeners) {
 			try {
 				listener.onBattlePaused(event);
-			} catch (Throwable t) {
-				logger.error(listener.getClass() + ".onBattlePaused()", t);
+			} catch (Throwable ex) {
+				logError("onBattlePaused " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -90,8 +89,8 @@ public class BattleEventDispatcher implements IBattleListener {
 		for (IBattleListener listener : listeners) {
 			try {
 				listener.onBattleResumed(event);
-			} catch (Throwable t) {
-				logger.error(listener.getClass() + ".onBattleResumed()", t);
+			} catch (Throwable ex) {
+				logError("onBattleResumed " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -100,8 +99,8 @@ public class BattleEventDispatcher implements IBattleListener {
 		for (IBattleListener listener : listeners) {
 			try {
 				listener.onRoundStarted(event);
-			} catch (Throwable t) {
-				logger.error(listener.getClass() + ".onRoundStarted()", t);
+			} catch (Throwable ex) {
+				logError("onRoundStarted " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -110,8 +109,8 @@ public class BattleEventDispatcher implements IBattleListener {
 		for (IBattleListener listener : listeners) {
 			try {
 				listener.onRoundEnded(event);
-			} catch (Throwable t) {
-				logger.error(listener.getClass() + ".onRoundEnded()", t);
+			} catch (Throwable ex) {
+				logError("onRoundEnded " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -120,8 +119,8 @@ public class BattleEventDispatcher implements IBattleListener {
 		for (IBattleListener listener : listeners) {
 			try {
 				listener.onTurnStarted(event);
-			} catch (Throwable t) {
-				logger.error(listener.getClass() + ".onTurnStarted()", t);
+			} catch (Throwable ex) {
+				logError("onTurnStarted " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -130,8 +129,8 @@ public class BattleEventDispatcher implements IBattleListener {
 		for (IBattleListener listener : listeners) {
 			try {
 				listener.onTurnEnded(event);
-			} catch (Throwable t) {
-				logger.error(listener.getClass() + ".onTurnEnded()", t);
+			} catch (Throwable ex) {
+				logError("onTurnEnded " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -140,9 +139,8 @@ public class BattleEventDispatcher implements IBattleListener {
 		for (IBattleListener listener : listeners) {
 			try {
 				listener.onBattleMessage(event);
-			} catch (Throwable t) {
-				logger.error(listener.getClass() + ".onBattleMessage()", t);
-//				System.err.println(listener.getClass() + ".onBattleMessage():\n" + t.getLocalizedMessage() + '\n' + t.getStackTrace());
+			} catch (Throwable ex) {
+				logError("onBattleMessage " + listener.getClass(), ex);
 			}
 		}
 	}
@@ -151,9 +149,8 @@ public class BattleEventDispatcher implements IBattleListener {
 		for (IBattleListener listener : listeners) {
 			try {
 				listener.onBattleError(event);
-			} catch (Throwable t) {
-				logger.error(listener.getClass() + ".onBattleMessage()", t);
-//				System.err.println(listener.getClass() + ".onBattleError():\n" + t.getLocalizedMessage() + '\n' + t.getStackTrace());
+			} catch (Throwable ex) {
+				Logger.realErr.println(listener.getClass() + " " + ex.getMessage());
 			}
 		}
 	}

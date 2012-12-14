@@ -37,8 +37,6 @@ import javax.swing.text.StyledEditorKit;
 import javax.swing.text.TabSet;
 import javax.swing.text.TabStop;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * Editor pane used for editing source code.
@@ -47,8 +45,6 @@ import org.apache.log4j.Logger;
  */
 @SuppressWarnings("serial")
 public class EditorPane extends JTextPane {
-	
-	private static final Logger logger = Logger.getLogger(EditorPane.class);
 
 	private int tabSize = 4; // Default
 
@@ -238,7 +234,7 @@ public class EditorPane extends JTextPane {
 					textTool.insertString(selectionStart, newText.toString());
 					undoManager.markCompoundStart();
 				} catch (BadLocationException e) {
-					logger.error(e.getLocalizedMessage(), e);
+					e.printStackTrace();
 				}
 
 				// Compute the new selection
@@ -292,7 +288,7 @@ public class EditorPane extends JTextPane {
 			try {
 				return getDocument().getText(start, end - start);
 			} catch (BadLocationException e) {
-				logger.error(e.getLocalizedMessage(), e);
+				e.printStackTrace();
 			}
 			return null;
 		}
@@ -305,7 +301,7 @@ public class EditorPane extends JTextPane {
 			try {
 				getDocument().insertString(offset, str, a);
 			} catch (BadLocationException e) {
-				logger.error(e.getLocalizedMessage(), e);
+				e.printStackTrace();
 			}
 		}
 
@@ -324,7 +320,7 @@ public class EditorPane extends JTextPane {
 						return;
 					}
 				} catch (BadLocationException e) {
-					logger.error(e.getLocalizedMessage(), e);
+					e.printStackTrace();
 				}
 			}
 		}
@@ -333,7 +329,7 @@ public class EditorPane extends JTextPane {
 			try {
 				getDocument().remove(offset, len);
 			} catch (BadLocationException e) {
-				logger.error(e.getLocalizedMessage(), e);
+				e.printStackTrace();
 			}
 		}
 	}

@@ -13,6 +13,7 @@ package net.sf.robocode.repository;
 
 
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.TeamItem;
@@ -24,16 +25,11 @@ import java.io.*;
 import java.net.URLDecoder;
 import java.util.*;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * @author Pavel Savara (original)
  */
 public class Database {
-	
-	private static final Logger logger = Logger.getLogger(Database.class);
-
 	private Map<String, IRepositoryRoot> roots = new Hashtable<String, IRepositoryRoot>();
 	private Map<String, IItem> items = new Hashtable<String, IItem>();
 	private Map<String, IItem> oldItems = new Hashtable<String, IItem>();
@@ -178,8 +174,8 @@ public class Database {
 				continue;
 			}
 
-			// not found
-			logger.error("Can't find robot: " + botNameAndVersion);
+			// no found
+			Logger.logError("Can't find robot: " + botNameAndVersion);
 		}
 		return result;
 	}
@@ -249,10 +245,10 @@ public class Database {
 				if (item.isValid()) {
 					result.add((IRepositoryItem) item);
 				} else {
-					logger.error("Can't load " + bot + ", because it is invalid robot or team.");
+					Logger.logError("Can't load " + bot + ", because it is invalid robot or team.");
 				}
 			} else {
-				logger.error("Can't find " + bot);
+				Logger.logError("Can't find " + bot);
 			}
 		}
 		return result;
@@ -281,7 +277,7 @@ public class Database {
 			oos.writeObject(uniqueroots);
 			oos.writeObject(uniqueitems);
 		} catch (IOException e) {
-			logger.error("Can't save robot database", e);
+			Logger.logError("Can't save robot database", e);
 		} finally {
 			FileUtil.cleanupStream(oos);
 			FileUtil.cleanupStream(fos);
@@ -320,7 +316,7 @@ public class Database {
 			}
 			return res;
 		} catch (Throwable t) {
-			logger.error("Can't load robot database: " + t.getMessage(), t);
+			Logger.logError("Can't load robot database: " + t.getMessage());
 			return null;
 		} finally {
 			FileUtil.cleanupStream(ois);

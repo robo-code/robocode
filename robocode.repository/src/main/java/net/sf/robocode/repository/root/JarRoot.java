@@ -13,6 +13,7 @@ package net.sf.robocode.repository.root;
 
 
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 import net.sf.robocode.io.JarJar;
 import net.sf.robocode.repository.Database;
@@ -33,8 +34,6 @@ import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * Represents one .jar file
@@ -42,8 +41,6 @@ import org.apache.log4j.Logger;
  */
 public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
-
-	private static final Logger logger = Logger.getLogger(JarRoot.class);
 
 	private URL jarUrl;
 	private String jarNoSeparator;
@@ -53,9 +50,10 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		super(db, rootPath);
 		try {
 			jarNoSeparator = "jar:" + rootPath.toURI().toString();
+
 			jarUrl = new URL(jarNoSeparator + "!/");
 		} catch (MalformedURLException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		}
 	}
 
@@ -93,7 +91,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 			readJarStream(items, root, jarIS);
 
 		} catch (Exception e) {
-			logger.error("The URL '" + rootURL + "' is probably corrupted", e);
+			Logger.logError(rootURL + " is probably corrupted (" + e.getClass().getName() + " " + e.getMessage() + ")");
 		} finally {
 			FileUtil.cleanupStream(jarIS);
 			FileUtil.cleanupStream(bis);
@@ -145,7 +143,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 				items.add(item);
 			}
 		} catch (MalformedURLException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		}
 	}
 

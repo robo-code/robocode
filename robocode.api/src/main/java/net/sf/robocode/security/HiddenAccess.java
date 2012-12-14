@@ -13,6 +13,7 @@ package net.sf.robocode.security;
 
 
 import net.sf.robocode.core.ContainerBase;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotStatics;
 import robocode.BattleRules;
 import robocode.Bullet;
@@ -34,17 +35,12 @@ import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * Helpers for accessing hidden methods on events
  * @author Pavel Savara (original)
  */
 public class HiddenAccess {
-	
-	private static final Logger logger = Logger.getLogger(HiddenAccess.class);
-
 	private static IHiddenEventHelper eventHelper;
 	private static IHiddenBulletHelper bulletHelper;
 	private static IHiddenSpecificationHelper specificationHelper;
@@ -106,24 +102,25 @@ public class HiddenAccess {
 
 			initialized = true;
 		} catch (NoSuchMethodException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		} catch (InvocationTargetException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		} catch (IllegalAccessException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		} catch (ClassNotFoundException e) {
-			logger.fatal(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 			if (!foundCore) {
-				logger.fatal("Can't find robocode.core-1.x.jar module near to robocode.jar");
-				logger.fatal("Class path: " + System.getProperty("robocode.class.path", null));
+				Logger.logError("Can't find robocode.core-1.x.jar module near to robocode.jar");
+				Logger.logError("Class path: " + System.getProperty("robocode.class.path", null));
 			}
 			System.exit(-1);
 		} catch (MalformedURLException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		} catch (Error e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 			throw e;
 		}
+
 	}
 
 	private static ClassLoader getClassLoader() throws MalformedURLException {
@@ -168,13 +165,10 @@ public class HiddenAccess {
 					foundCore = true;
 					urls.add(file.toURI().toURL());
 				}
-				if (name.contains("codesize")) {
-					urls.add(file.toURI().toURL());
-				}
 				if (name.contains("picocontainer")) {
 					urls.add(file.toURI().toURL());
 				}
-				if (name.contains("log4j")) {
+				if (name.contains("codesize")) {
 					urls.add(file.toURI().toURL());
 				}
 				classPath.append(File.pathSeparator);
@@ -251,13 +245,10 @@ public class HiddenAccess {
 		try {
 			initContainerRe.invoke(null, robocodeHome, listener);
 		} catch (IllegalAccessException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		} catch (InvocationTargetException e) {
-			Throwable cause = e.getCause();
-			if (cause != null) {
-				logger.error(cause.getLocalizedMessage(), cause);
-			}
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e.getCause());
+			Logger.logError(e);
 		}
 	}
 
@@ -266,13 +257,10 @@ public class HiddenAccess {
 		try {
 			initContainer.invoke(null);
 		} catch (IllegalAccessException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		} catch (InvocationTargetException e) {
-			Throwable cause = e.getCause();
-			if (cause != null) {
-				logger.error(cause.getLocalizedMessage(), cause);
-			}
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e.getCause());
+			Logger.logError(e);
 		}
 	}
 
@@ -281,13 +269,10 @@ public class HiddenAccess {
 		try {
 			cleanup.invoke(null);
 		} catch (IllegalAccessException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		} catch (InvocationTargetException e) {
-			Throwable cause = e.getCause();
-			if (cause != null) {
-				logger.error(cause.getLocalizedMessage(), cause);
-			}
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e.getCause());
+			Logger.logError(e);
 		}
 	}
 
@@ -296,13 +281,11 @@ public class HiddenAccess {
 		try {
 			robocodeMain.invoke(null, (Object) args);
 		} catch (IllegalAccessException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		} catch (InvocationTargetException e) {
-			Throwable cause = e.getCause();
-			if (cause != null) {
-				logger.error(cause.getLocalizedMessage(), cause);
-			}
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e.getCause());
+			Logger.logError(e);
 		}
 	}
+
 }

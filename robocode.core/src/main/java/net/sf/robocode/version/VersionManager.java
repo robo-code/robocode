@@ -13,6 +13,9 @@ package net.sf.robocode.version;
 
 
 import net.sf.robocode.io.FileUtil;
+import static net.sf.robocode.io.Logger.logError;
+import static net.sf.robocode.io.Logger.logMessage;
+import static net.sf.robocode.io.Logger.logWarning;
 import net.sf.robocode.settings.ISettingsManager;
 
 import java.io.*;
@@ -21,8 +24,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * @author Pavel Savara (original)
@@ -30,8 +31,6 @@ import org.apache.log4j.Logger;
  * @author Flemming N. Larsen (contributor)
  */
 public final class VersionManager implements IVersionManager {
-
-	private static final Logger logger = Logger.getLogger(VersionManager.class);
 
 	private static final String VERSIONS_TXT = "versions.md";
 	private static final String UNKNOWN_VERSION = "unknown";
@@ -66,11 +65,11 @@ public final class VersionManager implements IVersionManager {
 			urlConnection.setConnectTimeout(5000);
 
 			if (urlConnection instanceof HttpURLConnection) {
-				logger.info("Update checking with http.");
+				logMessage("Update checking with http.");
 				HttpURLConnection h = (HttpURLConnection) urlConnection;
 
 				if (h.usingProxy()) {
-					logger.info("http using proxy.");
+					logMessage("http using proxy.");
 				}
 			}
 			inputStream = urlConnection.getInputStream();
@@ -80,10 +79,10 @@ public final class VersionManager implements IVersionManager {
 			newVersLine = reader.readLine();
 
 		} catch (MalformedURLException e) {
-			logger.error("Unable to check for new version", e);
+			logError("Unable to check for new version", e);
 			newVersLine = null;
 		} catch (IOException e) {
-			logger.error("Unable to check for new version", e);
+			logError("Unable to check for new version", e);
 			newVersLine = null;
 		} finally {
 			FileUtil.cleanupStream(inputStream);
@@ -129,7 +128,7 @@ public final class VersionManager implements IVersionManager {
 			URL versionsUrl = VersionManager.class.getResource("/" + VERSIONS_TXT);
 
 			if (versionsUrl == null) {
-				logger.error("The URL for the " + VERSIONS_TXT + " was not found");
+				logError("The URL for the " + VERSIONS_TXT + " was not found");
 				versionString = UNKNOWN_VERSION;
 			} else {
 				final URLConnection connection = versionsUrl.openConnection();
@@ -145,10 +144,10 @@ public final class VersionManager implements IVersionManager {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			logger.error("Could not find " + VERSIONS_TXT + " file in robocode.jar");
+			logError("No " + VERSIONS_TXT + " file in robocode.jar");
 			versionString = UNKNOWN_VERSION;
 		} catch (IOException e) {
-			logger.error("Error while reading " + VERSIONS_TXT + " from robocode.jar", e);
+			logError("Error while reading " + VERSIONS_TXT + " from robocode.jar: " + e);
 			versionString = UNKNOWN_VERSION;
 		} finally {
 			if (in != null) {
@@ -166,7 +165,7 @@ public final class VersionManager implements IVersionManager {
 			} catch (Exception ignore) {}
 		}
 		if (version.equals(UNKNOWN_VERSION)) {
-			logger.warn("Getting version info from file.");
+			logWarning("Getting version from file");
 			return getVersionFromFile();
 		}
 		return version;
@@ -189,10 +188,10 @@ public final class VersionManager implements IVersionManager {
 
 			versionString = in.readLine();
 		} catch (FileNotFoundException e) {
-			logger.error("Could not find: " + VERSIONS_TXT + " file.");
+			logError("No " + VERSIONS_TXT + " file.");
 			versionString = UNKNOWN_VERSION;
 		} catch (IOException e) {
-			logger.error("Could not read file: " + VERSIONS_TXT, e);
+			logError("IO Exception reading " + VERSIONS_TXT, e);
 			versionString = UNKNOWN_VERSION;
 		} finally {
 			if (fileReader != null) {

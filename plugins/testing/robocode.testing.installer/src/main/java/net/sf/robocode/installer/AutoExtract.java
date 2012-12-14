@@ -42,6 +42,7 @@ public class AutoExtract implements ActionListener {
 	private boolean accepted;
 	private final String[] spinner = { "-", "\\", "|", "/"};
 	private String message = "";
+	private static String installDir;
 	private static final String javaVersion = System.getProperty("java.version");
 
 	/**
@@ -168,11 +169,11 @@ public class AutoExtract implements ActionListener {
 			System.err.println(message);
 			System.exit(0);
 		}
-		JarInputStream jarIS = null;
 		try {
 			final URL url = new URL("file:/" + src);
 			InputStream is = url.openStream();
-			jarIS = new JarInputStream(is);
+			JarInputStream jarIS = new JarInputStream(is);
+
 			JarEntry entry = jarIS.getNextJarEntry();
 
 			while (entry != null) {
@@ -184,7 +185,7 @@ public class AutoExtract implements ActionListener {
 						File dir = new File(dest, entry.getName());
 
 						if (!dir.exists() && !dir.mkdirs()) {
-							System.err.println("Can't create dir: " + dir);
+							System.out.println("Can't create dir " + dir);
 						}
 					}
 				} else {
@@ -195,7 +196,7 @@ public class AutoExtract implements ActionListener {
 						File parentDirectory = new File(out.getParent());
 
 						if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
-							System.err.println("Can't create dir: " + parentDirectory);
+							System.out.println("Can't create dir " + parentDirectory);
 						}
 						fos = new FileOutputStream(out);
 
@@ -234,14 +235,6 @@ public class AutoExtract implements ActionListener {
 		} catch (IOException e) {
 			message = "Installation failed" + e;
 			return false;
-		} finally {
-			if (jarIS != null) {
-				try {
-					jarIS.close();
-				} catch (IOException e) {
-					e.printStackTrace(System.err);
-				}
-			}
 		}
 	}
 
@@ -309,7 +302,7 @@ public class AutoExtract implements ActionListener {
 
 				if (rc == JOptionPane.YES_OPTION) {
 					if (!installDir.exists() && !installDir.mkdirs()) {
-						System.err.println("Can't create dir: " + installDir);
+						System.out.println("Can't create dir " + installDir);
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Installation cancelled.");
@@ -352,7 +345,7 @@ public class AutoExtract implements ActionListener {
 								System.err.println("Can't delete: " + file);
 							}
 						} else {
-							System.out.println("Warning: The file " + file + " may be a symlink. It has been ignored");
+							System.out.println("Warning: " + file + " may be a symlink. It has been ignored");
 						}
 					} catch (IOException e) {
 						System.out.println(

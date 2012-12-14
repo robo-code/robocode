@@ -25,8 +25,6 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
 
-import org.apache.log4j.Logger;
-
 import net.sf.robocode.io.FileUtil;
 
 
@@ -39,8 +37,6 @@ import net.sf.robocode.io.FileUtil;
  */
 public class ScreenshotUtil {
 
-	private final static Logger logger = Logger.getLogger(ScreenshotUtil.class);
-	
 	private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH.mm.ss.SSS"); 
 
 	public static void saveScreenshot(BufferedImage screenshot, String format, float compressionQuality) {
@@ -75,7 +71,7 @@ public class ScreenshotUtil {
 
 			writer.write(null, image, iwp);
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			e.printStackTrace();
 		} finally {
 			if (writer != null) {
 				writer.dispose();
@@ -84,7 +80,7 @@ public class ScreenshotUtil {
 				try {
 					output.close();
 				} catch (IOException e) {
-					logger.error(e.getMessage(), e);
+					e.printStackTrace();
 				}
 			}
 		}

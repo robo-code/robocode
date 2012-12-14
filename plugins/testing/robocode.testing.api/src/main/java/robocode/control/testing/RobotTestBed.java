@@ -15,8 +15,6 @@
 package robocode.control.testing;
 
 
-import net.sf.robocode.io.RobocodeLogManager;
-
 import robocode.control.BattleSpecification;
 import robocode.control.BattlefieldSpecification;
 import robocode.control.IRobocodeEngine;
@@ -27,9 +25,8 @@ import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleErrorEvent;
 import robocode.control.events.BattleMessageEvent;
 import robocode.control.events.TurnEndedEvent;
+import net.sf.robocode.io.Logger;
 import static org.hamcrest.CoreMatchers.is;
-
-import org.apache.log4j.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -106,8 +103,6 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	 */
 	protected boolean isDumpingMessages = true;
 
-	private Level originalLogLevel;
-
 	/**
 	 * Create an instance of RobotTestBed which provides default implementations for some (not all)
 	 * of the IBattleListener methods.   Your subclass can provide overridden methods for more
@@ -153,21 +148,21 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	 */
 	public void onTurnEnded(TurnEndedEvent event) {
 		if (isDumpingTurns) {
-			System.out.println("turn " + event.getTurnSnapshot().getTurn());
+			Logger.realOut.println("turn " + event.getTurnSnapshot().getTurn());
 		}
 		for (IRobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
 			if (isDumpingPositions) {
-				System.out.print(robot.getVeryShortName());
-				System.out.print(" X:");
-				System.out.print(robot.getX());
-				System.out.print(" Y:");
-				System.out.print(robot.getY());
-				System.out.print(" V:");
-				System.out.print(robot.getVelocity());
-				System.out.println();
+				Logger.realOut.print(robot.getVeryShortName());
+				Logger.realOut.print(" X:");
+				Logger.realOut.print(robot.getX());
+				Logger.realOut.print(" Y:");
+				Logger.realOut.print(robot.getY());
+				Logger.realOut.print(" V:");
+				Logger.realOut.print(robot.getVelocity());
+				Logger.realOut.println();
 			}
 			if (isDumpingOutput) {
-				System.out.print(robot.getOutputStreamSnapshot());
+				Logger.realOut.print(robot.getOutputStreamSnapshot());
 			}
 		}
 	}
@@ -285,8 +280,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	 * Default behavior is to do nothing.
 	 * Override this method in your test case to add behavior before the battle starts.
 	 */
-	protected void runSetup() {
-		originalLogLevel = RobocodeLogManager.setLevel(Level.OFF);
+	protected void runSetup() {// Default does nothing.
 	}
 
 	/**
@@ -294,8 +288,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	 * Default behavior is to do nothing.
 	 * Override this method in your test case to add behavior after the battle ends.
 	 */
-	protected void runTeardown() {
-		RobocodeLogManager.setLevel(originalLogLevel);
+	protected void runTeardown() {// Default does nothing.
 	}
 
 	/**
@@ -323,6 +316,9 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	 * @param event The BattleMessageEvent.
 	 */
 	public void onBattleMessage(BattleMessageEvent event) {
+		if (isDumpingMessages) {
+			Logger.realOut.println(event.getMessage());
+		}
 		messages++;
 	}
 
@@ -332,6 +328,9 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	 * @param event The BattleErrorEvent.
 	 */
 	public void onBattleError(BattleErrorEvent event) {
+		if (isDumpingErrors) {
+			Logger.realErr.println(event.getError());
+		}
 		errors++;
 	}
 }

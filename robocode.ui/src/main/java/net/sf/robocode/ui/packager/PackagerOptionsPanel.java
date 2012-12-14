@@ -27,9 +27,6 @@ import net.sf.robocode.ui.util.LimitedDocument;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import org.apache.log4j.Logger;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.InvocationTargetException;
@@ -44,9 +41,6 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class PackagerOptionsPanel extends WizardPanel {
-	
-	private static final Logger logger = Logger.getLogger(PackagerOptionsPanel.class);
-	
 	private final RobotPackager robotPackager;
 	private JCheckBox includeSource;
 	private final EventHandler eventHandler = new EventHandler();
@@ -299,9 +293,9 @@ public class PackagerOptionsPanel extends WizardPanel {
 			// Immediately reasserts the exception by interrupting the caller thread itself
 			Thread.currentThread().interrupt();
 
-			logger.warn(e.getLocalizedMessage(), e);
+			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			e.printStackTrace();
 		}
 	}
 

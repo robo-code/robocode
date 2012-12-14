@@ -31,6 +31,7 @@ import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IRobotClassLoader;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 import robocode.robotinterfaces.IBasicRobot;
 
@@ -51,8 +52,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * This class loader is used by robots. It isolates classes which belong to robot and load them locally.
@@ -67,9 +66,7 @@ import org.apache.log4j.Logger;
  */
 public class RobotClassLoader extends URLClassLoader implements IRobotClassLoader {
 
-	private static final Logger logger = Logger.getLogger(RobotClassLoader.class);
-	
-	public static final String UNTRUSTED_URL = "http://robocode.sf.net/untrusted";
+	public static final String untrustedURL = "http://robocode.sf.net/untrusted";
 
 	private static final boolean IS_SECURITY_ON = !System.getProperty("NOSECURITY", "false").equals("true");
 
@@ -94,7 +91,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		this.robotClassPath = robotClassPath;
 		parent = getParent();
 		try {
-			codeSource = new CodeSource(new URL(UNTRUSTED_URL), (Certificate[]) null);
+			codeSource = new CodeSource(new URL(untrustedURL), (Certificate[]) null);
 		} catch (MalformedURLException ignored) {}
 	}
 
@@ -211,7 +208,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 						} while (!done);
 
 					} catch (IOException e) {
-						logger.error(e.getLocalizedMessage(), e);
+						Logger.logError(e);
 						return null;
 					} finally {
 						FileUtil.cleanupStream(bis);

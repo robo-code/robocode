@@ -6,7 +6,7 @@
  * http://robocode.sourceforge.net/license/epl-v10.html
  *
  * Contributors:
- *     Albert PÃ©rez
+ *     Albert Pérez
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5
@@ -24,6 +24,7 @@
 package net.sf.robocode.roborumble.netengine;
 
 
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.roborumble.battlesengine.CompetitionsSelector;
 import static net.sf.robocode.roborumble.netengine.FileTransfer.DownloadStatus;
 import static net.sf.robocode.roborumble.util.ExcludesUtil.*;
@@ -41,20 +42,16 @@ import java.util.Vector;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * Class used for downloading participating robots from the Internet.
  * Manages the download operations (participants and JAR files).
  * Controlled by properties files.
  *
- * @author Albert PÃ©rez (original)
+ * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class BotsDownload {
-	
-	private static final Logger logger = Logger.getLogger(BotsDownload.class);
 
 	// private String internetrepository;
 	private final String botsrepository;
@@ -119,25 +116,25 @@ public class BotsDownload {
 		if (generalbotsfile.length() != 0) {
 			file = new File(generalbotsfile);
 			if (file.exists() && !file.delete()) {
-				logger.error("Can't delete file: " + file);
+				Logger.logError("Can't delete file: " + file);
 			}
 		}
 		if (minibotsfile.length() != 0) {
 			file = new File(minibotsfile);
 			if (file.exists() && !file.delete()) {
-				logger.error("Can't delete file: " + file);
+				Logger.logError("Can't delete file: " + file);
 			}
 		}
 		if (microbotsfile.length() != 0) {
 			file = new File(microbotsfile);
 			if (file.exists() && !file.delete()) {
-				logger.error("Can't delete file: " + file);
+				Logger.logError("Can't delete file: " + file);
 			}
 		}
 		if (nanobotsfile.length() != 0) {
 			file = new File(nanobotsfile);
 			if (file.exists() && !file.delete()) {
-				logger.error("Can't delete file: " + file);
+				Logger.logError("Can't delete file: " + file);
 			}
 		}
 		// download new ones
@@ -179,14 +176,12 @@ public class BotsDownload {
 			// Check that we received a HTTP_OK response code.
 			// Bugfix [2779557] - Client tries to remove all participants.
 			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-				StringBuilder error = new StringBuilder();
-				error.append("Unable to retrieve participants list. Response is ").append(conn.getResponseCode());
+				System.out.print("Unable to retrieve participants list. Response is " + conn.getResponseCode());
 				if (conn.getResponseMessage() != null) {
-					error.append(": ").append(conn.getResponseMessage());
+					System.out.print(": " + conn.getResponseMessage());
 				}
-				error.append('\n');
-
-				logger.error(error);
+				System.out.println();
+				
 				return false; // Error
 			}
 
@@ -207,13 +202,13 @@ public class BotsDownload {
 					if (!isExcluded(bot)) {
 						if (!verifyParticipantFormat(participant)) {
 							if (participant.trim().length() > 0) {
-								logger.warn("Participant ignored due to invalid line: " + bot);
+								System.out.println("Participant ignored due to invalid line: " + bot);
 							}
 						} else {
 							bots.add(participant);
 						}
 					} else {
-						logger.info("Ignored excluded: " + bot);
+						System.out.println("Ignored excluded: " + bot);
 					}
 				}
 			}
@@ -221,14 +216,14 @@ public class BotsDownload {
 			// Prevent our local participants file to be overwritten, if the downloaded list is empty.
 			// Bugfix [2779557] - Client tries to remove all participants.
 			if (bots.size() == 0) {
-				logger.error("The participants list is empty");
+				System.out.println("The participants list is empty");
 				return false; // Error
 			}
 
 			final File dir = new File(participantsfile).getParentFile();
 
 			if (!dir.exists() && !dir.mkdirs()) {
-				logger.error("Can't create directory: " + dir);
+				Logger.logError("Can't create directory: " + dir);
 			}
 
 			PrintStream outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(participantsfile)), false);
@@ -239,7 +234,8 @@ public class BotsDownload {
 			outtxt.close();
 
 		} catch (IOException e) {
-			logger.error("Unable to retrieve participants list", e);
+			System.out.println("Unable to retrieve participants list:");
+			System.out.println(e);
 			return false; // Error
 		} finally {
 			if (bufferedReader != null) {
@@ -280,7 +276,8 @@ public class BotsDownload {
 				}
 			}
 		} catch (IOException e) {
-			logger.error("Participants file not found ... Aborting", e);
+			System.out.println("Participants file not found ... Aborting");
+			System.out.println(e);
 			return;
 		} finally {
 			if (br != null) {
@@ -302,7 +299,7 @@ public class BotsDownload {
 				boolean downloaded = downloadBot(botname, botjar, botid, botsrepository, tempdir);
 
 				if (!downloaded) {
-					logger.warn("Could not download " + botjar);
+					System.out.println("Could not download " + botjar);
 				}
 			}
 		}
@@ -324,7 +321,8 @@ public class BotsDownload {
 					size.checkCompetitorsForSize(name, name, 1500);
 				}
 			} catch (IOException e) {
-				logger.error("Battles input file not found ... Aborting", e);
+				System.out.println("Battles input file not found ... Aborting");
+				System.out.println(e);
 			} finally {
 				if (br != null) {
 					try {
@@ -342,8 +340,9 @@ public class BotsDownload {
 		// check if the bot exists in the repository
 
 		boolean exists = (new File(finald)).exists();
+
 		if (exists) {
-			logger.warn("The bot already exists in the repository.");
+			System.out.println("The bot already exists in the repository.");
 			return false;
 		}
 
@@ -364,10 +363,10 @@ public class BotsDownload {
 		DownloadStatus downloadStatus = FileTransfer.download(url, filed, sessionId);
 
 		if (downloadStatus == DownloadStatus.FILE_NOT_FOUND) {
-			logger.error("Could not find " + botname + " from " + url);
+			System.out.println("Could not find " + botname + " from " + url);
 			return false;
 		} else if (downloadStatus == DownloadStatus.COULD_NOT_CONNECT) {
-			logger.error("Could not connect to " + url);
+			System.out.println("Could not connect to " + url);
 			return false;
 		}
 
@@ -375,21 +374,21 @@ public class BotsDownload {
 
 		if (checkJarFile(filed, botname)) {
 			if (!FileTransfer.copy(filed, finald)) {
-				logger.error("Unable to copy " + filed + " into the repository");
+				System.out.println("Unable to copy " + filed + " into the repository");
 				return false;
 			}
 		} else {
-			logger.warn("Downloaded file is wrong or corrupted:" + file);
+			System.out.println("Downloaded file is wrong or corrupted:" + file);
 			return false;
 		}
 
-		logger.info("Downloaded " + botname + " into " + finald);
+		System.out.println("Downloaded " + botname + " into " + finald);
 		return true;
 	}
 
 	private boolean checkJarFile(String file, String botname) {
 		if (botname.indexOf(" ") == -1) {
-			logger.error("Are you sure " + botname + " is a bot/team? Can't download it.");
+			System.out.println("Are you sure " + botname + " is a bot/team? Can't download it.");
 			return false;
 		}
 
@@ -407,7 +406,7 @@ public class BotsDownload {
 			ZipEntry zipe = jarf.getJarEntry(bot);
 
 			if (zipe == null) {
-				logger.error("Not able to read properties: " + bot);
+				System.out.println("Not able to read properties");
 				return false;
 			}
 			InputStream properties = jarf.getInputStream(zipe);
@@ -424,7 +423,7 @@ public class BotsDownload {
 
 			return (botname.equals(botname.substring(0, botname.indexOf(" ")) + " " + version));
 		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage(), e);
+			System.out.println(e);
 			return false;
 		}
 	}
@@ -447,7 +446,7 @@ public class BotsDownload {
 			final File dir = new File(file).getParentFile();
 
 			if (!dir.exists() && !dir.mkdirs()) {
-				logger.error("Can't create directory: " + dir);
+				Logger.logError("Can't create directory: " + dir);
 			}
 
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), false);
@@ -462,7 +461,8 @@ public class BotsDownload {
 			conn.disconnect();
 
 		} catch (IOException e) {
-			logger.error("Unable to ratings for " + competition, e);
+			System.out.println("Unable to ratings for " + competition);
+			System.out.println(e);
 			return false;
 		} finally {
 			if (bufferedReader != null) {
@@ -499,7 +499,8 @@ public class BotsDownload {
 				}
 			}
 		} catch (IOException e) {
-			logger.error("Participants file not found when removing old participants ... Aborting", e);
+			System.out.println("Participants file not found when removing old participants ... Aborting");
+			System.out.println(e);
 			return;
 		} finally {
 			if (br != null) {
@@ -521,7 +522,7 @@ public class BotsDownload {
 
 			if (!(isExcluded(bot) || namesall.containsKey(bot))) {
 				// Remove the bot from the ratings file
-				logger.info("Removing entry ... " + bot + " from " + generalbots);
+				System.out.println("Removing entry ... " + bot + " from " + generalbots);
 				removebot(generalbots, bot);
 			}
 		}
@@ -531,7 +532,7 @@ public class BotsDownload {
 
 			if (!(isExcluded(bot) || namesall.containsKey(bot))) {
 				// Remove the bot from the ratings file
-				logger.info("Removing entry ... " + bot + " from " + minibots);
+				System.out.println("Removing entry ... " + bot + " from " + minibots);
 				removebot(minibots, bot);
 			}
 		}
@@ -542,7 +543,7 @@ public class BotsDownload {
 
 			if (!(isExcluded(bot) || namesall.containsKey(bot))) {
 				// Remove the bot from the ratings file
-				logger.info("Removing entry ... " + bot + " from " + microbots);
+				System.out.println("Removing entry ... " + bot + " from " + microbots);
 				removebot(microbots, bot);
 			}
 		}
@@ -553,7 +554,7 @@ public class BotsDownload {
 
 			if (!(isExcluded(bot) || namesall.containsKey(bot))) {
 				// Remove the bot from the ratings file
-				logger.info("Removing entry ... " + bot + " from " + nanobots);
+				System.out.println("Removing entry ... " + bot + " from " + nanobots);
 				removebot(nanobots, bot);
 			}
 		}
@@ -561,7 +562,7 @@ public class BotsDownload {
 
 	private void removebot(String game, String bot) {
 		if (removeboturl.length() == 0) {
-			logger.error("UPDATEBOTS URL not defined!");
+			System.out.println("UPDATEBOTS URL not defined!");
 			return;
 		}
 
@@ -581,6 +582,7 @@ public class BotsDownload {
 			out = FileTransfer.getOutputStream(conn);
 			outputStreamWriter = new OutputStreamWriter(out);
 			wr = new PrintWriter(outputStreamWriter);
+
 			wr.println(data);
 			wr.flush();
 
@@ -590,10 +592,10 @@ public class BotsDownload {
 			bufferedReader = new BufferedReader(inputStreamReader);
 
 			for (String line; (line = bufferedReader.readLine()) != null;) {
-				logger.info(line);
+				System.out.println(line);
 			}
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			System.out.println(e);
 		} finally {
 			if (wr != null) {
 				wr.close();

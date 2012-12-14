@@ -191,7 +191,6 @@ public class BulletPeer {
 							final double bonus = owner.getRobotStatistics().scoreBulletKill(otherRobot.getName());
 
 							if (bonus > 0) {
-								// Print to robot console -> System.out is redirected
 								owner.println(
 										"SYSTEM: Bonus for killing "
 												+ (owner.getNameForEvent(otherRobot) + ": " + (int) (bonus + .5)));

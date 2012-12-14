@@ -58,6 +58,7 @@ public class TestPosition extends RobocodeTestBed {
 		super.onTurnEnded(event);
 		lastTurn = event.getTurnSnapshot().getTurn();
 
+		// System.out.println(event.getTurnSnapshot().getTurn());
 		IRobotSnapshot crazy = event.getTurnSnapshot().getRobots()[0];
 		IRobotSnapshot target = event.getTurnSnapshot().getRobots()[1];
 

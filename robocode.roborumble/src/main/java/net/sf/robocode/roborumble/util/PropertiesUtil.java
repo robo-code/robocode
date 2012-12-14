@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2012 Albert PÃ©rez and RoboRumble contributors
+ * Copyright (c) 2003, 2012 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,16 +18,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * @author Flemming N. Larsen (original)
  */
 public final class PropertiesUtil {
 
-	private static final Logger logger = Logger.getLogger(PropertiesUtil.class);
-	
 	/**
 	 * Returns a new Properties instance that is initialized to the specified properties file.
 	 *
@@ -44,13 +40,13 @@ public final class PropertiesUtil {
 				fis = new FileInputStream(filename);
 				props.load(fis);
 			} catch (IOException e) {
-				logger.error("Could not load properties file: " + filename);
+				System.err.println("Could not load properties file: " + filename);
 			} finally {
 				if (fis != null) {
 					try {
 						fis.close();
 					} catch (IOException e) {
-						logger.error(e.getLocalizedMessage(), e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -66,10 +62,11 @@ public final class PropertiesUtil {
 	 */
 	public static Properties getProperties(InputStream is) {
 		Properties props = new Properties();
+
 		try {
 			props.load(is);
 		} catch (Exception e) {
-			logger.error("Could not load properties input stream: " + is, e);
+			System.err.println("Could not load properties input stream: " + is);
 		}
 		return props;
 	}
@@ -93,14 +90,14 @@ public final class PropertiesUtil {
 			fos = new FileOutputStream(filename);
 			properties.store(fos, comments);
 		} catch (IOException e) {
-			logger.error("Could not store properties to file: " + filename, e);
+			System.err.println("Could not store properties to file: " + filename);
 			return false;
 		} finally {
 			if (fos != null) {
 				try {
 					fos.close();
 				} catch (IOException e) {
-					logger.error(e.getLocalizedMessage(), e);
+					e.printStackTrace();
 				}
 			}
 		}

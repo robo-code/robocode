@@ -12,9 +12,11 @@
 package net.sf.robocode.test.robotscs;
 
 
+import net.sf.robocode.core.Container;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-
-import org.apache.log4j.Logger;
+import net.sf.robocode.version.IVersionManager;
+import net.sf.robocode.version.VersionManager;
 import org.junit.Assert;
 import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
@@ -27,8 +29,6 @@ import java.io.File;
  */
 public class TestFileWriteSize extends RobocodeTestBed {
 
-	private final static Logger logger = Logger.getLogger(TestFileWriteSize.class);
-	
 	boolean messagedDataQuota;
 	boolean messagedDataDirectory;
 	boolean messageQuotaReached;
@@ -47,10 +47,12 @@ public class TestFileWriteSize extends RobocodeTestBed {
 	File file;
 	@Override
 	protected void runSetup() {
+		final IVersionManager vm = new VersionManager(null);
+
 		file = new File(robotsPath + "\\target\\classes\\.data\\tested\\robotscs\\test.txt");
 		if (file.exists()) {
 			if (!file.delete()) {
-				logger.error("Can't delete: " + file);
+				Logger.logError("Can't delete" + file);
 			}
 		}
 	}
@@ -60,15 +62,13 @@ public class TestFileWriteSize extends RobocodeTestBed {
 		return 1;
 	}
 
-	String lastOut = null;
-	
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
 
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-		if (out.contains("Data quota: 200000")) {
+		if (out.contains("Data quota: 200000\r\n")) {
 			messagedDataQuota = true;	
 		}
 		
@@ -93,7 +93,7 @@ public class TestFileWriteSize extends RobocodeTestBed {
 		Assert.assertTrue("Game must terminate the robot", robotTerminated);
 		Assert.assertTrue(file.exists());
 		if (!file.delete()) {
-			logger.error("Can't delete: " + file);
+			Logger.logError("Can't delete" + file);
 		}
 	}
 }

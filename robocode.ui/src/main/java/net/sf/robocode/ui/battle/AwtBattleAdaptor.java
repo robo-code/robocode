@@ -15,14 +15,12 @@ package net.sf.robocode.ui.battle;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.snapshot.RobotSnapshot;
+import net.sf.robocode.io.Logger;
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
 
 import javax.swing.*;
-
-import org.apache.log4j.Logger;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,9 +33,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Pavel Savara (original)
  */
 public final class AwtBattleAdaptor {
-	
-	private static final Logger logger = Logger.getLogger(AwtBattleAdaptor.class);
-
 	private boolean isEnabled;
 	private final IBattleManager battleManager;
 	private final BattleEventDispatcher battleEventDispatcher = new BattleEventDispatcher();
@@ -142,7 +137,7 @@ public final class AwtBattleAdaptor {
 				}
 			}
 		} catch (Throwable t) {
-			logger.error(t.getLocalizedMessage(), t);
+			Logger.logError(t);
 		}
 	}
 

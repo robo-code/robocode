@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2012 Albert PÃ©rez and RoboRumble contributors
+ * Copyright (c) 2003, 2012 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  *
  * Contributors:
- *     Albert PÃ©rez
+ *     Albert Pérez
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Ported to Java 5
@@ -32,20 +32,16 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * PrepareBattles is used for preparing battles.
  * Controlled by properties files.
  *
- * @author Albert PÃ©rez (original)
+ * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
  * @author Jerome Lavigne (contributor)
  */
 public class PrepareBattles {
-	
-	private static final Logger logger = Logger.getLogger(PrepareBattles.class);
 
 	private final String botsrepository;
 	private final String participantsfile;
@@ -121,7 +117,8 @@ public class PrepareBattles {
 				}
 			}
 		} catch (IOException e) {
-			logger.error("Participants file not found ... Aborting", e);
+			System.out.println("Participants file not found ... Aborting");
+			System.out.println(e);
 			return false;
 		} finally {
 			if (br != null) {
@@ -136,7 +133,8 @@ public class PrepareBattles {
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesfile)), false);
 		} catch (IOException e) {
-			logger.error("Not able to open battles file " + battlesfile + " ... Aborting", e);
+			System.out.println("Not able to open battles file " + battlesfile + " ... Aborting");
+			System.out.println(e);
 			return false;
 		}
 		// Create the participants file
@@ -219,7 +217,8 @@ public class PrepareBattles {
 				}
 			}
 		} catch (IOException e) {
-			logger.error("Participants file not found ... Aborting", e);
+			System.out.println("Participants file not found ... Aborting");
+			System.out.println(e);
 			return false;
 		} finally {
 			if (br != null) {
@@ -253,12 +252,12 @@ public class PrepareBattles {
 					if (exists1 && exists2 && !priorityBattles.contains(record)) {
 						priorityBattles.add(record);
 					} else {
-						logger.warn("Ignoring: " + record);
+						System.out.println("Ignoring: " + record);
 					}
 				}
 			}
 		} catch (IOException e) {
-			logger.error("Priority battles file not found ...");
+			System.out.println("Priority battles file not found ...  ");
 		} finally {
 			if (br != null) {
 				try {
@@ -271,7 +270,7 @@ public class PrepareBattles {
 		File r = new File(priority);
 
 		if (r.exists() && !r.delete()) {
-			logger.error("Cannot delete: " + priority);
+			System.out.println("Cannot delete: " + priority);
 		}
 
 		// Open battles file
@@ -280,7 +279,8 @@ public class PrepareBattles {
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesfile)), false);
 		} catch (IOException e) {
-			logger.error("Not able to open battles file " + battlesfile + " ... Aborting", e);
+			System.out.println("Not able to open battles file " + battlesfile + " ... Aborting");
+			System.out.println(e);
 			return false;
 		}
 
@@ -435,7 +435,8 @@ public class PrepareBattles {
 				}
 			}
 		} catch (IOException e) {
-			logger.error("Participants file not found ... Aborting", e);
+			System.out.println("Participants file not found ... Aborting");
+			System.out.println(e);
 			return false;
 		} finally {
 			if (br != null) {
@@ -469,12 +470,12 @@ public class PrepareBattles {
 					if (exists1 && exists2 && !priorityPairs.contains(items)) {
 						priorityPairs.add(items);
 					} else {
-						logger.warn("Ignoring: " + record);
+						System.out.println("Ignoring: " + record);
 					}
 				}
 			}
 		} catch (IOException e) {
-			logger.error("Priority battles file not found ...");
+			System.out.println("Priority battles file not found ...  ");
 		} finally {
 			if (br != null) {
 				try {
@@ -487,7 +488,7 @@ public class PrepareBattles {
 		File r = new File(priority);
 
 		if (r.exists() && !r.delete()) {
-			logger.error("Cannot delete: " + priority);
+			System.out.println("Cannot delete: " + priority);
 		}
 
 		// Open battles file
@@ -496,7 +497,8 @@ public class PrepareBattles {
 		try {
 			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesfile)), false);
 		} catch (IOException e) {
-			logger.error("Not able to open battles file " + battlesfile + " ... Aborting", e);
+			System.out.println("Not able to open battles file " + battlesfile + " ... Aborting");
+			System.out.println(e);
 			return false;
 		}
 

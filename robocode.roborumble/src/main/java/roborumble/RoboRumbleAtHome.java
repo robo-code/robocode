@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2012 Albert PÃ©rez and RoboRumble contributors
+ * Copyright (c) 2003, 2012 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  *
  * Contributors:
- *     Albert PÃ©rez
+ *     Albert Pérez
  *     - Initial API and implementation
  *     Flemming N. Larsen
  *     - Properties are now read using PropertiesUtil.getProperties()
@@ -27,21 +27,17 @@ import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * Implements the client side of RoboRumble@Home.
  * Controlled by properties files.
  *
- * @author Albert PÃ©rez (original)
+ * @author Albert Pérez (original)
  * @author Flemming N. Larsen (contributor)
  * @author Jerome Lavigne (contributor)
  */
 public class RoboRumbleAtHome {
 
-	private static final Logger logger = Logger.getLogger(RoboRumbleAtHome.class);
-	
 	public static void main(String args[]) {
 
 		// Get the associated parameters file
@@ -50,7 +46,7 @@ public class RoboRumbleAtHome {
 		try {
 			parameters = args[0];
 		} catch (Exception e) {
-			logger.warn("No argument found specifying properties file. \"roborumble.txt\" assumed.");
+			System.out.println("No argument found specifying properties file. \"roborumble.txt\" assumed.");
 		}
 
 		// Read parameters for running the app
@@ -76,7 +72,7 @@ public class RoboRumbleAtHome {
 				version = engine.getVersion();
 			}
 
-			logger.info("Iteration number " + iterations);
+			System.out.println("Iteration number " + iterations);
 
 			// Download data from Internet if downloads is YES and it has not been download for two hours
 			if (downloads.equals("YES")) {
@@ -84,18 +80,18 @@ public class RoboRumbleAtHome {
 
 				if (runonly.equals("SERVER")) {
 					// Download rating files and update ratings downloaded
-					logger.info("Downloading rating files ...");
+					System.out.println("Downloading rating files ...");
 					ratingsdownloaded = download.downloadRatings();
 				}
 				if ((System.currentTimeMillis() - lastdownload) > 2 * 3600 * 1000) {
-					logger.info("Downloading participants list ...");
+					System.out.println("Downloading participants list ...");
 					participantsdownloaded = download.downloadParticipantsList();
-					logger.info("Downloading missing bots ...");
+					System.out.println("Downloading missing bots ...");
 					download.downloadMissingBots();
 					download.updateCodeSize();
 					// Send the order to the server to remove old participants from the ratings file
 					if (ratingsdownloaded && participantsdownloaded) {
-						logger.info("Removing old participants from server ...");
+						System.out.println("Removing old participants from server ...");
 						// Send unwanted participants to the server
 						download.notifyServerForOldParticipants();
 					}
@@ -112,16 +108,16 @@ public class RoboRumbleAtHome {
 				PrepareBattles battles = new PrepareBattles(parameters);
 
 				if (isMelee) {
-					logger.info("Preparing melee battles list ...");
+					System.out.println("Preparing melee battles list ...");
 					ready = battles.createMeleeBattlesList();
 				} else {
 					final boolean isSmartBattles = ratingsdownloaded && runonly.equals("SERVER");
 
 					if (isSmartBattles) {
-						logger.info("Preparing battles list using smart battles...");
+						System.out.println("Preparing battles list using smart battles...");
 						ready = battles.createSmartBattlesList();
 					} else {
-						logger.info("Preparing battles list...");
+						System.out.println("Preparing battles list...");
 						ready = battles.createBattlesList();
 					}
 				}
@@ -133,24 +129,25 @@ public class RoboRumbleAtHome {
 				// Execute battles
 				if (ready) {
 					if (isMelee) {
-						logger.info("Executing melee battles ...");
+						System.out.println("Executing melee battles ...");
 					} else {
-						logger.info("Executing battles ...");
+						System.out.println("Executing battles ...");
 					}
+
 					engine.runBattlesImpl(isMelee);
 				}
 			}
 
 			// Upload results
 			if (uploads.equals("YES") && version != null) {
-				logger.info("Uploading results ...");
+				System.out.println("Uploading results ...");
 				ResultsUpload upload = new ResultsUpload(parameters, version);
 
 				// Uploads the results to the server
 				upload.uploadResults();
 
 				// Updates the number of battles from the info received from the server
-				logger.info("Updating number of battles fought ...");
+				System.out.println("Updating number of battles fought ...");
 				UpdateRatingFiles updater = new UpdateRatingFiles(parameters);
 
 				ratingsdownloaded = updater.updateRatings();

@@ -14,6 +14,7 @@ package net.sf.robocode.repository;
 
 import net.sf.robocode.core.Container;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
@@ -34,16 +35,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * @author Pavel Savara (original)
  */
 public class RepositoryManager implements IRepositoryManager {
 
-	private static final Logger logger = Logger.getLogger(RepositoryManager.class);
-	
 	private final ISettingsManager properties;
 	private Database db;
 
@@ -67,7 +64,7 @@ public class RepositoryManager implements IRepositoryManager {
 			try {
 				develDirectories.add(new File(path).getCanonicalFile());
 			} catch (IOException e) {
-				logger.error(e.getLocalizedMessage(), e);
+				Logger.logError(e);
 			}
 		}
 		return develDirectories;
@@ -104,7 +101,7 @@ public class RepositoryManager implements IRepositoryManager {
 		URLJarCollector.gc();
 
 		if (rebuild) {
-			setStatus("Rebuilding robot database...");
+			Logger.logMessage("Rebuilding robot database...");
 			db = new Database(this);
 		} else if (db == null) {
 			setStatus("Reading robot database");
@@ -199,7 +196,7 @@ public class RepositoryManager implements IRepositoryManager {
 				if (robot.validate()) {
 					battlingRobotsList.add(robot.createRobotSpecification(spec, null));
 				} else {
-					logger.error("Could not load robot: " + robot.getFullClassName());
+					Logger.logError("Could not load robot: " + robot.getFullClassName());
 					return false;
 				}
 			}
@@ -281,7 +278,7 @@ public class RepositoryManager implements IRepositoryManager {
 			windowManager.setStatus(message);
 		}
 		if (message.length() > 0) {
-			logger.info(message);
+			Logger.logMessage(message);
 		}
 	}
 

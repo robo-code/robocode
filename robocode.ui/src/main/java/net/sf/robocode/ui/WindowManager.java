@@ -42,9 +42,6 @@ import robocode.control.snapshot.ITurnSnapshot;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
-
-import org.apache.log4j.Logger;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -57,8 +54,6 @@ import java.util.Locale;
  * @author Luis Crespo (contributor)
  */
 public class WindowManager implements IWindowManagerExt {
-	
-	private final static Logger logger = Logger.getLogger(WindowManager.class);
 
 	private final static int TIMER_TICKS_PER_SECOND = 50;
 	private final AwtBattleAdaptor awtAdaptor;
@@ -603,7 +598,7 @@ public class WindowManager implements IWindowManagerExt {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			} catch (Throwable t2) {
 				// For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
-				logger.error("Could not set the Look and Feel (LAF). The default LAF is used instead", t2);
+				System.err.println("Could not set the Look and Feel (LAF).  The default LAF is used instead");
 			}
 		}
 		// Java 1.6 provide system specific anti-aliasing. Enable it, if it has not been set

@@ -82,12 +82,10 @@ public abstract class Condition {
 	public Condition(String name, int priority) {
 		this.name = name;
 		if (priority < 0) {
-			// Print to robot console -> System.out is redirected
 			System.out.println("SYSTEM: Priority must be between 0 and 99.");
 			System.out.println("SYSTEM: Priority for condition " + name + " will be 0.");
 			priority = 0;
 		} else if (priority > 99) {
-			// Print to robot console -> System.out is redirected
 			System.out.println("SYSTEM: Priority must be between 0 and 99.");
 			System.out.println("SYSTEM: Priority for condition " + name + " will be 99.");
 			priority = 99;

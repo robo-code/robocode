@@ -25,6 +25,7 @@ import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
 import net.sf.robocode.host.io.RobotFileSystemManager;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
 
 import java.io.File;
@@ -34,8 +35,6 @@ import java.net.MalformedURLException;
 import java.security.*;
 import java.util.*;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * @author Mathew A. Nelson (original)
@@ -43,9 +42,6 @@ import org.apache.log4j.Logger;
  * @author Robert D. Maupin (contributor)
  */
 public class RobocodeSecurityPolicy extends Policy {
-	
-	private static final Logger logger = Logger.getLogger(RobocodeSecurityPolicy.class);
-
 	private static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
 	private static final boolean isFileReadSecutityOff = System.getProperty("OVERRIDEFILEREADSECURITY", "false").equals(
 			"true");
@@ -143,9 +139,11 @@ public class RobocodeSecurityPolicy extends Policy {
 
 		// Ok, we need to figure out who our robot is.
 		Thread c = Thread.currentThread();
+
 		IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
+
 		if (robotProxy == null) {
-			logger.error("Preventing unknown thread " + Thread.currentThread().getName() + " from access: " + perm);
+			Logger.logError("Preventing unknown thread " + Thread.currentThread().getName() + " from access: " + perm);
 			return false;
 		}
 
@@ -300,7 +298,7 @@ public class RobocodeSecurityPolicy extends Policy {
 
 	private void initUrls() {
 		untrustedCodeUrls = new HashSet<String>();
-		untrustedCodeUrls.add(RobotClassLoader.UNTRUSTED_URL);
+		untrustedCodeUrls.add(RobotClassLoader.untrustedURL);
 
 		String classPath = System.getProperty("robocode.class.path");
 		StringTokenizer tokenizer = new StringTokenizer(classPath, File.pathSeparator);
@@ -328,9 +326,9 @@ public class RobocodeSecurityPolicy extends Policy {
 				}
 			}
 		} catch (MalformedURLException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			Logger.logError(e);
 		}
 	}
 }

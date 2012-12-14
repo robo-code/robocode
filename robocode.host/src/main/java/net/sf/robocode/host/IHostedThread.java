@@ -32,5 +32,5 @@ public interface IHostedThread extends Runnable {
 
 	RobotOutputStream getOut();
 
-	ClassLoader getRobotClassLoader();
+	ClassLoader getRobotClassloader();
 }

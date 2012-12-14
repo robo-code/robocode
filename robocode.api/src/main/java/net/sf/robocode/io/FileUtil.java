@@ -18,9 +18,9 @@
 package net.sf.robocode.io;
 
 
-import java.io.*;
+import static net.sf.robocode.io.Logger.logError;
 
-import org.apache.log4j.Logger;
+import java.io.*;
 
 
 /**
@@ -31,8 +31,6 @@ import org.apache.log4j.Logger;
  */
 public class FileUtil {
 
-	private static final Logger logger = Logger.getLogger(FileUtil.class);
-
 	// Current working directory
 	private static File cwd;
 
@@ -40,9 +38,10 @@ public class FileUtil {
 	static {
 		try {
 			final String wd = System.getProperty("WORKINGDIRECTORY", "");
+
 			FileUtil.setCwd(new File(wd));
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(), e);
+			e.printStackTrace();
 		}
 	}
 
@@ -159,17 +158,17 @@ public class FileUtil {
 						if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
 							deleteDir(file);
 							if (file.exists() && !file.delete()) {
-								logger.error("Cannot delete: " + file);
+								Logger.logError("Cannot delete: " + file);
 							}
 						} else {
-							logger.warn("The file " + file + " may be a symlink. Ignoring.");
+							Logger.logWarning(file + " may be a symlink. Ignoring.");
 						}
 					} catch (IOException e) {
-						logger.warn("Cannot determine canonical file for " + file + ". Ignoring.");
+						Logger.logWarning("Cannot determine canonical file for " + file + ". Ignoring.");
 					}
 				} else {
 					if (file.exists() && !file.delete()) {
-						logger.error("Cannot delete: " + file);
+						Logger.logError("Cannot delete: " + file);
 					}
 				}
 			}
@@ -187,7 +186,7 @@ public class FileUtil {
 	public static File createDir(File dir) {
 		if (dir != null && !dir.exists()) {
 			if (!dir.mkdir()) {
-				logger.error("Cannot create dir: " + dir);
+				Logger.logError("Cannot create dir: " + dir);
 			}
 		}
 		return dir;
@@ -315,14 +314,14 @@ public class FileUtil {
 			try {
 				((Flushable) stream).flush();
 			} catch (IOException e) {
-				logger.error(e.getLocalizedMessage(), e);
+				logError(e);
 			}
 		}
 		if (stream instanceof Closeable) {
 			try {
 				((Closeable) stream).close();
 			} catch (IOException e) {
-				logger.error(e.getLocalizedMessage(), e);
+				logError(e);
 			}
 		}
 	}

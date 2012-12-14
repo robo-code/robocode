@@ -13,6 +13,7 @@ package net.sf.robocode.repository.items;
 
 
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
@@ -29,8 +30,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * @author Pavel Savara (original)
@@ -46,8 +45,6 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 	private final static String TEAM_WEBPAGE = "team.webpage";
 	private final static String TEAM_MEMBERS = "team.members";
 	private final static String ROBOCODE_VERSION = "robocode.version";
-
-	private static final Logger logger = Logger.getLogger(TeamItem.class);
 
 	private final String fullTeamName;
 
@@ -122,7 +119,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 				properties.load(ios);
 				return true;
 			} catch (IOException e) {
-				logger.error(e.getLocalizedMessage(), e);
+				Logger.logError(e);
 			} finally {
 				FileUtil.cleanupStream(ios);
 			}
@@ -250,7 +247,7 @@ public class TeamItem extends NamedItem implements IRepositoryItem {
 				fis = new FileInputStream(target);
 				team.load(fis);
 			} catch (Exception e) {
-				logger.error(e.getLocalizedMessage(), e);
+				Logger.logError(e);
 			} finally {
 				FileUtil.cleanupStream(fis);
 			}

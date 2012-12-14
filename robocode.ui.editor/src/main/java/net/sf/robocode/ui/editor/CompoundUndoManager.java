@@ -20,8 +20,6 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.CompoundEdit;
 import javax.swing.undo.UndoableEdit;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * Undo manager that compounds undo and redo edits.
@@ -31,8 +29,6 @@ import org.apache.log4j.Logger;
 @SuppressWarnings("serial")
 public class CompoundUndoManager extends UndoManagerWithActions {
 
-	private static Logger logger = Logger.getLogger(CompoundUndoManager.class);
-	
 	private CompoundEdit currentCompoundEdit;
 	private EventType lastEventType;
 	private boolean isCompoundMarkStart;
@@ -64,7 +60,7 @@ public class CompoundUndoManager extends UndoManagerWithActions {
 						String insertedText = event.getDocument().getText(event.getOffset(), event.getLength());
 						isEndCompoundEdit = insertedText.contains("\n");
 					} catch (BadLocationException e) {
-						logger.error(e.getLocalizedMessage(), e);
+						e.printStackTrace();
 					}
 				}
 

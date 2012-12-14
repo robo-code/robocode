@@ -41,6 +41,7 @@ import net.sf.robocode.battle.IBattleManagerBase;
 import net.sf.robocode.core.ContainerBase;
 import net.sf.robocode.gui.IWindowManagerBase;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.repository.IRepositoryManagerBase;
 import net.sf.robocode.security.HiddenAccess;
@@ -305,22 +306,22 @@ public class RobocodeEngine implements IRobocodeEngine {
 		for (int i = 0; i < numGroups; i++) {
 			currentGroup = groups[i];
 			if (currentGroup.isDaemon()) {
-				System.out.print("  ");
+				Logger.realOut.print("  ");
 			} else {
-				System.out.print("* ");
+				Logger.realOut.print("* ");
 			}
-			System.out.println("In group: " + currentGroup.getName());
+			Logger.realOut.println("In group: " + currentGroup.getName());
 			int numThreads = currentGroup.enumerate(threads);
 
 			for (int j = 0; j < numThreads; j++) {
 				if (threads[j].isDaemon()) {
-					System.out.print("  ");
+					Logger.realOut.print("  ");
 				} else {
-					System.out.print("* ");
+					Logger.realOut.print("* ");
 				}
-				System.out.println(threads[j].getName());
+				Logger.realOut.println(threads[j].getName());
 			}
-			System.out.println("---------------");
+			Logger.realOut.println("---------------");
 		}
 	}
 

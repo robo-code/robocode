@@ -28,6 +28,7 @@
 package net.sf.robocode.ui.packager;
 
 
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryItem;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.ui.IWindowManager;
@@ -35,9 +36,6 @@ import net.sf.robocode.ui.dialog.*;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
-
-import org.apache.log4j.Logger;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,8 +53,6 @@ import java.net.URL;
  */
 @SuppressWarnings("serial")
 public class RobotPackager extends JDialog implements WizardListener {
-
-	private static final Logger logger = Logger.getLogger(RobotPackager.class);
 
 	private final int minRobots = 1;
 	private final int maxRobots = 1; // 250;
@@ -209,10 +205,10 @@ public class RobotPackager extends JDialog implements WizardListener {
 					JOptionPane.YES_NO_CANCEL_OPTION);
 
 			if (ok == JOptionPane.NO_OPTION || ok == JOptionPane.CANCEL_OPTION) {
-				logger.info("Cancelled by user.");
+				Logger.logMessage("Cancelled by user.");
 				return;
 			}
-			logger.warn("Overwriting file: " + jarFilename);
+			Logger.logMessage("Overwriting " + jarFilename);
 		}
 
 		String w = getPackagerOptionsPanel().getWebpageField().getText();
