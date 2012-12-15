@@ -12,11 +12,8 @@
 package net.sf.robocode.test.robotscs;
 
 
-import net.sf.robocode.core.Container;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import net.sf.robocode.version.IVersionManager;
-import net.sf.robocode.version.VersionManager;
 import org.junit.Assert;
 import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
@@ -47,8 +44,6 @@ public class TestFileWriteSize extends RobocodeTestBed {
 	File file;
 	@Override
 	protected void runSetup() {
-		final IVersionManager vm = new VersionManager(null);
-
 		file = new File(robotsPath + "\\target\\classes\\.data\\tested\\robotscs\\test.txt");
 		if (file.exists()) {
 			if (!file.delete()) {

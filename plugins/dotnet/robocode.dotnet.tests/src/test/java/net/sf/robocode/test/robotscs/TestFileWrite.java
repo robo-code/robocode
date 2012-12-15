@@ -12,11 +12,8 @@
 package net.sf.robocode.test.robotscs;
 
 
-import net.sf.robocode.core.Container;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import net.sf.robocode.version.IVersionManager;
-import net.sf.robocode.version.VersionManager;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -162,10 +162,11 @@ public class AutoExtract implements ActionListener {
 			System.err.println(message);
 			System.exit(0);
 		}
+		JarInputStream jarIS = null;
 		try {
 			final URL url = new URL("file:/" + src);
 			InputStream is = url.openStream();
-			JarInputStream jarIS = new JarInputStream(is);
+			jarIS = new JarInputStream(is);
 
 			JarEntry entry = jarIS.getNextJarEntry();
 
@@ -228,6 +229,14 @@ public class AutoExtract implements ActionListener {
 		} catch (IOException e) {
 			message = "Installation failed" + e;
 			return false;
+		} finally {
+			if (jarIS != null) {
+				try {
+					jarIS.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
