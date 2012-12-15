@@ -1,5 +1,8 @@
 ## Version 1.8.0.0 Alpha (15-Dec-2012)
 
+### Bug fix
+* [Bug-348][]: .NET: UnauthorizedAccessException in AppDomainShell.Dispose().
+
 ### Changes
 * Robocode has been updated to Java 6, and hence this will be the new minimum requirement for running Robocode from this version.
 * The icon for Robocode was upgraded to a 256x256 pixel resolution.
@@ -2806,6 +2809,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-344]: http://sourceforge.net/p/robocode/bugs/344/  (BattleAdaptor missing in robocode.control.events)
 [Bug-345]: http://sourceforge.net/p/robocode/bugs/345/  (Graphics still being rendered when minimized)
 [Bug-347]: http://sourceforge.net/p/robocode/bugs/347/  (/bin/sh^M bad interpreter)
+[Bug-348]: http://sourceforge.net/p/robocode/bugs/348/  (.NET: UnauthorizedAccessException in AppDomainShell.Dispose())
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)

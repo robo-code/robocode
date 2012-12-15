@@ -67,6 +67,10 @@ namespace net.sf.robocode.dotnet.host.seed
                 {
                     //ignore
                 }
+				catch (UnauthorizedAccessException)
+                {
+                    //ignore
+                }
                 tempDir = null;
             }
         }
