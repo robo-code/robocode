@@ -111,7 +111,7 @@ public class RobocodeCompilerFactory {
 
 		String compilerName = "Java Compiler (javac)";
 		String compilerBinary = "javac";
-		String compilerOptions = "-deprecation -g -source 1.5 -encoding UTF-8";
+		String compilerOptions = "-deprecation -g -source 1.6 -encoding UTF-8";
 
 		boolean javacOK = testCompiler(compilerName, compilerBinary, console);
 		boolean ecjOK = false;
