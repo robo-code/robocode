@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<artifactId>robocode.dotnet.api</artifactId>
 	<name>Robocode .NET Robot API</name>
 	<description>.NET Robot API for Robocode</description>
-	<packaging>dotnet-library</packaging>
+	<packaging>dotnet:library</packaging>
 	<parent>
 		<artifactId>robocode.dotnet</artifactId>
 		<groupId>net.sf.robocode</groupId>
@@ -16,10 +16,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.npanday.plugins</groupId>
-				<artifactId>maven-compile-plugin</artifactId>
+				<groupId>org.sonatype.nmaven.plugins</groupId>
+				<artifactId>maven-dotnet-compiler-plugin</artifactId>
 				<configuration>
-					<keyfile>${basedir}/../tools/keys/robocode.snk</keyfile>
+					<aditionalOptions>/unsafe /warn:0 /nowarn:1591 /keyfile:"${basedir}/../tools/keys/robocode.snk"</aditionalOptions>
 					<finalName>robocode.dll</finalName>
 				</configuration>
 			</plugin>
@@ -32,7 +32,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 						<configuration>
 							<tasks>
 								<copy file="target/comments.xml" tofile="target/robocode.xml" />
-								<copy file="target/robocode.dotnet.api.dll" tofile="target/robocode.dll"/>
 								<!--
                                 for this to run, one must have SHFBROOT environment variable set properly.
                                 it comes with installation of SHFB

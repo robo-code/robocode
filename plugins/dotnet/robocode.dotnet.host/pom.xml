@@ -25,7 +25,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<groupId>net.sf.robocode</groupId>
 			<artifactId>robocode.dotnet.nhost</artifactId>
 			<version>${robocode.dotnet.version}</version>
-			<type>dotnet-library</type>
+			<type>dotnet:library</type>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jni4net</groupId>
@@ -36,31 +36,31 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<groupId>net.sf.jni4net</groupId>
 			<artifactId>jni4net.n</artifactId>
 			<version>0.8.6.0</version>
-			<type>dotnet-library</type>
+			<type>dotnet:library</type>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jni4net</groupId>
 			<artifactId>jni4net.n.w32.v20</artifactId>
 			<version>0.8.6.0</version>
-			<type>dotnet-library</type>
+			<type>dotnet:library</type>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jni4net</groupId>
 			<artifactId>jni4net.n.w64.v20</artifactId>
 			<version>0.8.6.0</version>
-			<type>dotnet-library</type>
+			<type>dotnet:library</type>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jni4net</groupId>
 			<artifactId>jni4net.n.w32.v40</artifactId>
 			<version>0.8.6.0</version>
-			<type>dotnet-library</type>
+			<type>dotnet:library</type>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jni4net</groupId>
 			<artifactId>jni4net.n.w64.v40</artifactId>
 			<version>0.8.6.0</version>
-			<type>dotnet-library</type>
+			<type>dotnet:library</type>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -84,7 +84,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									groupId="net.sf.jni4net"
 									artifactId="jni4net.n"
 									version="0.8.6.0"
-									type="dotnet-library" />
+									type="dotnet:library" />
 								<copy
 									file="${jni4net.n}"
 									todir="target" />
@@ -93,7 +93,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									groupId="net.sf.jni4net"
 									artifactId="jni4net.n.w32.v20"
 									version="0.8.6.0"
-									type="dotnet-library" />
+									type="dotnet:library" />
 								<copy
 									file="${jni4net.n.w32.v20}"
 									todir="target" />
@@ -102,7 +102,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									groupId="net.sf.jni4net"
 									artifactId="jni4net.n.w64.v20"
 									version="0.8.6.0"
-									type="dotnet-library" />
+									type="dotnet:library" />
 								<copy
 									file="${jni4net.n.w64.v20}"
 									todir="target" />
@@ -111,7 +111,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									groupId="net.sf.jni4net"
 									artifactId="jni4net.n.w32.v40"
 									version="0.8.6.0"
-									type="dotnet-library" />
+									type="dotnet:library" />
 								<copy
 									file="${jni4net.n.w32.v40}"
 									todir="target" />
@@ -120,7 +120,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									groupId="net.sf.jni4net"
 									artifactId="jni4net.n.w64.v40"
 									version="0.8.6.0"
-									type="dotnet-library" />
+									type="dotnet:library" />
 								<copy
 									file="${jni4net.n.w64.v40}"
 									todir="target" />
@@ -129,7 +129,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									groupId="net.sf.robocode"
 									artifactId="robocode.dotnet.nhost"
 									version="${robocode.dotnet.version}"
-									type="dotnet-library" />
+									type="dotnet:library" />
 								<copy
 									file="${robocode.dotnet.nhost}"
 									todir="target" />
@@ -138,7 +138,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									groupId="net.sf.robocode"
 									artifactId="robocode.dotnet.api"
 									version="${robocode.dotnet.version}"
-									type="dotnet-library" />
+									type="dotnet:library" />
 								<copy
 									file="${robocode.dotnet.api}"
 									todir="target" />
@@ -147,7 +147,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									groupId="net.sf.robocode"
 									artifactId="robocode.dotnet.control.api"
 									version="${robocode.dotnet.version}"
-									type="dotnet-library" />
+									type="dotnet:library" />
 								<copy
 									file="${robocode.dotnet.control.api}"
 									todir="target" />

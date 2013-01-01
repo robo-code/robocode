@@ -15,6 +15,7 @@ package net.sf.robocode.dotnet.host;
 import net.sf.robocode.core.*;
 import net.sf.robocode.dotnet.repository.items.handlers.DotnetPropertiesHandler;
 import net.sf.robocode.dotnet.repository.root.handlers.DllHandler;
+import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.io.Logger;
 import net.sf.jni4net.Bridge;
 
@@ -36,7 +37,7 @@ public class Module extends BaseModule {
 		try {
 
 			String libsDir;
-//			final String version = ContainerBase.getComponent(IVersionManagerBase.class).getVersionN();
+			final String version = ContainerBase.getComponent(IVersionManagerBase.class).getVersionN();
 
 			final java.security.CodeSource source = Module.class.getProtectionDomain().getCodeSource();
 			final File file = new File(source.getLocation().toURI()).getCanonicalFile();
@@ -49,8 +50,8 @@ public class Module extends BaseModule {
 				throw new Error("Can't find " + file);
 			}
 
-  			final String nhost = libsDir + "/robocode.dotnet.nhost.dll";
-  			final String ncontrol = libsDir + "/robocode.dotnet.control.api.dll";
+  			final String nhost = libsDir + "/robocode.dotnet.nhost-" + version + ".dll";
+  			final String ncontrol = libsDir + "/robocode.control.dll";
 	
 				Bridge.init(new File(libsDir));
 				// Bridge.setVerbose(true);

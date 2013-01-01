@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<artifactId>robocode.dotnet.control.api</artifactId>
 	<name>Robocode .NET Control API</name>
 	<description>.NET Control API for Robocode</description>
-	<packaging>dotnet-library</packaging>
+	<packaging>dotnet:library</packaging>
 	<parent>
 		<artifactId>robocode.dotnet</artifactId>
 		<groupId>net.sf.robocode</groupId>
@@ -16,13 +16,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<groupId>net.sf.jni4net</groupId>
 			<artifactId>jni4net.n</artifactId>
 			<version>0.8.6.0</version>
-			<type>dotnet-library</type>
+			<type>dotnet:library</type>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.robocode</groupId>
 			<artifactId>robocode.dotnet.api</artifactId>
 			<version>${project.version}</version>
-			<type>dotnet-library</type>
+			<type>dotnet:library</type>
 		</dependency>
 	</dependencies>
 	<build>
@@ -30,10 +30,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.npanday.plugins</groupId>
-				<artifactId>maven-compile-plugin</artifactId>
+				<groupId>org.sonatype.nmaven.plugins</groupId>
+				<artifactId>maven-dotnet-compiler-plugin</artifactId>
 				<configuration>
-					<keyfile>${basedir}/../tools/keys/robocode.snk</keyfile>
+					<aditionalOptions>/unsafe /warn:0 /nowarn:1591 /keyfile:"${basedir}/../tools/keys/robocode.snk"</aditionalOptions>
 					<finalName>robocode.control.dll</finalName>
 				</configuration>
 			</plugin>
@@ -46,7 +46,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 						<configuration>
 							<tasks>
 								<copy file="target/comments.xml" tofile="target/robocode.control.xml" />
-								<copy file="target/robocode.dotnet.control.api.dll" tofile="target/robocode.control.dll"/>
 								<!--
                                 for this to run, one must have SHFBROOT environment variable set properly.
                                 it comes with installation of SHFB

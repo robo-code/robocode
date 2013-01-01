@@ -41,19 +41,15 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.apache.npanday.plugins</groupId>
-					<artifactId>maven-compile-plugin</artifactId>
-					<version>1.4.0-incubating</version>
+					<groupId>org.sonatype.nmaven.plugins</groupId>
+					<artifactId>maven-dotnet-compiler-plugin</artifactId>
 					<extensions>true</extensions>
-					<configuration>
-						<vendor>MICROSOFT</vendor>
-						<frameworkVersion>3.5</frameworkVersion>
-						<testFrameworkVersion>3.5</testFrameworkVersion>
-						<vendorVersion>3.5</vendorVersion>
-						<unsafe>true</unsafe>
-						<warn>0</warn>
-						<nowarn>1591</nowarn>
-					</configuration>
+					<version>0.17robocode</version>
+				</plugin>
+				<plugin>
+					<groupId>org.sonatype.nmaven.plugins</groupId>
+					<artifactId>maven-dotnet-test-plugin</artifactId>
+					<version>0.17robocode</version>
 				</plugin>
 				<plugin>
 					<groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
