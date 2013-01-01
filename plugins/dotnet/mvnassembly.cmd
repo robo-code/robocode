@@ -1,3 +1,4 @@
 @echo off
 
-call mvn clean install ant:ant eclipse:eclipse -DskipTests=false %*
+mvn clean install ant:ant -DskipTests=false %*
+rem mvn eclipse:eclipse
