@@ -29,11 +29,14 @@ import net.sf.robocode.version.IVersionManager;
 import robocode.control.RobotSpecification;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.StringTokenizer;
 
 
 /**
@@ -41,8 +44,10 @@ import java.util.List;
  */
 public class RepositoryManager implements IRepositoryManager {
 
+	private static final String DATABASE_FILENAME = "robot.database";
+	
 	private final ISettingsManager properties;
-	private Database db;
+	private Repository repository;
 
 	public RepositoryManager(ISettingsManager properties) {
 		this.properties = properties;
@@ -71,7 +76,7 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public void refresh(String file) {
-		if (!db.update(file, true)) {
+		if (!repository.updateItemRoot(file, true)) {
 			refresh(true);
 		}
 		URLJarCollector.gc();
@@ -82,11 +87,11 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public boolean refresh(boolean force) {
-		boolean refreshed = db.update(getRobotsDirectory(), getDevelDirectories(), force);
+		boolean refreshed = repository.update(getRobotsDirectory(), getDevelDirectories(), force);
 
 		if (refreshed) {
 			setStatus("Saving robot database");
-			db.save();
+			save();
 		}
 
 		setStatus("");
@@ -95,6 +100,37 @@ public class RepositoryManager implements IRepositoryManager {
 		return refreshed;
 	}
 
+	private void save() {
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(new File(getRobotsDirectory(), DATABASE_FILENAME));
+			repository.save(fos);
+		} catch (IOException e) {
+			Logger.logError("Can't save robot database", e);
+		} finally {
+			FileUtil.cleanupStream(fos);
+		}
+	}
+
+	private Repository load() {
+		Repository repository = new Repository();
+		
+		FileInputStream fis = null;
+		try {
+			File file = new File(getRobotsDirectory(), DATABASE_FILENAME);
+			if (file.exists()) {
+				fis = new FileInputStream(file);
+				repository.load(fis);
+			}
+		} catch (IOException e) {
+			Logger.logError("Can't load robot database", e);
+			repository = null;
+		} finally {
+			FileUtil.cleanupStream(fis);
+		}
+		return repository;
+	}
+	
 	public void reload(boolean rebuild) {
 		// Bug fix [2867326] - Lockup on start if too many bots in robots dir (cont'd).
 		URLJarCollector.enableGc(true);
@@ -102,13 +138,13 @@ public class RepositoryManager implements IRepositoryManager {
 
 		if (rebuild) {
 			Logger.logMessage("Rebuilding robot database...");
-			db = new Database(this);
-		} else if (db == null) {
+			repository = new Repository();
+		} else if (repository == null) {
 			setStatus("Reading robot database");
-			db = Database.load(this);
-			if (db == null) {
+			repository = load();
+			if (repository == null) {
 				setStatus("Building robot database");
-				db = new Database(this);
+				repository = new Repository();
 			}
 		}
 		refresh(true);
@@ -117,7 +153,7 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public RobotSpecification[] getSpecifications() {
 		checkDbExists();
-		final Collection<IRepositoryItem> list = db.getAllSpecifications();
+		final Collection<IRepositoryItem> list = repository.getAllValidItems();
 		Collection<RobotSpecification> res = new ArrayList<RobotSpecification>();
 
 		for (IRepositoryItem s : list) {
@@ -156,7 +192,7 @@ public class RepositoryManager implements IRepositoryManager {
 	public RobotSpecification[] loadSelectedRobots(String selectedRobots) {
 		checkDbExists();
 		Collection<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
-		final Collection<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
+		final Collection<IRepositoryItem> list = repository.getValidItems(selectedRobots);
 		int teamNum = 0;
 
 		for (IRepositoryItem item: list) {
@@ -172,7 +208,7 @@ public class RepositoryManager implements IRepositoryManager {
 		if (item != null) {
 			if (item.isTeam()) {
 				teamId = item.getFullClassNameWithVersion() + "[" + teamId + "]";
-				final Collection<RobotItem> members = db.expandTeam((TeamItem) item);
+				final Collection<RobotItem> members = getRobotItems((TeamItem) item);
 
 				for (IRepositoryItem member : members) {
 					final RobotItem robot = (RobotItem) member;
@@ -212,7 +248,7 @@ public class RepositoryManager implements IRepositoryManager {
 	public RobotSpecification[] getSelectedRobots(String selectedRobots) {
 		checkDbExists();
 		Collection<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
-		final Collection<IRepositoryItem> list = db.getSelectedSpecifications(selectedRobots);
+		final Collection<IRepositoryItem> list = repository.getValidItems(selectedRobots);
 
 		for (IRepositoryItem item: list) {
 			battlingRobotsList.add(item.createRobotSpecification());
@@ -222,12 +258,12 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public List<IRepositoryItem> getSelectedSpecifications(String selectedRobots) {
 		checkDbExists();
-		return db.getSelectedSpecifications(selectedRobots);
+		return repository.getValidItems(selectedRobots);
 	}
 
 	public List<IRepositoryItem> filterRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar) {
 		checkDbExists();
-		return db.filterSpecifications(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment,
+		return repository.getFilteredItems(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment,
 				onlyInJar);
 	}
 
@@ -253,8 +289,8 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public String createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots) {
 		checkDbExists();
-		final List<RobotItem> robots = db.expandTeams(selectedRobots);
-		final List<TeamItem> teams = db.filterTeams(selectedRobots);
+		final List<RobotItem> robots = getAllRobotItems(selectedRobots);
+		final List<TeamItem> teams = getTeamItemsOnly(selectedRobots);
 
 		final String res = JarCreator.createPackage(target, source, robots, teams, web, desc, author, version);
 
@@ -262,8 +298,65 @@ public class RepositoryManager implements IRepositoryManager {
 		return res;
 	}
 
+	private Collection<RobotItem> getRobotItems(TeamItem team) {
+		Collection<RobotItem> result = new ArrayList<RobotItem>();
+		StringTokenizer teamTokenizer = new StringTokenizer(team.getMembers(), ",");
+
+		while (teamTokenizer.hasMoreTokens()) {
+			String botNameAndVersion = teamTokenizer.nextToken();
+			int versionIndex = botNameAndVersion.indexOf(' ');
+			String botPath = versionIndex < 0 ? botNameAndVersion : botNameAndVersion.substring(0, versionIndex);
+
+			botPath = botPath.replace('.', '/').replaceAll("\\*", "");
+
+			// first load from same classPath
+			String teamBot = team.getRoot().getURL() + botPath;
+			IItem res = repository.getItem(teamBot);
+
+			if (res != null && res instanceof RobotItem) {
+				result.add((RobotItem) res);
+				continue;
+			}
+
+			// try general search
+			res = repository.getItem(botNameAndVersion);
+			if (res != null && res instanceof RobotItem) {
+				result.add((RobotItem) res);
+				continue;
+			}
+
+			// not found
+			Logger.logError("Can't find robot: " + botNameAndVersion);
+		}
+		return result;
+	}
+
+	private List<RobotItem> getAllRobotItems(Collection<IRepositoryItem> items) {
+		List<RobotItem> result = new ArrayList<RobotItem>();
+
+		for (IRepositoryItem item : items) {
+			if (item.isTeam()) {
+				result.addAll(getRobotItems((TeamItem) item));
+			} else {
+				result.add((RobotItem) item);
+			}
+		}
+		return result;
+	}
+
+	private static List<TeamItem> getTeamItemsOnly(Collection<IRepositoryItem> items) {
+		List<TeamItem> result = new ArrayList<TeamItem>();
+
+		for (IRepositoryItem item : items) {
+			if (item.isTeam()) {
+				result.add((TeamItem) item);
+			}
+		}
+		return result;
+	}
+
 	private IRepositoryItem getRobot(String fullClassNameWithVersion) {
-		final IItem item = db.getItem(fullClassNameWithVersion);
+		final IItem item = repository.getItem(fullClassNameWithVersion);
 
 		if (item == null || !item.isValid()) {
 			return null;
@@ -283,7 +376,7 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	private void checkDbExists() {
-		if (db == null) {
+		if (repository == null) {
 			reload(false);
 		}
 	}

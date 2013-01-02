@@ -15,7 +15,7 @@
 package net.sf.robocode.repository.root.handlers;
 
 
-import net.sf.robocode.repository.Database;
+import net.sf.robocode.repository.Repository;
 import net.sf.robocode.repository.parsers.ClasspathFileParser;
 import net.sf.robocode.repository.root.ClassPathRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
@@ -32,7 +32,7 @@ import java.util.Map;
  * @author Flemming N. Larsen (contributor)
  */
 public class ClassPathHandler extends RootHandler {
-	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Database db, boolean force) {	
+	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Repository repository, boolean force) {	
 		if (isDevel) {
 			File classpathFile = new File(dir, ".classpath");
 
@@ -52,14 +52,14 @@ public class ClassPathHandler extends RootHandler {
 					if (classPath != null) {
 						File classPathDir = new File(dir, classPath);
 
-						handleDirectory(classPathDir, dir, newroots, roots, db, force);			
+						handleDirectory(classPathDir, dir, newroots, roots, repository, force);			
 					}
 
 					for (String sourcePath : classpathParser.getSourcePaths()) {
 						if (sourcePath != null) {
 							File sourcePathDir = new File(dir, sourcePath);
 
-							handleDirectory(sourcePathDir, dir, newroots, roots, db, force);			
+							handleDirectory(sourcePathDir, dir, newroots, roots, repository, force);			
 						}
 					}
 
@@ -67,10 +67,10 @@ public class ClassPathHandler extends RootHandler {
 				}
 			}
 		}
-		handleDirectory(dir, null, newroots, roots, db, force);
+		handleDirectory(dir, null, newroots, roots, repository, force);
 	}
 
-	private void handleDirectory(File dir, File projectDir, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Database db, boolean force) {
+	private void handleDirectory(File dir, File projectDir, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Repository repository, boolean force) {
 		String key;
 
 		try {
@@ -82,7 +82,7 @@ public class ClassPathHandler extends RootHandler {
 		IRepositoryRoot root = roots.get(key);
 
 		if (root == null) {
-			root = new ClassPathRoot(db, dir, projectDir);
+			root = new ClassPathRoot(repository, dir, projectDir);
 		} else {
 			roots.remove(key);
 		}

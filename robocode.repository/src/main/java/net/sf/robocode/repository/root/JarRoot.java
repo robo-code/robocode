@@ -16,7 +16,7 @@ import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 import net.sf.robocode.io.JarJar;
-import net.sf.robocode.repository.Database;
+import net.sf.robocode.repository.Repository;
 import net.sf.robocode.repository.packager.JarExtractor;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
@@ -46,11 +46,10 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	private String jarNoSeparator;
 	private long lastModified;
 
-	public JarRoot(Database db, File rootPath) {
-		super(db, rootPath);
+	public JarRoot(Repository repository, File rootPath) {
+		super(repository, rootPath);
 		try {
 			jarNoSeparator = "jar:" + rootPath.toURI().toString();
-
 			jarUrl = new URL(jarNoSeparator + "!/");
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
@@ -64,7 +63,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		long lm = rootPath.lastModified();
 
 		if (lm > this.lastModified) {
-			db.moveOldItems(this);
+			repository.moveOldItems(this);
 			this.lastModified = lm;
 
 			final ArrayList<IItem> items = new ArrayList<IItem>();
@@ -132,7 +131,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	private void createItem(ArrayList<IItem> items, URL root, JarEntry entry) {
 		try {
 			String pUrl = root.toString() + entry.getName();
-			final IItem item = ItemHandler.registerItems(new URL(pUrl), JarRoot.this, db);
+			final IItem item = ItemHandler.registerItems(new URL(pUrl), JarRoot.this, repository);
 
 			if (item != null) {
 				if (item instanceof RobotItem) {

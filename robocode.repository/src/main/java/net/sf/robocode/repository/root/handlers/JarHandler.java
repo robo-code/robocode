@@ -12,7 +12,7 @@
 package net.sf.robocode.repository.root.handlers;
 
 
-import net.sf.robocode.repository.Database;
+import net.sf.robocode.repository.Repository;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.root.JarRoot;
 import net.sf.robocode.io.Logger;
@@ -28,7 +28,7 @@ import java.util.Map;
  * @author Pavel Savara (original)
  */
 public class JarHandler extends RootHandler {
-	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Database db, boolean force) {
+	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Repository repository, boolean force) {
 		if (!isDevel) {
 			// find jar files
 			final File[] jars = dir.listFiles(new FileFilter() {
@@ -56,7 +56,7 @@ public class JarHandler extends RootHandler {
 				IRepositoryRoot root = roots.get(key);
 
 				if (root == null) {
-					root = new JarRoot(db, jar);
+					root = new JarRoot(repository, jar);
 				} else {
 					roots.remove(key);
 				}

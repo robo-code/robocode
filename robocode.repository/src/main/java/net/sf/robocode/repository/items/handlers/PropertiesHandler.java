@@ -12,7 +12,7 @@
 package net.sf.robocode.repository.items.handlers;
 
 
-import net.sf.robocode.repository.Database;
+import net.sf.robocode.repository.Repository;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
@@ -28,26 +28,26 @@ import java.net.URL;
  */
 public class PropertiesHandler extends ItemHandler {
 
-	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db) {
+	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Repository repository) {
 		final String name = itemURL.toString().toLowerCase();
 
 		if (name.endsWith(".properties") && !name.endsWith("robocode.properties")) {
-			return register(itemURL, root, db);
+			return register(itemURL, root, repository);
 		}
 		return null;
 	}
 
-	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-		RobotItem item = (RobotItem) db.getItem(itemURL.toString());
+	private IItem register(URL itemURL, IRepositoryRoot root, Repository repository) {
+		RobotItem item = (RobotItem) repository.getItem(itemURL.toString());
 
 		if (item == null) {
-			item = createItem(itemURL, root, db);
+			item = createItem(itemURL, root, repository);
 		}
-		db.putItem(item);
+		repository.putItem(item);
 		return item;
 	}
 
-	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {
+	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Repository repository) {
 		final RobotItem robotItem = new RobotItem(itemURL, root);
 
 		robotItem.setPropertiesURL(itemURL);
@@ -60,7 +60,7 @@ public class PropertiesHandler extends ItemHandler {
 			final PropertiesHandler handler = Container.getComponent(PropertiesHandler.class,
 					uplang + "PropertiesHandler");
 
-			return handler.createItem(itemURL, root, db);
+			return handler.createItem(itemURL, root, repository);
 		}
 		return robotItem;
 	}

@@ -13,7 +13,7 @@ package net.sf.robocode.repository.root;
 
 
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.repository.Database;
+import net.sf.robocode.repository.Repository;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
 import net.sf.robocode.ui.IWindowManager;
@@ -34,8 +34,8 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 
 	private final File projectPath;
 
-	public ClassPathRoot(Database db, File rootPath, File projectPath) {
-		super(db, rootPath);
+	public ClassPathRoot(Repository repository, File rootPath, File projectPath) {
+		super(repository, rootPath);
 		this.projectPath = projectPath;
 	}
 
@@ -43,7 +43,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
 
 		setStatus(windowManager, "Updating class path: " + rootPath);
-		db.moveOldItems(this);
+		repository.moveOldItems(this);
 		final ArrayList<IItem> items = new ArrayList<IItem>();
 		final ArrayList<Long> modified = new ArrayList<Long>();
 
@@ -62,7 +62,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 			public boolean accept(File pathname) {
 				if (pathname.isFile()) {
 					try {
-						final IItem item = ItemHandler.registerItems(pathname.toURI().toURL(), ClassPathRoot.this, db);
+						final IItem item = ItemHandler.registerItems(pathname.toURI().toURL(), ClassPathRoot.this, repository);
 
 						if (item != null) {
 							items.add(item);

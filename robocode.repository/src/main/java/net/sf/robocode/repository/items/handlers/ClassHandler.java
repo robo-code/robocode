@@ -12,7 +12,7 @@
 package net.sf.robocode.repository.items.handlers;
 
 
-import net.sf.robocode.repository.Database;
+import net.sf.robocode.repository.Repository;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
@@ -26,17 +26,17 @@ import java.net.URL;
  * @author Pavel Savara (original)
  */
 public class ClassHandler extends ItemHandler {
-	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db) {
+	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Repository repository) {
 		final String name = itemURL.toString().toLowerCase();
 
 		if (name.endsWith(".class") && !name.contains("$")) {
-			return register(itemURL, root, db);
+			return register(itemURL, root, repository);
 		}
 		return null;
 	}
 
-	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-		RobotItem item = (RobotItem) db.getItem(itemURL.toString());
+	private IItem register(URL itemURL, IRepositoryRoot root, Repository repository) {
+		RobotItem item = (RobotItem) repository.getItem(itemURL.toString());
 
 		if (item == null) {
 			item = new RobotItem(itemURL, root);
@@ -44,7 +44,7 @@ public class ClassHandler extends ItemHandler {
 		item.setClassPathURL(root.getURL());
 		item.setClassURL(itemURL);
 
-		db.putItem(item);
+		repository.putItem(item);
 		return item;
 	}
 }

@@ -12,7 +12,7 @@
 package net.sf.robocode.repository.items.handlers;
 
 
-import net.sf.robocode.repository.Database;
+import net.sf.robocode.repository.Repository;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.root.ClassPathRoot;
@@ -27,34 +27,34 @@ import java.net.URL;
  * @author Flemming N. Larsen (original)
  */
 public class SourceHandler extends ItemHandler {
-	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db) {
+	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Repository repository) {
 		final String name = itemURL.toString().toLowerCase();
 
 		if (name.endsWith(".java") && !name.contains("$")) {
-			return register(itemURL, root, db);
+			return register(itemURL, root, repository);
 		}
 		return null;
 	}
 
-	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
+	private IItem register(URL itemURL, IRepositoryRoot root, Repository repository) {
 		RobotItem item = null;
 
 		if (root instanceof ClassPathRoot) {
 			String friendly = ((ClassPathRoot) root).getFriendlyProjectURL(itemURL);
 
 			if (friendly != null) {
-				item = (RobotItem) db.getItem(friendly);
+				item = (RobotItem) repository.getItem(friendly);
 			}
 		}
 		if (item == null) {
-			item = (RobotItem) db.getItem(itemURL.toString());
+			item = (RobotItem) repository.getItem(itemURL.toString());
 		}
 		if (item == null) {
 			item = new RobotItem(itemURL, root);
 		}
 		item.addSourcePathURL(root.getURL());
 
-		db.putItem(item);
+		repository.putItem(item);
 		return item;
 	}
 }
