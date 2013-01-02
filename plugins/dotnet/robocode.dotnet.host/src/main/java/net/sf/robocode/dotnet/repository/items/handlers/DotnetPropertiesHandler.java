@@ -16,7 +16,7 @@ import net.sf.robocode.repository.items.handlers.PropertiesHandler;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
-import net.sf.robocode.repository.Database;
+import net.sf.robocode.repository.Repository;
 import net.sf.robocode.dotnet.repository.items.DotNetRobotItem;
 import net.sf.robocode.dotnet.repository.root.DllRoot;
 
@@ -30,29 +30,29 @@ import java.io.File;
 public class DotnetPropertiesHandler extends PropertiesHandler {
 
 	@Override
-	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Database db) {
+	public IItem acceptItem(URL itemURL, IRepositoryRoot root, Repository repository) {
 		final String name = itemURL.toString().toLowerCase();
 
 		if (name.contains(".dll!/")) {
-			return register(itemURL, root, db);
+			return register(itemURL, root, repository);
 		}
 		return null;
 	}
 
-	private IItem register(URL itemURL, IRepositoryRoot root, Database db) {
-		RobotItem item = (RobotItem) db.getItem(itemURL.toString());
+	private IItem register(URL itemURL, IRepositoryRoot root, Repository repository) {
+		RobotItem item = (RobotItem) repository.getItem(itemURL.toString());
 
 		if (item == null) {
-			item = createItem(itemURL, root, db);
+			item = createItem(itemURL, root, repository);
 		}
-		db.putItem(item);
+		repository.putItem(item);
 		return item;
 	}
 
 	@Override
-	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Database db) {
+	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, Repository repository) {
 		final File file = new File(itemURL.toString().replace(".properties", ".dll"));
-		final DotNetRobotItem item = new DotNetRobotItem(new DllRoot(db, file), itemURL);
+		final DotNetRobotItem item = new DotNetRobotItem(new DllRoot(repository, file), itemURL);
 
 		item.setClassURL(itemURL);
 		return item;

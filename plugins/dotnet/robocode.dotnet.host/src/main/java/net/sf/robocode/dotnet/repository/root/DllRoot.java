@@ -20,7 +20,7 @@ package net.sf.robocode.dotnet.repository.root;
 
 import net.sf.robocode.repository.root.BaseRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
-import net.sf.robocode.repository.Database;
+import net.sf.robocode.repository.Repository;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
@@ -46,8 +46,8 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 	private String dllUrlNoSeparator;
 	private long lastModified;
 
-	public DllRoot(Database db, File rootPath) {
-		super(db, rootPath);
+	public DllRoot(Repository repository, File rootPath) {
+		super(repository, rootPath);
 		try {
 			dllUrlNoSeparator = rootPath.toURI().toString();
 			dllURL = new URL(dllUrlNoSeparator + "!/");
@@ -69,7 +69,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 		long lm = rootPath.lastModified();
 
 		if (lm > this.lastModified) {
-			db.moveOldItems(this);
+			repository.moveOldItems(this);
 			this.lastModified = lm;
 
 			final ArrayList<IItem> items = new ArrayList<IItem>();
@@ -91,7 +91,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 
 	private void createItem(ArrayList<IItem> items, URL root, String url) {
 		try {
-			final IItem item = ItemHandler.registerItems(new URL(url), DllRoot.this, db);
+			final IItem item = ItemHandler.registerItems(new URL(url), DllRoot.this, repository);
 
 			if (item != null) {
 				if (item instanceof RobotItem) {
