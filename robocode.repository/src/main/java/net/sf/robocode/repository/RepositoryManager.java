@@ -21,6 +21,8 @@ import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.TeamItem;
 import net.sf.robocode.repository.items.BaseItem;
 import net.sf.robocode.repository.packager.JarCreator;
+import net.sf.robocode.repository.root.IRepositoryRoot;
+import net.sf.robocode.repository.root.handlers.RootHandler;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.settings.ISettingsManager;
@@ -35,7 +37,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 
@@ -75,8 +80,8 @@ public class RepositoryManager implements IRepositoryManager {
 		return develDirectories;
 	}
 
-	public void refresh(String file) {
-		if (!repository.updateItemRoot(file, true)) {
+	public void refresh(String friendlyURL) {
+		if (!updateItemRoot(friendlyURL, true)) {
 			refresh(true);
 		}
 		URLJarCollector.gc();
@@ -87,8 +92,7 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	public boolean refresh(boolean force) {
-		boolean refreshed = repository.update(getRobotsDirectory(), getDevelDirectories(), force);
-
+		boolean refreshed = update(getRobotsDirectory(), getDevelDirectories(), force);
 		if (refreshed) {
 			setStatus("Saving robot database");
 			save();
@@ -98,6 +102,42 @@ public class RepositoryManager implements IRepositoryManager {
 		URLJarCollector.gc();
 
 		return refreshed;
+	}
+
+	private boolean update(File robotsDir, Collection<File> devDirs, boolean force) {
+		final int prev = repository.getItems().size();
+
+		RootHandler.openHandlers();
+
+		Map<String, IRepositoryRoot> currentRoots = repository.getRoots();
+		Map<String, IRepositoryRoot> newRoots = new HashMap<String, IRepositoryRoot>();
+
+		RootHandler.visitDirectories(robotsDir, false, newRoots, repository, force);
+		for (File dir : devDirs) {
+			RootHandler.visitDirectories(dir, true, newRoots, repository, force);
+		}
+
+		// removed roots
+		for (IRepositoryRoot oldRoot : currentRoots.values()) {
+			if (!newRoots.containsKey(oldRoot.getURL().toString())) {
+				repository.removeItemsFromRoot(oldRoot);
+			}
+		}
+
+		repository.setRoots(newRoots);
+
+		RootHandler.closeHandlers();
+
+		return prev != repository.getItems().size();
+	}
+
+	private boolean updateItemRoot(String friendlyURL, boolean force) {
+		IItem item = repository.getItems().get(friendlyURL);
+		if (item != null) {
+			item.getRoot().update(item, force);
+			return true;
+		}
+		return false; 
 	}
 
 	private void save() {
@@ -153,7 +193,7 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public RobotSpecification[] getSpecifications() {
 		checkDbExists();
-		final Collection<IRepositoryItem> list = repository.getAllValidItems();
+		final Collection<IRepositoryItem> list = getAllValidItems();
 		Collection<RobotSpecification> res = new ArrayList<RobotSpecification>();
 
 		for (IRepositoryItem s : list) {
@@ -192,7 +232,7 @@ public class RepositoryManager implements IRepositoryManager {
 	public RobotSpecification[] loadSelectedRobots(String selectedRobots) {
 		checkDbExists();
 		Collection<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
-		final Collection<IRepositoryItem> list = repository.getValidItems(selectedRobots);
+		final Collection<IRepositoryItem> list = getValidItems(selectedRobots);
 		int teamNum = 0;
 
 		for (IRepositoryItem item: list) {
@@ -248,7 +288,7 @@ public class RepositoryManager implements IRepositoryManager {
 	public RobotSpecification[] getSelectedRobots(String selectedRobots) {
 		checkDbExists();
 		Collection<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
-		final Collection<IRepositoryItem> list = repository.getValidItems(selectedRobots);
+		final Collection<IRepositoryItem> list = getValidItems(selectedRobots);
 
 		for (IRepositoryItem item: list) {
 			battlingRobotsList.add(item.createRobotSpecification());
@@ -258,13 +298,78 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public List<IRepositoryItem> getSelectedSpecifications(String selectedRobots) {
 		checkDbExists();
-		return repository.getValidItems(selectedRobots);
+		return getValidItems(selectedRobots);
 	}
 
-	public List<IRepositoryItem> filterRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar) {
+	private Collection<IRepositoryItem> getAllValidItems() {
+		final ArrayList<IRepositoryItem> res = new ArrayList<IRepositoryItem>();
+
+		for (IItem item : repository.getItems().values()) {
+			final IRepositoryItem spec = (IRepositoryItem) item;
+			if (item.isValid() && !res.contains(spec)) {
+				res.add(spec);
+			}
+		}
+		return res;
+	}
+
+	private List<IRepositoryItem> getValidItems(String friendlyURLs) {
+		List<IRepositoryItem> result = new ArrayList<IRepositoryItem>();
+		StringTokenizer tokenizer = new StringTokenizer(friendlyURLs, ",");
+
+		while (tokenizer.hasMoreTokens()) {
+			String friendlyURL = tokenizer.nextToken().trim();
+
+			IItem item = repository.getItem(friendlyURL);
+			if (item != null) {
+				if (item.isValid()) {
+					result.add((IRepositoryItem) item);
+				} else {
+					Logger.logError("Can't load '" + friendlyURL + "' because it is an invalid robot or team.");
+				}
+			} else {
+				Logger.logError("Can't find '" + friendlyURL + '\'');
+			}
+		}
+		return result;
+	}
+
+	public List<IRepositoryItem> getRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar) {
 		checkDbExists();
-		return repository.getFilteredItems(onlyWithSource, onlyWithPackage, onlyRobots, onlyDevelopment, onlyNotDevelopment,
-				onlyInJar);
+
+		final List<IRepositoryItem> res = new ArrayList<IRepositoryItem>();
+
+		for (IItem item : repository.getItems().values()) {
+			final IRepositoryItem spec = (IRepositoryItem) item;
+
+			if (!item.isValid()) {
+				continue;
+			}
+			if (onlyWithSource && !spec.isSourceIncluded()) {
+				continue;
+			}
+			if (onlyWithPackage && spec.getFullPackage() == null) {
+				continue;
+			}
+			if (onlyInJar && !spec.isInJAR()) {
+				continue;
+			}
+			if (onlyRobots && !(item instanceof RobotItem)) {
+				continue;
+			}
+			if (onlyDevelopment && !spec.isDevelopmentVersion()) {
+				continue;
+			}
+			if (onlyNotDevelopment && spec.isDevelopmentVersion()) {
+				continue;
+			}
+			if (res.contains(spec)) {
+				continue;
+			}
+			res.add(spec);
+		}
+		Collections.sort(res);
+		return res;
 	}
 
 	public boolean verifyRobotName(String robotName, String shortClassName) {

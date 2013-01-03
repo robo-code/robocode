@@ -36,9 +36,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -248,7 +246,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 		return propertiesURL;
 	}
 
-	public List<String> getFriendlyURLs() {
+	public Set<String> getFriendlyURLs() {
 		populate();
 
 		final Set<String> urls = new HashSet<String>();
@@ -287,7 +285,7 @@ public class RobotItem extends NamedItem implements IRobotRepositoryItem {
 				urls.add(friendly);
 			}
 		}
-		return new ArrayList<String>(urls);
+		return urls;
 	}
 
 	public void update(long lastModified, boolean force) {

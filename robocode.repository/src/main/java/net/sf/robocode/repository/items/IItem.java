@@ -15,7 +15,7 @@ package net.sf.robocode.repository.items;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
 import java.net.URL;
-import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -24,7 +24,7 @@ import java.util.List;
 public interface IItem extends Comparable<Object> {
 	URL getItemURL();
 	IRepositoryRoot getRoot();
-	List<String> getFriendlyURLs();
+	Set<String> getFriendlyURLs();
 
 	void update(long lastModified, boolean force);
 	long getLastModified();

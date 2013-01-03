@@ -533,7 +533,7 @@ public class RobotSelectionPanel extends WizardPanel {
 					windowManager.setBusyPointer(true);
 					repositoryManager.refresh(withClear);
 
-					List<IRepositoryItem> robotList = repositoryManager.filterRepositoryItems(onlyShowSource,
+					List<IRepositoryItem> robotList = repositoryManager.getRepositoryItems(onlyShowSource,
 							onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, false, ignoreTeamRobots, onlyShowInJar);
 
 					getAvailableRobotsPanel().setRobotList(robotList);

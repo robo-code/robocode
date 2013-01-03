@@ -20,7 +20,7 @@ package net.sf.robocode.dotnet.repository.root;
 
 import net.sf.robocode.repository.root.BaseRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
-import net.sf.robocode.repository.Repository;
+import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
@@ -46,7 +46,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 	private String dllUrlNoSeparator;
 	private long lastModified;
 
-	public DllRoot(Repository repository, File rootPath) {
+	public DllRoot(IRepository repository, File rootPath) {
 		super(repository, rootPath);
 		try {
 			dllUrlNoSeparator = rootPath.toURI().toString();
@@ -69,7 +69,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 		long lm = rootPath.lastModified();
 
 		if (lm > this.lastModified) {
-			repository.moveOldItems(this);
+			repository.removeItemsFromRoot(this);
 			this.lastModified = lm;
 
 			final ArrayList<IItem> items = new ArrayList<IItem>();

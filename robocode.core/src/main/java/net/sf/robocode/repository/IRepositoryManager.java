@@ -28,12 +28,12 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	List<File> getDevelDirectories();
 
-	void refresh(String file);
+	void refresh(String friendlyURL);
 
 	boolean refresh(boolean force);
 	void reload(boolean forced);
 
-	List<IRepositoryItem> filterRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage,
+	List<IRepositoryItem> getRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage,
 			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar);
 
 	RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots);

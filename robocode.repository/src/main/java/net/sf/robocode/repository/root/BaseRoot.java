@@ -13,7 +13,7 @@ package net.sf.robocode.repository.root;
 
 
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.repository.Repository;
+import net.sf.robocode.repository.IRepository;
 
 import java.io.File;
 import java.io.Serializable;
@@ -27,11 +27,11 @@ import java.net.URL;
 public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
-	protected transient Repository repository;
+	protected transient IRepository repository;
 	protected final File rootPath;
 	protected final URL rootURL;
 
-	public BaseRoot(Repository repository, File rootPath) {
+	public BaseRoot(IRepository repository, File rootPath) {
 		this.repository = repository;
 		this.rootPath = rootPath;
 
@@ -54,7 +54,7 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 		return rootPath;
 	}
 
-	public void setRepository(Repository repository) {
+	public void setRepository(IRepository repository) {
 		this.repository = repository;
 	}
 

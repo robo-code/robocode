@@ -21,7 +21,7 @@ package net.sf.robocode.dotnet.repository.root.handlers;
 import net.sf.robocode.dotnet.repository.root.DllRootHelper;
 import net.sf.robocode.repository.root.handlers.RootHandler;
 import net.sf.robocode.repository.root.IRepositoryRoot;
-import net.sf.robocode.repository.Repository;
+import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.dotnet.repository.root.DllRoot;
 
 import java.io.File;
@@ -41,32 +41,30 @@ public class DllHandler extends RootHandler {
 		DllRootHelper.Refresh();
 	}
 
-	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Repository repository, boolean force) {
+	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newRoots, IRepository repository, boolean force) {
 		// find dll files
 		final File[] dlls = dir.listFiles(
 				new FileFilter() {
 			public boolean accept(File pathname) {
-				final String low = pathname.toString().toLowerCase();
-
-				return pathname.isFile() && low.endsWith(".dll") && !low.endsWith("robocode.dll")
-						&& !low.contains("jni4net");
+				String path = pathname.toString().toLowerCase();
+				return pathname.isFile() && path.endsWith(".dll") && !path.endsWith("robocode.dll")
+						&& !path.contains("jni4net");
 			}
 		});
 
 		if (dlls != null) {
 			// update DLL files
 			for (File dll : dlls) {
-				final String key = dll.toURI().toString();
-				IRepositoryRoot root = roots.get(key);
-
+				String key = dll.toURI().toString();
+				IRepositoryRoot root = repository.getRoots().get(key);
 				if (root == null) {
 					root = new DllRoot(repository, dll);
 				} else {
-					roots.remove(key);
+					repository.removeRoot(key);
 				}
 
 				root.update(force);
-				newroots.put(dll.toURI().toString(), root);
+				newRoots.put(dll.toURI().toString(), root);
 			}
 		}
 	}

@@ -12,7 +12,7 @@
 package net.sf.robocode.repository.root.handlers;
 
 
-import net.sf.robocode.repository.Repository;
+import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.root.JarRoot;
 import net.sf.robocode.io.Logger;
@@ -28,14 +28,13 @@ import java.util.Map;
  * @author Pavel Savara (original)
  */
 public class JarHandler extends RootHandler {
-	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newroots, Map<String, IRepositoryRoot> roots, Repository repository, boolean force) {
+	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newRoots, IRepository repository, boolean force) {
 		if (!isDevel) {
 			// find jar files
 			final File[] jars = dir.listFiles(new FileFilter() {
 				public boolean accept(File pathname) {
-					final String low = pathname.toString().toLowerCase();
-
-					return pathname.isFile() && (low.endsWith(".jar") || low.endsWith(".zip"));
+					String path = pathname.toString().toLowerCase();
+					return pathname.isFile() && (path.endsWith(".jar") || path.endsWith(".zip"));
 				}
 			});
 
@@ -53,16 +52,15 @@ public class JarHandler extends RootHandler {
 					e.printStackTrace();
 					continue;
 				}
-				IRepositoryRoot root = roots.get(key);
-
+				IRepositoryRoot root = repository.getRoots().get(key);
 				if (root == null) {
 					root = new JarRoot(repository, jar);
 				} else {
-					roots.remove(key);
+					repository.removeRoot(key);
 				}
 
 				root.update(force);
-				newroots.put(key, root);
+				newRoots.put(key, root);
 
 				try {
 					URLJarCollector.closeJarURLConnection(jar.toURI().toURL());

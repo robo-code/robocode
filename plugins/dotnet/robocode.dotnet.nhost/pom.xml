@@ -76,6 +76,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 								<copy
 									file="${robocode.dotnet.control.api}"
 									tofile="target/robocode.control.dll" />
+								<!-- Used for generateProxies.cmd -->
+								<copy
+									file="target/robocode.dotnet.nhost-${project.version}.dll"
+									tofile="target/robocode.dotnet.nhost.dll" />
 							</tasks>
 						</configuration>
 						<goals>

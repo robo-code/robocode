@@ -16,7 +16,7 @@ import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 import net.sf.robocode.io.JarJar;
-import net.sf.robocode.repository.Repository;
+import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.packager.JarExtractor;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.items.RobotItem;
@@ -46,7 +46,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	private String jarNoSeparator;
 	private long lastModified;
 
-	public JarRoot(Repository repository, File rootPath) {
+	public JarRoot(IRepository repository, File rootPath) {
 		super(repository, rootPath);
 		try {
 			jarNoSeparator = "jar:" + rootPath.toURI().toString();
@@ -63,7 +63,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		long lm = rootPath.lastModified();
 
 		if (lm > this.lastModified) {
-			repository.moveOldItems(this);
+			repository.removeItemsFromRoot(this);
 			this.lastModified = lm;
 
 			final ArrayList<IItem> items = new ArrayList<IItem>();

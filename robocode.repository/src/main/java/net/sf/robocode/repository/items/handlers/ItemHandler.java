@@ -15,7 +15,7 @@ package net.sf.robocode.repository.items.handlers;
 
 
 import net.sf.robocode.core.Container;
-import net.sf.robocode.repository.Repository;
+import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
@@ -30,9 +30,9 @@ import java.util.List;
  * @author Flemming N. Larsen (contributor)
  */
 public abstract class ItemHandler {
-	public abstract IItem acceptItem(URL itemURL, IRepositoryRoot root, Repository repository);
+	public abstract IItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository);
 
-	public static IItem registerItems(URL itemURL, IRepositoryRoot root, Repository repository) {
+	public static IItem registerItems(URL itemURL, IRepositoryRoot root, IRepository repository) {
 		// walk thru all plugins, give them chance to accept a file
 		final List<ItemHandler> itemHandlerList = Container.getComponents(ItemHandler.class);
 
