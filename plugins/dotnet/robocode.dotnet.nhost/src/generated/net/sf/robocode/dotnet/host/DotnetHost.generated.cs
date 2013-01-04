@@ -43,9 +43,9 @@ namespace net.sf.robocode.dotnet.host {
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "createRobotProxy", "createRobotProxy0", "(Lnet/sf/robocode/host/IHostManager;Lrobocode/control/RobotSpecification;Lnet/sf/" +
                         "robocode/peer/IRobotStatics;Lnet/sf/robocode/peer/IRobotPeer;)Lnet/sf/robocode/h" +
                         "ost/proxies/IHostingRobotProxy;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getReferencedClasses", "getReferencedClasses1", "(Lnet/sf/robocode/repository/IRobotRepositoryItem;)[Ljava/lang/String;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getRobotType", "getRobotType2", "(Lnet/sf/robocode/repository/IRobotRepositoryItem;ZZ)Lnet/sf/robocode/repository/" +
-                        "RobotType;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getReferencedClasses", "getReferencedClasses1", "(Lnet/sf/robocode/repository/IRobotItem;)[Ljava/lang/String;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getRobotType", "getRobotType2", "(Lnet/sf/robocode/repository/IRobotItem;ZZ)Lnet/sf/robocode/repository/RobotType;" +
+                        ""));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "createRobotProxy", "createRobotProxy3", "(Lnet/sf/robocode/host/IHostManager;Ljava/lang/Object;Lnet/sf/robocode/peer/IRobo" +
                         "tStatics;Lnet/sf/robocode/peer/IRobotPeer;)Lnet/sf/robocode/host/proxies/IHostin" +
                         "gRobotProxy;"));
@@ -66,25 +66,25 @@ namespace net.sf.robocode.dotnet.host {
         }
         
         private static global::net.sf.jni4net.utils.JniHandle getReferencedClasses1(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0) {
-            // (Lnet/sf/robocode/repository/IRobotRepositoryItem;)[Ljava/lang/String;
-            // (Lnet/sf/robocode/repository/IRobotRepositoryItem;)[Ljava/lang/String;
+            // (Lnet/sf/robocode/repository/IRobotItem;)[Ljava/lang/String;
+            // (Lnet/sf/robocode/repository/IRobotItem;)[Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             global::net.sf.jni4net.utils.JniHandle @__return = default(global::net.sf.jni4net.utils.JniHandle);
             try {
             global::net.sf.robocode.dotnet.host.DotnetHost @__real = global::net.sf.jni4net.utils.Convertor.StrongJp2C<global::net.sf.robocode.dotnet.host.DotnetHost>(@__env, @__obj);
-            @__return = global::net.sf.jni4net.utils.Convertor.ArrayStrongCp2J(@__env, ((global::net.sf.robocode.host.IHost)(@__real)).getReferencedClasses(global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, par0)));
+            @__return = global::net.sf.jni4net.utils.Convertor.ArrayStrongCp2J(@__env, ((global::net.sf.robocode.host.IHost)(@__real)).getReferencedClasses(global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotItem>(@__env, par0)));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
             return @__return;
         }
         
         private static global::net.sf.jni4net.utils.JniHandle getRobotType2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0, bool par1, bool par2) {
-            // (Lnet/sf/robocode/repository/IRobotRepositoryItem;ZZ)Lnet/sf/robocode/repository/RobotType;
-            // (Lnet/sf/robocode/repository/IRobotRepositoryItem;ZZ)Lnet/sf/robocode/repository/RobotType;
+            // (Lnet/sf/robocode/repository/IRobotItem;ZZ)Lnet/sf/robocode/repository/RobotType;
+            // (Lnet/sf/robocode/repository/IRobotItem;ZZ)Lnet/sf/robocode/repository/RobotType;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             global::net.sf.jni4net.utils.JniHandle @__return = default(global::net.sf.jni4net.utils.JniHandle);
             try {
             global::net.sf.robocode.dotnet.host.DotnetHost @__real = global::net.sf.jni4net.utils.Convertor.StrongJp2C<global::net.sf.robocode.dotnet.host.DotnetHost>(@__env, @__obj);
-            @__return = global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.host.IHost)(@__real)).getRobotType(global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotRepositoryItem>(@__env, par0), par1, par2));
+            @__return = global::net.sf.jni4net.utils.Convertor.StrongCp2J(((global::net.sf.robocode.host.IHost)(@__real)).getRobotType(global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotItem>(@__env, par0), par1, par2));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
             return @__return;
         }

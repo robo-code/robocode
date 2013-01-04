@@ -25,7 +25,7 @@ namespace net.sf.robocode.dotnet.host.seed
     {
         private readonly RbSerializer serializer = new RbSerializer();
 
-        public HostingShell(IRobotRepositoryItem itemSpecification,
+        public HostingShell(IRobotItem itemSpecification,
                             IHostManager hostManager, IRobotPeer peer,
                             IRobotStatics jstatics, string dllFileName)
         {

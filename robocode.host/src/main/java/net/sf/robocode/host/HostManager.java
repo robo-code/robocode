@@ -17,7 +17,7 @@ import net.sf.robocode.host.security.*;
 import net.sf.robocode.host.jarjar.JarJarURLConnection;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.IRobotPeer;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.repository.RobotType;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
@@ -83,23 +83,23 @@ public class HostManager implements IHostManager {
 	public void cleanup() {// TODO
 	}
 
-	public String[] getReferencedClasses(IRobotRepositoryItem robotRepositoryItem) {
-		return getHost(robotRepositoryItem).getReferencedClasses(robotRepositoryItem);
+	public String[] getReferencedClasses(IRobotItem robotItem) {
+		return getHost(robotItem).getReferencedClasses(robotItem);
 	}
 
-	public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message) {
-		return getHost(robotRepositoryItem).getRobotType(robotRepositoryItem, resolve, message);
+	public RobotType getRobotType(IRobotItem robotItem, boolean resolve, boolean message) {
+		return getHost(robotItem).getRobotType(robotItem, resolve, message);
 	}
 
 	public IHostingRobotProxy createRobotProxy(RobotSpecification robotSpecification, RobotStatics statics, IRobotPeer peer) {
-		final IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
+		final IRobotItem specification = (IRobotItem) HiddenAccess.getFileSpecification(
 				robotSpecification);
 
 		return getHost(specification).createRobotProxy(this, robotSpecification, statics, peer);
 	}
 
-	private IHost getHost(IRobotRepositoryItem robotRepositoryItem) {
-		return (IHost) Container.cache.getComponent("robocode.host." + robotRepositoryItem.getRobotLanguage());
+	private IHost getHost(IRobotItem robotItem) {
+		return (IHost) Container.cache.getComponent("robocode.host." + robotItem.getRobotLanguage());
 	}
 
 	public void initSecurity() {

@@ -12,7 +12,7 @@
 package net.sf.robocode.repository.root;
 
 
-import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.IRepositoryItem;
 
 import java.io.File;
 import java.net.URL;
@@ -25,8 +25,8 @@ public interface IRepositoryRoot {
 	URL getURL();
 	File getPath();
 	void update(boolean force);
-	void update(IItem item, boolean force);
-	boolean isChanged(IItem item);
+	void update(IRepositoryItem repositoryItem, boolean force);
+	boolean isChanged(IRepositoryItem repositoryItem);
 	boolean isJAR();
 	boolean isDevelopmentRoot();
 	void extractJAR();

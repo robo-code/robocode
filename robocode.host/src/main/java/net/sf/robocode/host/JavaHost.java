@@ -15,7 +15,7 @@ package net.sf.robocode.host;
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.host.proxies.*;
 import net.sf.robocode.peer.IRobotStatics;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.repository.RobotType;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.io.Logger;
@@ -38,13 +38,13 @@ import java.lang.reflect.Method;
  * @author Pavel Savara (original)
  */
 public class JavaHost implements IHost {
-	public IRobotClassLoader createLoader(IRobotRepositoryItem robotRepositoryItem) {
-		return new RobotClassLoader(robotRepositoryItem.getClassPathURL(), robotRepositoryItem.getFullClassName());
+	public IRobotClassLoader createLoader(IRobotItem robotItem) {
+		return new RobotClassLoader(robotItem.getClassPathURL(), robotItem.getFullClassName());
 	}
 
 	public IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification, IRobotStatics statics, IRobotPeer peer) {
 		IHostingRobotProxy robotProxy;
-		final IRobotRepositoryItem specification = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
+		final IRobotItem specification = (IRobotItem) HiddenAccess.getFileSpecification(
 				robotSpecification);
 
 		if (specification.isTeamRobot()) {
@@ -61,11 +61,11 @@ public class JavaHost implements IHost {
 		return robotProxy;
 	}
 
-	public String[] getReferencedClasses(IRobotRepositoryItem robotRepositoryItem) {
+	public String[] getReferencedClasses(IRobotItem robotItem) {
 		IRobotClassLoader loader = null;
 
 		try {
-			loader = createLoader(robotRepositoryItem);
+			loader = createLoader(robotItem);
 			loader.loadRobotMainClass(true);
 			return loader.getReferencedClasses();
 
@@ -79,22 +79,22 @@ public class JavaHost implements IHost {
 		}
 	}
 
-	public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message) {
+	public RobotType getRobotType(IRobotItem robotItem, boolean resolve, boolean message) {
 		IRobotClassLoader loader = null;
 
 		try {
-			loader = createLoader(robotRepositoryItem);
+			loader = createLoader(robotItem);
 			Class<?> robotClass = loader.loadRobotMainClass(resolve);
 
 			if (robotClass == null || java.lang.reflect.Modifier.isAbstract(robotClass.getModifiers())) {
 				// this class is not robot
 				return RobotType.INVALID;
 			}
-			return checkInterfaces(robotClass, robotRepositoryItem);
+			return checkInterfaces(robotClass, robotItem);
 
 		} catch (Throwable t) {
 			if (message) {
-				logError("Got an error with " + robotRepositoryItem.getFullClassName() + ": " + t); // just message here
+				logError("Got an error with " + robotItem.getFullClassName() + ": " + t); // just message here
 				if (t.getMessage() != null && t.getMessage().contains("Bad version number in .class file")) {
 					logError("Maybe you run robocode with Java 1.5 and robot was compiled for later Java version ?");
 				}
@@ -107,7 +107,7 @@ public class JavaHost implements IHost {
 		}
 	}
 
-	private RobotType checkInterfaces(Class<?> robotClass, IRobotRepositoryItem robotRepositoryItem) {
+	private RobotType checkInterfaces(Class<?> robotClass, IRobotItem robotItem) {
 		boolean isJuniorRobot = false;
 		boolean isStandardRobot = false;
 		boolean isInteractiveRobot = false;
@@ -163,7 +163,7 @@ public class JavaHost implements IHost {
 			isJuniorRobot = true;
 			if (isAdvancedRobot) {
 				throw new AccessControlException(
-						robotRepositoryItem.getFullClassName()
+						robotItem.getFullClassName()
 								+ ": Junior robot should not implement IAdvancedRobot interface.");
 			}
 		}

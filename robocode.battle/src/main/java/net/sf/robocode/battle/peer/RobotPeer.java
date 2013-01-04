@@ -76,7 +76,7 @@ import net.sf.robocode.host.events.EventQueue;
 import net.sf.robocode.host.proxies.IHostingRobotProxy;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.peer.*;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.*;
@@ -1500,7 +1500,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		statistics.setInactive();
 
-		final IRobotRepositoryItem repositoryItem = (IRobotRepositoryItem) HiddenAccess.getFileSpecification(
+		final IRobotItem repositoryItem = (IRobotItem) HiddenAccess.getFileSpecification(
 				robotSpecification);
 
 		StringBuffer message = new StringBuffer(getName()).append(' ');

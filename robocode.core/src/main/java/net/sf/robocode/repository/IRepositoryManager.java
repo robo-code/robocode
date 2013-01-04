@@ -33,19 +33,19 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 	boolean refresh(boolean force);
 	void reload(boolean forced);
 
-	List<IRepositoryItem> getRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage,
+	List<IRobotSpecItem> getRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage,
 			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar);
 
 	RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots);
 
-	List<IRepositoryItem> getSelectedSpecifications(String selectedRobots);
+	List<IRobotSpecItem> getSelectedSpecifications(String selectedRobots);
 
 	boolean verifyRobotName(String robotName, String shortClassName);
 
-	int extractJar(IRepositoryItem item);
+	int extractJar(IRobotSpecItem item);
 
 	void createTeam(File target, URL web, String desc, String author, String members, String teamVersion) throws IOException;
 
-	String createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots);
+	String createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRobotSpecItem> selectedRobots);
 
 }

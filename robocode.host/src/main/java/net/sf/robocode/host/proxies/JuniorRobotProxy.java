@@ -17,7 +17,7 @@ package net.sf.robocode.host.proxies;
 import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.peer.IRobotPeer;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import robocode.Rules;
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 
@@ -27,7 +27,7 @@ import robocode.robotinterfaces.peer.IJuniorRobotPeer;
  */
 public class JuniorRobotProxy extends BasicRobotProxy implements IJuniorRobotPeer {
 
-	public JuniorRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	public JuniorRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(specification, hostManager, peer, statics);
 	}
 

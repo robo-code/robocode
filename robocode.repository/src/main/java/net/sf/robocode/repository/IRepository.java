@@ -16,14 +16,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
 
-import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
 /**
  * Interface for a repository containing meta-data for robot and team items.<p>
  *
  * Items can be retrieved from the reposition by using {@link IRepository#getItem(String)} using "friendly URLs"
- * that identifies the individual item. See {@link IItem#getFriendlyURLs()}. An item has typically several
+ * that identifies the individual item. See {@link IRepositoryItem#getFriendlyURLs()}. An item has typically several
  * friendly URLs that identifies it, e.g. a file URL to a local property file or class file, or a URL to a JAR entry.
  *
  * @author Flemming N. Larsen (original)
@@ -54,23 +54,23 @@ public interface IRepository {
 	 * If the item is not present in the repository, it will be added; otherwise it will be updated, if the specified
 	 * item has a never version than the existing item in the repository.
 	 *
-	 * @param item is the item to add or update.
+	 * @param repositoryItem is the item to add or update.
 	 * 
 	 * @see #getItem(String)
 	 * @see #getItems()
 	 */
-	void addOrUpdateItem(IItem item);
+	void addOrUpdateItem(IRepositoryItem repositoryItem);
 
 	/**
 	 * Returns an item stored in this repository identified by a friendly URL (key).
 	 *
-	 * @param friendlyUrl is a key to the item used when the item was stored using {@link IItem#getFriendlyURLs()}.
+	 * @param friendlyUrl is a key to the item used when the item was stored using {@link IRepositoryItem#getFriendlyURLs()}.
 	 * @return an item from the repository identified by the friendly URL or null if the item does not exist.
 	 * 
-	 * @see #addOrUpdateItem(IItem)
+	 * @see #addOrUpdateItem(IRepositoryItem)
 	 * @see #getItems()
 	 */
-	IItem getItem(String friendlyUrl);
+	IRepositoryItem getItem(String friendlyUrl);
 
 	/**
 	 * Returns all items stored in this repository.
@@ -78,7 +78,7 @@ public interface IRepository {
 	 * 
 	 * @see #getItem(String)
 	 */
-	Map<String, IItem> getItems();
+	Map<String, IRepositoryItem> getItems();
 
 	/**
 	 * Returns all repository roots stored in this repository.<p>

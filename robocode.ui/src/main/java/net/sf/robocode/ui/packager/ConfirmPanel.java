@@ -18,7 +18,7 @@
 package net.sf.robocode.ui.packager;
 
 
-import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.ui.dialog.WizardPanel;
 
 import javax.swing.*;
@@ -89,7 +89,7 @@ public class ConfirmPanel extends WizardPanel {
 		return visible;
 	}
 
-	public void setSelectedRobots(List<IRepositoryItem> selectedRobots) {
+	public void setSelectedRobots(List<IRobotSpecItem> selectedRobots) {
 		getRobotListPanel().removeAll();
 
 		if (selectedRobots == null || selectedRobots.size() == 0) {
@@ -101,7 +101,7 @@ public class ConfirmPanel extends WizardPanel {
 		} else {
 			getRobotListPanel().add(new JLabel("You have selected the following robots for packaging:"));
 
-			for (IRepositoryItem selected : selectedRobots) {
+			for (IRobotSpecItem selected : selectedRobots) {
 				getRobotListPanel().add(new JLabel(selected.getFullClassName()));
 			}
 		}

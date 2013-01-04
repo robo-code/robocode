@@ -21,7 +21,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 {
     internal class AdvancedRobotProxy : StandardRobotProxy, IAdvancedRobotPeer
     {
-        public AdvancedRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer,
+        public AdvancedRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer,
                                   RobotStatics statics)
             : base(specification, hostManager, peer, statics)
         {

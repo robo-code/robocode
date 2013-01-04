@@ -9,35 +9,24 @@
  *     Pavel Savara
  *     - Initial implementation
  *******************************************************************************/
-package net.sf.robocode.repository;
+package net.sf.robocode.repository.items;
 
+
+import net.sf.robocode.repository.root.IRepositoryRoot;
 
 import java.net.URL;
+import java.util.Set;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotRepositoryItem extends IRepositoryItem {
-	URL getClassPathURL();
+public interface IRepositoryItem extends Comparable<Object> {
+	URL getItemURL();
+	IRepositoryRoot getRoot();
+	Set<String> getFriendlyURLs();
 
-	String getWritableDirectory();
-
-	String getReadableDirectory();
-
-	String getRobotLanguage();
-
-	boolean isDroid();
-
-	boolean isTeamRobot();
-
-	boolean isAdvancedRobot();
-
-	boolean isStandardRobot();
-
-	boolean isInteractiveRobot();
-
-	boolean isPaintRobot();
-
-	boolean isJuniorRobot();
+	void update(long lastModified, boolean force);
+	long getLastModified();
+	boolean isValid();
 }

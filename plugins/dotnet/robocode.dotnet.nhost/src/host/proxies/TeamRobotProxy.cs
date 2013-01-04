@@ -27,7 +27,7 @@ namespace net.sf.robocode.dotnet.host.proxies
     {
         private const int MAX_MESSAGE_SIZE = 32768;
 
-        public TeamRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer,
+        public TeamRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer,
                               RobotStatics statics)
             : base(specification, hostManager, peer, statics)
         {

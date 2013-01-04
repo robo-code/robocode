@@ -13,7 +13,7 @@ package net.sf.robocode.host;
 
 
 import net.sf.robocode.peer.IRobotStatics;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
@@ -51,7 +51,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 	private final int teamIndex;
 
 	public RobotStatics(RobotSpecification robotSpecification, int duplicate, boolean isLeader, BattleRules rules, String teamName, List<String> teamMembers, int robotIndex, int teamIndex) {
-		IRobotRepositoryItem specification = ((IRobotRepositoryItem) HiddenAccess.getFileSpecification(
+		IRobotItem specification = ((IRobotItem) HiddenAccess.getFileSpecification(
 				robotSpecification));
 
 		this.robotIndex = robotIndex;

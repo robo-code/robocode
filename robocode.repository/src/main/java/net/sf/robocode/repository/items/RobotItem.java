@@ -18,7 +18,7 @@ import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 import static net.sf.robocode.io.Logger.logError;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.repository.RobotType;
 import net.sf.robocode.repository.root.ClassPathRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
@@ -44,7 +44,7 @@ import java.util.Set;
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class RobotItem extends NamedItem implements IRobotRepositoryItem {
+public class RobotItem extends RobotSpecItem implements IRobotItem {
 	private static final long serialVersionUID = 1L;
 
 	// Allowed maximum length for a robot's full package name

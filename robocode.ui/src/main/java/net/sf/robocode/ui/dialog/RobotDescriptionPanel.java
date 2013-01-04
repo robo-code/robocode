@@ -16,7 +16,7 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.ui.BrowserManager;
 
 import javax.swing.*;
@@ -43,7 +43,7 @@ public class RobotDescriptionPanel extends JPanel {
 	private JButton webpageButton;
 	private JLabel robocodeVersionLabel;
 	private JLabel filePathLabel;
-	private IRepositoryItem currentRobotSpecification;
+	private IRobotSpecItem currentRobotSpecification;
 
 	private final static String BLANK_STRING = "                                                                        ";
 
@@ -163,7 +163,7 @@ public class RobotDescriptionPanel extends JPanel {
 		add(p);
 	}
 
-	public void showDescription(IRepositoryItem robotSpecification) {
+	public void showDescription(IRobotSpecItem robotSpecification) {
 		this.currentRobotSpecification = robotSpecification;
 		if (robotSpecification == null) {
 			getRobotNameLabel().setText(" ");

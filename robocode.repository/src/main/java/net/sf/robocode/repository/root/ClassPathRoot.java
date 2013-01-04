@@ -14,7 +14,7 @@ package net.sf.robocode.repository.root;
 
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepository;
-import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
 import net.sf.robocode.ui.IWindowManager;
 
@@ -44,18 +44,18 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 
 		setStatus(windowManager, "Updating class path: " + rootPath);
 		repository.removeItemsFromRoot(this);
-		final ArrayList<IItem> items = new ArrayList<IItem>();
+		final ArrayList<IRepositoryItem> repositoryItems = new ArrayList<IRepositoryItem>();
 		final ArrayList<Long> modified = new ArrayList<Long>();
 
-		visitDirectory(rootPath, items, modified);
-		for (int i = 0; i < items.size(); i++) {
-			IItem item = items.get(i);
+		visitDirectory(rootPath, repositoryItems, modified);
+		for (int i = 0; i < repositoryItems.size(); i++) {
+			IRepositoryItem repositoryItem = repositoryItems.get(i);
 
-			item.update(modified.get(i), force);
+			repositoryItem.update(modified.get(i), force);
 		}
 	}
 
-	private void visitDirectory(File path, final ArrayList<IItem> items, final ArrayList<Long> modified) {
+	private void visitDirectory(File path, final ArrayList<IRepositoryItem> repositoryItems, final ArrayList<Long> modified) {
 		// find files
 		// noinspection ResultOfMethodCallIgnored
 		path.listFiles(
@@ -63,11 +63,11 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 			public boolean accept(File pathname) {
 				if (pathname.isFile()) {
 					try {
-						final IItem item = ItemHandler.registerItems(pathname.toURI().toURL(), ClassPathRoot.this,
+						final IRepositoryItem repositoryItem = ItemHandler.registerItems(pathname.toURI().toURL(), ClassPathRoot.this,
 								repository);
 
-						if (item != null) {
-							items.add(item);
+						if (repositoryItem != null) {
+							repositoryItems.add(repositoryItem);
 							modified.add(pathname.lastModified());
 						}
 					} catch (MalformedURLException e) {
@@ -90,21 +90,21 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 
 		if (subDirs != null) {
 			for (File subDir : subDirs) {
-				visitDirectory(subDir, items, modified);
+				visitDirectory(subDir, repositoryItems, modified);
 			}
 		}
 	}
 
-	public void update(IItem item, boolean force) {
-		File f = new File(item.getItemURL().toString());
+	public void update(IRepositoryItem repositoryItem, boolean force) {
+		File f = new File(repositoryItem.getItemURL().toString());
 
-		item.update(f.lastModified(), force);
+		repositoryItem.update(f.lastModified(), force);
 	}
 
-	public boolean isChanged(IItem item) {
-		File f = new File(item.getItemURL().toString());
+	public boolean isChanged(IRepositoryItem repositoryItem) {
+		File f = new File(repositoryItem.getItemURL().toString());
 
-		return f.lastModified() > item.getLastModified();
+		return f.lastModified() > repositoryItem.getLastModified();
 	}
 
 	public boolean isDevelopmentRoot() {

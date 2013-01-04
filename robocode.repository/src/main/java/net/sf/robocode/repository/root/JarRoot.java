@@ -18,7 +18,7 @@ import net.sf.robocode.io.URLJarCollector;
 import net.sf.robocode.io.JarJar;
 import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.packager.JarExtractor;
-import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
 import net.sf.robocode.ui.IWindowManager;
@@ -66,16 +66,16 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 			repository.removeItemsFromRoot(this);
 			this.lastModified = lm;
 
-			final ArrayList<IItem> items = new ArrayList<IItem>();
+			final ArrayList<IRepositoryItem> repositoryItems = new ArrayList<IRepositoryItem>();
 
-			visitItems(items);
-			for (IItem item : items) {
-				item.update(lastModified, force);
+			visitItems(repositoryItems);
+			for (IRepositoryItem repositoryItem : repositoryItems) {
+				repositoryItem.update(lastModified, force);
 			}
 		}
 	}
 
-	private void visitItems(ArrayList<IItem> items) {
+	private void visitItems(ArrayList<IRepositoryItem> repositoryItems) {
 		final String root = jarNoSeparator;
 		InputStream is = null;
 		BufferedInputStream bis = null;
@@ -87,7 +87,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 			is = con.getInputStream();
 			bis = new BufferedInputStream(is);
 			jarIS = new JarInputStream(bis);
-			readJarStream(items, root, jarIS);
+			readJarStream(repositoryItems, root, jarIS);
 
 		} catch (Exception e) {
 			Logger.logError(rootURL + " is probably corrupted (" + e.getClass().getName() + " " + e.getMessage() + ")");
@@ -98,7 +98,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void readJarStream(ArrayList<IItem> items, String root, JarInputStream jarIS) throws IOException {
+	private void readJarStream(ArrayList<IRepositoryItem> repositoryItems, String root, JarInputStream jarIS) throws IOException {
 		JarEntry entry = jarIS.getNextJarEntry();
 
 		while (entry != null) {
@@ -113,14 +113,14 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 
 						try {
 							inner = new JarInputStream(jarIS);
-							readJarStream(items, "jar:jar" + root + JarJar.SEPARATOR + entry.getName(), inner);
+							readJarStream(repositoryItems, "jar:jar" + root + JarJar.SEPARATOR + entry.getName(), inner);
 						} finally {
 							if (inner != null) {
 								inner.closeEntry();								
 							}
 						}
 					} else {
-						createItem(items, new URL(root + "!/"), entry);
+						createItem(repositoryItems, new URL(root + "!/"), entry);
 					}
 				}
 			}
@@ -128,29 +128,29 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void createItem(ArrayList<IItem> items, URL root, JarEntry entry) {
+	private void createItem(ArrayList<IRepositoryItem> repositoryItems, URL root, JarEntry entry) {
 		try {
 			String pUrl = root.toString() + entry.getName();
-			final IItem item = ItemHandler.registerItems(new URL(pUrl), JarRoot.this, repository);
+			final IRepositoryItem repositoryItem = ItemHandler.registerItems(new URL(pUrl), JarRoot.this, repository);
 
-			if (item != null) {
-				if (item instanceof RobotItem) {
-					RobotItem robotItem = (RobotItem) item; 
+			if (repositoryItem != null) {
+				if (repositoryItem instanceof RobotItem) {
+					RobotItem robotItem = (RobotItem) repositoryItem; 
 
 					robotItem.setClassPathURL(root);
 				}
-				items.add(item);
+				repositoryItems.add(repositoryItem);
 			}
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
 	}
 
-	public void update(IItem item, boolean force) {
-		item.update(rootPath.lastModified(), force);
+	public void update(IRepositoryItem repositoryItem, boolean force) {
+		repositoryItem.update(rootPath.lastModified(), force);
 	}
 
-	public boolean isChanged(IItem item) {
+	public boolean isChanged(IRepositoryItem repositoryItem) {
 		return rootPath.lastModified() > lastModified;
 	}
 

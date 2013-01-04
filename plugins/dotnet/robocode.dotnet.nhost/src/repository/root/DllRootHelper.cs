@@ -52,9 +52,9 @@ namespace net.sf.robocode.dotnet.repository.root
             }
         }
 
-        public static RobotType GetRobotType(IRobotRepositoryItem robotRepositoryItem)
+        public static RobotType GetRobotType(IRobotItem robotItem)
         {
-            string file = GetDllFileName(robotRepositoryItem);
+            string file = GetDllFileName(robotItem);
             if (!File.Exists(file))
             {
                 return RobotType.Invalid;
@@ -62,19 +62,19 @@ namespace net.sf.robocode.dotnet.repository.root
             if (shell != null)
             {
                 shell.Open(file);
-                return shell.GetRobotType(robotRepositoryItem.getFullClassName());
+                return shell.GetRobotType(robotItem.getFullClassName());
             }
             using (AppDomainShell localshell = new AppDomainShell())
             {
                 localshell.Init(false);
                 localshell.Open(file);
-                return localshell.GetRobotType(robotRepositoryItem.getFullClassName());
+                return localshell.GetRobotType(robotItem.getFullClassName());
             }
         }
 
-        public static string GetDllFileName(IRobotRepositoryItem robotRepositoryItem)
+        public static string GetDllFileName(IRobotItem robotItem)
         {
-            string uriString = robotRepositoryItem.getClassPathURL().toURI().toString();
+            string uriString = robotItem.getClassPathURL().toURI().toString();
             string trim = uriString.Substring(0, uriString.LastIndexOf(".dll!/") + 4);
             return new Uri(trim).LocalPath;
         }

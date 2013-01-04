@@ -38,7 +38,7 @@ public class EngineClassLoader extends URLClassLoader {
 		exclusions.add("net.sf.robocode.host.IHostManager");
 		exclusions.add("net.sf.robocode.host.proxies.IHostingRobotProxy");
 		exclusions.add("net.sf.robocode.peer.IRobotPeer");
-		exclusions.add("net.sf.robocode.repository.IRobotRepositoryItem");
+		exclusions.add("net.sf.robocode.repository.IRobotItem");
 		exclusions.add("net.sf.robocode.repository.RobotType");
 		exclusions.add("net.sf.robocode.host.RobotStatics");
 		exclusions.add("net.sf.robocode.peer.BadBehavior");

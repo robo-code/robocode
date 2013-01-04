@@ -14,7 +14,7 @@ package net.sf.robocode.repository;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.root.BaseRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
@@ -33,7 +33,7 @@ import java.util.Map;
 
 
 /**
- * Repository containing robot and team items.
+ * Repository containing robot and team repositoryItems.
  * 
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
@@ -41,17 +41,17 @@ import java.util.Map;
 public class Repository implements IRepository {
 
 	private Map<String, IRepositoryRoot> roots = new HashMap<String, IRepositoryRoot>();
-	private Map<String, IItem> items = new HashMap<String, IItem>();
-	private Map<String, IItem> removedItems = new HashMap<String, IItem>();
+	private Map<String, IRepositoryItem> repositoryItems = new HashMap<String, IRepositoryItem>();
+	private Map<String, IRepositoryItem> removedItems = new HashMap<String, IRepositoryItem>();
 
 	@Override
 	public void save(OutputStream out) {
-		Collection<IItem> uniqueitems = new LinkedList<IItem>();
+		Collection<IRepositoryItem> uniqueitems = new LinkedList<IRepositoryItem>();
 		Collection<IRepositoryRoot> uniqueroots = new LinkedList<IRepositoryRoot>();
 
-		for (IItem item : items.values()) {
-			if (!uniqueitems.contains(item)) {
-				uniqueitems.add(item);
+		for (IRepositoryItem repositoryItem : repositoryItems.values()) {
+			if (!uniqueitems.contains(repositoryItem)) {
+				uniqueitems.add(repositoryItem);
 			}
 		}
 
@@ -74,7 +74,7 @@ public class Repository implements IRepository {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void load(InputStream in) {
-		Collection<IItem> uniqueitems;
+		Collection<IRepositoryItem> uniqueitems;
 		Collection<IRepositoryRoot> uniqueroots;
 
 		ObjectInputStream ois = null;
@@ -82,7 +82,7 @@ public class Repository implements IRepository {
 			ois = new ObjectInputStream(in);
 
 			uniqueroots = (Collection<IRepositoryRoot>) ois.readObject();
-			uniqueitems = (Collection<IItem>) ois.readObject();
+			uniqueitems = (Collection<IRepositoryItem>) ois.readObject();
 
 			for (IRepositoryRoot root : uniqueroots) {
 				((BaseRoot) root).setRepository(this);
@@ -92,8 +92,8 @@ public class Repository implements IRepository {
 
 				roots.put(key, root);
 			}
-			for (IItem item : uniqueitems) {
-				addOrUpdateItem(item);
+			for (IRepositoryItem repositoryItem : uniqueitems) {
+				addOrUpdateItem(repositoryItem);
 			}
 		} catch (IOException e) {
 			Logger.logError("Can't load robot database: " + e.getMessage());
@@ -105,17 +105,17 @@ public class Repository implements IRepository {
 	}
 
 	@Override
-	public void addOrUpdateItem(IItem item) {
-		Collection<String> friendlyUrls = item.getFriendlyURLs();
+	public void addOrUpdateItem(IRepositoryItem repositoryItem) {
+		Collection<String> friendlyUrls = repositoryItem.getFriendlyURLs();
 		if (friendlyUrls != null) {
 			// Add or update the item so it can be found using later using any friendly URL
 			for (String friendly : friendlyUrls) {
 				if (friendly != null) {
-					IItem existingItem = items.get(friendly);
+					IRepositoryItem existingItem = repositoryItems.get(friendly);
 					// Add the item if it does not exist already, or update it if the version is newer
 					// than the existing item.
-					if (existingItem == null || item.compareTo(existingItem) > 0) {
-						items.put(friendly, item);
+					if (existingItem == null || repositoryItem.compareTo(existingItem) > 0) {
+						repositoryItems.put(friendly, repositoryItem);
 					}
 				}
 			}
@@ -123,17 +123,17 @@ public class Repository implements IRepository {
 	}
 
 	@Override
-	public IItem getItem(String friendlyUrl) {
-		IItem item = items.get(friendlyUrl);
-		if (item == null) {
-			item = removedItems.get(friendlyUrl);
+	public IRepositoryItem getItem(String friendlyUrl) {
+		IRepositoryItem repositoryItem = repositoryItems.get(friendlyUrl);
+		if (repositoryItem == null) {
+			repositoryItem = removedItems.get(friendlyUrl);
 		}
-		return item;
+		return repositoryItem;
 	}
 
 	@Override
-	public Map<String, IItem> getItems() {
-		return Collections.unmodifiableMap(items);
+	public Map<String, IRepositoryItem> getItems() {
+		return Collections.unmodifiableMap(repositoryItems);
 	}
 
 	@Override
@@ -148,19 +148,19 @@ public class Repository implements IRepository {
 
 	@Override
 	public void removeItemsFromRoot(IRepositoryRoot root) {
-		Collection<Map.Entry<String, IItem>> itemsToMove = new ArrayList<Map.Entry<String, IItem>>();
+		Collection<Map.Entry<String, IRepositoryItem>> itemsToMove = new ArrayList<Map.Entry<String, IRepositoryItem>>();
 
-		for (Map.Entry<String, IItem> entry : items.entrySet()) {
+		for (Map.Entry<String, IRepositoryItem> entry : repositoryItems.entrySet()) {
 			if (entry.getValue().getRoot().equals(root)) {
 				itemsToMove.add(entry);
 			}
 		}
 
-		for (Map.Entry<String, IItem> entry : itemsToMove) {
+		for (Map.Entry<String, IRepositoryItem> entry : itemsToMove) {
 			String key = entry.getKey();
 
 			removedItems.put(key, entry.getValue());
-			items.remove(key);
+			repositoryItems.remove(key);
 		}
 	}
 

@@ -20,7 +20,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 {
     internal class JuniorRobotProxy : BasicRobotProxy, IJuniorRobotPeer
     {
-        public JuniorRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer,
+        public JuniorRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer,
                                 RobotStatics statics)
             : base(specification, hostManager, peer, statics)
         {

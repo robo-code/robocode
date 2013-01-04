@@ -12,7 +12,7 @@
 package net.sf.robocode.repository.items;
 
 
-import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.util.AlphanumericComparator;
@@ -28,13 +28,13 @@ import java.util.StringTokenizer;
 /**
  * @author Pavel Savara (original)
  */
-public abstract class NamedItem extends BaseItem implements IRepositoryItem {
+public abstract class RobotSpecItem extends RepositoryItem implements IRobotSpecItem {
 	private static final long serialVersionUID = 1L;
 
 	protected Properties properties = new Properties();
 	protected URL htmlURL;
 
-	public NamedItem(URL itemURL, IRepositoryRoot root) {
+	public RobotSpecItem(URL itemURL, IRepositoryRoot root) {
 		super(itemURL, root);
 	}
 
@@ -190,8 +190,8 @@ public abstract class NamedItem extends BaseItem implements IRepositoryItem {
 		if (other == this) {
 			return 0;
 		}
-		if (other instanceof IRepositoryItem) {
-			IRepositoryItem otherRI = (IRepositoryItem) other;
+		if (other instanceof IRobotSpecItem) {
+			IRobotSpecItem otherRI = (IRobotSpecItem) other;
 
 			return compare(getFullPackage(), getFullClassName(), getVersion(), otherRI.getFullPackage(),
 					otherRI.getFullClassName(), otherRI.getVersion());

@@ -19,7 +19,7 @@ import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.events.EventManager;
 import net.sf.robocode.peer.*;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.robotpaint.Graphics2DSerialized;
 import net.sf.robocode.robotpaint.IGraphicsProxy;
 import net.sf.robocode.security.HiddenAccess;
@@ -68,7 +68,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	private double firedEnergy;
 	private double firedHeat;
 
-	public BasicRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	public BasicRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(specification, hostManager, peer, statics);
 
 		eventManager = new EventManager(this);

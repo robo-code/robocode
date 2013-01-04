@@ -20,7 +20,7 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.ui.util.LimitedClassnameDocument;
 import net.sf.robocode.ui.util.LimitedDocument;
 
@@ -77,7 +77,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			List<IRepositoryItem> selectedRobots;
+			List<IRobotSpecItem> selectedRobots;
 
 			if (teamCreator != null) {
 				selectedRobots = teamCreator.getRobotSelectionPanel().getSelectedRobots();
@@ -86,7 +86,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 			}
 
 			if (selectedRobots != null) {
-				IRepositoryItem robotSpecification = selectedRobots.get(0);
+				IRobotSpecItem robotSpecification = selectedRobots.get(0);
 
 				getTeamNameLabel().setText("Please choose a name for your team: (Must be a valid Java classname)");
 				getTeamNameField().setText(robotSpecification.getShortClassName() + "Team");

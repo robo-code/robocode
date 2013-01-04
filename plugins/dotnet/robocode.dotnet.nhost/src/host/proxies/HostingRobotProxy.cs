@@ -36,7 +36,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 {
     public abstract class HostingRobotProxy
     {
-        private readonly IRobotRepositoryItem robotSpecification;
+        private readonly IRobotItem robotSpecification;
 
         protected EventManager eventManager;
         protected IHostManager hostManager;
@@ -52,7 +52,7 @@ namespace net.sf.robocode.dotnet.host.proxies
 
         private readonly Hashtable securityViolations = Hashtable.Synchronized(new Hashtable());
 
-        protected HostingRobotProxy(IRobotRepositoryItem robotSpecification, IHostManager hostManager, IRobotPeer peer,
+        protected HostingRobotProxy(IRobotItem robotSpecification, IHostManager hostManager, IRobotPeer peer,
                                     RobotStatics statics)
         {
             this.peer = peer;

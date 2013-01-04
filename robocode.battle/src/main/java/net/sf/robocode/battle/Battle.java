@@ -105,7 +105,7 @@ import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
 import robocode.*;
@@ -193,7 +193,7 @@ public final class Battle extends BaseBattle {
 
 		// count duplicate robots, enumerate teams, enumerate team members
 		for (RobotSpecification specification : battlingRobotsList) {
-			final String name = ((IRobotRepositoryItem) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
+			final String name = ((IRobotItem) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
 
 			if (countedNames.containsKey(name)) {
 				int value = countedNames.get(name);
@@ -241,7 +241,7 @@ public final class Battle extends BaseBattle {
 		// name robots
 		for (int i = battlingRobotsList.length - 1; i >= 0; i--) {
 			RobotSpecification specification = battlingRobotsList[i];
-			String name = ((IRobotRepositoryItem) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
+			String name = ((IRobotItem) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
 			Integer order = countedNames.get(name);
 			int duplicate = -1;
 

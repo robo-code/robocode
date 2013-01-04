@@ -17,7 +17,7 @@ package net.sf.robocode.host.proxies;
 import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.peer.IRobotPeer;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import robocode.*;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedRobotPeer {
 
-	public AdvancedRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	public AdvancedRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(specification, hostManager, peer, statics);
 	}
 

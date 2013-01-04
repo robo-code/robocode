@@ -20,7 +20,7 @@
 package net.sf.robocode.ui.packager;
 
 
-import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.ui.dialog.WizardPanel;
 import net.sf.robocode.ui.util.LimitedDocument;
 
@@ -56,7 +56,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 	private JTextField webpageField;
 	private JLabel webpageHelpLabel;
 
-	private List<IRepositoryItem> currentSelectedRobots;
+	private List<IRobotSpecItem> currentSelectedRobots;
 
 	private class EventHandler implements ComponentListener, KeyListener, DocumentListener {
 		public void insertUpdate(DocumentEvent e) {
@@ -76,7 +76,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 		public void componentHidden(ComponentEvent e) {}
 
 		public void componentShown(ComponentEvent e) {
-			List<IRepositoryItem> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
+			List<IRobotSpecItem> selectedRobots = robotPackager.getRobotSelectionPanel().getSelectedRobots();
 
 			// Make sure we don't reset content. Bug fix [3026856]
 			if (selectedRobots == null || selectedRobots.equals(currentSelectedRobots)) {
@@ -85,7 +85,7 @@ public class PackagerOptionsPanel extends WizardPanel {
 			currentSelectedRobots = selectedRobots; // Bug fix [3026856]
 
 			if (selectedRobots.size() == 1) {
-				IRepositoryItem fileSpecification = selectedRobots.get(0);
+				IRobotSpecItem fileSpecification = selectedRobots.get(0);
 
 				getIncludeSource().setSelected(fileSpecification.getIncludeSource());
 

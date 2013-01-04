@@ -13,8 +13,8 @@ package net.sf.robocode.dotnet.repository.items.handlers;
 
 
 import net.sf.robocode.repository.items.handlers.PropertiesHandler;
+import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.RobotItem;
-import net.sf.robocode.repository.items.IItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.dotnet.repository.items.DotNetRobotItem;
@@ -30,7 +30,7 @@ import java.io.File;
 public class DotnetPropertiesHandler extends PropertiesHandler {
 
 	@Override
-	public IItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
+	public IRepositoryItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
 		String name = itemURL.toString().toLowerCase();
 		if (name.contains(".dll!/")) {
 			return register(itemURL, root, repository);
@@ -38,7 +38,7 @@ public class DotnetPropertiesHandler extends PropertiesHandler {
 		return null;
 	}
 
-	private IItem register(URL itemURL, IRepositoryRoot root, IRepository repository) {
+	private IRepositoryItem register(URL itemURL, IRepositoryRoot root, IRepository repository) {
 		RobotItem item = (RobotItem) repository.getItem(itemURL.toString());
 		if (item == null) {
 			item = createItem(itemURL, root, repository);

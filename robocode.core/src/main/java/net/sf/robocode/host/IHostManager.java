@@ -13,7 +13,7 @@ package net.sf.robocode.host;
 
 
 import net.sf.robocode.peer.IRobotPeer;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.repository.RobotType;
 import robocode.control.RobotSpecification;
 
@@ -41,7 +41,7 @@ public interface IHostManager {
 
 	void cleanup();
 
-	String[] getReferencedClasses(IRobotRepositoryItem robotRepositoryItem);
+	String[] getReferencedClasses(IRobotItem robotItem);
 
-	RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, boolean resolve, boolean message);
+	RobotType getRobotType(IRobotItem robotItem, boolean resolve, boolean message);
 }

@@ -10,26 +10,26 @@
 package net.sf.robocode.repository;
 
 @net.sf.jni4net.attributes.ClrTypeInfo
-public final class IRobotRepositoryItem_ {
+public final class IRobotSpecItem_ {
     
     //<generated-static>
     private static system.Type staticType;
     
     public static system.Type typeof() {
-        return net.sf.robocode.repository.IRobotRepositoryItem_.staticType;
+        return net.sf.robocode.repository.IRobotSpecItem_.staticType;
     }
     
     private static void InitJNI(net.sf.jni4net.inj.INJEnv env, system.Type staticType) {
-        net.sf.robocode.repository.IRobotRepositoryItem_.staticType = staticType;
+        net.sf.robocode.repository.IRobotSpecItem_.staticType = staticType;
     }
     //</generated-static>
 }
 
 //<generated-proxy>
 @net.sf.jni4net.attributes.ClrProxy
-class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.repository.IRobotRepositoryItem {
+class __IRobotSpecItem extends system.Object implements net.sf.robocode.repository.IRobotSpecItem {
     
-    protected __IRobotRepositoryItem(net.sf.jni4net.inj.INJEnv __env, long __handle) {
+    protected __IRobotSpecItem(net.sf.jni4net.inj.INJEnv __env, long __handle) {
             super(__env, __handle);
     }
     
@@ -119,38 +119,5 @@ class __IRobotRepositoryItem extends system.Object implements net.sf.robocode.re
     
     @net.sf.jni4net.attributes.ClrMethod("(Ljava/io/OutputStream;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/net/URL;)V")
     public native void storeProperties(java.io.OutputStream par0, boolean par1, java.lang.String par2, java.lang.String par3, java.lang.String par4, java.net.URL par5);
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
-    public native java.net.URL getClassPathURL();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getWritableDirectory();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getReadableDirectory();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getRobotLanguage();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isDroid();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isTeamRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isAdvancedRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isStandardRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isInteractiveRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isPaintRobot();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isJuniorRobot();
 }
 //</generated-proxy>

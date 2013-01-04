@@ -25,7 +25,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         private double saveGunAngleToTurn;
         private double saveRadarAngleToTurn;
 
-        public StandardRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer,
+        public StandardRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer,
                                   RobotStatics statics)
             : base(specification, hostManager, peer, statics)
         {

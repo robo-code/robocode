@@ -15,7 +15,7 @@ package net.sf.robocode.repository.items;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
-import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.version.IVersionManager;
@@ -32,7 +32,7 @@ import java.util.Set;
 /**
  * @author Pavel Savara (original)
  */
-public class TeamItem extends NamedItem implements IRepositoryItem {
+public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 	private static final long serialVersionUID = 1L;
 
 	private final static String TEAM_DESCRIPTION = "team.description";

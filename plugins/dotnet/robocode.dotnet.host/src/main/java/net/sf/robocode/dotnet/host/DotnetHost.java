@@ -31,11 +31,11 @@ public class DotnetHost extends system.Object implements net.sf.robocode.host.IH
     @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/host/IHostManager;Lrobocode/control/RobotSpecification;Lnet/sf/robocode/peer/IRobotStatics;Lnet/sf/robocode/peer/IRobotPeer;)Lnet/sf/robocode/host/proxies/IHostingRobotProxy;")
     public native net.sf.robocode.host.proxies.IHostingRobotProxy createRobotProxy(net.sf.robocode.host.IHostManager par0, robocode.control.RobotSpecification par1, net.sf.robocode.peer.IRobotStatics par2, net.sf.robocode.peer.IRobotPeer par3);
     
-    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;)[Ljava/lang/String;")
-    public native java.lang.String[] getReferencedClasses(net.sf.robocode.repository.IRobotRepositoryItem par0);
+    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotItem;)[Ljava/lang/String;")
+    public native java.lang.String[] getReferencedClasses(net.sf.robocode.repository.IRobotItem par0);
     
-    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;ZZ)Lnet/sf/robocode/repository/RobotType;")
-    public native net.sf.robocode.repository.RobotType getRobotType(net.sf.robocode.repository.IRobotRepositoryItem par0, boolean par1, boolean par2);
+    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotItem;ZZ)Lnet/sf/robocode/repository/RobotType;")
+    public native net.sf.robocode.repository.RobotType getRobotType(net.sf.robocode.repository.IRobotItem par0, boolean par1, boolean par2);
     
     @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/host/IHostManager;Ljava/lang/Object;Lnet/sf/robocode/peer/IRobotStatics;Lnet/sf/robocode/peer/IRobotPeer;)Lnet/sf/robocode/host/proxies/IHostingRobotProxy;")
     public native net.sf.robocode.host.proxies.IHostingRobotProxy createRobotProxy(net.sf.robocode.host.IHostManager hostManager, java.lang.Object robotSpecification, net.sf.robocode.peer.IRobotStatics statics, net.sf.robocode.peer.IRobotPeer peer);

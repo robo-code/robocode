@@ -16,10 +16,10 @@ import net.sf.robocode.core.Container;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
-import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.TeamItem;
-import net.sf.robocode.repository.items.BaseItem;
+import net.sf.robocode.repository.items.RepositoryItem;
 import net.sf.robocode.repository.packager.JarCreator;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.root.handlers.RootHandler;
@@ -132,9 +132,9 @@ public class RepositoryManager implements IRepositoryManager {
 	}
 
 	private boolean updateItemRoot(String friendlyUrl, boolean force) {
-		IItem item = repository.getItems().get(friendlyUrl);
-		if (item != null) {
-			item.getRoot().update(item, force);
+		IRepositoryItem repositoryItem = repository.getItems().get(friendlyUrl);
+		if (repositoryItem != null) {
+			repositoryItem.getRoot().update(repositoryItem, force);
 			return true;
 		}
 		return false; 
@@ -193,10 +193,10 @@ public class RepositoryManager implements IRepositoryManager {
 
 	public RobotSpecification[] getSpecifications() {
 		checkDbExists();
-		final Collection<IRepositoryItem> list = getAllValidItems();
+		final Collection<IRobotSpecItem> list = getAllValidItems();
 		Collection<RobotSpecification> res = new ArrayList<RobotSpecification>();
 
-		for (IRepositoryItem s : list) {
+		for (IRobotSpecItem s : list) {
 			res.add(s.createRobotSpecification());
 		}
 		return res.toArray(new RobotSpecification[res.size()]);
@@ -213,7 +213,7 @@ public class RepositoryManager implements IRepositoryManager {
 		int teamNum = 0;
 
 		for (RobotSpecification spec: selectedRobots) {
-			IRepositoryItem item = (IRepositoryItem) HiddenAccess.getFileSpecification(spec);
+			IRobotSpecItem item = (IRobotSpecItem) HiddenAccess.getFileSpecification(spec);
 
 			if (item == null) {
 				item = getRobot(spec.getNameAndVersion());
@@ -232,17 +232,17 @@ public class RepositoryManager implements IRepositoryManager {
 	public RobotSpecification[] loadSelectedRobots(String selectedRobots) {
 		checkDbExists();
 		Collection<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
-		final Collection<IRepositoryItem> list = getValidItems(selectedRobots);
+		final Collection<IRobotSpecItem> list = getValidItems(selectedRobots);
 		int teamNum = 0;
 
-		for (IRepositoryItem item: list) {
+		for (IRobotSpecItem item: list) {
 			loadItem(battlingRobotsList, null, item, teamNum);
 			teamNum++;
 		}
 		return battlingRobotsList.toArray(new RobotSpecification[battlingRobotsList.size()]);
 	}
 
-	private boolean loadItem(Collection<RobotSpecification> battlingRobotsList, RobotSpecification spec, IRepositoryItem item, int teamNum) {
+	private boolean loadItem(Collection<RobotSpecification> battlingRobotsList, RobotSpecification spec, IRobotSpecItem item, int teamNum) {
 		String teamId = String.format("%4d", teamNum);
 
 		if (item != null) {
@@ -250,7 +250,7 @@ public class RepositoryManager implements IRepositoryManager {
 				teamId = item.getFullClassNameWithVersion() + "[" + teamId + "]";
 				final Collection<RobotItem> members = getRobotItems((TeamItem) item);
 
-				for (IRepositoryItem member : members) {
+				for (IRobotSpecItem member : members) {
 					final RobotItem robot = (RobotItem) member;
 
 					boolean tested = false;
@@ -288,42 +288,42 @@ public class RepositoryManager implements IRepositoryManager {
 	public RobotSpecification[] getSelectedRobots(String selectedRobots) {
 		checkDbExists();
 		Collection<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
-		final Collection<IRepositoryItem> list = getValidItems(selectedRobots);
+		final Collection<IRobotSpecItem> list = getValidItems(selectedRobots);
 
-		for (IRepositoryItem item: list) {
+		for (IRobotSpecItem item: list) {
 			battlingRobotsList.add(item.createRobotSpecification());
 		}
 		return battlingRobotsList.toArray(new RobotSpecification[battlingRobotsList.size()]);
 	}
 
-	public List<IRepositoryItem> getSelectedSpecifications(String selectedRobots) {
+	public List<IRobotSpecItem> getSelectedSpecifications(String selectedRobots) {
 		checkDbExists();
 		return getValidItems(selectedRobots);
 	}
 
-	private Collection<IRepositoryItem> getAllValidItems() {
-		final ArrayList<IRepositoryItem> res = new ArrayList<IRepositoryItem>();
+	private Collection<IRobotSpecItem> getAllValidItems() {
+		final ArrayList<IRobotSpecItem> res = new ArrayList<IRobotSpecItem>();
 
-		for (IItem item : repository.getItems().values()) {
-			final IRepositoryItem spec = (IRepositoryItem) item;
-			if (item.isValid() && !res.contains(spec)) {
+		for (IRepositoryItem repositoryItem : repository.getItems().values()) {
+			final IRobotSpecItem spec = (IRobotSpecItem) repositoryItem;
+			if (repositoryItem.isValid() && !res.contains(spec)) {
 				res.add(spec);
 			}
 		}
 		return res;
 	}
 
-	private List<IRepositoryItem> getValidItems(String friendlyUrls) {
-		List<IRepositoryItem> result = new ArrayList<IRepositoryItem>();
+	private List<IRobotSpecItem> getValidItems(String friendlyUrls) {
+		List<IRobotSpecItem> result = new ArrayList<IRobotSpecItem>();
 		StringTokenizer tokenizer = new StringTokenizer(friendlyUrls, ",");
 
 		while (tokenizer.hasMoreTokens()) {
 			String friendlyUrl = tokenizer.nextToken().trim();
 
-			IItem item = repository.getItem(friendlyUrl);
-			if (item != null) {
-				if (item.isValid()) {
-					result.add((IRepositoryItem) item);
+			IRepositoryItem repositoryItem = repository.getItem(friendlyUrl);
+			if (repositoryItem != null) {
+				if (repositoryItem.isValid()) {
+					result.add((IRobotSpecItem) repositoryItem);
 				} else {
 					Logger.logError("Can't load '" + friendlyUrl + "' because it is an invalid robot or team.");
 				}
@@ -334,15 +334,15 @@ public class RepositoryManager implements IRepositoryManager {
 		return result;
 	}
 
-	public List<IRepositoryItem> getRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar) {
+	public List<IRobotSpecItem> getRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar) {
 		checkDbExists();
 
-		final List<IRepositoryItem> res = new ArrayList<IRepositoryItem>();
+		final List<IRobotSpecItem> res = new ArrayList<IRobotSpecItem>();
 
-		for (IItem item : repository.getItems().values()) {
-			final IRepositoryItem spec = (IRepositoryItem) item;
+		for (IRepositoryItem repositoryItem : repository.getItems().values()) {
+			final IRobotSpecItem spec = (IRobotSpecItem) repositoryItem;
 
-			if (!item.isValid()) {
+			if (!repositoryItem.isValid()) {
 				continue;
 			}
 			if (onlyWithSource && !spec.isSourceIncluded()) {
@@ -354,7 +354,7 @@ public class RepositoryManager implements IRepositoryManager {
 			if (onlyInJar && !spec.isInJAR()) {
 				continue;
 			}
-			if (onlyRobots && !(item instanceof RobotItem)) {
+			if (onlyRobots && !(repositoryItem instanceof RobotItem)) {
 				continue;
 			}
 			if (onlyDevelopment && !spec.isDevelopmentVersion()) {
@@ -376,11 +376,11 @@ public class RepositoryManager implements IRepositoryManager {
 		return RobotItem.verifyRobotName(robotName, shortClassName, true);
 	}
 
-	public int extractJar(IRepositoryItem item) {
+	public int extractJar(IRobotSpecItem item) {
 		if (!item.isInJAR()) {
 			return -2;
 		}
-		((BaseItem) item).getRoot().extractJAR();
+		((RepositoryItem) item).getRoot().extractJAR();
 		return 0; 
 	}
 
@@ -392,7 +392,7 @@ public class RepositoryManager implements IRepositoryManager {
 		refresh(target.toURI().toString());
 	}
 
-	public String createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRepositoryItem> selectedRobots) {
+	public String createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRobotSpecItem> selectedRobots) {
 		checkDbExists();
 		final List<RobotItem> robots = getAllRobotItems(selectedRobots);
 		final List<TeamItem> teams = getTeamItemsOnly(selectedRobots);
@@ -416,7 +416,7 @@ public class RepositoryManager implements IRepositoryManager {
 
 			// first load from same classPath
 			String teamBot = team.getRoot().getURL() + botPath;
-			IItem res = repository.getItem(teamBot);
+			IRepositoryItem res = repository.getItem(teamBot);
 
 			if (res != null && res instanceof RobotItem) {
 				result.add((RobotItem) res);
@@ -436,10 +436,10 @@ public class RepositoryManager implements IRepositoryManager {
 		return result;
 	}
 
-	private List<RobotItem> getAllRobotItems(Collection<IRepositoryItem> items) {
+	private List<RobotItem> getAllRobotItems(Collection<IRobotSpecItem> items) {
 		List<RobotItem> result = new ArrayList<RobotItem>();
 
-		for (IRepositoryItem item : items) {
+		for (IRobotSpecItem item : items) {
 			if (item.isTeam()) {
 				result.addAll(getRobotItems((TeamItem) item));
 			} else {
@@ -449,10 +449,10 @@ public class RepositoryManager implements IRepositoryManager {
 		return result;
 	}
 
-	private static List<TeamItem> getTeamItemsOnly(Collection<IRepositoryItem> items) {
+	private static List<TeamItem> getTeamItemsOnly(Collection<IRobotSpecItem> items) {
 		List<TeamItem> result = new ArrayList<TeamItem>();
 
-		for (IRepositoryItem item : items) {
+		for (IRobotSpecItem item : items) {
 			if (item.isTeam()) {
 				result.add((TeamItem) item);
 			}
@@ -460,13 +460,13 @@ public class RepositoryManager implements IRepositoryManager {
 		return result;
 	}
 
-	private IRepositoryItem getRobot(String fullClassNameWithVersion) {
-		final IItem item = repository.getItem(fullClassNameWithVersion);
+	private IRobotSpecItem getRobot(String fullClassNameWithVersion) {
+		final IRepositoryItem repositoryItem = repository.getItem(fullClassNameWithVersion);
 
-		if (item == null || !item.isValid()) {
+		if (repositoryItem == null || !repositoryItem.isValid()) {
 			return null;
 		}
-		return (IRepositoryItem) item;
+		return (IRobotSpecItem) repositoryItem;
 	}
 
 	private void setStatus(String message) {

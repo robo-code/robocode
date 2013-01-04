@@ -14,8 +14,8 @@
 	<JavaClass TypeName="net.sf.robocode.host.IHost"/>
 	<JavaClass TypeName="net.sf.robocode.host.IHostManager"/>
 	<JavaClass TypeName="net.sf.robocode.host.proxies.IHostingRobotProxy"/>
-	<JavaClass TypeName="net.sf.robocode.repository.IRepositoryItem"/>
-	<JavaClass TypeName="net.sf.robocode.repository.IRobotRepositoryItem"/>
+	<JavaClass TypeName="net.sf.robocode.repository.IRobotItem"/>
+	<JavaClass TypeName="net.sf.robocode.repository.IRobotSpecItem"/>
 	<JavaClass TypeName="net.sf.robocode.repository.RobotType"/>
 	<JavaClass TypeName="net.sf.robocode.peer.BadBehavior">
 		<MethodModifier MethodName="values" Signature="()[Lnet/sf/robocode/peer/BadBehavior;" Skip="true"/>

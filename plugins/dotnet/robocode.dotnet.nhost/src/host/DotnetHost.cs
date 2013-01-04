@@ -31,20 +31,20 @@ namespace net.sf.robocode.dotnet.host
         public IHostingRobotProxy createRobotProxy(IHostManager hostManager, Object robotSpecification, IRobotStatics statics, IRobotPeer peer)
         {
             Object s = HiddenAccess.getFileSpecification(robotSpecification);
-            var itemSpecification = Bridge.Cast<IRobotRepositoryItem>(s);
+            var itemSpecification = Bridge.Cast<IRobotItem>(s);
             string file = DllRootHelper.GetDllFileName(itemSpecification);
             HostingShell hostingShell = new HostingShell(itemSpecification, hostManager, peer, statics, file);
             return hostingShell;
         }
 
-        public String[] getReferencedClasses(IRobotRepositoryItem par0)
+        public String[] getReferencedClasses(IRobotItem robotItem)
         {
             return new String[] {};
         }
 
-        public RobotType getRobotType(IRobotRepositoryItem robotRepositoryItem, bool resolve, bool message)
+        public RobotType getRobotType(IRobotItem robotItem, bool resolve, bool message)
         {
-            return DllRootHelper.GetRobotType(robotRepositoryItem);
+            return DllRootHelper.GetRobotType(robotItem);
         }
 
         #endregion

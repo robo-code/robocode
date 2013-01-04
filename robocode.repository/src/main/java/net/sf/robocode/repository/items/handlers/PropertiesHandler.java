@@ -13,7 +13,7 @@ package net.sf.robocode.repository.items.handlers;
 
 
 import net.sf.robocode.repository.IRepository;
-import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.core.Container;
@@ -28,7 +28,7 @@ import java.net.URL;
  */
 public class PropertiesHandler extends ItemHandler {
 
-	public IItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
+	public IRepositoryItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
 		final String name = itemURL.toString().toLowerCase();
 
 		if (name.endsWith(".properties") && !name.endsWith("robocode.properties")) {
@@ -37,7 +37,7 @@ public class PropertiesHandler extends ItemHandler {
 		return null;
 	}
 
-	private IItem register(URL itemURL, IRepositoryRoot root, IRepository repository) {
+	private IRepositoryItem register(URL itemURL, IRepositoryRoot root, IRepository repository) {
 		RobotItem item = (RobotItem) repository.getItem(itemURL.toString());
 
 		if (item == null) {

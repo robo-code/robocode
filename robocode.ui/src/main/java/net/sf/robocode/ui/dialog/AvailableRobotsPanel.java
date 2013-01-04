@@ -25,7 +25,7 @@
 package net.sf.robocode.ui.dialog;
 
 
-import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.ui.util.ShortcutUtil;
 
 import javax.swing.*;
@@ -51,7 +51,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class AvailableRobotsPanel extends JPanel {
 
 	private final List<ItemWrapper> availableRobots = new CopyOnWriteArrayList<ItemWrapper>();
-	private List<IRepositoryItem> robotList = new CopyOnWriteArrayList<IRepositoryItem>();
+	private List<IRobotSpecItem> robotList = new CopyOnWriteArrayList<IRobotSpecItem>();
 	private final List<String> availablePackages = new CopyOnWriteArrayList<String>();
 
 	private JScrollPane availableRobotsScrollPane;
@@ -118,7 +118,7 @@ public class AvailableRobotsPanel extends JPanel {
 		return availableRobots;
 	}
 
-	public List<IRepositoryItem> getRobotList() {
+	public List<IRobotSpecItem> getRobotList() {
 		return robotList;
 	}
 
@@ -184,7 +184,7 @@ public class AvailableRobotsPanel extends JPanel {
 		return availableRobotsScrollPane;
 	}
 
-	public void setRobotList(List<IRepositoryItem> robotListList) {
+	public void setRobotList(List<IRobotSpecItem> robotListList) {
 		robotList = robotListList;
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -192,7 +192,7 @@ public class AvailableRobotsPanel extends JPanel {
 				availableRobots.clear();
 
 				if (robotList == null) {
-					robotList = new CopyOnWriteArrayList<IRepositoryItem>();
+					robotList = new CopyOnWriteArrayList<IRobotSpecItem>();
 					availablePackages.add("One moment please...");
 					((AvailablePackagesModel) getAvailablePackagesList().getModel()).changed();
 					getAvailablePackagesList().clearSelection();
@@ -201,7 +201,7 @@ public class AvailableRobotsPanel extends JPanel {
 					availablePackages.add("(All)");
 					String packageName;
 
-					for (IRepositoryItem robotSpec : robotList) {
+					for (IRobotSpecItem robotSpec : robotList) {
 						packageName = robotSpec.getFullPackage();
 						if (packageName == null) {
 							continue;
@@ -212,7 +212,7 @@ public class AvailableRobotsPanel extends JPanel {
 					}
 					availablePackages.add("(No package)");
 
-					for (IRepositoryItem robotSpec : robotList) {
+					for (IRobotSpecItem robotSpec : robotList) {
 						availableRobots.add(new ItemWrapper(robotSpec));
 					}
 					((AvailablePackagesModel) getAvailablePackagesList().getModel()).changed();
@@ -241,14 +241,14 @@ public class AvailableRobotsPanel extends JPanel {
 			if (selectedPackage.equals("(All)")) {
 				useShortName = false;
 				availableRobots.clear();
-				for (IRepositoryItem robotItem : robotList) {
+				for (IRobotSpecItem robotItem : robotList) {
 					getRobotNameCellRenderer().setUseShortName(useShortName);
 					availableRobots.add(new ItemWrapper(robotItem));
 				}
 				break;
 			}
 			// Single package.
-			for (IRepositoryItem robotItem : robotList) {
+			for (IRobotSpecItem robotItem : robotList) {
 				getRobotNameCellRenderer().setUseShortName(useShortName);
 
 				if ((robotItem.getFullPackage() == null && selectedPackage.equals("(No package)"))
@@ -271,7 +271,7 @@ public class AvailableRobotsPanel extends JPanel {
 			if (actionList != null) {
 				actionList.clearSelection();
 			}
-			IRepositoryItem robotSpecification = ((ItemWrapper) getAvailableRobotsList().getModel().getElementAt(sel[0])).getItem();
+			IRobotSpecItem robotSpecification = ((ItemWrapper) getAvailableRobotsList().getModel().getElementAt(sel[0])).getItem();
 
 			if (robotSelectionPanel != null) {
 				robotSelectionPanel.showDescription(robotSpecification);
@@ -371,13 +371,13 @@ public class AvailableRobotsPanel extends JPanel {
 	 * Is there because of keyboard navigation is tied to toString() method
 	 */
 	public static class ItemWrapper {
-		private final IRepositoryItem item;
+		private final IRobotSpecItem item;
 
-		public ItemWrapper(IRepositoryItem item) {
+		public ItemWrapper(IRobotSpecItem item) {
 			this.item = item;
 		}
 
-		public IRepositoryItem getItem() {
+		public IRobotSpecItem getItem() {
 			return item;
 		}
 
@@ -418,7 +418,7 @@ public class AvailableRobotsPanel extends JPanel {
 			String text;
 
 			if (value instanceof ItemWrapper) {
-				IRepositoryItem item = ((ItemWrapper) value).getItem();
+				IRobotSpecItem item = ((ItemWrapper) value).getItem();
 
 				text = (item.isTeam() ? "Team: " : "");
 				text += useShortName

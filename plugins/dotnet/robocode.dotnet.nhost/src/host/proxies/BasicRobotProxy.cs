@@ -59,7 +59,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         private readonly ByteBuffer execNetBuffer;
         private readonly RbSerializerN rbSerializerN;
 
-        public BasicRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer,
+        public BasicRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer,
                                RobotStatics statics)
             : base(specification, hostManager, peer, statics)
         {

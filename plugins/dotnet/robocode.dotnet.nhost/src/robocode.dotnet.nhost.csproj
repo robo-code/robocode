@@ -94,10 +94,10 @@
     <Compile Include="generated\net\sf\robocode\peer\IRobotStatics.generated.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="generated\net\sf\robocode\repository\IRepositoryItem.generated.cs">
+    <Compile Include="generated\net\sf\robocode\repository\IRobotItem.generated.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="generated\net\sf\robocode\repository\IRobotRepositoryItem.generated.cs">
+    <Compile Include="generated\net\sf\robocode\repository\IRobotSpecItem.generated.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="generated\net\sf\robocode\repository\RobotType.generated.cs">

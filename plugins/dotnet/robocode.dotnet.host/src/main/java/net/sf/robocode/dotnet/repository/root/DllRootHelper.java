@@ -29,11 +29,11 @@ public class DllRootHelper extends system.Object {
     @net.sf.jni4net.attributes.ClrMethod("(LSystem/String;)[LSystem/String;")
     public native static java.lang.String[] findItems(java.lang.String dllPath);
     
-    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;)Lnet/sf/robocode/repository/RobotType;")
-    public native static net.sf.robocode.repository.RobotType GetRobotType(net.sf.robocode.repository.IRobotRepositoryItem robotRepositoryItem);
+    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotItem;)Lnet/sf/robocode/repository/RobotType;")
+    public native static net.sf.robocode.repository.RobotType GetRobotType(net.sf.robocode.repository.IRobotItem robotItem);
     
-    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotRepositoryItem;)LSystem/String;")
-    public native static java.lang.String GetDllFileName(net.sf.robocode.repository.IRobotRepositoryItem robotRepositoryItem);
+    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/repository/IRobotItem;)LSystem/String;")
+    public native static java.lang.String GetDllFileName(net.sf.robocode.repository.IRobotItem robotItem);
     
     public static system.Type typeof() {
         return net.sf.robocode.dotnet.repository.root.DllRootHelper.staticType;

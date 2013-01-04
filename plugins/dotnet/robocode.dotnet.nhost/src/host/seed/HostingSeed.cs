@@ -38,7 +38,7 @@ namespace net.sf.robocode.dotnet.host.seed
         private static IHostManager hostManager;
         private static IRobotPeer robotPeer;
         private static RobotStatics statics;
-        private static IRobotRepositoryItem specification;
+        private static IRobotItem specification;
         private static Type robotType;
         private static Thread robotThread;
         private static HostingRobotProxy robotProxy;
@@ -55,7 +55,7 @@ namespace net.sf.robocode.dotnet.host.seed
                 JniGlobalHandle itemHandle = env.NewGlobalRef((JniHandle)domain.GetData("item"));
                 hostManager = Bridge.CreateProxy<IHostManager>(hmHandle);
                 robotPeer = Bridge.CreateProxy<IRobotPeer>(peerHandle);
-                specification = Bridge.CreateProxy<IRobotRepositoryItem>(itemHandle);
+                specification = Bridge.CreateProxy<IRobotItem>(itemHandle);
 
                 statics = ((RobotStatics)domain.GetData("statics"));
                 CreateProxy();

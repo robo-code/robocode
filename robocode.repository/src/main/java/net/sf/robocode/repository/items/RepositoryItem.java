@@ -21,7 +21,7 @@ import java.net.URL;
 /**
  * @author Pavel Savara (original)
  */
-public abstract class BaseItem implements IItem, Serializable {
+public abstract class RepositoryItem implements IRepositoryItem, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected URL itemURL;
@@ -29,7 +29,7 @@ public abstract class BaseItem implements IItem, Serializable {
 	protected long lastModified;
 	protected boolean isValid;
 
-	public BaseItem(URL itemURL, IRepositoryRoot root) {
+	public RepositoryItem(URL itemURL, IRepositoryRoot root) {
 		this.itemURL = itemURL;
 		this.root = root;
 		this.lastModified = 0;

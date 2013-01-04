@@ -29,7 +29,7 @@ package net.sf.robocode.ui.packager;
 
 
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.ui.dialog.*;
@@ -228,7 +228,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		final String author = getPackagerOptionsPanel().getAuthorField().getText();
 		final String version = getPackagerOptionsPanel().getVersionField().getText();
 		final boolean source = getPackagerOptionsPanel().getIncludeSource().isSelected();
-		final java.util.List<IRepositoryItem> robots = getRobotSelectionPanel().getSelectedRobots();
+		final java.util.List<IRobotSpecItem> robots = getRobotSelectionPanel().getSelectedRobots();
 
 		final String res = repositoryManager.createPackage(f, web, desc, author, version, source, robots);
 		ConsoleDialog d = new ConsoleDialog(windowManager.getRobocodeFrame(), "Packaging results", false);

@@ -31,7 +31,7 @@ package net.sf.robocode.ui.dialog;
 
 
 import net.sf.robocode.core.Container;
-import net.sf.robocode.repository.IRepositoryItem;
+import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
@@ -269,8 +269,8 @@ public class RobotSelectionPanel extends WizardPanel {
 		return sb.toString();
 	}
 
-	public List<IRepositoryItem> getSelectedRobots() {
-		List<IRepositoryItem> res = new ArrayList<IRepositoryItem>();
+	public List<IRobotSpecItem> getSelectedRobots() {
+		List<IRobotSpecItem> res = new ArrayList<IRobotSpecItem>();
 
 		for (AvailableRobotsPanel.ItemWrapper item : selectedRobots) {
 			res.add(item.getItem());
@@ -533,7 +533,7 @@ public class RobotSelectionPanel extends WizardPanel {
 					windowManager.setBusyPointer(true);
 					repositoryManager.refresh(withClear);
 
-					List<IRepositoryItem> robotList = repositoryManager.getRepositoryItems(onlyShowSource,
+					List<IRobotSpecItem> robotList = repositoryManager.getRepositoryItems(onlyShowSource,
 							onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, false, ignoreTeamRobots, onlyShowInJar);
 
 					getAvailableRobotsPanel().setRobotList(robotList);
@@ -555,7 +555,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 		if (sel.length == 1) {
 			availableRobotsPanel.clearSelection();
-			IRepositoryItem robotSpecification = ((AvailableRobotsPanel.ItemWrapper) getSelectedRobotsList().getModel().getElementAt(sel[0])).getItem();
+			IRobotSpecItem robotSpecification = ((AvailableRobotsPanel.ItemWrapper) getSelectedRobotsList().getModel().getElementAt(sel[0])).getItem();
 
 			showDescription(robotSpecification);
 		} else {
@@ -575,7 +575,7 @@ public class RobotSelectionPanel extends WizardPanel {
 
 	private void setSelectedRobots(String selectedRobotsString) {
 		if (selectedRobotsString != null) {
-			for (IRepositoryItem item: repositoryManager.getSelectedSpecifications(selectedRobotsString)) {
+			for (IRobotSpecItem item: repositoryManager.getSelectedSpecifications(selectedRobotsString)) {
 				this.selectedRobots.add(new AvailableRobotsPanel.ItemWrapper(item));
 			}
 		}
@@ -583,7 +583,7 @@ public class RobotSelectionPanel extends WizardPanel {
 		fireStateChanged();
 	}
 
-	public void showDescription(IRepositoryItem robotSpecification) {
+	public void showDescription(IRobotSpecItem robotSpecification) {
 		getDescriptionPanel().showDescription(robotSpecification);
 	}
 

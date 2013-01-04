@@ -21,7 +21,7 @@ package net.sf.robocode.dotnet.repository.root;
 import net.sf.robocode.repository.root.BaseRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.IRepository;
-import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
 import net.sf.robocode.io.Logger;
@@ -72,16 +72,16 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 			repository.removeItemsFromRoot(this);
 			this.lastModified = lm;
 
-			final ArrayList<IItem> items = new ArrayList<IItem>();
+			final ArrayList<IRepositoryItem> items = new ArrayList<IRepositoryItem>();
 
 			visitItems(items);
-			for (IItem item : items) {
+			for (IRepositoryItem item : items) {
 				item.update(lastModified, updateInvalid);
 			}
 		}
 	}
 
-	private void visitItems(ArrayList<IItem> items) {
+	private void visitItems(ArrayList<IRepositoryItem> items) {
 		final String[] dllitems = DllRootHelper.findItems(dllUrlNoSeparator);
 
 		for (String url : dllitems) {
@@ -89,9 +89,9 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void createItem(ArrayList<IItem> items, URL root, String url) {
+	private void createItem(ArrayList<IRepositoryItem> items, URL root, String url) {
 		try {
-			final IItem item = ItemHandler.registerItems(new URL(url), DllRoot.this, repository);
+			final IRepositoryItem item = ItemHandler.registerItems(new URL(url), DllRoot.this, repository);
 
 			if (item != null) {
 				if (item instanceof RobotItem) {
@@ -104,11 +104,11 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	public void update(IItem item, boolean force) {
+	public void update(IRepositoryItem item, boolean force) {
 		item.update(rootPath.lastModified(), force);
 	}
 
-	public boolean isChanged(IItem item) {
+	public boolean isChanged(IRepositoryItem item) {
 		return rootPath.lastModified() > lastModified;
 	}
 

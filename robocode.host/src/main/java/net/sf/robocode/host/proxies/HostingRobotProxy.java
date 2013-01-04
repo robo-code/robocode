@@ -22,7 +22,7 @@ import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.BadBehavior;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.IRobotPeer;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.core.Container;
 import robocode.RobotStatus;
 import robocode.exception.AbortedException;
@@ -44,7 +44,7 @@ import java.util.Set;
  */
 public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
 
-	private final IRobotRepositoryItem robotSpecification;
+	private final IRobotItem robotSpecification;
 
 	protected EventManager eventManager;
 	protected final IHostManager hostManager;
@@ -61,7 +61,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 
 	private final Set<String> securityViolations = Collections.synchronizedSet(new HashSet<String>());
 
-	HostingRobotProxy(IRobotRepositoryItem robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	HostingRobotProxy(IRobotItem robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
 		this.statics = statics;
 		this.hostManager = hostManager;
@@ -82,7 +82,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		robotFileSystemManager.initialize();
 	}
 
-	private JavaHost getHost(IRobotRepositoryItem robotSpecification) {
+	private JavaHost getHost(IRobotItem robotSpecification) {
 		return (JavaHost) Container.cache.getComponent("robocode.host." + robotSpecification.getRobotLanguage());
 	}
 

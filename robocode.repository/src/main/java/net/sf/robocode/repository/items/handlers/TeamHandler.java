@@ -13,7 +13,7 @@ package net.sf.robocode.repository.items.handlers;
 
 
 import net.sf.robocode.repository.IRepository;
-import net.sf.robocode.repository.items.IItem;
+import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.TeamItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
@@ -26,14 +26,14 @@ import java.net.URL;
  * @author Pavel Savara (original)
  */
 public class TeamHandler extends ItemHandler {
-	public IItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
+	public IRepositoryItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
 		if (itemURL.toString().toLowerCase().endsWith(".team")) {
 			return register(itemURL, root, repository);
 		}
 		return null;
 	}
 
-	private IItem register(URL itemURL, IRepositoryRoot root, IRepository repository) {
+	private IRepositoryItem register(URL itemURL, IRepositoryRoot root, IRepository repository) {
 		final String itemKey = itemURL.getPath();
 
 		TeamItem item = (TeamItem) repository.getItem(itemKey);
