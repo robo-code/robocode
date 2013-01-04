@@ -28,7 +28,7 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	List<File> getDevelDirectories();
 
-	void refresh(String friendlyURL);
+	void refresh(String friendlyUrl);
 
 	boolean refresh(boolean force);
 	void reload(boolean forced);

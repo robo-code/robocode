@@ -44,6 +44,34 @@ public class Repository implements IRepository {
 	private Map<String, IItem> items = new HashMap<String, IItem>();
 	private Map<String, IItem> removedItems = new HashMap<String, IItem>();
 
+	@Override
+	public void save(OutputStream out) {
+		Collection<IItem> uniqueitems = new LinkedList<IItem>();
+		Collection<IRepositoryRoot> uniqueroots = new LinkedList<IRepositoryRoot>();
+
+		for (IItem item : items.values()) {
+			if (!uniqueitems.contains(item)) {
+				uniqueitems.add(item);
+			}
+		}
+
+		for (IRepositoryRoot root : roots.values()) {
+			uniqueroots.add(root);
+		}
+
+		ObjectOutputStream oos = null;
+		try {
+			oos = new ObjectOutputStream(out);
+			oos.writeObject(uniqueroots);
+			oos.writeObject(uniqueitems);
+		} catch (IOException e) {
+			Logger.logError("Can't save robot database", e);
+		} finally {
+			FileUtil.cleanupStream(oos);
+		}
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public void load(InputStream in) {
 		Collection<IItem> uniqueitems;
@@ -76,32 +104,7 @@ public class Repository implements IRepository {
 		}
 	}
 
-	public void save(OutputStream out) {
-		Collection<IItem> uniqueitems = new LinkedList<IItem>();
-		Collection<IRepositoryRoot> uniqueroots = new LinkedList<IRepositoryRoot>();
-
-		for (IItem item : items.values()) {
-			if (!uniqueitems.contains(item)) {
-				uniqueitems.add(item);
-			}
-		}
-
-		for (IRepositoryRoot root : roots.values()) {
-			uniqueroots.add(root);
-		}
-
-		ObjectOutputStream oos = null;
-		try {
-			oos = new ObjectOutputStream(out);
-			oos.writeObject(uniqueroots);
-			oos.writeObject(uniqueitems);
-		} catch (IOException e) {
-			Logger.logError("Can't save robot database", e);
-		} finally {
-			FileUtil.cleanupStream(oos);
-		}
-	}
-
+	@Override
 	public void addOrUpdateItem(IItem item) {
 		Collection<String> friendlyUrls = item.getFriendlyURLs();
 		if (friendlyUrls != null) {
@@ -119,26 +122,31 @@ public class Repository implements IRepository {
 		}
 	}
 
-	public IItem getItem(String friendlyURL) {
-		IItem item = items.get(friendlyURL);
+	@Override
+	public IItem getItem(String friendlyUrl) {
+		IItem item = items.get(friendlyUrl);
 		if (item == null) {
-			item = removedItems.get(friendlyURL);
+			item = removedItems.get(friendlyUrl);
 		}
 		return item;
 	}
 
+	@Override
 	public Map<String, IItem> getItems() {
 		return Collections.unmodifiableMap(items);
 	}
 
+	@Override
 	public Map<String, IRepositoryRoot> getRoots() {
 		return Collections.unmodifiableMap(roots);
 	}
 
-	public void removeRoot(String friendlyURL) {
-		roots.remove(friendlyURL);
+	@Override
+	public void removeRoot(String friendlyUrl) {
+		roots.remove(friendlyUrl);
 	}
 
+	@Override
 	public void removeItemsFromRoot(IRepositoryRoot root) {
 		Collection<Map.Entry<String, IItem>> itemsToMove = new ArrayList<Map.Entry<String, IItem>>();
 
@@ -156,6 +164,11 @@ public class Repository implements IRepository {
 		}
 	}
 
+	/**
+	 * Replaces the repository roots with new repository roots.
+	 *
+	 * @param newRoots is the new repository roots for this repository.
+	 */
 	// Only for the RepositoryManager
 	public void setRoots(Map<String, IRepositoryRoot> newRoots) {
 		roots = newRoots;

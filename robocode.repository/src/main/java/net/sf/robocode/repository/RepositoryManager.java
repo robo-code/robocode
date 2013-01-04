@@ -80,8 +80,8 @@ public class RepositoryManager implements IRepositoryManager {
 		return develDirectories;
 	}
 
-	public void refresh(String friendlyURL) {
-		if (!updateItemRoot(friendlyURL, true)) {
+	public void refresh(String friendlyUrl) {
+		if (!updateItemRoot(friendlyUrl, true)) {
 			refresh(true);
 		}
 		URLJarCollector.gc();
@@ -131,8 +131,8 @@ public class RepositoryManager implements IRepositoryManager {
 		return prev != repository.getItems().size();
 	}
 
-	private boolean updateItemRoot(String friendlyURL, boolean force) {
-		IItem item = repository.getItems().get(friendlyURL);
+	private boolean updateItemRoot(String friendlyUrl, boolean force) {
+		IItem item = repository.getItems().get(friendlyUrl);
 		if (item != null) {
 			item.getRoot().update(item, force);
 			return true;
@@ -313,22 +313,22 @@ public class RepositoryManager implements IRepositoryManager {
 		return res;
 	}
 
-	private List<IRepositoryItem> getValidItems(String friendlyURLs) {
+	private List<IRepositoryItem> getValidItems(String friendlyUrls) {
 		List<IRepositoryItem> result = new ArrayList<IRepositoryItem>();
-		StringTokenizer tokenizer = new StringTokenizer(friendlyURLs, ",");
+		StringTokenizer tokenizer = new StringTokenizer(friendlyUrls, ",");
 
 		while (tokenizer.hasMoreTokens()) {
-			String friendlyURL = tokenizer.nextToken().trim();
+			String friendlyUrl = tokenizer.nextToken().trim();
 
-			IItem item = repository.getItem(friendlyURL);
+			IItem item = repository.getItem(friendlyUrl);
 			if (item != null) {
 				if (item.isValid()) {
 					result.add((IRepositoryItem) item);
 				} else {
-					Logger.logError("Can't load '" + friendlyURL + "' because it is an invalid robot or team.");
+					Logger.logError("Can't load '" + friendlyUrl + "' because it is an invalid robot or team.");
 				}
 			} else {
-				Logger.logError("Can't find '" + friendlyURL + '\'');
+				Logger.logError("Can't find '" + friendlyUrl + '\'');
 			}
 		}
 		return result;
