@@ -24,19 +24,19 @@ import java.net.URL;
 public abstract class RepositoryItem implements IRepositoryItem, Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected URL itemURL;
+	protected URL itemUrl;
 	protected IRepositoryRoot root;
 	protected long lastModified;
 	protected boolean isValid;
 
 	public RepositoryItem(URL itemURL, IRepositoryRoot root) {
-		this.itemURL = itemURL;
+		this.itemUrl = itemURL;
 		this.root = root;
 		this.lastModified = 0;
 	}
 
 	public URL getItemURL() {
-		return itemURL;
+		return itemUrl;
 	}
 
 	public IRepositoryRoot getRoot() {
@@ -57,5 +57,25 @@ public abstract class RepositoryItem implements IRepositoryItem, Serializable {
 
 	public void setValid(boolean valid) {
 		isValid = valid;
+	}
+
+	@Override
+	public int hashCode() {
+		return 31 + ((itemUrl == null) ? 0 : itemUrl.hashCode());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || !(obj instanceof RepositoryItem)) {
+			return false;
+		}
+		RepositoryItem other = (RepositoryItem) obj;
+		if (itemUrl == null && other.itemUrl != null) {
+			return false;
+		}
+		return itemUrl.equals(other.itemUrl);
 	}
 }

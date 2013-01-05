@@ -17,7 +17,7 @@ package net.sf.robocode.repository.root.handlers;
 
 import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.parsers.ClasspathFileParser;
-import net.sf.robocode.repository.root.ClassPathRoot;
+import net.sf.robocode.repository.root.ClasspathRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
 import java.io.File;
@@ -81,7 +81,7 @@ public class ClassPathHandler extends RootHandler {
 
 		IRepositoryRoot root = repository.getRoots().get(key);
 		if (root == null) {
-			root = new ClassPathRoot(repository, dir, projectDir);
+			root = new ClasspathRoot(repository, dir, projectDir);
 		} else {
 			repository.removeRoot(key);
 		}

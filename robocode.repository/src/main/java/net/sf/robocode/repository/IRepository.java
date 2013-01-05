@@ -52,14 +52,16 @@ public interface IRepository {
 	 * Adds or updates an item.<p>
 	 *
 	 * If the item is not present in the repository, it will be added; otherwise it will be updated, if the specified
-	 * item has a never version than the existing item in the repository.
+	 * item has a never version than the existing item in the repository.<p>
+	 * 
+	 * This method will store the item under each friendly URL (keys) by using {@link IRepositoryItem#getFriendlyURLs()}.
 	 *
-	 * @param repositoryItem is the item to add or update.
+	 * @param item is the item to add or update.
 	 * 
 	 * @see #getItem(String)
 	 * @see #getItems()
 	 */
-	void addOrUpdateItem(IRepositoryItem repositoryItem);
+	void addOrUpdateItem(IRepositoryItem item);
 
 	/**
 	 * Returns an item stored in this repository identified by a friendly URL (key).

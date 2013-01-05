@@ -21,7 +21,7 @@ import robocode.util.Utils;
 
 import java.awt.*;
 import java.io.PrintStream;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -32,7 +32,7 @@ public class JuniorEvents implements IJuniorRobot, IBasicEvents, Runnable {
 
 	IBasicRobotPeer peer;
 	PrintStream out;
-	final Hashtable<String, Integer> counts = new Hashtable<String, Integer>();
+	final Map<String, Integer> counts = new HashMap<String, Integer>();
 	Bullet bullet;
 
 	public void run() {

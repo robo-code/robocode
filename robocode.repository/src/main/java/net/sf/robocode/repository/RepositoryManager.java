@@ -109,19 +109,11 @@ public class RepositoryManager implements IRepositoryManager {
 
 		RootHandler.openHandlers();
 
-		Map<String, IRepositoryRoot> currentRoots = repository.getRoots();
 		Map<String, IRepositoryRoot> newRoots = new HashMap<String, IRepositoryRoot>();
 
 		RootHandler.visitDirectories(robotsDir, false, newRoots, repository, force);
 		for (File dir : devDirs) {
 			RootHandler.visitDirectories(dir, true, newRoots, repository, force);
-		}
-
-		// removed roots
-		for (IRepositoryRoot oldRoot : currentRoots.values()) {
-			if (!newRoots.containsKey(oldRoot.getURL().toString())) {
-				repository.removeItemsFromRoot(oldRoot);
-			}
 		}
 
 		repository.setRoots(newRoots);

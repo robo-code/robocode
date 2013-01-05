@@ -480,7 +480,7 @@ public class RobocodeFrame extends JFrame {
 
 			tpsSlider.addChangeListener(eventHandler);
 
-			java.util.Hashtable<Integer, JLabel> labels = new java.util.Hashtable<Integer, JLabel>();
+			Dictionary<Integer, JLabel> labels = new Hashtable<Integer, JLabel>();
 
 			labels.put(0, new JLabel("0"));
 			labels.put(5, new JLabel("5"));

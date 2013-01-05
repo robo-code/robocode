@@ -20,7 +20,7 @@ import net.sf.robocode.io.URLJarCollector;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.repository.RobotType;
-import net.sf.robocode.repository.root.ClassPathRoot;
+import net.sf.robocode.repository.root.ClasspathRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.core.Container;
@@ -278,8 +278,8 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		if (root.isJAR()) {
 			urls.add(root.getURL().toString());
 		}
-		if (root instanceof ClassPathRoot) {
-			String friendly = ((ClassPathRoot) root).getFriendlyProjectURL(itemURL);
+		if (root instanceof ClasspathRoot) {
+			String friendly = ((ClasspathRoot) root).getFriendlyProjectURL(itemUrl);
 
 			if (friendly != null) {
 				urls.add(friendly);
@@ -590,6 +590,6 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	}
 
 	public String toString() {
-		return itemURL.toString();
+		return itemUrl.toString();
 	}
 }

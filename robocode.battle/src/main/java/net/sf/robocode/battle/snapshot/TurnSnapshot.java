@@ -264,7 +264,7 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 
 					public void close() {
 						// allows loading of minimalistic XML, which skips dead robots, but GUI expects them
-						Hashtable<String, Object> context = reader.getContext();
+						Map<String, Object> context = reader.getContext();
 						Integer robotCount = (Integer) context.get("robots");
 						boolean[] present = new boolean[robotCount];
 

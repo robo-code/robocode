@@ -27,9 +27,10 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -40,30 +41,28 @@ import java.util.Map;
  */
 public class Repository implements IRepository {
 
-	private Map<String, IRepositoryRoot> roots = new HashMap<String, IRepositoryRoot>();
-	private Map<String, IRepositoryItem> repositoryItems = new HashMap<String, IRepositoryItem>();
-	private Map<String, IRepositoryItem> removedItems = new HashMap<String, IRepositoryItem>();
+	private Map<String, IRepositoryRoot> roots = new ConcurrentHashMap<String, IRepositoryRoot>();
+	private Map<String, IRepositoryItem> repositoryItems = new ConcurrentHashMap<String, IRepositoryItem>();
+	private Map<String, IRepositoryItem> removedItems = new ConcurrentHashMap<String, IRepositoryItem>();
 
 	@Override
 	public void save(OutputStream out) {
-		Collection<IRepositoryItem> uniqueitems = new LinkedList<IRepositoryItem>();
-		Collection<IRepositoryRoot> uniqueroots = new LinkedList<IRepositoryRoot>();
+		Set<IRepositoryItem> uniqueItems = new HashSet<IRepositoryItem>();
+		Set<IRepositoryRoot> uniqueRoots = new HashSet<IRepositoryRoot>();
 
 		for (IRepositoryItem repositoryItem : repositoryItems.values()) {
-			if (!uniqueitems.contains(repositoryItem)) {
-				uniqueitems.add(repositoryItem);
-			}
+			uniqueItems.add(repositoryItem);
 		}
 
 		for (IRepositoryRoot root : roots.values()) {
-			uniqueroots.add(root);
+			uniqueRoots.add(root);
 		}
 
 		ObjectOutputStream oos = null;
 		try {
 			oos = new ObjectOutputStream(out);
-			oos.writeObject(uniqueroots);
-			oos.writeObject(uniqueitems);
+			oos.writeObject(uniqueRoots);
+			oos.writeObject(uniqueItems);
 		} catch (IOException e) {
 			Logger.logError("Can't save robot database", e);
 		} finally {
@@ -74,17 +73,17 @@ public class Repository implements IRepository {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void load(InputStream in) {
-		Collection<IRepositoryItem> uniqueitems;
-		Collection<IRepositoryRoot> uniqueroots;
+		Set<IRepositoryItem> uniqueItems;
+		Set<IRepositoryRoot> uniqueRoots;
 
 		ObjectInputStream ois = null;
 		try {
 			ois = new ObjectInputStream(in);
 
-			uniqueroots = (Collection<IRepositoryRoot>) ois.readObject();
-			uniqueitems = (Collection<IRepositoryItem>) ois.readObject();
+			uniqueRoots = (Set<IRepositoryRoot>) ois.readObject();
+			uniqueItems = (Set<IRepositoryItem>) ois.readObject();
 
-			for (IRepositoryRoot root : uniqueroots) {
+			for (IRepositoryRoot root : uniqueRoots) {
 				((BaseRoot) root).setRepository(this);
 
 				String key = root.getURL().toString();
@@ -92,7 +91,7 @@ public class Repository implements IRepository {
 
 				roots.put(key, root);
 			}
-			for (IRepositoryItem repositoryItem : uniqueitems) {
+			for (IRepositoryItem repositoryItem : uniqueItems) {
 				addOrUpdateItem(repositoryItem);
 			}
 		} catch (IOException e) {
@@ -171,7 +170,18 @@ public class Repository implements IRepository {
 	 */
 	// Only for the RepositoryManager
 	public void setRoots(Map<String, IRepositoryRoot> newRoots) {
+		
+		// Remove all items from current roots
+		for (IRepositoryRoot root : roots.values()) {
+			if (!newRoots.containsKey(root.getURL().toString())) {
+				removeItemsFromRoot(root);
+			}
+		}
+	
+		// Set the new roots
 		roots = newRoots;
+
+		// Clear items to be removed
 		removedItems.clear(); 
 	}
 }

@@ -14,6 +14,7 @@ package net.sf.robocode.repository.root;
 
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepository;
+import net.sf.robocode.ui.IWindowManager;
 
 import java.io.File;
 import java.io.Serializable;
@@ -71,5 +72,12 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 			return ((IRepositoryRoot) obj).getURL().equals(rootURL);
 		}
 		return false;
+	}
+
+	protected static void setStatus(String message) {
+		IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
+		if (windowManager != null) {
+			windowManager.setStatus(message);
+		}
 	}
 }

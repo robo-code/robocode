@@ -186,7 +186,7 @@ public final class Battle extends BaseBattle {
 
 	private void createPeers(RobotSpecification[] battlingRobotsList) {
 		// create teams
-		Hashtable<String, Integer> countedNames = new Hashtable<String, Integer>();
+		Map<String, Integer> countedNames = new HashMap<String, Integer>();
 		List<String> teams = new ArrayList<String>();
 		List<String> teamDuplicates = new ArrayList<String>();
 		List<Integer> robotDuplicates = new ArrayList<Integer>();
@@ -221,7 +221,7 @@ public final class Battle extends BaseBattle {
 			}
 		}
 
-		Hashtable<String, List<String>> teamMembers = new Hashtable<String, List<String>>();
+		Map<String, List<String>> teamMembers = new HashMap<String, List<String>>();
 
 		// name teams
 		for (int i = teams.size() - 1; i >= 0; i--) {
@@ -264,7 +264,7 @@ public final class Battle extends BaseBattle {
 		}
 
 		// create teams
-		Hashtable<String, TeamPeer> namedTeams = new Hashtable<String, TeamPeer>();
+		Map<String, TeamPeer> namedTeams = new HashMap<String, TeamPeer>();
 
 		// create robots
 		for (int i = 0; i < battlingRobotsList.length; i++) {

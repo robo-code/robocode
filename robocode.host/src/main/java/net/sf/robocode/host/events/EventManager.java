@@ -76,7 +76,7 @@ public final class EventManager implements IEventManager {
 	private Event currentTopEvent;
 	private int currentTopEventPriority;
 	private ScannedRobotEvent dummyScannedRobotEvent;
-	private Dictionary<String, Event> eventNames;
+	private Map<String, Event> eventNames;
 
 	private IBasicRobot robot;
 	private BasicRobotProxy robotProxy;
@@ -543,7 +543,7 @@ public final class EventManager implements IEventManager {
 	 * {@link #setEventPriority(String, int)} and sets the default priority of each event class.
 	 */
 	private void registerEventNames() {
-		eventNames = new Hashtable<String, Event>();
+		eventNames = new HashMap<String, Event>();
 		dummyScannedRobotEvent = new ScannedRobotEvent(null, 0, 0, 0, 0, 0);
 		registerEventNames(new BattleEndedEvent(false, null));
 		registerEventNames(new BulletHitBulletEvent(null, null));

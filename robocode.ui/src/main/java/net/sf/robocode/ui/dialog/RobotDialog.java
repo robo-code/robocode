@@ -34,7 +34,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -62,7 +62,7 @@ public class RobotDialog extends JFrame {
 	private IRobotSnapshot lastSnapshot;
 	private boolean printSnapshot;
 	private boolean grayGreenButton;
-	private final Hashtable<String, String> debugProperties = new Hashtable<String, String>();
+	private final Map<String, String> debugProperties = new HashMap<String, String>();
 
 	private final BattleObserver battleObserver = new BattleObserver();
 	private final IWindowManager windowManager;

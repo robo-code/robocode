@@ -36,7 +36,9 @@ import robocode.util.Utils;
 import java.awt.*;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import java.util.Hashtable;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -57,7 +59,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	protected ExecCommands commands;
 	private ExecResults execResults;
 
-	private final Hashtable<Integer, Bullet> bullets = new Hashtable<Integer, Bullet>();
+	private final Map<Integer, Bullet> bullets = new ConcurrentHashMap<Integer, Bullet>();
 	private int bulletCounter = -1; 
 
 	private final AtomicInteger setCallCount = new AtomicInteger(0);

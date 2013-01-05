@@ -16,7 +16,6 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
-import net.sf.robocode.ui.IWindowManager;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -26,53 +25,45 @@ import java.util.ArrayList;
 
 
 /**
- * Represents a class path root
+ * Represents a classpath root
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
-public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
+public final class ClasspathRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
 	private final File projectPath;
 
-	public ClassPathRoot(IRepository repository, File rootPath, File projectPath) {
+	public ClasspathRoot(IRepository repository, File rootPath, File projectPath) {
 		super(repository, rootPath);
 		this.projectPath = projectPath;
 	}
 
 	public void update(boolean force) {
-		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
-
-		setStatus(windowManager, "Updating class path: " + rootPath);
 		repository.removeItemsFromRoot(this);
+
 		final ArrayList<IRepositoryItem> repositoryItems = new ArrayList<IRepositoryItem>();
 		final ArrayList<Long> modified = new ArrayList<Long>();
 
 		visitDirectory(rootPath, repositoryItems, modified);
 		for (int i = 0; i < repositoryItems.size(); i++) {
 			IRepositoryItem repositoryItem = repositoryItems.get(i);
-
 			repositoryItem.update(modified.get(i), force);
 		}
 	}
 
 	private void visitDirectory(File path, final ArrayList<IRepositoryItem> repositoryItems, final ArrayList<Long> modified) {
-		// find files
-		// noinspection ResultOfMethodCallIgnored
-		path.listFiles(
-				new FileFilter() {
+		path.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
 				if (pathname.isFile()) {
 					try {
-						final IRepositoryItem repositoryItem = ItemHandler.registerItems(pathname.toURI().toURL(), ClassPathRoot.this,
-								repository);
-
+						IRepositoryItem repositoryItem = ItemHandler.registerItems(pathname.toURI().toURL(), ClasspathRoot.this, repository);
 						if (repositoryItem != null) {
 							repositoryItems.add(repositoryItem);
 							modified.add(pathname.lastModified());
 						}
 					} catch (MalformedURLException e) {
 						Logger.logError(e);
-						return false;
 					}
 				}
 				return false;
@@ -80,8 +71,7 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		});
 
 		// find sub-directories
-		File[] subDirs = path.listFiles(
-				new FileFilter() {
+		File[] subDirs = path.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
 				return pathname.isDirectory() && !pathname.getName().toLowerCase().endsWith(".data")
 						&& !pathname.getName().toLowerCase().endsWith(".robotcache");
@@ -96,15 +86,15 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	public void update(IRepositoryItem repositoryItem, boolean force) {
-		File f = new File(repositoryItem.getItemURL().toString());
+		setStatus("Updating classpath: " + rootPath);
 
-		repositoryItem.update(f.lastModified(), force);
+		File file = new File(repositoryItem.getItemURL().toString());
+		repositoryItem.update(file.lastModified(), force);
 	}
 
 	public boolean isChanged(IRepositoryItem repositoryItem) {
-		File f = new File(repositoryItem.getItemURL().toString());
-
-		return f.lastModified() > repositoryItem.getLastModified();
+		File file = new File(repositoryItem.getItemURL().toString());
+		return file.lastModified() > repositoryItem.getLastModified();
 	}
 
 	public boolean isDevelopmentRoot() {
@@ -115,23 +105,19 @@ public class ClassPathRoot extends BaseRoot implements IRepositoryRoot {
 		return false;
 	}
 
-	private void setStatus(IWindowManager windowManager, String message) {
-		if (windowManager != null) {
-			windowManager.setStatus(message);
-		}
-	}
-
 	public String getFriendlyProjectURL(URL itemURL) {
-		String noType = null;
+		String url = null;
 
 		if (projectPath != null) {
 			try {
 				String rootPath = projectPath.toURI().toURL().toString();
 				String itemPath = itemURL.toString().substring(getURL().toString().length());
 
-				noType = rootPath + itemPath.substring(0, itemPath.lastIndexOf('.'));
-			} catch (MalformedURLException ignore) {}
+				url = rootPath + itemPath.substring(0, itemPath.lastIndexOf('.'));
+			} catch (MalformedURLException e) {
+				Logger.logError(e);				
+			}
 		}
-		return noType;
+		return url;
 	}
 }

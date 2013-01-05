@@ -66,7 +66,7 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 
 	private void htmlURLFromPropertiesURL() {
 		try {
-			htmlURL = new URL(itemURL.toString().replaceAll("\\.team", ".html"));
+			htmlURL = new URL(itemUrl.toString().replaceAll("\\.team", ".html"));
 
 			// test that html file exists
 			final URLConnection conn = URLJarCollector.openConnection(htmlURL);
@@ -81,12 +81,12 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 	public Set<String> getFriendlyURLs() {
 		final Set<String> urls = new HashSet<String>();
 
-		final String tUrl = itemURL.toString();
+		final String tUrl = itemUrl.toString();
 		final String noType = tUrl.substring(0, tUrl.lastIndexOf('.'));
 
 		urls.add(tUrl);
 		urls.add(noType);
-		urls.add(itemURL.getPath());
+		urls.add(itemUrl.getPath());
 
 		if (System.getProperty("TESTING", "false").equals("true")) {
 			urls.add(getFullClassName());
@@ -106,11 +106,11 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 	}
 
 	private boolean loadProperties() {
-		if (itemURL != null) {
+		if (itemUrl != null) {
 			InputStream ios = null;
 
 			try {
-				final URLConnection connection = URLJarCollector.openConnection(itemURL);
+				final URLConnection connection = URLJarCollector.openConnection(itemUrl);
 
 				ios = connection.getInputStream();
 				
@@ -134,7 +134,7 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 	}
 
 	public URL getPropertiesURL() {
-		return itemURL;
+		return itemUrl;
 	}
 
 	public boolean isTeam() {
@@ -182,7 +182,7 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 	}
 
 	public String toString() {
-		return itemURL.toString();
+		return itemUrl.toString();
 	}
 
 	public void storeProperties(OutputStream os, boolean includeSources, String version, String desc, String author, URL web) throws IOException {

@@ -15,7 +15,7 @@ package net.sf.robocode.repository.items.handlers;
 import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.RobotItem;
-import net.sf.robocode.repository.root.ClassPathRoot;
+import net.sf.robocode.repository.root.ClasspathRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
 import java.net.URL;
@@ -39,8 +39,8 @@ public class SourceHandler extends ItemHandler {
 	private IRepositoryItem register(URL itemURL, IRepositoryRoot root, IRepository repository) {
 		RobotItem item = null;
 
-		if (root instanceof ClassPathRoot) {
-			String friendly = ((ClassPathRoot) root).getFriendlyProjectURL(itemURL);
+		if (root instanceof ClasspathRoot) {
+			String friendly = ((ClasspathRoot) root).getFriendlyProjectURL(itemURL);
 
 			if (friendly != null) {
 				item = (RobotItem) repository.getItem(friendly);

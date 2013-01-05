@@ -21,7 +21,6 @@ import net.sf.robocode.repository.packager.JarExtractor;
 import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
-import net.sf.robocode.ui.IWindowManager;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -36,8 +35,10 @@ import java.util.jar.JarInputStream;
 
 
 /**
- * Represents one .jar file
+ * Represents a JAR file.
+ *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
@@ -57,16 +58,15 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	public void update(boolean force) {
-		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
+		setStatus("Updating JAR: " + rootPath.toString());
 
-		setStatus(windowManager, "Updating .jar: " + rootPath.toString());
 		long lm = rootPath.lastModified();
 
 		if (lm > this.lastModified) {
 			repository.removeItemsFromRoot(this);
 			this.lastModified = lm;
 
-			final ArrayList<IRepositoryItem> repositoryItems = new ArrayList<IRepositoryItem>();
+			ArrayList<IRepositoryItem> repositoryItems = new ArrayList<IRepositoryItem>();
 
 			visitItems(repositoryItems);
 			for (IRepositoryItem repositoryItem : repositoryItems) {
@@ -76,13 +76,13 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	private void visitItems(ArrayList<IRepositoryItem> repositoryItems) {
-		final String root = jarNoSeparator;
+		String root = jarNoSeparator;
 		InputStream is = null;
 		BufferedInputStream bis = null;
 		JarInputStream jarIS = null;
 
 		try {
-			final URLConnection con = URLJarCollector.openConnection(rootURL);
+			URLConnection con = URLJarCollector.openConnection(rootURL);
 
 			is = con.getInputStream();
 			bis = new BufferedInputStream(is);
@@ -131,7 +131,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	private void createItem(ArrayList<IRepositoryItem> repositoryItems, URL root, JarEntry entry) {
 		try {
 			String pUrl = root.toString() + entry.getName();
-			final IRepositoryItem repositoryItem = ItemHandler.registerItems(new URL(pUrl), JarRoot.this, repository);
+			IRepositoryItem repositoryItem = ItemHandler.registerItems(new URL(pUrl), JarRoot.this, repository);
 
 			if (repositoryItem != null) {
 				if (repositoryItem instanceof RobotItem) {
@@ -168,11 +168,5 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 
 	public void extractJAR() {
 		JarExtractor.extractJar(rootURL);
-	}
-
-	private static void setStatus(IWindowManager windowManager, String message) {
-		if (windowManager != null) {
-			windowManager.setStatus(message);
-		}
 	}
 }

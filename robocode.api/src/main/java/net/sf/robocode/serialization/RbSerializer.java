@@ -24,8 +24,8 @@ import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.*;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -78,7 +78,7 @@ public final class RbSerializer {
 	public final static byte RoundEndedEvent_TYPE = 55;
 
 	private final static ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
-	private static Dictionary<Class<?>, Byte> classToType = new Hashtable<Class<?>, Byte>();
+	private static Map<Class<?>, Byte> classToType = new HashMap<Class<?>, Byte>();
 	private final static Charset charset;
 	private final CharsetEncoder encoder;
 	private final CharsetDecoder decoder;

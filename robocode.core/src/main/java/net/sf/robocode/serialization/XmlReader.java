@@ -21,8 +21,8 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 
@@ -36,10 +36,10 @@ public class XmlReader {
 	final InputStream input;
 	final Stack<Element> elements = new Stack<Element>();
 	final Stack<IXmlSerializable> items = new Stack<IXmlSerializable>();
-	final Stack<Dictionary<String, Element>> elementNames = new Stack<Dictionary<String, Element>>();
-	final Stack<Dictionary<String, Attribute>> attributeNames = new Stack<Dictionary<String, Attribute>>();
+	final Stack<Map<String, Element>> elementNames = new Stack<Map<String, Element>>();
+	final Stack<Map<String, Attribute>> attributeNames = new Stack<Map<String, Attribute>>();
 	IXmlSerializable result;
-	Hashtable<String, Object> context = new Hashtable<String, Object>();
+	Map<String, Object> context = new HashMap<String, Object>();
 
 	public XmlReader(InputStream input) throws SAXException, ParserConfigurationException {
 		this.input = input;
@@ -49,8 +49,8 @@ public class XmlReader {
 	}
 
 	private Object deserialize(IXmlSerializable prototype) throws IOException, SAXException {
-		elementNames.push(new Hashtable<String, Element>());
-		attributeNames.push(new Hashtable<String, Attribute>());
+		elementNames.push(new HashMap<String, Element>());
+		attributeNames.push(new HashMap<String, Attribute>());
 		items.push(null);
 		elements.push(new ListElement() {
 			public IXmlSerializable read(XmlReader reader) {
@@ -81,13 +81,13 @@ public class XmlReader {
 		}
 
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-			final Dictionary<String, Element> names = XmlReader.this.elementNames.peek();
+			final Map<String, Element> names = XmlReader.this.elementNames.peek();
 			final Element element = names == null ? null : names.get(qName);
 
 			if (element != null) {
 				elements.push(element);
-				XmlReader.this.elementNames.push(new Hashtable<String, Element>());
-				attributeNames.push(new Hashtable<String, Attribute>());
+				XmlReader.this.elementNames.push(new HashMap<String, Element>());
+				attributeNames.push(new HashMap<String, Attribute>());
 				final IXmlSerializable item = element.read(parent);
 
 				item.readXml(parent);
@@ -120,7 +120,7 @@ public class XmlReader {
 			items.pop();
 			elementNames.pop();
 			attributeNames.pop();
-			final Dictionary<String, Element> names = XmlReader.this.elementNames.peek();
+			final Map<String, Element> names = XmlReader.this.elementNames.peek();
 			final Element element = names == null ? null : names.get(qName);
 
 			if (element != null) {
@@ -134,7 +134,7 @@ public class XmlReader {
 
 	}
 
-	public Hashtable<String, Object> getContext() {
+	public Map<String, Object> getContext() {
 		return context;
 	}
 

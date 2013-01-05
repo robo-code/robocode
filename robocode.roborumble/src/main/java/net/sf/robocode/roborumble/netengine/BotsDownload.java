@@ -36,7 +36,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.jar.JarFile;
@@ -483,7 +484,7 @@ public class BotsDownload {
 
 	public void notifyServerForOldParticipants() {
 		// Load participants names
-		Hashtable<String, String> namesall = new Hashtable<String, String>();
+		Map<String, String> namesall = new HashMap<String, String>();
 		BufferedReader br = null;
 
 		try {

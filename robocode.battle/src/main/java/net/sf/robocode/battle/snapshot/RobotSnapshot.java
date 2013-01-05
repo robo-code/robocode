@@ -28,8 +28,8 @@ import robocode.control.snapshot.RobotState;
 import java.awt.geom.Arc2D;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -526,7 +526,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 						snapshot.robotIndex = Integer.parseInt(value);
 
 						// allows loading of minimalistic XML, which robot names for subsequent turns
-						Hashtable<String, Object> context = reader.getContext();
+						Map<String, Object> context = reader.getContext();
 
 						if (context.containsKey(value)) {
 							String n = (String) context.get(value);
@@ -550,7 +550,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 				reader.expect("name", new XmlReader.Attribute() {
 					public void read(String value) {
 						snapshot.name = value;
-						Hashtable<String, Object> context = reader.getContext();
+						Map<String, Object> context = reader.getContext();
 
 						context.put(Integer.toString(snapshot.robotIndex), value);
 						if (snapshot.shortName == null) {
