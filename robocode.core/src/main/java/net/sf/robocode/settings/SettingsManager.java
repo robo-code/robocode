@@ -1,36 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Added option for visible ground, visible explosions, visible explosion
- *       debris, antialiasing, text antialiasing, rendering method, and method
- *       for getting the combined rendering hints
- *     - Changed the FPS methods into TPS methods, but added the "Display FPS in
- *       titlebar" option
- *     - Added sound options
- *     - Added common options for showing battle result and append when saving
- *       results
- *     - Added PropertyListener allowing listeners to retrieve events when a
- *       property is changed
- *     - Removed "Allow color changes" option as this is always possible with
- *       the current rendering engine
- *     - Added common option for enabling replay recording
- *     - Updated to use methods from the Logger, which replaces logger methods
- *       that have been (re)moved from the robocode.util.Utils class
- *     - Added file paths to theme, background, and end-of-battle music +
- *       file path for sound effects like gunshot, robot death etc.
- *     - Added SortedProperties class in order to sort the keys/fields of the
- *       Robocode properties file
- *     - Added "Buffer images" Render Option
- *     Nathaniel Troutman
- *     - Added missing removePropertyListener() method
  *******************************************************************************/
 package net.sf.robocode.settings;
 

@@ -1,22 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Rewritten for Java 5
- *     - Changed contains(String) into contains(Object), as the first listed
- *       shadowed the second one
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
- *     Pavel Savara
- *     - member names are known in constructor
  *******************************************************************************/
 package net.sf.robocode.battle.peer;
 
@@ -29,6 +16,7 @@ import java.util.List;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
+ * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
 public class TeamPeer extends ArrayList<RobotPeer> implements ContestantPeer {

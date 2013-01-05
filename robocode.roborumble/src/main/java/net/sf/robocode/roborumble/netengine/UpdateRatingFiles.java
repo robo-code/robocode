@@ -1,22 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2012 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003-2013 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Albert Pérez
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Ported to Java 5
- *     - Removed dead code and unused imports
- *     - Properties are now read using PropertiesUtil.getProperties()
- *     - Properties are now stored using PropertiesUtil.storeProperties()
- *     - Renamed UpdateRatings() into updateRatings()
- *     - Catch of entire Exception has been reduced to catch of IOException when
- *       only this exception is ever thrown
- *     - Added missing close() to streams
  *******************************************************************************/
 package net.sf.robocode.roborumble.netengine;
 

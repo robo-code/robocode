@@ -1,29 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Replaced ContestantPeerVector with plain Vector
- *     - Added Rank column
- *     - Ported to Java 5
- *     - Optimized
- *     - Code cleanup
- *     - Updated to use methods from the Logger and StringUtil, which
- *       replaces methods that have been (re)moved from the robocode.util.Utils
- *     - Changed the column names to be more informative and equal in width
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
- *     Nathaniel Troutman
- *     - Added sanity check on battle object in getRowCount()
- *     Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh
- *     - Score with % (percentage) in the table view
  *******************************************************************************/
 package net.sf.robocode.battle;
 

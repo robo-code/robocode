@@ -1,33 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Added setColors(Color, Color, Color, Color, Color), setAllColors(),
- *       setBodyColor(), setGunColor(), setRadarColor(), setBulletColor(), and
- *       setScanColor()
- *     - Updated Javadocs
- *     - The finalize() is now protected instead of public
- *     - Added onKeyPressed(), onKeyReleased(), onKeyTyped() events
- *     - Added onMouseMoved(), onMouseClicked(), onMouseReleased(),
- *       onMouseEntered(), onMouseExited(), onMouseDragged(), onMouseWheelMoved()
- *       events
- *     - The uninitializedException() method does not need a method name as input
- *       parameter anymore
- *     - The PrintStream 'out' has been moved to the new _RobotBase class
- *     Matthew Reeder
- *     - Fix for HyperThreading hang issue
- *     Stefan Westen (RobocodeGL) & Flemming N. Larsen
- *     - Added onPaint() method for painting the robot
- *     Pavel Savara
- *     - Re-work of robot interfaces
- *     - Added getGraphics()
  *******************************************************************************/
 package robocode;
 
@@ -52,11 +28,6 @@ import java.awt.*;
  * <br> Positive x is right.
  * <br> Positive y is up.
  *
- * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (contributor)
- * @author Matthew Reeder (contributor)
- * @author Stefan Westen (contributor)
- * @author Pavel Savara (contributor)
  * @see <a target="_top" href="http://robocode.sourceforge.net">
  *      robocode.sourceforge.net</a>
  * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
@@ -65,6 +36,12 @@ import java.awt.*;
  * @see AdvancedRobot
  * @see TeamRobot
  * @see Droid
+ *
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
+ * @author Matthew Reeder (contributor)
+ * @author Stefan Westen (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents3, IInteractiveEvents, IPaintEvents {
 

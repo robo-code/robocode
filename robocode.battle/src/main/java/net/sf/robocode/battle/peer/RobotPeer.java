@@ -1,67 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Code cleanup
- *     - Bugfix: updateMovement() checked for distanceRemaining > 1 instead of
- *       distanceRemaining > 0 if slowingDown and moveDirection == -1
- *     - Bugfix: Substituted wait(10000) with wait() in execute() method, so
- *       that robots do not hang when game is paused
- *     - Bugfix: Teleportation when turning the robot to 0 degrees while forcing
- *       the robot towards the bottom
- *     - Added setPaintEnabled() and isPaintEnabled()
- *     - Added setSGPaintEnabled() and isSGPaintEnabled()
- *     - Replaced the colorIndex with bodyColor, gunColor, and radarColor
- *     - Replaced the setColors() with setBodyColor(), setGunColor(), and
- *       setRadarColor()
- *     - Added bulletColor, scanColor, setBulletColor(), and setScanColor() and
- *       removed getColorIndex()
- *     - Optimizations
- *     - Ported to Java 5
- *     - Bugfix: HitRobotEvent.isMyFault() returned false despite the fact that
- *       the robot was moving toward the robot it collides with. This was the
- *       case when distanceRemaining == 0
- *     - Removed isDead field as the robot state is used as replacement
- *     - Added isAlive() method
- *     - Added constructor for creating a new robot with a name only
- *     - Added the set() that copies a RobotRecord into this robot in order to
- *       support the replay feature
- *     - Fixed synchronization issues with several member fields
- *     - Added features to support the new JuniorRobot class
- *     - Added cleanupStaticFields() for clearing static fields on robots
- *     - Added getMaxTurnRate()
- *     - Added turnAndMove() in order to support the turnAheadLeft(),
- *       turnAheadRight(), turnBackLeft(), and turnBackRight() for the
- *       JuniorRobot, which moves the robot in a perfect curve that follows a
- *       circle
- *     - Changed the behaviour of checkRobotCollision() so that HitRobotEvents
- *       are only created and sent to robot when damage do occur. Previously, a
- *       robot could receive HitRobotEvents even when no damage was done
- *     - Renamed scanReset() to rescan()
- *     - Added getStatusEvents()
- *     - Added getGraphicsProxy(), getPaintEvents()
- *     Luis Crespo
- *     - Added states
- *     Titus Chen
- *     - Bugfix: Hit wall and teleporting problems with checkWallCollision()
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
- *     Nathaniel Troutman
- *     - Added cleanup() method for cleaning up references to internal classes
- *       to prevent circular references causing memory leaks
- *     Pavel Savara
- *     - Re-work of robot interfaces
- *     - hosting related logic moved to robot proxy
- *     - interlocked synchronization
- *     - (almost) minimized surface between RobotPeer and RobotProxy to serializable messages.
  *******************************************************************************/
 package net.sf.robocode.battle.peer;
 

@@ -1,23 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Optimized for Java 5
- *     - Updated Javadocs
- *     - Removed try-catch(ClassCastException) from compareTo()
- *     - Changed compareTo() to first and foremost compare the events based on
- *       their event times, and secondly to compare the priorities if the event
- *       times are equals. Previously, the priorities were compared first, and
- *       secondly the event times if the priorities were equal.
- *       This change was made to sort the event queues of the robots in
- *       chronological so that the older events are listed before newer events
  *******************************************************************************/
 package robocode;
 

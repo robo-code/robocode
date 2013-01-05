@@ -1,29 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Code cleanup
- *     - Added checkPackageAccess() to limit access to the robocode.util Robocode
- *       package only
- *     - Ported to Java 5.0
- *     - Removed unnecessary method synchronization
- *     - Fixed potential NullPointerException in getFileOutputStream()
- *     - Added setStatus()
- *     - Fixed synchronization issue with accessing battleThread
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
- *     Pavel Savara
- *     - Re-work of robot interfaces
- *     - we create safe AWT queue for robot's thread group
- *     - moved most of checks to RobocodeSecurityPolicy
  *******************************************************************************/
 package net.sf.robocode.host.security;
 

@@ -1,20 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Added missing getMessageEvents()
- *     - Updated Javadocs
- *     - The uninitializedException() method does not need a method name as input
- *       parameter anymore
- *     Pavel Savara
- *     - Re-work of robot interfaces
  *******************************************************************************/
 package robocode;
 
@@ -35,13 +24,14 @@ import java.util.Vector;
  * If you have not done already, you should create a {@link Robot} or
  * {@link AdvancedRobot} first.
  *
- * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (contributor)
- * @author Pavel Savara (contributor)
  * @see JuniorRobot
  * @see Robot
  * @see AdvancedRobot
  * @see Droid
+ *
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents {
 

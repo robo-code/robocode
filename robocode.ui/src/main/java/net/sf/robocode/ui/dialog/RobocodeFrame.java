@@ -1,31 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Code cleanup
- *     - Added JPopupMenu.setDefaultLightWeightPopupEnabled(false), i.e. enabling
- *       heavy-weight components in order to prevent battleview to hide menus
- *     - Changed so BattleView handles resizing instead of the RobocodeFrame
- *     - Added TPS slider + label
- *     - Added "Replay" button in order to activate the replay feature
- *     - Updated to use methods from ImageUtil, FileUtil, Logger, which replaces
- *       methods that have been (re)moved from the robocode.util.Utils class
- *     - Added missing close() on FileReader in loadVersionFile()
- *     - Added support for mouse events
- *     Matthew Reeder
- *     - Added keyboard mnemonics to buttons
- *     Luis Crespo
- *     - Added debug step feature by adding a "Next Turn" button, and changing
- *       the "Pause" button into a "Pause/Debug" button
- *     Pavel Savara
- *     - now driven by BattleObserver
  *******************************************************************************/
 package net.sf.robocode.ui.dialog;
 

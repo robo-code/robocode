@@ -1,28 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Matthew Reeder
- *     - Added Edit and Window menus
- *     - Added keyboard mnemonics to all menus and menu items
- *     Flemming N. Larsen
- *     - Code cleanup
- *     - Updated to use methods from the WindowUtil, which replaces window
- *       methods that have been (re)moved from the robocode.util.Utils class
- *     - Added confirm dialog when trying to reset the compiler preferences
- *     - Did a lot of NullPointerException bugfixes with getActiveWindow()
- *     - Changed menu accelerator keys to use getMenuShortcutKeyMask() instead of
- *       Event.CTRL_MASK in order to comply with other OSes like e.g. Mac OS
- *     - Changed the F6 key press for 'Compile' into 'modifier key' + B, and the
- *       F3 key press for 'Find Next' into 'modifier key' + G to comply with
- *       OSes like e.g. Mac OS, where the function keys are used for other
- *       purposes
  *******************************************************************************/
 package net.sf.robocode.ui.editor;
 

@@ -1,24 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2012 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003-2013 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Albert Pérez
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Ported to Java 5
- *     - Removed dead code
- *     - Minor cleanup and optimizations
- *     - Properties are now read using PropertiesUtil.getProperties()
- *     - Renamed CheckCompetitorsForSize() into checkCompetitorsForSize()
- *     - Catch of entire Exception has been reduced to catch of IOException when
- *       only this exception is ever thrown
- *     - Added missing close() to buffered readers
- *     Jerome Lavigne
- *     - Added "smart battles" (priority robot pairs) for melee 
  *******************************************************************************/
 package net.sf.robocode.roborumble.battlesengine;
 

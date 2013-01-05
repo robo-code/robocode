@@ -1,55 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Code cleanup & optimizations
- *     - Removed getBattleView().setDoubleBuffered(false) as BufferStrategy is
- *       used now
- *     - Replaced FileSpecificationVector, RobotPeerVector, and
- *       RobotClassManagerVector with plain Vector
- *     - Added check for if GUI is enabled before using graphical components
- *     - Added restart() method
- *     - Ported to Java 5
- *     - Added support for the replay feature
- *     - Removed the clearBattleProperties()
- *     - Updated to use methods from FileUtil and Logger, which replaces methods
- *       that have been (re)moved from the robocode.util.Utils class
- *     - Added PauseResumeListener interface, addListener(), removeListener(),
- *       notifyBattlePaused(), notifyBattleResumed() for letting listeners
- *       receive notifications when the game is paused or resumed
- *     - Added missing functionality in to support team battles in
- *       startNewBattle(BattleSpecification spec, boolean replay)
- *     - Added missing close() on FileInputStreams and FileOutputStreams
- *     - isPaused() is now synchronized
- *     - Extended sendResultsToListener() to handle teams as well as robots
- *     - Added setDefaultBattleProperties() for resetting battle properties
- *     - Removed the showResultsDialog parameter from the stop() method
- *     - Added null pointer check to the sendResultsToListener() method
- *     - Enhanced the getBattleFilename() to look into the battle dir and also
- *       add the .battle file extension to the returned file name if this is
- *       missing
- *     - Removed battleRunning field, isBattleRunning(), and setBattle()
- *     - Bugfix: Multiple battle threads could run in the same time when the
- *       battle thread was started in startNewBattle()
- *     Luis Crespo
- *     - Added debug step feature, including the nextTurn(), shouldStep(),
- *       startNewRound()
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
- *     Nathaniel Troutman
- *     - Bugfix: Added cleanup() to prevent memory leaks by removing circular
- *       references
- *     Pavel Savara
- *     - now driven by BattleObserver and commands to battle
- *     - initial code of battle recorder and player 
  *******************************************************************************/
 package net.sf.robocode.battle;
 

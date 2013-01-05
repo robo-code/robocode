@@ -1,42 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Matthew Reeder
- *     - Fix for HyperThreading hang issue with the getTime() method that was
- *       synchronized before, which sometimes caused a deadlock to occur in the
- *       code processing the hitWall event.
- *     Flemming N. Larsen
- *     - Ported to Java 5.0
- *     - Bugfix: Added setting and getting the priority of BulletHitBulletEvent
- *     - Added missing getMessageEvents()
- *     - Code cleanup
- *     - Added features to support the new JuniorRobot class
- *     - Bugfix: Fixed ConcurrentModificationExceptions due to lack of
- *       synchronization with the event queue. Now all getXXXEvents() methods
- *       are synchronized against the event queue, and the list of customEvents
- *       is a CopyOnWriteArrayList which is fully thread-safe
- *     - Changed the priority of the DeathEvent from 100 to -1 in order to let
- *       robots process events before they die
- *     - Added handling of the new StatusEvent, which is used for calling the new
- *       Robot.onStatus(StatusEvent e) event handler, and added the
- *       getStatusEvents() method
- *     - Added PaintEvent with the onPaint() handler and also getPaintEvents()
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
- *     Nathaniel Troutman
- *     - Added cleanup() method for cleaning up references to internal classes
- *       to prevent circular references causing memory leaks
- *     Pavel Savara
- *     - Re-work of robot interfaces
- *     - dispatch and priorities redesign
  *******************************************************************************/
 package net.sf.robocode.host.events;
 

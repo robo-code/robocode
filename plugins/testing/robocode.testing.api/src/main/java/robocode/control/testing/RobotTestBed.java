@@ -1,16 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Philip Johnson
- *     - Idea and adaptation of internal test bed
- *     - JavaDoc
- *     Pavel Savara
- *     - Included in Robocode as extension
  *******************************************************************************/
 package robocode.control.testing;
 
@@ -43,8 +36,8 @@ import java.io.File;
  * otherwise we cannot set up the Robocode engine.  If robocode.home is not a system property,
  * we throw a RuntimeException.
  *
- * @author Philip Johnson
- * @author Pavel Savara
+ * @author Philip Johnson (original)
+ * @author Pavel Savara (contributor)
  */
 public abstract class RobotTestBed extends BattleAdaptor {
 

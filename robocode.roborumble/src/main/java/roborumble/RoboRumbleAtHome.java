@@ -1,19 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2012 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003-2013 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Albert Pérez
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Properties are now read using PropertiesUtil.getProperties()
- *     - Renamed UpdateRatings() into updateRatings()
- *     - Bugfix: Roborumble "ITERATE" broken: When running RoboRumble with
- *       ITERATE=YES, DOWNLOAD=YES, and RUNONLY=SERVER, the ratings were only
- *       read once, not per iteration
  *******************************************************************************/
 package roborumble;
 

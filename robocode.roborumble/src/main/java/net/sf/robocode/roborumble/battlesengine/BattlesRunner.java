@@ -1,25 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2012 Albert Pérez and RoboRumble contributors
+ * Copyright (c) 2003-2013 Albert Pérez and RoboRumble contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Albert Pérez
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Ported to Java 5
- *     - Minor optimizations
- *     - Removed dead code and unused imports
- *     - Replaced the RobocodeEngineAtHome will the RobocodeEngine, and added
- *       runBattle() to run a single battle with RobocodeEngine
- *     - The results are now read from the AtHomeListener instead of the
- *       RobocodeEngineAtHome
- *     - Properties are now read using PropertiesUtil.getProperties()
- *     - Added missing close() to buffered readers
- *     Joachim Hofer
- *     - Fixing problem with wrong results in RoboRumble due to wrong ordering
  *******************************************************************************/
 package net.sf.robocode.roborumble.battlesengine;
 

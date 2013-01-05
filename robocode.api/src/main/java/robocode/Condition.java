@@ -1,19 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Code cleanup
- *     - Updated Javadocs
- *     Nathaniel Troutman
- *     - Added cleanup() method for cleaning up references to internal classes
- *       to prevent circular references causing memory leaks
  *******************************************************************************/
 package robocode;
 
@@ -36,13 +26,14 @@ package robocode;
  * creating an inner class -- so if you distribute your robot, there will be
  * multiple class files. (i.e. {@code Target$1.class})
  *
- * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (contributor)
- * @author Nathaniel Troutman (contributor)
  * @see AdvancedRobot#waitFor(Condition)
  * @see AdvancedRobot#addCustomEvent(Condition)
  * @see AdvancedRobot#removeCustomEvent(Condition)
  * @see AdvancedRobot#onCustomEvent(CustomEvent)
+ *
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
+ * @author Nathaniel Troutman (contributor)
  */
 public abstract class Condition {
 

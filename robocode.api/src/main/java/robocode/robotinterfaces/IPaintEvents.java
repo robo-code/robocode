@@ -1,13 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
  *******************************************************************************/
 package robocode.robotinterfaces;
 
@@ -19,9 +15,11 @@ import java.awt.*;
  * An event interface for receiving paint events with an
  * {@link robocode.robotinterfaces.IPaintRobot}.
  *
- * @author Pavel Savara (original)
- * @author Flemming N. Larsen (javadoc)
  * @see robocode.robotinterfaces.IPaintRobot
+ *
+ * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
+ *
  * @since 1.6
  */
 public interface IPaintEvents {
@@ -45,8 +43,10 @@ public interface IPaintEvents {
 	 * is upwards.
 	 *
 	 * @param g the graphics context to use for painting graphical items for the
-	 *          robot
+	 *          robot.
+	 *
 	 * @see java.awt.Graphics2D
+	 *
 	 * @since 1.1
 	 */
 	void onPaint(Graphics2D g);

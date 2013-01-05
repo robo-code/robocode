@@ -1,15 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Flemming N. Larsen
- *     - Initial implementation
- *     Tuan Anh Nguyen
- *     - Modified controls to use absolute movement 
  *******************************************************************************/
 package sample;
 
@@ -58,8 +52,10 @@ import java.util.Set;
  * mouse).
  *
  * @author Flemming N. Larsen (original)
- * @author Tuan Anh Nguyen (modified movement)
+ * @author Tuan Anh Nguyen (contributor)
+ *
  * @version 1.0
+ *
  * @since 1.7.2.2
  */
 public class Interactive_v2 extends AdvancedRobot {

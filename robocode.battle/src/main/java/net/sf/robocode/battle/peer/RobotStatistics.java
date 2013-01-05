@@ -1,38 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Luis Crespo
- *     - Added getCurrentScore()
- *     Flemming N. Larsen
- *     - Bugfix: scoreDeath() incremented totalFirsts even if the robot was
- *       already a winner, where scoreWinner() has already been called previously
- *     - Added constructor that takes an additonal RobotResults that must be
- *       copied into this object and added the getResults() in order to support
- *       the replay feature
- *     - Changed the survivalScore and totalSurvivalScore fields to be integers
- *     - Renamed method names and removed unused methods
- *     - Ordered all methods more naturally
- *     - Added methods for getting current scores
- *     - Optimizations
- *     - Removed damage parameter from the scoreRammingDamage() method, as the
- *       damage is constant and defined by Rules.ROBOT_HIT_DAMAGE and the score
- *       of hitting a robot is defined by Rules.ROBOT_HIT_BONUS
- *     Titus Chen
- *     - Bugfix: Initial getResults() method only factored in the most recent
- *       round
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
- *     Nathaniel Troutman
- *     - Added cleanup() method for cleaning up references to internal classes
- *       to prevent circular references causing memory leaks
  *******************************************************************************/
 package net.sf.robocode.battle.peer;
 

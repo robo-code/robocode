@@ -1,19 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * This is private interface. You should build any external component (or robot)
- * based on it's current methods because it will change in the future.
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     - Added getGraphics()
- *     Flemming N. Larsen
- *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces.peer;
 
@@ -25,17 +15,22 @@ import java.awt.*;
 
 
 /**
- * The basic robot peer for all robot types.
- * <p/>
+ * The basic robot peer for all robot types.<p>
+ *
+ * NOTE: This is private interface. You should build any external component (or robot)
+ * based on it's current methods because it will change in the future.<p>
+ *
  * A robot peer is the object that deals with game mechanics and rules, and
  * makes sure your robot abides by them.
  *
- * @author Pavel Savara (original)
- * @author Flemming N. Larsen (javadoc)
  * @see IStandardRobotPeer
  * @see IAdvancedRobotPeer
  * @see ITeamRobotPeer
  * @see IJuniorRobotPeer
+ *
+ * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
+ *
  * @since 1.6
  */
 public interface IBasicRobotPeer {

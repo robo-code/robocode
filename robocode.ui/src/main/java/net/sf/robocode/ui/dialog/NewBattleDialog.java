@@ -1,23 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Matthew Reeder
- *     - Added keyboard mnemonics to buttons and tabs
- *     Flemming N. Larsen
- *     - Code cleanup
- *     - Replaced FileSpecificationVector with plain Vector
- *     - Changed the F5 key press for refreshing the list of available robots
- *       into 'modifier key' + R to comply with other OSes like e.g. Mac OS
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
  *******************************************************************************/
 package net.sf.robocode.ui.dialog;
 

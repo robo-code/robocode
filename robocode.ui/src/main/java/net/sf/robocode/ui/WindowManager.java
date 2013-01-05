@@ -1,24 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Added showInBrowser() for displaying content from an URL
- *     - Added showRoboWiki(), showYahooGroupRobocode(), showRobocodeRepository()
- *     - Removed the Thread.sleep(diff) from showSplashScreen()
- *     - Updated to use methods from the FileUtil, which replaces file operations
- *       that have been (re)moved from the robocode.util.Utils class
- *     - Changed showRobocodeFrame() to take a visible parameter
- *     - Added packCenterShow() for windows where the window position and
- *       dimension should not be read or saved to window.properties
- *     Luis Crespo & Flemming N. Larsen
- *     - Added showRankingDialog()
  *******************************************************************************/
 package net.sf.robocode.ui;
 

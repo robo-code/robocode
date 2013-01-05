@@ -1,21 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Replaced deprecated methods
- *     - Added check for the Java version that the user has installed. If the
- *       Java version is not 5.0, an error dialog will be display and the
- *       installation will terminate
- *     - Changed the information message for how to run robocode.sh, where the
- *       user does not have to change the directory before calling robocode.sh
- *     - Code cleanup
  *******************************************************************************/
 package net.sf.robocode.installer;
 

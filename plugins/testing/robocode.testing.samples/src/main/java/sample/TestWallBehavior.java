@@ -1,15 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Philip Johnson
- *     - Original implementation
- *     Pavel Savara
- *     - Included in Robocode as extension
  *******************************************************************************/
 package sample;
 
@@ -24,8 +18,8 @@ import robocode.control.testing.RobotTestBed;
 /**
  * Tests that sample.Walls moves to all four corners.
  *
- * @author Philip Johnson
- * @author Pavel Savara
+ * @author Philip Johnson (original)
+ * @author Pavel Savara (contributor)
  */
 public class TestWallBehavior extends RobotTestBed {
 

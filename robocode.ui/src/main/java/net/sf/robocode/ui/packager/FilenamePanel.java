@@ -1,25 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Code cleanup
- *     - Replaced FileSpecificationVector with plain Vector
- *     - Replaced deprecated show() method with setVisible(true)
- *     - Updated to use methods from the FileUtil, which replaces file operations
- *       that have been (re)moved from the robocode.util.Utils class
- *     - Changed to use FileUtil.getRobotsDir()
- *     - Fixed the layout, where the filename field was too high
- *     - Showing the frame is now performed in the Swing Event Thread
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
  *******************************************************************************/
 package net.sf.robocode.ui.packager;
 

@@ -1,15 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces;
 
@@ -20,13 +14,15 @@ package robocode.robotinterfaces;
  * An advanced robot allows non-blocking calls, custom events, get notifications
  * about skipped turns, and also allow writes to the file system.
  *
- * @author Pavel Savara (original)
- * @author Flemming N. Larsen (javadoc)
  * @see robocode.AdvancedRobot
  * @see IBasicRobot
  * @see IJuniorRobot
  * @see IInteractiveRobot
  * @see ITeamRobot
+ *
+ * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
+ *
  * @since 1.6
  */
 public interface IAdvancedRobot extends IBasicRobot {

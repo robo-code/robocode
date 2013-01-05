@@ -1,15 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Javadocs
  *******************************************************************************/
 package robocode.robotinterfaces;
 
@@ -23,14 +17,16 @@ package robocode.robotinterfaces;
  * {@link IAdvancedRobot} or {@link ITeamRobot}, you should inherit from these
  * interfaces instead, as these are inherited from this interface.
  *
- * @author Pavel Savara (original)
- * @author Flemming N. Larsen (javadoc)
  * @see robocode.Robot
  * @see robocode.AdvancedRobot
  * @see IBasicRobot
  * @see IJuniorRobot
  * @see IAdvancedRobot
  * @see ITeamRobot
+ *
+ * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (javadoc)
+ *
  * @since 1.6
  */
 public interface IInteractiveRobot extends IBasicRobot {

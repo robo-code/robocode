@@ -1,15 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Rewritten to use a JEditorPane with HTML content
  *******************************************************************************/
 package net.sf.robocode.ui.dialog;
 
@@ -34,7 +28,7 @@ import java.net.URLConnection;
  * The About box.
  *
  * @author Mathew A. Nelson (original)
- * @author Flemming N. Larsen (contributor)
+ * @author Flemming N. Larsen (original)
  */
 @SuppressWarnings("serial")
 public final class AboutBox extends JDialog {

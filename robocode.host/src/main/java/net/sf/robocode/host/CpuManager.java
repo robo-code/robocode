@@ -1,27 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Updated to use methods from WindowUtil and Logger, which replaces
- *       methods that have been (re)moved from the robocode.util.Utils class
- *     - Added calculateCpuConstant() used for (re)calculating the CPU constant
- *     - Added setCpuConstant() for calculating and setting the CPU constant
- *     - Limited the CPU constant to be >= millis granularity in order to prevent
- *       robots from skipping turns as the granularity might be coarse
- *     - Changed CPU constant to be measured in nanoseconds instead of
- *       milliseconds
- *     Robert D. Maupin
- *     - The "heavy math" algorithm for calculation the CPU constant
- *     Pavel Savara
- *     - Cheating the optimizer with the setCpuConstant() so the optimizer does
- *       not throw the rational computation away  
  *******************************************************************************/
 package net.sf.robocode.host;
 

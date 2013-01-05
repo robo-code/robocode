@@ -1,26 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Code cleanup
- *     - Updated to use methods from the Logger, which replaces logger methods
- *       that have been (re)moved from the robocode.util.Utils class
- *     - Moved the stopThread() method from the RobocodeDeprecated class into
- *       this class
- *     - Bugfix: The waitForStop() was using 'runThreadGroup.activeCount > 0'
- *       instead of runThread.isAlive() causing some robots to be forced to stop.
- *       In the same time this method was simplified up updated for faster CPU's   
- *     Pavel Savara
- *     - moved to RobotProxy side
- *     - forceStop is faster and smarter
- *     - start of thread is creating safe ATW queue
  *******************************************************************************/
 package net.sf.robocode.host.security;
 
@@ -43,6 +26,7 @@ import java.util.Map;
 /**
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class RobotThreadManager {
 

@@ -1,15 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Maintainance
  *******************************************************************************/
 package sample;
 
@@ -22,10 +16,13 @@ import java.awt.*;
 
 
 /**
- * Target - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
+ * Target - a sample robot by Mathew Nelson.
  * <p/>
- * Sits still.  Moves every time energy drops by 20.
+ * Sits still. Moves every time energy drops by 20.
  * This Robot demonstrates custom events.
+ *
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class Target extends AdvancedRobot {
 

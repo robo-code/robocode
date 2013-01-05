@@ -1,97 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Code cleanup
- *     - Replaced the ContestantPeerVector, BulletPeerVector, and RobotPeerVector
- *       with plain Vector
- *     - Integration of new render classes placed under the robocode.gfx package
- *     - BattleView is not given via the constructor anymore, but is retrieved
- *       from the RobocodeManager. In addition, the battleView is now allowed to
- *       be null, e.g. if no GUI is available
- *     - Ported to Java 5.0
- *     - Bugfixed sounds that were cut off after first battle
- *     - Changed initialize() to use loadClass() instead of loadRobotClass() if
- *       security is turned off
- *     - Changed the way the TPS is loaded and updated
- *     - Added updateTitle() in order to manage and update the title on the
- *       RobocodeFrame
- *     - Added replay feature
- *     - Updated to use methods from the Logger, which replaces logger methods
- *       that has been (re)moved from the robocode.util.Utils class
- *     - Changed so robots die faster graphically when the battles are over
- *     - Changed cleanup to only remove the robot in the robot peers, as the
- *       robot peers themselves are used for replay recording
- *     - Added support for playing background music when the battle is ongoing
- *     - Removed unnecessary catches of NullPointerExceptions
- *     - Added support for setting the initial robot positions on the battlefield
- *     - Removed the showResultsDialog field which is replaced by the
- *       getOptionsCommonShowResults() from the properties
- *     - Simplified the code in the run() method when battle is stopped
- *     - Changed so that stop() makes the current round stop immediately
- *     - Added handling keyboard events thru a KeyboardEventDispatcher
- *     - Added mouseMoved(), mouseClicked(), mouseReleased(), mouseEntered(),
- *       mouseExited(), mouseDragged(), mouseWheelMoved()
- *     - Changed to take the new JuniorRobot class into account
- *     - When cleaning up robots their static fields are now being cleaned up
- *     - Bugfix: Changed the runRound() so that the robot are painted after
- *       they have made their turn
- *     - The thread handling for unsafe robot loading has been put in an
- *       independent UnsafeLoadRobotsThread class. In addition, the battle
- *       thread is not sharing it's run() method anymore with the
- *       UnsafeLoadRobotsThread, which has now got its own run() method
- *     - The 'running' and 'aborted' flags are now synchronized towards
- *       'battleMonitor' instead of 'this' object
- *     - Added waitTillRunning() method so another thread can be blocked until
- *       the battle has started running
- *     - Replaced synchronizedList on lists for deathEvent, robots, bullets,
- *       and contestants with a CopyOnWriteArrayList in order to prevent
- *       ConcurrentModificationExceptions when accessing these list via
- *       Iterators using public methods to this class
- *     - The moveBullets() was simplified and moved inside the runRound() method
- *     - The flushOldEvents() method was moved into the runRound() method
- *     - Major bugfix: Two robots running with exactly the same code was getting
- *       different scores. Robots listed before other robots always got a better
- *       score in the end. Hence, the getRobotsAtRandom() method has been added
- *       in order to gain fair play, and this method should be used where robots
- *       are checked and awakened in turn
- *     - Simplified the repainting of the battle
- *     - Bugfix: In wakeupRobots(), only wakeup a robot that is running and alive
- *     - A StatusEvent is now send to all alive robot each turn
- *     - Extended allowed max. length of a robot's full package name from 16 to
- *       32 characters
- *     Luis Crespo
- *     - Added sound features using the playSounds() method
- *     - Added debug step feature
- *     - Added isRunning()
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
- *     Titus Chen
- *     - Bugfix: Added Battle parameter to the constructor that takes a
- *       BulletRecord as parameter due to a NullPointerException that was raised
- *       as the battleField variable was not intialized
- *     Nathaniel Troutman
- *     - Bugfix: In order to prevent memory leaks, the cleanup() method has now
- *       been extended to cleanup all robots, but also all classes that this
- *       class refers to in order to avoid circular references. In addition,
- *       cleanup has been added to the KeyEventHandler
- *     Julian Kent
- *     - Fix: Method for using only nano second precision when using
- *       RobotPeer.wait(0, nanoSeconds) in order to prevent the millisecond
- *       granularity issue, which is typically were coarse compared to the one
- *       with nano seconds 
- *     Pavel Savara
- *     - Re-work of robot interfaces
- *     - Refactored large methods into several smaller methods
- *     - decomposed RobotPeer from RobotProxy, now sending messages beteen them
  *******************************************************************************/
 package net.sf.robocode.battle;
 

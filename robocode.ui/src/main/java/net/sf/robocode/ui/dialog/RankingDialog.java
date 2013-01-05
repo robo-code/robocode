@@ -1,21 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Luis Crespo & Mathew A. Nelson
- *     - Original implementation
- *     Flemming N. Larsen
- *     - Totally rewritten to contain the functionality for both the
- *       RankingDialog and ResultsDialog (code reuse)
- *     - Changed to be a independent frame instead of a dialog
- *     - Changed to pack the dialog to fit the table with the rankings
- *     Nathaniel Troutman
- *     - Bugfix: Added cleanup to prevent memory leaks with the battle object in
- *       okButtonActionPerformed()
  *******************************************************************************/
 package net.sf.robocode.ui.dialog;
 

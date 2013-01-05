@@ -1,38 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Code cleanup
- *     - Replaced FileSpecificationVector with plain Vector
- *     - GUI is disabled per default. If the setVisible() is called, the GUI will
- *       be enabled. The close() method is only calling dispose() on the
- *       RobocodeFrame if the GUI is enabled
- *     - Updated to use methods from FileUtil and Logger, which replaces
- *       methods that have been (re)moved from the robocode.util.Utils class
- *     - Changed to use FileUtil.getRobotsDir()
- *     - Modified getLocalRepository() to support teams by using
- *       FileSpecification instead of RobotFileSpecification
- *     - System.out, System.err, and System.in is now only set once, as new
- *       instances of the RobocodeEngine causes memory leaks with
- *       System.setOut() and System.setErr()
- *     - Updated Javadocs
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
- *     Nathaniel Troutman
- *     - Bugfix: Inconsistent Behavior of RobocodeEngine.setVisible()
- *     - Bugfix: Added cleanup of the Robocode manager to the close() method
- *     Joachim Hofer
- *     - Bugfix in onBattleCompleted() where the RobotResults were ordered
- *       incorrectly when calling the battleComplete() so the results were given
- *       for the wrong robots
  *******************************************************************************/
 package robocode.control;
 

@@ -1,29 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Luis Crespo
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Integration into Robocode regarding controlling the sound from the Sound
- *       Options and Command Line
- *     - Bugfix: When enabling sounds on-the-fly when it was originally disabled,
- *       the PlaySound caused a NullPointerException because the sounds field had
- *       not been intialized yet. Therefore a getSounds() factory methods has
- *       been added which allocated the SoundCache instance and initializes the
- *       SoundManager if the sounds field is null
- *     - The resources for the sound effects are now loaded from the properties
- *       file
- *     - Added support for playing and stopping music
- *     - The init() method was replaced by a getMixer() factory method
- *     - Extended playSound() to handle loops, and also checking if volume and/or
- *       panning are supported before adjusting these
- *     Titus Chen:
- *     - Slight optimization with pan calculation in playBulletSound()
  *******************************************************************************/
 package net.sf.robocode.sound;
 

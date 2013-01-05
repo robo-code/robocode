@@ -1,25 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Added visible ground, visible explosions, and visible explosion debris
- *       option
- *     - Changed some keyboard mnemonics
- *     - Changed from using FPS into using TPS (Turns per Second), but added a
- *       "Display FPS in titlebar" option
- *     - Added propery listener for getting TPS updated from TPS slider
- *     - Removed "Allow color changes" as this is always possible with the
- *       current rendering engine
- *     - Code cleanup
- *     Matthew Reeder
- *     - Added keyboard mnemonics to buttons and other controls
  *******************************************************************************/
 package net.sf.robocode.ui.dialog;
 

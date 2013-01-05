@@ -1,28 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Luis Crespo
- *     - Initial API and implementation
- *     Flemming N. Larsen
- *     - Added independent Rank column
- *     - Various optimizations
- *     - Ported to Java 5
- *     - Updated to use the getPlacementString() methods from the StringUtil,
- *       which replaces the same method from robocode.util.Utils
- *     - Added additional scores, so that the rankings are similar to the battle
- *       results
- *     - Updated to contain both current and total scores in the columns where it
- *       makes sense
- *     Robert D. Maupin
- *     - Replaced old collection types like Vector and Hashtable with
- *       synchronized List and HashMap
- *     Endre Palatinus, Eniko Nagy, Attila Csizofszki and Laszlo Vigh
- *     - Score with % (percentage) in the table view
  *******************************************************************************/
 package net.sf.robocode.battle;
 

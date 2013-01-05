@@ -1,15 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001-2012 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Mathew A. Nelson
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Maintainance
  *******************************************************************************/
 package sample;
 
@@ -23,10 +17,13 @@ import java.awt.*;
 
 
 /**
- * Corners - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
+ * Corners - a sample robot by Mathew Nelson.
  * <p/>
  * This robot moves to a corner, then swings the gun back and forth.
  * If it dies, it tries a new corner in the next round.
+ *
+ * @author Mathew A. Nelson (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class Corners extends Robot {
 	int others; // Number of other robots in the game
