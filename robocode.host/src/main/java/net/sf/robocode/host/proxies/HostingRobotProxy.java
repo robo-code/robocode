@@ -79,7 +79,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 	}
 
 	private JavaHost getHost(IRobotItem robotSpecification) {
-		return (JavaHost) Container.cache.getComponent("robocode.host." + robotSpecification.getRobotLanguage());
+		return (JavaHost) Container.cache.getComponent("robocode.host." + robotSpecification.getPlatform().toLowerCase());
 	}
 
 	public void cleanup() {

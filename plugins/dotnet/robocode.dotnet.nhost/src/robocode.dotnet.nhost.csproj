@@ -61,7 +61,7 @@
     <Compile Include="generated\net\sf\robocode\core\ContainerBase.generated.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="generated\net\sf\robocode\dotnet\host\DotnetHost.generated.cs">
+    <Compile Include="generated\net\sf\robocode\dotnet\host\DotNetHost.generated.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="generated\net\sf\robocode\dotnet\nhost\ModuleN.generated.cs">
@@ -124,7 +124,7 @@
     <Compile Include="generated\robocode\exception\WinException.generated.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="host\DotnetHost.cs" />
+    <Compile Include="host\DotNetHost.cs" />
     <Compile Include="host\events\EventManager.cs" />
     <Compile Include="host\events\EventQueue.cs" />
     <Compile Include="host\ModuleN.cs" />

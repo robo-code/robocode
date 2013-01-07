@@ -18,6 +18,7 @@ import java.io.FileFilter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -36,28 +37,40 @@ public final class ClasspathRoot extends BaseRoot implements IRepositoryRoot {
 		this.projectPath = projectPath;
 	}
 
-	public void update(boolean force) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public void updateItems(boolean force) {
+		setStatus("Updating classpath: " + rootPath.toString());
+		
+		// We remove all items from the root so we don't need to check, which items that might have been deleted.
+		// This is fast to do, as items are simple referenced by friendly URLs in a map.
+		// Items will be re-added or updated later in this method.
 		repository.removeItemsFromRoot(this);
 
-		final ArrayList<IRepositoryItem> repositoryItems = new ArrayList<IRepositoryItem>();
-		final ArrayList<Long> modified = new ArrayList<Long>();
+		// Retrieve all items accessible from this classpath root along with their 'last modified' date
+		List<IRepositoryItem> items = new ArrayList<IRepositoryItem>();
+		List<Long> itemsLastModification = new ArrayList<Long>();
 
-		visitDirectory(rootPath, repositoryItems, modified);
-		for (int i = 0; i < repositoryItems.size(); i++) {
-			IRepositoryItem repositoryItem = repositoryItems.get(i);
-			repositoryItem.update(modified.get(i), force);
+		visitDirectory(rootPath, items, itemsLastModification);
+
+		// Run thru all found repository items and update these according to their 'last modified' date
+		for (int i = 0; i < items.size(); i++) {
+			IRepositoryItem repositoryItem = items.get(i);
+			repositoryItem.update(itemsLastModification.get(i), force);
 		}
 	}
 
-	private void visitDirectory(File path, final ArrayList<IRepositoryItem> repositoryItems, final ArrayList<Long> modified) {
+	private void visitDirectory(File path, final List<IRepositoryItem> items, final List<Long> itemsLastModification) {
+		
 		path.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
 				if (pathname.isFile()) {
 					try {
-						IRepositoryItem repositoryItem = ItemHandler.registerItems(pathname.toURI().toURL(), ClasspathRoot.this, repository);
+						IRepositoryItem repositoryItem = ItemHandler.registerItem(pathname.toURI().toURL(), ClasspathRoot.this, repository);
 						if (repositoryItem != null) {
-							repositoryItems.add(repositoryItem);
-							modified.add(pathname.lastModified());
+							items.add(repositoryItem);
+							itemsLastModification.add(pathname.lastModified());
 						}
 					} catch (MalformedURLException e) {
 						Logger.logError(e);
@@ -77,16 +90,16 @@ public final class ClasspathRoot extends BaseRoot implements IRepositoryRoot {
 
 		if (subDirs != null) {
 			for (File subDir : subDirs) {
-				visitDirectory(subDir, repositoryItems, modified);
+				visitDirectory(subDir, items, itemsLastModification);
 			}
 		}
 	}
 
-	public void update(IRepositoryItem repositoryItem, boolean force) {
+	public void updateItem(IRepositoryItem item, boolean force) {
 		setStatus("Updating classpath: " + rootPath);
 
-		File file = new File(repositoryItem.getItemURL().toString());
-		repositoryItem.update(file.lastModified(), force);
+		File file = new File(item.getItemURL().toString());
+		item.update(file.lastModified(), force);
 	}
 
 	public boolean isChanged(IRepositoryItem repositoryItem) {

@@ -46,16 +46,16 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	// Allowed maximum length for a robot's short class name
 	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
 
-	private final static String ROBOT_CLASSNAME = "robot.classname";
-	private final static String ROBOT_VERSION = "robot.version";
-	protected final static String ROBOT_LANGUAGE = "robot.language";
-	private final static String ROBOT_DESCRIPTION = "robot.description";
-	private final static String ROBOT_AUTHOR_NAME = "robot.author.name";
-	private final static String ROBOT_WEBPAGE = "robot.webpage";
+	protected final static String ROBOT_CLASSNAME = "robot.classname";
+	protected final static String ROBOT_VERSION = "robot.version";
+	protected final static String ROBOT_DESCRIPTION = "robot.description";
+	protected final static String ROBOT_AUTHOR_NAME = "robot.author.name";
+	protected final static String ROBOT_WEBPAGE = "robot.webpage";
 	// private final static String ROBOT_AUTHOR_EMAIL = "robot.author.email";
 	// private final static String ROBOT_AUTHOR_WEBSITE = "robot.author.website";
-	private final static String ROBOCODE_VERSION = "robocode.version";
-	private final static String ROBOT_INCLUDE_SOURCE = "robot.include.source"; 
+	protected final static String ROBOCODE_VERSION = "robocode.version";
+	protected final static String ROBOT_INCLUDE_SOURCE = "robot.include.source"; 
+	protected final static String ROBOT_PLATFORM = "robot.platform";
 
 	// File extensions
 	private static final String CLASS_EXTENSION = ".class";
@@ -282,6 +282,9 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		return urls;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void update(long lastModified, boolean force) {
 		if (lastModified > this.lastModified || force) {
 			if (force) {
@@ -502,10 +505,8 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		return properties.getProperty(ROBOT_AUTHOR_NAME, null);
 	}
 
-	public String getRobotLanguage() {
-		final String lang = properties.getProperty(ROBOT_LANGUAGE, null);
-
-		return lang == null ? "java" : lang;
+	public String getPlatform() {
+		return properties.getProperty(ROBOT_PLATFORM, "Java");
 	}
 
 	public URL getWebpage() {

@@ -79,7 +79,7 @@ public class ClassPathHandler extends RootHandler {
 			repository.removeRoot(key);
 		}
 
-		root.update(force);
+		root.updateItems(force);
 		newRoots.put(key, root);
 	}
 }

@@ -23,13 +23,8 @@ public class DotNetRobotItem extends RobotItem {
 
 	public DotNetRobotItem(IRepositoryRoot root, URL itemURL) {
 		super(itemURL, root);
+
+		properties.setProperty(ROBOT_PLATFORM, "DotNet"); // instead of ".NET", as it is used for class names etc.
 		isPropertiesLoaded = true;
-	}
-
-	@Override
-	public String getRobotLanguage() {
-		final String lang = properties.getProperty(ROBOT_LANGUAGE, null);
-
-		return lang == null ? "cs" : lang;
 	}
 }

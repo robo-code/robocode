@@ -17,26 +17,50 @@ import java.net.URL;
 
 
 /**
- * Handler for accepting and registering .team files.
+ * Item handler for accepting and registering robot team files.
  *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class TeamHandler extends ItemHandler {
-	public IRepositoryItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
-		if (itemURL.toString().toLowerCase().endsWith(".team")) {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected IRepositoryItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
+		// Accept and register the item if it is a robot team file
+		String name = itemURL.toString().toLowerCase();
+		if (name.endsWith(".team")) {
 			return register(itemURL, root, repository);
 		}
 		return null;
 	}
 
-	private IRepositoryItem register(URL itemURL, IRepositoryRoot root, IRepository repository) {
-		final String itemKey = itemURL.getPath();
+	/**
+	 * Registers the team file with the specified URL as a TeamItem.
+	 *
+	 * @param teamFileUrl is the URL of the team file to register.
+	 * @param root is the repository root containing the team file to register.
+	 * @param repository is the repository, where the team file is automatically added or updated,
+	 *                   when the team file is registered.
+	 * @return a TeamItem that has been created or updated in the repository.
+	 */
+	private TeamItem register(URL teamFileUrl, IRepositoryRoot root, IRepository repository) {
+		TeamItem item = null;
 
-		TeamItem item = (TeamItem) repository.getItem(itemKey);
-
-		if (item == null) {
-			item = new TeamItem(itemURL, root);
+		// Check if the team file is already registered in the repository
+		IRepositoryItem repositoryItem = repository.getItem(teamFileUrl.toString());
+		if (repositoryItem instanceof TeamItem) {
+			item = (TeamItem) repositoryItem;
 		}
+
+		// If the team file has not been registered then create a new TeamItem based on the team file URL
+		if (item == null) {
+			item = new TeamItem(teamFileUrl, root);
+		}
+
+		// Add or update the item in the repository and return it
 		repository.addOrUpdateItem(item);
 		return item;
 	}

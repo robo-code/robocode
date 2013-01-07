@@ -36,24 +36,32 @@ import java.util.jar.JarInputStream;
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class JarRoot extends BaseRoot implements IRepositoryRoot {
+public final class JarRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
-	private URL jarUrl;
-	private String jarNoSeparator;
+	private final String jarPath; // without a separator ("/!")
+	private final URL jarUrl;
+
 	private long lastModified;
 
 	public JarRoot(IRepository repository, File rootPath) {
 		super(repository, rootPath);
+		String jarPath = null;
+		URL jarUrl = null;
 		try {
-			jarNoSeparator = "jar:" + rootPath.toURI().toString();
-			jarUrl = new URL(jarNoSeparator + "!/");
+			jarPath = "jar:" + rootPath.toURI().toString();
+			jarUrl = new URL(jarPath + "!/");
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
 		}
+		this.jarPath = jarPath;
+		this.jarUrl = jarUrl;
 	}
 
-	public void update(boolean force) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public void updateItems(boolean force) {
 		setStatus("Updating JAR: " + rootPath.toString());
 
 		long lm = rootPath.lastModified();
@@ -72,7 +80,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	private void visitItems(ArrayList<IRepositoryItem> repositoryItems) {
-		String root = jarNoSeparator;
+		String root = jarPath;
 		InputStream is = null;
 		BufferedInputStream bis = null;
 		JarInputStream jarIS = null;
@@ -127,7 +135,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 	private void createItem(ArrayList<IRepositoryItem> repositoryItems, URL root, JarEntry entry) {
 		try {
 			String pUrl = root.toString() + entry.getName();
-			IRepositoryItem repositoryItem = ItemHandler.registerItems(new URL(pUrl), JarRoot.this, repository);
+			IRepositoryItem repositoryItem = ItemHandler.registerItem(new URL(pUrl), JarRoot.this, repository);
 
 			if (repositoryItem != null) {
 				if (repositoryItem instanceof RobotItem) {
@@ -142,7 +150,7 @@ public class JarRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	public void update(IRepositoryItem repositoryItem, boolean force) {
+	public void updateItem(IRepositoryItem repositoryItem, boolean force) {
 		repositoryItem.update(rootPath.lastModified(), force);
 	}
 

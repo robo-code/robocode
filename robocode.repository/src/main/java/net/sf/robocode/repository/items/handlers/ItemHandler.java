@@ -18,21 +18,39 @@ import java.util.List;
 
 
 /**
- * Abstract class for handlers for accepting and registering a specific item type.
+ * Abstract item handler used for accepting and registering specific item types.
  *
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
  */
 public abstract class ItemHandler {
-	public abstract IRepositoryItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository);
 
-	public static IRepositoryItem registerItems(URL itemURL, IRepositoryRoot root, IRepository repository) {
-		// walk thru all plugins, give them chance to accept a file
-		final List<ItemHandler> itemHandlerList = Container.getComponents(ItemHandler.class);
+	/**
+	 * Tests whether or not the item with at the specified item URL is accepted and can be handled by this item handler.
+	 *
+	 * @param itemUrl is the URL of the item to test.
+	 * @param root is the repository root containing the item to test.
+	 * @param repository is the repository, where the item is automatically added or updated, if the item is accepted.
+	 * @return a repository item that has been created or updated in the repository or null if the item was not
+	 *         accepted by this item handler.
+	 */
+	protected abstract IRepositoryItem acceptItem(URL itemUrl, IRepositoryRoot root, IRepository repository);
 
-		for (ItemHandler handler : itemHandlerList) {
-			final IRepositoryItem repositoryItem = handler.acceptItem(itemURL, root, repository);
-
+	/**
+	 * Tests whether or not the item with at the specified item URL is accepted and can be handled by <em>any</em>
+	 * available item handler.
+	 *
+	 * @param itemUrl is the URL of the item to test.
+	 * @param root is the repository root containing the item to test.
+	 * @param repository is the repository, where the item is automatically added or updated, if the item is accepted.
+	 * @return a repository item that has been created or updated in the repository or null if the item was not
+	 *         accepted by an item handler.
+	 */
+	public final static IRepositoryItem registerItem(URL itemUrl, IRepositoryRoot root, IRepository repository) {
+		// Test if any available item handler will accept and register the item
+		List<ItemHandler> itemHandlers = Container.getComponents(ItemHandler.class);
+		for (ItemHandler handler : itemHandlers) {
+			IRepositoryItem repositoryItem = handler.acceptItem(itemUrl, root, repository);
 			if (repositoryItem != null) {
 				return repositoryItem;
 			}

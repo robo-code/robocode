@@ -63,7 +63,7 @@ public class DllHandler extends RootHandler {
 					repository.removeRoot(key);
 				}
 
-				root.update(force);
+				root.updateItems(force);
 				newRoots.put(dll.toURI().toString(), root);
 			}
 		}

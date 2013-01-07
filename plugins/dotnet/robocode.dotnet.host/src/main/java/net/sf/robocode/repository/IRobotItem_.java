@@ -130,7 +130,7 @@ class __IRobotItem extends system.Object implements net.sf.robocode.repository.I
     public native java.lang.String getReadableDirectory();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getRobotLanguage();
+    public native java.lang.String getPlatform();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isDroid();

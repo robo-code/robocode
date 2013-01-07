@@ -59,10 +59,12 @@ public class RepositoryManager implements IRepositoryManager {
 	// interfaces
 	// ------------------------------------------
 
+	@Override
 	public File getRobotsDirectory() {
 		return FileUtil.getRobotsDir();
 	}
 
+	@Override
 	public List<File> getDevelDirectories() {
 		List<File> develDirectories = new ArrayList<File>();
 
@@ -122,7 +124,7 @@ public class RepositoryManager implements IRepositoryManager {
 	private boolean updateItemRoot(String friendlyUrl, boolean force) {
 		IRepositoryItem repositoryItem = repository.getItems().get(friendlyUrl);
 		if (repositoryItem != null) {
-			repositoryItem.getRoot().update(repositoryItem, force);
+			repositoryItem.getRoot().updateItem(repositoryItem, force);
 			return true;
 		}
 		return false; 

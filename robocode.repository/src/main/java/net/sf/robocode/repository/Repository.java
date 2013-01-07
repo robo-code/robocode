@@ -41,7 +41,9 @@ public class Repository implements IRepository {
 	private Map<String, IRepositoryItem> repositoryItems = new ConcurrentHashMap<String, IRepositoryItem>();
 	private Map<String, IRepositoryItem> removedItems = new ConcurrentHashMap<String, IRepositoryItem>();
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void save(OutputStream out) {
 		Set<IRepositoryItem> uniqueItems = new HashSet<IRepositoryItem>();
 		Set<IRepositoryRoot> uniqueRoots = new HashSet<IRepositoryRoot>();
@@ -66,7 +68,9 @@ public class Repository implements IRepository {
 		}
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	public void load(InputStream in) {
 		Set<IRepositoryItem> uniqueItems;
@@ -99,7 +103,9 @@ public class Repository implements IRepository {
 		}
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void addOrUpdateItem(IRepositoryItem repositoryItem) {
 		Collection<String> friendlyUrls = repositoryItem.getFriendlyURLs();
 		if (friendlyUrls != null) {
@@ -117,7 +123,9 @@ public class Repository implements IRepository {
 		}
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public IRepositoryItem getItem(String friendlyUrl) {
 		IRepositoryItem repositoryItem = repositoryItems.get(friendlyUrl);
 		if (repositoryItem == null) {
@@ -126,22 +134,30 @@ public class Repository implements IRepository {
 		return repositoryItem;
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public Map<String, IRepositoryItem> getItems() {
 		return Collections.unmodifiableMap(repositoryItems);
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public Map<String, IRepositoryRoot> getRoots() {
 		return Collections.unmodifiableMap(roots);
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void removeRoot(String friendlyUrl) {
 		roots.remove(friendlyUrl);
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void removeItemsFromRoot(IRepositoryRoot root) {
 		Collection<Map.Entry<String, IRepositoryItem>> itemsToMove = new ArrayList<Map.Entry<String, IRepositoryItem>>();
 

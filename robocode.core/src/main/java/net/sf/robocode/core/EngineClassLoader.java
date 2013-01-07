@@ -38,7 +38,7 @@ public class EngineClassLoader extends URLClassLoader {
 		exclusions.add("net.sf.robocode.repository.RobotType");
 		exclusions.add("net.sf.robocode.host.RobotStatics");
 		exclusions.add("net.sf.robocode.peer.BadBehavior");
-		exclusions.add("net.sf.robocode.dotnet.host.DotnetHost");
+		exclusions.add("net.sf.robocode.dotnet.host.DotNetHost");
 		exclusions.add("net.sf.robocode.dotnet.repository.root.DllRootHelper");
 		exclusions.add("net.sf.robocode.dotnet.nhost.ModuleN");
 		exclusions.add("net.sf.robocode.host.proxies.__IHostingRobotProxy");

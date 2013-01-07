@@ -20,8 +20,18 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public interface IRepositoryManager extends IRepositoryManagerBase {
+	/**
+	 * Returns the directory containing the robots.
+	 *
+	 * @return a file that is the directory containing the robots.
+	 */
 	File getRobotsDirectory();
 
+	/**
+	 * Returns all development directories that are additional directories to the 'robots' directory.
+	 *
+	 * @return a list of files containing development directories.
+	 */
 	List<File> getDevelDirectories();
 
 	void refresh(String friendlyUrl);

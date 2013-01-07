@@ -20,8 +20,17 @@ import java.net.URL;
 public interface IRepositoryRoot {
 	URL getURL();
 	File getPath();
-	void update(boolean force);
-	void update(IRepositoryItem repositoryItem, boolean force);
+
+	/**
+	 * Updates all items accessible from this repository root.
+	 * Only items that needs to be updated will be updated, e.g. by checking the 'last modified' date on the item.
+	 *
+	 * @param force is a flag specifying if the items are forced to be updated.
+	 *              If this parameter is true, then all items <em>will</em> be updated.
+	 */
+	void updateItems(boolean force);
+
+	void updateItem(IRepositoryItem repositoryItem, boolean force);
 	boolean isChanged(IRepositoryItem repositoryItem);
 	boolean isJAR();
 	boolean isDevelopmentRoot();

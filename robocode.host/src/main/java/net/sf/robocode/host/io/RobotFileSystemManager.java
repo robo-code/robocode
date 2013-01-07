@@ -125,7 +125,7 @@ public class RobotFileSystemManager {
 		File file = new File(parent, filename);
 
 		// TODO the file is never replaced from jar or directory after it was created
-		// TODO it would be good to replace it when it have bigger last modified time stamp
+		// TODO it would be good to replace it when it have bigger last modified date
 		if (!file.exists()) {
 			if (!parent.exists() && !parent.mkdirs()) {
 				return file;

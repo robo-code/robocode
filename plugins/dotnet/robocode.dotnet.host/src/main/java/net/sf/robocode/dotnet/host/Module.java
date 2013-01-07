@@ -9,7 +9,7 @@ package net.sf.robocode.dotnet.host;
 
 
 import net.sf.robocode.core.*;
-import net.sf.robocode.dotnet.repository.items.handlers.DotnetPropertiesHandler;
+import net.sf.robocode.dotnet.repository.items.handlers.DotNetPropertiesHandler;
 import net.sf.robocode.dotnet.repository.root.handlers.DllHandler;
 import net.sf.robocode.manager.IVersionManagerBase;
 import net.sf.robocode.io.Logger;
@@ -56,14 +56,14 @@ public class Module extends BaseModule {
 			  Bridge.LoadAndRegisterAssemblyFrom(new File(nhost));
 
 			Container.cache.addComponent("DllItemHandler", DllHandler.class);
-			Container.cache.addComponent("CsPropertiesHandler", DotnetPropertiesHandler.class);
-			Container.cache.addComponent("VbPropertiesHandler", DotnetPropertiesHandler.class);
-			Container.cache.addComponent("DotnetPropertiesHandler", DotnetPropertiesHandler.class);
+			Container.cache.addComponent("CsPropertiesHandler", DotNetPropertiesHandler.class);
+			Container.cache.addComponent("VbPropertiesHandler", DotNetPropertiesHandler.class);
+			Container.cache.addComponent("DotNetPropertiesHandler", DotNetPropertiesHandler.class);
 
 			// .NET proxies
-			Container.cache.addComponent("robocode.host.cs", DotnetHost.class);
-			Container.cache.addComponent("robocode.host.vb", DotnetHost.class);
-			Container.cache.addComponent("robocode.host.dotnet", DotnetHost.class);
+			Container.cache.addComponent("robocode.host.cs", DotNetHost.class);
+			Container.cache.addComponent("robocode.host.vb", DotNetHost.class);
+			Container.cache.addComponent("robocode.host.dotnet", DotNetHost.class);
 
 		} catch (Throwable e) {
 			Logger.logError(e);

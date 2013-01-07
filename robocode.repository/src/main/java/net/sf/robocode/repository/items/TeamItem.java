@@ -94,6 +94,9 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 		return urls;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void update(long lastModified, boolean force) {
 		if (lastModified > this.lastModified || force) {
 			this.lastModified = lastModified;

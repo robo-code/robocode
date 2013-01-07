@@ -39,7 +39,7 @@ import java.lang.String;
 /**
  * @author Pavel Savara (original)
  */
-public class DllRoot extends BaseRoot implements IRepositoryRoot {
+public final class DllRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
 	private URL dllURL;
@@ -62,7 +62,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	public void update(boolean updateInvalid) {
+	public void updateItems(boolean updateInvalid) {
 		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
 
 		setStatus(windowManager, "Updating .dll: " + rootPath.toString());
@@ -91,7 +91,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 
 	private void createItem(ArrayList<IRepositoryItem> items, URL root, String url) {
 		try {
-			final IRepositoryItem item = ItemHandler.registerItems(new URL(url), DllRoot.this, repository);
+			final IRepositoryItem item = ItemHandler.registerItem(new URL(url), DllRoot.this, repository);
 
 			if (item != null) {
 				if (item instanceof RobotItem) {
@@ -104,7 +104,7 @@ public class DllRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	public void update(IRepositoryItem item, boolean force) {
+	public void updateItem(IRepositoryItem item, boolean force) {
 		item.update(rootPath.lastModified(), force);
 	}
 

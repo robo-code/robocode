@@ -17,29 +17,54 @@ import java.net.URL;
 
 
 /**
- * Handler for accepting and registering .class files.
+ * Item handler for accepting and registering Java class files.
  *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class ClassHandler extends ItemHandler {
-	public IRepositoryItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
-		final String name = itemURL.toString().toLowerCase();
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected IRepositoryItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
+		// Accept and register the item if it is a Java class file, but not an inner class file
+		String name = itemURL.toString().toLowerCase();
 		if (name.endsWith(".class") && !name.contains("$")) {
 			return register(itemURL, root, repository);
 		}
 		return null;
 	}
 
-	private IRepositoryItem register(URL itemURL, IRepositoryRoot root, IRepository repository) {
-		RobotItem item = (RobotItem) repository.getItem(itemURL.toString());
+	/**
+	 * Registers the class file with the specified URL as a RobotItem.
+	 *
+	 * @param classFileUrl is the URL of the class file to register.
+	 * @param root is the repository root containing the class file to register.
+	 * @param repository is the repository, where the class file is automatically added or updated,
+	 *                   when the class file is registered.
+	 * @return a RobotItem that has been created or updated in the repository.
+	 */
+	private RobotItem register(URL classFileUrl, IRepositoryRoot root, IRepository repository) {
+		RobotItem item = null;
 
-		if (item == null) {
-			item = new RobotItem(itemURL, root);
+		// Check if the class file is already registered in the repository
+		IRepositoryItem repositoryItem = repository.getItem(classFileUrl.toString());
+		if (repositoryItem instanceof RobotItem) {
+			item = (RobotItem) repositoryItem;
 		}
-		item.setClassPathURL(root.getURL());
-		item.setClassURL(itemURL);
 
+		// If the class file has not been registered then create a new RobotItem based on the class file URL
+		if (item == null) {
+			item = new RobotItem(classFileUrl, root);
+		}
+
+		// Set the class path URL and class URL on the RobotItem
+		item.setClassPathURL(root.getURL());
+		item.setClassURL(classFileUrl);
+
+		// Add or update the item in the repository and return it
 		repository.addOrUpdateItem(item);
 		return item;
 	}

@@ -21,7 +21,7 @@ public interface IRobotItem extends IRobotSpecItem {
 
 	String getReadableDirectory();
 
-	String getRobotLanguage();
+	String getPlatform();
 
 	boolean isDroid();
 

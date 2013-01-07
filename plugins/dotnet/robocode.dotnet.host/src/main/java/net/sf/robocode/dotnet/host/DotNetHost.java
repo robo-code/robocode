@@ -10,23 +10,23 @@
 package net.sf.robocode.dotnet.host;
 
 @net.sf.jni4net.attributes.ClrType
-public class DotnetHost extends system.Object implements net.sf.robocode.host.IHost {
+public class DotNetHost extends system.Object implements net.sf.robocode.host.IHost {
     
     //<generated-proxy>
     private static system.Type staticType;
     
-    protected DotnetHost(net.sf.jni4net.inj.INJEnv __env, long __handle) {
+    protected DotNetHost(net.sf.jni4net.inj.INJEnv __env, long __handle) {
             super(__env, __handle);
     }
     
     @net.sf.jni4net.attributes.ClrConstructor("()V")
-    public DotnetHost() {
+    public DotNetHost() {
             super(((net.sf.jni4net.inj.INJEnv)(null)), 0);
-        net.sf.robocode.dotnet.host.DotnetHost.__ctorDotnetHost0(this);
+        net.sf.robocode.dotnet.host.DotNetHost.__ctorDotNetHost0(this);
     }
     
     @net.sf.jni4net.attributes.ClrMethod("()V")
-    private native static void __ctorDotnetHost0(net.sf.jni4net.inj.IClrProxy thiz);
+    private native static void __ctorDotNetHost0(net.sf.jni4net.inj.IClrProxy thiz);
     
     @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/host/IHostManager;Lrobocode/control/RobotSpecification;Lnet/sf/robocode/peer/IRobotStatics;Lnet/sf/robocode/peer/IRobotPeer;)Lnet/sf/robocode/host/proxies/IHostingRobotProxy;")
     public native net.sf.robocode.host.proxies.IHostingRobotProxy createRobotProxy(net.sf.robocode.host.IHostManager par0, robocode.control.RobotSpecification par1, net.sf.robocode.peer.IRobotStatics par2, net.sf.robocode.peer.IRobotPeer par3);
@@ -41,11 +41,11 @@ public class DotnetHost extends system.Object implements net.sf.robocode.host.IH
     public native net.sf.robocode.host.proxies.IHostingRobotProxy createRobotProxy(net.sf.robocode.host.IHostManager hostManager, java.lang.Object robotSpecification, net.sf.robocode.peer.IRobotStatics statics, net.sf.robocode.peer.IRobotPeer peer);
     
     public static system.Type typeof() {
-        return net.sf.robocode.dotnet.host.DotnetHost.staticType;
+        return net.sf.robocode.dotnet.host.DotNetHost.staticType;
     }
     
     private static void InitJNI(net.sf.jni4net.inj.INJEnv env, system.Type staticType) {
-        net.sf.robocode.dotnet.host.DotnetHost.staticType = staticType;
+        net.sf.robocode.dotnet.host.DotNetHost.staticType = staticType;
     }
     //</generated-proxy>
 }

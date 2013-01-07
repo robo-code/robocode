@@ -23,10 +23,14 @@ import java.io.File;
 /**
  * @author Pavel Savara (original)
  */
-public class DotnetPropertiesHandler extends PropertiesHandler {
+public class DotNetPropertiesHandler extends PropertiesHandler {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public IRepositoryItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
+	protected IRepositoryItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
+		// Accept and register the item if it is a .NET properties file
 		String name = itemURL.toString().toLowerCase();
 		if (name.contains(".dll!/")) {
 			return register(itemURL, root, repository);
@@ -43,7 +47,6 @@ public class DotnetPropertiesHandler extends PropertiesHandler {
 		return item;
 	}
 
-	@Override
 	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
 		File file = new File(itemURL.toString().replace(".properties", ".dll"));
 		DotNetRobotItem item = new DotNetRobotItem(new DllRoot(repository, file), itemURL);

@@ -18,46 +18,83 @@ import java.net.URL;
 
 
 /**
- * Handler for accepting and registering .properties files.
+ * Handler for accepting and registering Java properties files.
  *
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class PropertiesHandler extends ItemHandler {
 
-	public IRepositoryItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
-		final String name = itemURL.toString().toLowerCase();
-
-		if (name.endsWith(".properties") && !name.endsWith("robocode.properties")) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected IRepositoryItem acceptItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
+		// Accept and register the item if it is a Java properties file
+		String name = itemURL.toString().toLowerCase();
+		if (name.endsWith(".properties")) {
 			return register(itemURL, root, repository);
 		}
 		return null;
 	}
 
-	private IRepositoryItem register(URL itemURL, IRepositoryRoot root, IRepository repository) {
-		RobotItem item = (RobotItem) repository.getItem(itemURL.toString());
+	/**
+	 * Registers the properties file with the specified URL as a RobotItem.
+	 *
+	 * @param propertiesFileUrl is the URL of the properties file to register.
+	 * @param root is the repository root containing the properties file to register.
+	 * @param repository is the repository, where the properties file is automatically added or updated,
+	 *                   when the properties file is registered.
+	 * @return a RobotItem that has been created or updated in the repository.
+	 */
+	private RobotItem register(URL propertiesFileUrl, IRepositoryRoot root, IRepository repository) {
+		RobotItem item = null;
 
-		if (item == null) {
-			item = createItem(itemURL, root, repository);
+		// Check if the properties file is already registered in the repository
+		IRepositoryItem repositoryItem = repository.getItem(propertiesFileUrl.toString());
+		if (repositoryItem instanceof RobotItem) {
+			item = (RobotItem) repositoryItem;
 		}
-		repository.addOrUpdateItem(item);
+
+		// If the properties file has not been registered then create a new RobotItem based on the properties file URL
+		if (item == null) {
+			item = createRobotItem(propertiesFileUrl, root, repository);
+		}
+
+		// Add or update the item in the repository and return it
+		if (item != null) {
+			repository.addOrUpdateItem(item);
+		}
 		return item;
 	}
 
-	protected RobotItem createItem(URL itemURL, IRepositoryRoot root, IRepository repository) {
-		final RobotItem robotItem = new RobotItem(itemURL, root);
+	/**
+	 * Creates a new RobotItem based on the properties file URL.
+	 * This method will dispatch creating and registering the properties file to another handler,
+	 * if the platform is not Java.
+	 *
+	 * @param propertiesFileUrl is the URL of the properties file.
+	 * @param root is the repository root containing the properties file to create the RobotItem from.
+	 * @param repository is the repository, where the properties file is automatically added or updated,
+	 *                   when the properties file is registered.
+	 * @return a new RobotItem that has been created or null if the RobotItem could not be created.
+	 */
+	private RobotItem createRobotItem(URL propertiesFileUrl, IRepositoryRoot root, IRepository repository) {
+		// Create a RobotItem based on the properties file URL
+		RobotItem item = new RobotItem(propertiesFileUrl, root);
 
-		robotItem.setPropertiesURL(itemURL);
+		// Check if the robot is for the Java platform
+		String platform = item.getPlatform();
+		if (platform.equalsIgnoreCase("Java")) {
+			// Java platform -> set the properties URL on the RobotItem
+			item.setPropertiesURL(propertiesFileUrl);
+		} else {
+			// Another platform -> Look for another properties handler
+			PropertiesHandler otherHandler = Container.getComponent(PropertiesHandler.class, platform + "PropertiesHandler");
 
-		final String lang = robotItem.getRobotLanguage();
-
-		if (!lang.equals("java")) {
-			// dispatch to other robot types
-			String uplang = lang.substring(0, 1).toUpperCase() + lang.substring(1).toLowerCase();
-			final PropertiesHandler handler = Container.getComponent(PropertiesHandler.class,
-					uplang + "PropertiesHandler");
-
-			return handler.createItem(itemURL, root, repository);
+			// If the another properties handler was found then let create the RobotItem; otherwise return null 
+			return (otherHandler == null) ? null : otherHandler.createRobotItem(propertiesFileUrl, root, repository);
 		}
-		return robotItem;
+		return item;
 	}
 }
