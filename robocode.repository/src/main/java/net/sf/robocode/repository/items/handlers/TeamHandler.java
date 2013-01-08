@@ -12,6 +12,7 @@ import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.TeamItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
+import net.sf.robocode.util.UrlUtil;
 
 import java.net.URL;
 
@@ -50,7 +51,9 @@ public class TeamHandler extends ItemHandler {
 		TeamItem item = null;
 
 		// Check if the team file is already registered in the repository
-		IRepositoryItem repositoryItem = repository.getItem(teamFileUrl.toString());
+		String friendlyUrl = UrlUtil.removeFileExtension(teamFileUrl.toString());
+
+		IRepositoryItem repositoryItem = repository.getItem(friendlyUrl);
 		if (repositoryItem instanceof TeamItem) {
 			item = (TeamItem) repositoryItem;
 		}

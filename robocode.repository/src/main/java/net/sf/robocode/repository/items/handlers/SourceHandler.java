@@ -13,6 +13,7 @@ import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.root.ClasspathRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
+import net.sf.robocode.util.UrlUtil;
 
 import java.net.URL;
 
@@ -63,7 +64,9 @@ public class SourceHandler extends ItemHandler {
 		// If no project URL was registered with the source file then check if the source file is registered
 		// in the repository. 
 		if (item == null) {
-			IRepositoryItem repositoryItem = repository.getItem(sourceFileUrl.toString());
+			String friendlyUrl = UrlUtil.removeFileExtension(sourceFileUrl.toString());
+
+			IRepositoryItem repositoryItem = repository.getItem(friendlyUrl);
 			if (repositoryItem instanceof RobotItem) {
 				item = (RobotItem) repositoryItem;
 			}

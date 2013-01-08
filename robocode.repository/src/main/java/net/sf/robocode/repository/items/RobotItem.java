@@ -243,23 +243,23 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	public Set<String> getFriendlyURLs() {
 		populate();
 
-		final Set<String> urls = new HashSet<String>();
+		Set<String> urls = new HashSet<String>();
 
-		if (propertiesURL != null) {
-			final String pUrl = propertiesURL.toString();
-			final String noType = pUrl.substring(0, pUrl.lastIndexOf('.'));
-
-			urls.add(pUrl);
-			urls.add(noType);
-			urls.add(propertiesURL.getPath());
-		}
+		URL url = null;
 		if (classURL != null) {
-			final String cUrl = classURL.toString();
-			final String noType = cUrl.substring(0, cUrl.lastIndexOf('.'));
+			url = classURL;
+		} else if (propertiesURL != null) {
+			url = propertiesURL;
+		}
+		if (url != null) {
+			String sUrl = url.toString();
+			String urlNoType = sUrl.substring(0, sUrl.lastIndexOf('.'));
 
-			urls.add(cUrl);
-			urls.add(noType);
-			urls.add(classURL.getPath());
+			String path = url.getPath();
+			String pathNoType = path.substring(0, path.lastIndexOf('.'));
+			
+			urls.add(urlNoType);
+			urls.add(pathNoType);
 		}
 		if (getFullClassName() != null) {
 			if (System.getProperty("TESTING", "false").equals("true")) {

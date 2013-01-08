@@ -12,6 +12,7 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
+import net.sf.robocode.util.UrlUtil;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -123,7 +124,8 @@ public final class ClasspathRoot extends BaseRoot implements IRepositoryRoot {
 				String rootPath = projectPath.toURI().toURL().toString();
 				String itemPath = itemURL.toString().substring(getURL().toString().length());
 
-				url = rootPath + itemPath.substring(0, itemPath.lastIndexOf('.'));
+				url = rootPath + UrlUtil.removeFileExtension(itemPath);
+
 			} catch (MalformedURLException e) {
 				Logger.logError(e);				
 			}

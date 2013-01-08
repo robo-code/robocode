@@ -12,6 +12,7 @@ import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
+import net.sf.robocode.util.UrlUtil;
 
 import java.net.URL;
 
@@ -50,7 +51,9 @@ public class ClassHandler extends ItemHandler {
 		RobotItem item = null;
 
 		// Check if the class file is already registered in the repository
-		IRepositoryItem repositoryItem = repository.getItem(classFileUrl.toString());
+		String friendlyUrl = UrlUtil.removeFileExtension(classFileUrl.toString());
+		
+		IRepositoryItem repositoryItem = repository.getItem(friendlyUrl);
 		if (repositoryItem instanceof RobotItem) {
 			item = (RobotItem) repositoryItem;
 		}

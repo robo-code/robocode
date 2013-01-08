@@ -12,6 +12,7 @@ import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.root.IRepositoryRoot;
+import net.sf.robocode.util.UrlUtil;
 import net.sf.robocode.core.Container;
 
 import java.net.URL;
@@ -51,7 +52,9 @@ public class PropertiesHandler extends ItemHandler {
 		RobotItem item = null;
 
 		// Check if the properties file is already registered in the repository
-		IRepositoryItem repositoryItem = repository.getItem(propertiesFileUrl.toString());
+		String friendlyUrl = UrlUtil.removeFileExtension(propertiesFileUrl.toString());
+
+		IRepositoryItem repositoryItem = repository.getItem(friendlyUrl);
 		if (repositoryItem instanceof RobotItem) {
 			item = (RobotItem) repositoryItem;
 		}

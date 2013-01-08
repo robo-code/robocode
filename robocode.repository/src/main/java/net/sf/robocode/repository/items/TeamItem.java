@@ -75,15 +75,18 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 	}
 
 	public Set<String> getFriendlyURLs() {
-		final Set<String> urls = new HashSet<String>();
+		Set<String> urls = new HashSet<String>();
 
-		final String tUrl = itemUrl.toString();
-		final String noType = tUrl.substring(0, tUrl.lastIndexOf('.'));
+		if (itemUrl != null) {
+			String url = itemUrl.toString();
+			String urlNoType = url.substring(0, url.lastIndexOf('.'));
 
-		urls.add(tUrl);
-		urls.add(noType);
-		urls.add(itemUrl.getPath());
-
+			String path = itemUrl.getPath();
+			String pathNoType = path.substring(0, path.lastIndexOf('.'));
+			
+			urls.add(urlNoType);
+			urls.add(pathNoType);
+		}
 		if (System.getProperty("TESTING", "false").equals("true")) {
 			urls.add(getFullClassName());
 		} else {

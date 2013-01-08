@@ -159,15 +159,15 @@ public class Repository implements IRepository {
 	 * {@inheritDoc}
 	 */
 	public void removeItemsFromRoot(IRepositoryRoot root) {
-		Collection<Map.Entry<String, IRepositoryItem>> itemsToMove = new ArrayList<Map.Entry<String, IRepositoryItem>>();
+		Collection<Map.Entry<String, IRepositoryItem>> itemsToRemove = new ArrayList<Map.Entry<String, IRepositoryItem>>();
 
 		for (Map.Entry<String, IRepositoryItem> entry : repositoryItems.entrySet()) {
 			if (entry.getValue().getRoot().equals(root)) {
-				itemsToMove.add(entry);
+				itemsToRemove.add(entry);
 			}
 		}
 
-		for (Map.Entry<String, IRepositoryItem> entry : itemsToMove) {
+		for (Map.Entry<String, IRepositoryItem> entry : itemsToRemove) {
 			String key = entry.getKey();
 
 			removedItems.put(key, entry.getValue());

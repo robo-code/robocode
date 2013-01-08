@@ -1,6 +1,7 @@
-## Version 1.8.0.0 Alpha (15-Dec-2012)
+## Version 1.8.0.0 Alpha 2 (08-Jan-2013)
 
 ### Bug fix
+* [Bug-346][]: Cannot extract sources from robot packages.
 * [Bug-348][]: .NET: UnauthorizedAccessException in AppDomainShell.Dispose().
 
 ### Changes
@@ -2808,6 +2809,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-342]: http://sourceforge.net/p/robocode/bugs/342/  (New bots not given priority)
 [Bug-344]: http://sourceforge.net/p/robocode/bugs/344/  (BattleAdaptor missing in robocode.control.events)
 [Bug-345]: http://sourceforge.net/p/robocode/bugs/345/  (Graphics still being rendered when minimized)
+[Bug-346]: http://sourceforge.net/p/robocode/bugs/346/  (Cannot extract sources from robot packages)
 [Bug-347]: http://sourceforge.net/p/robocode/bugs/347/  (/bin/sh^M bad interpreter)
 [Bug-348]: http://sourceforge.net/p/robocode/bugs/348/  (.NET: UnauthorizedAccessException in AppDomainShell.Dispose())
 
