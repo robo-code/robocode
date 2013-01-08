@@ -25,7 +25,6 @@ import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.handlers.ItemHandler;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.ui.IWindowManager;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -33,11 +32,13 @@ import java.net.MalformedURLException;
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.List;
 import java.lang.String;
 
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public final class DllRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
@@ -63,16 +64,14 @@ public final class DllRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	public void updateItems(boolean updateInvalid) {
-		final IWindowManager windowManager = net.sf.robocode.core.Container.getComponent(IWindowManager.class);
+		setStatus("Updating DLL: " + rootPath.toString());
 
-		setStatus(windowManager, "Updating .dll: " + rootPath.toString());
 		long lm = rootPath.lastModified();
-
 		if (lm > this.lastModified) {
 			repository.removeItemsFromRoot(this);
 			this.lastModified = lm;
 
-			final ArrayList<IRepositoryItem> items = new ArrayList<IRepositoryItem>();
+			List<IRepositoryItem> items = new ArrayList<IRepositoryItem>();
 
 			visitItems(items);
 			for (IRepositoryItem item : items) {
@@ -81,18 +80,17 @@ public final class DllRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void visitItems(ArrayList<IRepositoryItem> items) {
-		final String[] dllitems = DllRootHelper.findItems(dllUrlNoSeparator);
+	private void visitItems(List<IRepositoryItem> items) {
+		String[] dllItems = DllRootHelper.findItems(dllUrlNoSeparator);
 
-		for (String url : dllitems) {
+		for (String url : dllItems) {
 			createItem(items, dllURL, url);
 		}
 	}
 
-	private void createItem(ArrayList<IRepositoryItem> items, URL root, String url) {
+	private void createItem(List<IRepositoryItem> items, URL root, String url) {
 		try {
-			final IRepositoryItem item = ItemHandler.registerItem(new URL(url), DllRoot.this, repository);
-
+			IRepositoryItem item = ItemHandler.registerItem(new URL(url), DllRoot.this, repository);
 			if (item != null) {
 				if (item instanceof RobotItem) {
 					((RobotItem) item).setClassPathURL(root);
@@ -122,11 +120,5 @@ public final class DllRoot extends BaseRoot implements IRepositoryRoot {
 
 	public boolean isJAR() {
 		return true;
-	}
-
-	private static void setStatus(IWindowManager windowManager, String message) {
-		if (windowManager != null) {
-			windowManager.setStatus(message);
-		}
 	}
 }

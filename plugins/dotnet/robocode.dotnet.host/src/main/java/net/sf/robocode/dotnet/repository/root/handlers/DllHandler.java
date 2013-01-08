@@ -19,10 +19,10 @@ package net.sf.robocode.dotnet.repository.root.handlers;
 
 
 import net.sf.robocode.dotnet.repository.root.DllRootHelper;
+import net.sf.robocode.dotnet.repository.root.DllRoot;
 import net.sf.robocode.repository.root.handlers.RootHandler;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.IRepository;
-import net.sf.robocode.dotnet.repository.root.DllRoot;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -31,8 +31,10 @@ import java.util.Map;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class DllHandler extends RootHandler {
+
 	public void open() {
 		DllRootHelper.Refresh();
 	}
@@ -43,11 +45,10 @@ public class DllHandler extends RootHandler {
 
 	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newRoots, IRepository repository, boolean force) {
 		// find dll files
-		final File[] dlls = dir.listFiles(
-				new FileFilter() {
+		final File[] dlls = dir.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
 				String path = pathname.toString().toLowerCase();
-				return pathname.isFile() && path.endsWith(".dll") && !path.endsWith("robocode.dll")
+				return pathname.isFile() && path.endsWith(".dll") && !path.equalsIgnoreCase("robocode.dll")
 						&& !path.contains("jni4net");
 			}
 		});
