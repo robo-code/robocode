@@ -20,6 +20,7 @@ import java.net.URL;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
@@ -32,12 +33,10 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 		this.repository = repository;
 		this.rootPath = rootPath;
 
-		URL url;
-
+		URL url = null;
 		try {
 			url = rootPath.toURI().toURL();
 		} catch (MalformedURLException e) {
-			url = null;
 			Logger.logError(e);
 		}
 		this.rootURL = url;

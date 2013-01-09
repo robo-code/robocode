@@ -37,19 +37,15 @@ public abstract class RootHandler {
 	}
 
 	public static void openHandlers() {
-		// walk thru all plugins
-		final List<RootHandler> itemHandlerList = Container.getComponents(RootHandler.class);
-
-		for (RootHandler handler : itemHandlerList) {
+		List<RootHandler> rootHandlers = Container.getComponents(RootHandler.class);
+		for (RootHandler handler : rootHandlers) {
 			handler.open();
 		}
 	}
 
 	public static void closeHandlers() {
-		// walk thru all plugins
-		final List<RootHandler> itemHandlerList = Container.getComponents(RootHandler.class);
-
-		for (RootHandler handler : itemHandlerList) {
+		List<RootHandler> rootHandlers = Container.getComponents(RootHandler.class);
+		for (RootHandler handler : rootHandlers) {
 			handler.close();
 		}
 	}

@@ -36,11 +36,11 @@ import java.util.Map;
 public class DllHandler extends RootHandler {
 
 	public void open() {
-		DllRootHelper.Refresh();
+		DllRootHelper.Open();
 	}
     
 	public void close() {
-		DllRootHelper.Refresh();
+		DllRootHelper.Close();
 	}
 
 	public void visitDirectory(File dir, boolean isDevel, Map<String, IRepositoryRoot> newRoots, IRepository repository, boolean force) {

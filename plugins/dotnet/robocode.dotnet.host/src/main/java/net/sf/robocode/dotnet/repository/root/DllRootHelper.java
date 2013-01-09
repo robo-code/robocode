@@ -24,7 +24,10 @@ public class DllRootHelper extends system.Object {
     }
     
     @net.sf.jni4net.attributes.ClrMethod("()V")
-    public native static void Refresh();
+    public native static void Open();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()V")
+    public native static void Close();
     
     @net.sf.jni4net.attributes.ClrMethod("(LSystem/String;)[LSystem/String;")
     public native static java.lang.String[] findItems(java.lang.String dllPath);

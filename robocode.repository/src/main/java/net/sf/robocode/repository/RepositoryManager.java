@@ -106,17 +106,17 @@ public class RepositoryManager implements IRepositoryManager {
 		final int prev = repository.getItems().size();
 
 		RootHandler.openHandlers();
-
-		Map<String, IRepositoryRoot> newRoots = new HashMap<String, IRepositoryRoot>();
-
-		RootHandler.visitDirectories(robotsDir, false, newRoots, repository, force);
-		for (File dir : devDirs) {
-			RootHandler.visitDirectories(dir, true, newRoots, repository, force);
+		try {
+			Map<String, IRepositoryRoot> newRoots = new HashMap<String, IRepositoryRoot>();
+	
+			RootHandler.visitDirectories(robotsDir, false, newRoots, repository, force);
+			for (File dir : devDirs) {
+				RootHandler.visitDirectories(dir, true, newRoots, repository, force);
+			}
+			repository.setRoots(newRoots);
+		} finally {
+			RootHandler.closeHandlers();
 		}
-
-		repository.setRoots(newRoots);
-
-		RootHandler.closeHandlers();
 
 		return prev != repository.getItems().size();
 	}

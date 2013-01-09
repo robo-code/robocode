@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
@@ -64,13 +65,13 @@ public final class JarRoot extends BaseRoot implements IRepositoryRoot {
 	public void updateItems(boolean force) {
 		setStatus("Updating JAR: " + rootPath.toString());
 
-		long lm = rootPath.lastModified();
+		long lastModified = rootPath.lastModified();
 
-		if (lm > this.lastModified) {
+		if (lastModified > this.lastModified) {
 			repository.removeItemsFromRoot(this);
-			this.lastModified = lm;
+			this.lastModified = lastModified;
 
-			ArrayList<IRepositoryItem> repositoryItems = new ArrayList<IRepositoryItem>();
+			List<IRepositoryItem> repositoryItems = new ArrayList<IRepositoryItem>();
 
 			visitItems(repositoryItems);
 			for (IRepositoryItem repositoryItem : repositoryItems) {
@@ -79,7 +80,7 @@ public final class JarRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void visitItems(ArrayList<IRepositoryItem> repositoryItems) {
+	private void visitItems(List<IRepositoryItem> repositoryItems) {
 		String root = jarPath;
 		InputStream is = null;
 		BufferedInputStream bis = null;
@@ -102,7 +103,7 @@ public final class JarRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void readJarStream(ArrayList<IRepositoryItem> repositoryItems, String root, JarInputStream jarIS) throws IOException {
+	private void readJarStream(List<IRepositoryItem> repositoryItems, String root, JarInputStream jarIS) throws IOException {
 		JarEntry entry = jarIS.getNextJarEntry();
 
 		while (entry != null) {
@@ -132,7 +133,7 @@ public final class JarRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void createItem(ArrayList<IRepositoryItem> repositoryItems, URL root, JarEntry entry) {
+	private void createItem(List<IRepositoryItem> repositoryItems, URL root, JarEntry entry) {
 		try {
 			String pUrl = root.toString() + entry.getName();
 			IRepositoryItem repositoryItem = ItemHandler.registerItem(new URL(pUrl), JarRoot.this, repository);

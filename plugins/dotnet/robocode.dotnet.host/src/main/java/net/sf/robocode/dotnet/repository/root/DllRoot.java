@@ -43,48 +43,54 @@ import java.lang.String;
 public final class DllRoot extends BaseRoot implements IRepositoryRoot {
 	private static final long serialVersionUID = 1L;
 
-	private URL dllURL;
-	private String dllUrlNoSeparator;
+	private final String dllPath;
+	private final URL dllUrl;
+
 	private long lastModified;
 
 	public DllRoot(IRepository repository, File rootPath) {
 		super(repository, rootPath);
+		String dllPath = null;
+		URL dllUrl = null;
 		try {
-			dllUrlNoSeparator = rootPath.toURI().toString();
-			dllURL = new URL(dllUrlNoSeparator + "!/");
+			dllPath = rootPath.toURI().toString();
+			dllUrl = new URL(dllPath + "!/");
+			dllPath = URLDecoder.decode(dllPath, "UTF8");
 		} catch (MalformedURLException e) {
 			Logger.logError(e);
-		}
-
-		try {
-			dllUrlNoSeparator = URLDecoder.decode(dllUrlNoSeparator, "UTF8");
 		} catch (UnsupportedEncodingException e) {
 			Logger.logError(e);
 		}
+		this.dllPath = dllPath;
+		this.dllUrl = dllUrl;
 	}
 
-	public void updateItems(boolean updateInvalid) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public void updateItems(boolean force) {
 		setStatus("Updating DLL: " + rootPath.toString());
 
-		long lm = rootPath.lastModified();
-		if (lm > this.lastModified) {
+		long lastModified = rootPath.lastModified();
+
+		if (lastModified > this.lastModified) {
 			repository.removeItemsFromRoot(this);
-			this.lastModified = lm;
+			this.lastModified = lastModified;
 
-			List<IRepositoryItem> items = new ArrayList<IRepositoryItem>();
+			List<IRepositoryItem> repositoryItems = new ArrayList<IRepositoryItem>();
 
-			visitItems(items);
-			for (IRepositoryItem item : items) {
-				item.update(lastModified, updateInvalid);
+			visitItems(repositoryItems);
+			for (IRepositoryItem repositoryItem : repositoryItems) {
+				repositoryItem.update(lastModified, force);
 			}
 		}
 	}
 
 	private void visitItems(List<IRepositoryItem> items) {
-		String[] dllItems = DllRootHelper.findItems(dllUrlNoSeparator);
+		String[] dllItems = DllRootHelper.findItems(dllPath);
 
 		for (String url : dllItems) {
-			createItem(items, dllURL, url);
+			createItem(items, dllUrl, url);
 		}
 	}
 
@@ -111,7 +117,7 @@ public final class DllRoot extends BaseRoot implements IRepositoryRoot {
 	}
 
 	public URL getRootUrl() {
-		return dllURL;
+		return dllUrl;
 	}
 
 	public boolean isDevelopmentRoot() {

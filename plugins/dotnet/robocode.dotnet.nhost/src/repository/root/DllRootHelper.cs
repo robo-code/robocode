@@ -10,6 +10,7 @@
 
 using System;
 using System.IO;
+using System.Threading;
 using System.Web;
 using net.sf.robocode.dotnet.host.seed;
 using net.sf.robocode.repository;
@@ -20,16 +21,20 @@ namespace net.sf.robocode.dotnet.repository.root
     {
         private static AppDomainShell shell;
 
-        public static void Refresh()
-        {
+		public static void Open()
+		{
             if (shell!=null)
             {
                 shell.Dispose();
             }
             shell = new AppDomainShell();
             shell.Init(false);
-        }
+		}
 
+		public static void Close()
+		{
+		}
+		
         public static string[] findItems(string dllPath)
         {
             string uriPath = dllPath.Replace("#", "%23"); // All '#' occurrences must be replaced
