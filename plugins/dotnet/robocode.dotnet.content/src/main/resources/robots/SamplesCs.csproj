@@ -53,28 +53,28 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SamplesCsTeam\MyFirstDroid.cs" />
-    <Compile Include="SamplesCsTeam\MyFirstLeader.cs" />
-    <Compile Include="SamplesCs\Corners.cs" />
-    <Compile Include="SamplesCs\Crazy.cs" />
-    <Compile Include="SamplesCs\Fire.cs" />
-    <Compile Include="SamplesCs\Interactive.cs" />
-    <Compile Include="SamplesCs\MyFirstJuniorRobot.cs" />
-    <Compile Include="SamplesCs\MyFirstRobot.cs" />
-    <Compile Include="SamplesCs\PaintingRobot.cs" />
-    <Compile Include="SamplesCs\PointD.cs" />
-    <Compile Include="SamplesCs\RamFire.cs" />
-    <Compile Include="SamplesCs\RobotColors.cs" />
-    <Compile Include="SamplesCs\SittingDuck.cs" />
-    <Compile Include="SamplesCs\SpinBot.cs" />
-    <Compile Include="SamplesCs\Target.cs" />
-    <Compile Include="SamplesCs\Tracker.cs" />
-    <Compile Include="SamplesCs\TrackFire.cs" />
-    <Compile Include="SamplesCs\VelociRobot.cs" />
-    <Compile Include="SamplesCs\Walls.cs" />
+    <Compile Include="SampleCsTeam\MyFirstDroid.cs" />
+    <Compile Include="SampleCsTeam\MyFirstLeader.cs" />
+    <Compile Include="SampleCs\Corners.cs" />
+    <Compile Include="SampleCs\Crazy.cs" />
+    <Compile Include="SampleCs\Fire.cs" />
+    <Compile Include="SampleCs\Interactive.cs" />
+    <Compile Include="SampleCs\MyFirstJuniorRobot.cs" />
+    <Compile Include="SampleCs\MyFirstRobot.cs" />
+    <Compile Include="SampleCs\PaintingRobot.cs" />
+    <Compile Include="SampleCs\PointD.cs" />
+    <Compile Include="SampleCs\RamFire.cs" />
+    <Compile Include="SampleCs\RobotColors.cs" />
+    <Compile Include="SampleCs\SittingDuck.cs" />
+    <Compile Include="SampleCs\SpinBot.cs" />
+    <Compile Include="SampleCs\Target.cs" />
+    <Compile Include="SampleCs\Tracker.cs" />
+    <Compile Include="SampleCs\TrackFire.cs" />
+    <Compile Include="SampleCs\VelociRobot.cs" />
+    <Compile Include="SampleCs\Walls.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SamplesCsTeam\MyCsTeam.team">
+    <None Include="SampleCsTeam\MyCsTeam.team">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
