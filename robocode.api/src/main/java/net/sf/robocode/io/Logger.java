@@ -29,6 +29,7 @@ public class Logger {
 	public static final PrintStream realErr = System.err;
 
 	private static IBattleListener logListener;
+	
 	private final static StringBuffer logBuffer = new StringBuffer();
 
 	public static void setLogListener(IBattleListener logListener) {
@@ -41,12 +42,14 @@ public class Logger {
 
 	public static void logMessage(String s, boolean newline) {
 		if (logListener == null) {
-			s = StringUtil.toBasicLatin(s);
-			if (newline) {
-				realOut.println(s);
-			} else {
-				realOut.print(s);
-				realOut.flush();
+			if (System.getProperty("logMessages", "true").equalsIgnoreCase("true")) {
+				s = StringUtil.toBasicLatin(s);
+				if (newline) {
+					realOut.println(s);
+				} else {
+					realOut.print(s);
+					realOut.flush();
+				}
 			}
 		} else {
 			synchronized (logBuffer) {
@@ -78,8 +81,10 @@ public class Logger {
 
 	public static void logError(String s) {
 		if (logListener == null) {
-			s = StringUtil.toBasicLatin(s);
-			realErr.println(s);
+			if (System.getProperty("logErrors", "true").equalsIgnoreCase("true")) {
+				s = StringUtil.toBasicLatin(s);
+				realErr.println(s);
+			}
 		} else {
 			logListener.onBattleError(new BattleErrorEvent(s));
 		}

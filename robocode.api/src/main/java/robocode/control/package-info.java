@@ -34,6 +34,9 @@
  * 
  *     public static void main(String[] args) {
  * 
+ *         // Disable log messages from Robocode
+ *         RobocodeEngine.setLogMessagesEnabled(false);
+ *
  *         // Create the RobocodeEngine
  *         //   RobocodeEngine engine = new RobocodeEngine(); // Run from current working directory
  *         RobocodeEngine engine = new RobocodeEngine(new java.io.File("C:/Robocode")); // Run from C:/Robocode

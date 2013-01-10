@@ -1,4 +1,4 @@
-## Version 1.8.0.0 Alpha 2 (08-Jan-2013)
+## Version 1.8.0.0 Alpha 2 (10-Jan-2013)
 
 ### Bug fix
 * [Bug-346][]: Cannot extract sources from robot packages.
@@ -7,6 +7,8 @@
 ### Changes
 * Robocode has been updated to Java 6, and hence this will be the new minimum requirement for running Robocode from this version.
 * The icon for Robocode was upgraded to a 256x256 pixel resolution.
+* Added the new properties ``-DlogMessagesEnabled=true|false`` and ``-DlogErrorsEnabled=true|false`` for enabling and disabling log messages and log errors.
+	* The robocode.control.RobocodeEngine has got two similar methods: ``setLogMessagesEnabled(boolean)`` and ``setLogErrorsEnabled(boolean)``
 
 ## Version 1.7.4.4 (21-Nov-2012)
 

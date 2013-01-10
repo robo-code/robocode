@@ -206,34 +206,35 @@ public final class RobocodeMain extends RobocodeMainBase {
 		System.setProperty("java.awt.headless", "false");
 
 		for (int i = 0; i < args.length; i++) {
-			if (args[i].equals("-cwd") && (i < args.length + 1)) {
+			String currentArg = args[i];
+			if (currentArg.equalsIgnoreCase("-cwd") && (i < args.length + 1)) {
 				changeDirectory(args[i + 1]);
 				i++;
-			} else if (args[i].equals("-battle") && (i < args.length + 1)) {
+			} else if (currentArg.equalsIgnoreCase("-battle") && (i < args.length + 1)) {
 				setup.battleFilename = args[i + 1];
 				i++;
-			} else if (args[i].equals("-record") && (i < args.length + 1)) {
+			} else if (currentArg.equalsIgnoreCase("-record") && (i < args.length + 1)) {
 				setup.recordFilename = args[i + 1];
 				i++;
-			} else if (args[i].equals("-recordXML") && (i < args.length + 1)) {
+			} else if (currentArg.equalsIgnoreCase("-recordXML") && (i < args.length + 1)) {
 				setup.recordXmlFilename = args[i + 1];
 				i++;
-			} else if (args[i].equals("-replay") && (i < args.length + 1)) {
+			} else if (currentArg.equalsIgnoreCase("-replay") && (i < args.length + 1)) {
 				setup.replayFilename = args[i + 1];
 				i++;
-			} else if (args[i].equals("-results") && (i < args.length + 1)) {
+			} else if (currentArg.equalsIgnoreCase("-results") && (i < args.length + 1)) {
 				setup.resultsFilename = args[i + 1];
 				i++;
-			} else if (args[i].equals("-tps") && (i < args.length + 1)) {
+			} else if (currentArg.equalsIgnoreCase("-tps") && (i < args.length + 1)) {
 				setup.tps = Integer.parseInt(args[i + 1]);
 				if (setup.tps < 1) {
 					Logger.logError("tps must be > 0");
 					System.exit(8);
 				}
 				i++;
-			} else if (args[i].equals("-minimize")) {
+			} else if (currentArg.equalsIgnoreCase("-minimize")) {
 				setup.minimize = true;
-			} else if (args[i].equals("-nodisplay")) {
+			} else if (currentArg.equalsIgnoreCase("-nodisplay")) {
 				if (windowManager != null) {
 					windowManager.setEnableGUI(false);
 				}
@@ -241,15 +242,15 @@ public final class RobocodeMain extends RobocodeMainBase {
 					soundManager.setEnableSound(false);
 				}
 				setup.tps = 10000; // set TPS to maximum
-			} else if (args[i].equals("-nosound")) {
+			} else if (currentArg.equalsIgnoreCase("-nosound")) {
 				if (soundManager != null) {
 					soundManager.setEnableSound(false);
 				}
-			} else if (args[i].equals("-?") || args[i].equals("-help")) {
+			} else if (currentArg.equals("-?") || currentArg.equalsIgnoreCase("-help")) {
 				printUsage();
 				System.exit(0);
 			} else {
-				Logger.logError("Not understood: " + args[i]);
+				Logger.logError("Not understood: " + currentArg);
 				printUsage();
 				System.exit(8);
 			}
@@ -296,7 +297,8 @@ public final class RobocodeMain extends RobocodeMainBase {
 						+ "  -tps <tps>                 Set the TPS > 0 (Turns Per Second)\n"
 						+ "  -minimize                  Run minimized when Robocode starts\n"
 						+ "  -nodisplay                 Run with the display / GUI disabled\n"
-						+ "  -nosound                   Run with sound disabled\n\n" + "Java Properties include:\n"
+						+ "  -nosound                   Run with sound disabled\n\n"
+						+ "Java Properties include:\n"
 						+ "  -DWORKINGDIRECTORY=<path>  Set the working directory\n"
 						+ "  -DROBOTPATH=<path>         Set the robots directory (default is 'robots')\n"
 						+ "  -DBATTLEPATH=<path>        Set the battles directory (default is 'battles')\n"
@@ -304,6 +306,8 @@ public final class RobocodeMain extends RobocodeMainBase {
 						+ "  -Ddebug=true|false         Enable/disable debugging used for preventing\n"
 						+ "                             robot timeouts and skipped turns, and allows an\n"
 						+ "                             an unlimited painting buffer when debugging robots\n"
+						+ "  -DlogMessages=true|false   Log messages and warnings will be disabled\n"
+						+ "  -DlogErrors=true|false     Log errors will be disabled\n"
 						+ "  -DEXPERIMENTAL=true|false  Enable/disable access to peer in robot interfaces\n"
 						+ "  -DPARALLEL=true|false      Enable/disable parallel processing of robots turns\n"
 						+ "  -DRANDOMSEED=<long number> Set seed for deterministic behavior of random\n"
@@ -371,12 +375,16 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 		@Override
 		public void onBattleMessage(BattleMessageEvent event) {
-			Logger.realOut.println(event.getMessage());
+			if (System.getProperty("logMessages", "true").equalsIgnoreCase("true")) {
+				Logger.realOut.println(event.getMessage());
+			}
 		}
 
 		@Override
 		public void onBattleError(BattleErrorEvent event) {
-			Logger.realErr.println(event.getError());
+			if (System.getProperty("logErrors", "true").equalsIgnoreCase("true")) {
+				Logger.realErr.println(event.getError());
+			}
 		}
 	}
 

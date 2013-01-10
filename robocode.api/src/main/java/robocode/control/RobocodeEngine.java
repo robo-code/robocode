@@ -297,6 +297,28 @@ public class RobocodeEngine implements IRobocodeEngine {
 	}
 
 	/**
+	 * Enables or disables messages and warnings logged to {@link System#out}.
+	 * 
+	 * @param enable true if log messages must be enabled; false if log messages must be disabled.
+	 * @see #setLogErrorsEnabled(boolean)
+	 * @since 1.8.0.0
+	 */
+	public static void setLogMessagesEnabled(boolean enable) {
+		System.setProperty("logMessages", "" + enable);
+	}
+
+	/**
+	 * Enables or disables errors logged to {@link System#err}.
+	 * 
+	 * @param enable true if log errors must be enabled; false if log errors must be disabled.
+	 * @see #setLogMessagesEnabled(boolean)
+	 * @since 1.8.0.0
+	 */
+	public static void setLogErrorsEnabled(boolean enable) {
+		System.setProperty("logErrors", "" + enable);		
+	}
+
+	/**
 	 * Registered only if listener in not null.
 	 */
 	private class BattleObserver extends BattleAdaptor {

@@ -192,6 +192,38 @@ namespace Robocode.Control
             robocode.control.RobocodeEngine.printRunningThreads();
         }
 
+        /// <summary>
+        /// Enables or disables messages and warnings logged to Console.Out.
+        /// </summary>
+        /// <value>
+        /// <em>true</em> means that log messages must be enabled, and
+        /// <em>false</em> means that log messages must be disabled.
+        /// </value>
+        /// <seealso cref="LogErrorsEnabled"/>
+        public static bool LogMessagesEnabled
+        {
+            set
+            {
+                robocode.control.RobocodeEngine.setLogMessagesEnabled(value);
+            }
+        }
+
+        /// <summary>
+        /// Enables or disables errors logged to Console.Error.
+        /// </summary>
+        /// <value>
+        /// <em>true</em> means that log errors must be enabled, and
+        /// <em>false</em> means that log errors must be disabled.
+        /// </value>
+        /// <seealso cref="LogMessagesEnabled"/>
+        public static bool LogErrorsEnabled
+        {
+            set
+            {
+                robocode.control.RobocodeEngine.setLogErrorsEnabled(value);
+            }
+        }
+
         #endregion
 
         #region Event dispatchers

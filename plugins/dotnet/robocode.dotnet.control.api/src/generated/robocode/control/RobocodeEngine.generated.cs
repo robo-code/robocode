@@ -47,9 +47,9 @@ namespace robocode.control {
         
         internal static global::net.sf.jni4net.jni.MethodId j4n_printRunningThreads14;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n__ctorRobocodeEngine15;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_setLogMessagesEnabled15;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n__ctorRobocodeEngine16;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_setLogErrorsEnabled16;
         
         internal static global::net.sf.jni4net.jni.MethodId j4n__ctorRobocodeEngine17;
         
@@ -57,12 +57,16 @@ namespace robocode.control {
         
         internal static global::net.sf.jni4net.jni.MethodId j4n__ctorRobocodeEngine19;
         
+        internal static global::net.sf.jni4net.jni.MethodId j4n__ctorRobocodeEngine20;
+        
+        internal static global::net.sf.jni4net.jni.MethodId j4n__ctorRobocodeEngine21;
+        
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/io/File;)V")]
         public RobocodeEngine(global::java.io.File par0) : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 12)){
-            @__env.NewObject(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine15, this, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
+            @__env.NewObject(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine17, this, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0));
             }
         }
         
@@ -71,7 +75,7 @@ namespace robocode.control {
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 14)){
-            @__env.NewObject(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine16, this, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par1));
+            @__env.NewObject(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine18, this, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par1));
             }
         }
         
@@ -80,7 +84,7 @@ namespace robocode.control {
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 12)){
-            @__env.NewObject(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine17, this, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par0));
+            @__env.NewObject(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine19, this, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::java.lang.Object>(@__env, par0));
             }
         }
         
@@ -89,7 +93,7 @@ namespace robocode.control {
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 12)){
-            @__env.NewObject(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine18, this, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::robocode.control.events.IBattleListener>(@__env, par0));
+            @__env.NewObject(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine20, this, global::net.sf.jni4net.utils.Convertor.ParFullC2J<global::robocode.control.events.IBattleListener>(@__env, par0));
             }
         }
         
@@ -98,7 +102,7 @@ namespace robocode.control {
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            @__env.NewObject(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine19, this);
+            @__env.NewObject(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine21, this);
             }
         }
         
@@ -129,11 +133,13 @@ namespace robocode.control {
             global::robocode.control.RobocodeEngine.j4n_getCurrentWorkingDir12 = @__env.GetStaticMethodID(global::robocode.control.RobocodeEngine.staticClass, "getCurrentWorkingDir", "()Ljava/io/File;");
             global::robocode.control.RobocodeEngine.j4n_getRobotsDir13 = @__env.GetStaticMethodID(global::robocode.control.RobocodeEngine.staticClass, "getRobotsDir", "()Ljava/io/File;");
             global::robocode.control.RobocodeEngine.j4n_printRunningThreads14 = @__env.GetStaticMethodID(global::robocode.control.RobocodeEngine.staticClass, "printRunningThreads", "()V");
-            global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine15 = @__env.GetMethodID(global::robocode.control.RobocodeEngine.staticClass, "<init>", "(Ljava/io/File;)V");
-            global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine16 = @__env.GetMethodID(global::robocode.control.RobocodeEngine.staticClass, "<init>", "(Ljava/io/File;Lrobocode/control/RobocodeListener;)V");
-            global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine17 = @__env.GetMethodID(global::robocode.control.RobocodeEngine.staticClass, "<init>", "(Lrobocode/control/RobocodeListener;)V");
-            global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine18 = @__env.GetMethodID(global::robocode.control.RobocodeEngine.staticClass, "<init>", "(Lrobocode/control/events/IBattleListener;)V");
-            global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine19 = @__env.GetMethodID(global::robocode.control.RobocodeEngine.staticClass, "<init>", "()V");
+            global::robocode.control.RobocodeEngine.j4n_setLogMessagesEnabled15 = @__env.GetStaticMethodID(global::robocode.control.RobocodeEngine.staticClass, "setLogMessagesEnabled", "(Z)V");
+            global::robocode.control.RobocodeEngine.j4n_setLogErrorsEnabled16 = @__env.GetStaticMethodID(global::robocode.control.RobocodeEngine.staticClass, "setLogErrorsEnabled", "(Z)V");
+            global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine17 = @__env.GetMethodID(global::robocode.control.RobocodeEngine.staticClass, "<init>", "(Ljava/io/File;)V");
+            global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine18 = @__env.GetMethodID(global::robocode.control.RobocodeEngine.staticClass, "<init>", "(Ljava/io/File;Lrobocode/control/RobocodeListener;)V");
+            global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine19 = @__env.GetMethodID(global::robocode.control.RobocodeEngine.staticClass, "<init>", "(Lrobocode/control/RobocodeListener;)V");
+            global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine20 = @__env.GetMethodID(global::robocode.control.RobocodeEngine.staticClass, "<init>", "(Lrobocode/control/events/IBattleListener;)V");
+            global::robocode.control.RobocodeEngine.j4n__ctorRobocodeEngine21 = @__env.GetMethodID(global::robocode.control.RobocodeEngine.staticClass, "<init>", "()V");
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()V")]
@@ -253,6 +259,22 @@ namespace robocode.control {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
             @__env.CallStaticVoidMethod(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n_printRunningThreads14);
+            }
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Z)V")]
+        public static void setLogMessagesEnabled(bool par0) {
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 12)){
+            @__env.CallStaticVoidMethod(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n_setLogMessagesEnabled15, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
+            }
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Z)V")]
+        public static void setLogErrorsEnabled(bool par0) {
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 12)){
+            @__env.CallStaticVoidMethod(global::robocode.control.RobocodeEngine.staticClass, global::robocode.control.RobocodeEngine.j4n_setLogErrorsEnabled16, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
             }
         }
         

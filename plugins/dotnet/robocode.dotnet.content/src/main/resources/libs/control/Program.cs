@@ -28,6 +28,9 @@ class BattleRunner
         // Show the Robocode battle view
         engine.Visible = true;
 
+        // Disable log messages from Robocode
+        RobocodeEngine.LogMessagesEnabled = false;
+
         // Setup the battle specification
 
         int numberOfRounds = 5;

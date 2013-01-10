@@ -42,6 +42,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="robocode, Version=1.8.0.0, Culture=neutral, PublicKeyToken=43c1c8ae0e25a953, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\robocode.dotnet.api\target\robocode.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -51,12 +55,6 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\robocode.dotnet.api\src\robocode.dotnet.api.csproj">
-      <Project>{7E0900D3-6E8F-48EB-86DB-AA767AA90B84}</Project>
-      <Name>robocode.dotnet.api</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NoPackageButReallyLongNameIWouldSayTooLongMaybeEventLongerCs.cs" />
