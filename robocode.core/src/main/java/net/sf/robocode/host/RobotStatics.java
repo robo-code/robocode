@@ -47,8 +47,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 	private final int teamIndex;
 
 	public RobotStatics(RobotSpecification robotSpecification, int duplicate, boolean isLeader, BattleRules rules, String teamName, List<String> teamMembers, int robotIndex, int teamIndex) {
-		IRobotItem specification = ((IRobotItem) HiddenAccess.getFileSpecification(
-				robotSpecification));
+		IRobotItem specification = ((IRobotItem) HiddenAccess.getFileSpecification(robotSpecification));
 
 		this.robotIndex = robotIndex;
 		this.teamIndex = teamIndex;

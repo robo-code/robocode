@@ -93,7 +93,8 @@ public class PropertiesHandler extends ItemHandler {
 			item.setPropertiesURL(propertiesFileUrl);
 		} else {
 			// Another platform -> Look for another properties handler
-			PropertiesHandler otherHandler = Container.getComponent(PropertiesHandler.class, platform + "PropertiesHandler");
+			PropertiesHandler otherHandler = Container.getComponent(PropertiesHandler.class,
+					platform + "PropertiesHandler");
 
 			// If the another properties handler was found then let create the RobotItem; otherwise return null 
 			return (otherHandler == null) ? null : otherHandler.createRobotItem(propertiesFileUrl, root, repository);

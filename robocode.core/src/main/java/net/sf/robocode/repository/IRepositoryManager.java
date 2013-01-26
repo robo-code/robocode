@@ -20,6 +20,7 @@ import java.util.List;
  * @author Pavel Savara (original)
  */
 public interface IRepositoryManager extends IRepositoryManagerBase {
+
 	/**
 	 * Returns the directory containing the robots.
 	 *

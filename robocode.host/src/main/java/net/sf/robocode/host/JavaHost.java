@@ -40,8 +40,7 @@ public class JavaHost implements IHost {
 
 	public IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification, IRobotStatics statics, IRobotPeer peer) {
 		IHostingRobotProxy robotProxy;
-		final IRobotItem specification = (IRobotItem) HiddenAccess.getFileSpecification(
-				robotSpecification);
+		final IRobotItem specification = (IRobotItem) HiddenAccess.getFileSpecification(robotSpecification);
 
 		if (specification.isTeamRobot()) {
 			robotProxy = new TeamRobotProxy(specification, hostManager, peer, (RobotStatics) statics);
@@ -159,8 +158,7 @@ public class JavaHost implements IHost {
 			isJuniorRobot = true;
 			if (isAdvancedRobot) {
 				throw new AccessControlException(
-						robotItem.getFullClassName()
-								+ ": Junior robot should not implement IAdvancedRobot interface.");
+						robotItem.getFullClassName() + ": Junior robot should not implement IAdvancedRobot interface.");
 			}
 		}
 

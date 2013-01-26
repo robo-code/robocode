@@ -1442,8 +1442,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		statistics.setInactive();
 
-		final IRobotItem repositoryItem = (IRobotItem) HiddenAccess.getFileSpecification(
-				robotSpecification);
+		final IRobotItem repositoryItem = (IRobotItem) HiddenAccess.getFileSpecification(robotSpecification);
 
 		StringBuffer message = new StringBuffer(getName()).append(' ');
 

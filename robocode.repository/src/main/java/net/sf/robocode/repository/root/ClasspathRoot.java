@@ -64,11 +64,13 @@ public final class ClasspathRoot extends BaseRoot implements IRepositoryRoot {
 
 	private void visitDirectory(File path, final List<IRepositoryItem> items, final List<Long> itemsLastModification) {
 		
-		path.listFiles(new FileFilter() {
+		path.listFiles(
+				new FileFilter() {
 			public boolean accept(File pathname) {
 				if (pathname.isFile()) {
 					try {
-						IRepositoryItem repositoryItem = ItemHandler.registerItem(pathname.toURI().toURL(), ClasspathRoot.this, repository);
+						IRepositoryItem repositoryItem = ItemHandler.registerItem(pathname.toURI().toURL(),
+								ClasspathRoot.this, repository);
 						if (repositoryItem != null) {
 							items.add(repositoryItem);
 							itemsLastModification.add(pathname.lastModified());
@@ -82,7 +84,8 @@ public final class ClasspathRoot extends BaseRoot implements IRepositoryRoot {
 		});
 
 		// find sub-directories
-		File[] subDirs = path.listFiles(new FileFilter() {
+		File[] subDirs = path.listFiles(
+				new FileFilter() {
 			public boolean accept(File pathname) {
 				return pathname.isDirectory() && !pathname.getName().toLowerCase().endsWith(".data")
 						&& !pathname.getName().toLowerCase().endsWith(".robotcache");

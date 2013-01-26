@@ -7,7 +7,7 @@
  *******************************************************************************/
 
 // NOTE: JarJarURLStreamHandler is just tweaked version of jar handler from
-//       OpenJDK, license below.
+// OpenJDK, license below.
 
 /*
  * Copyright 1997-2000 Sun Microsystems, Inc.  All Rights Reserved.
@@ -43,6 +43,7 @@ import net.sf.robocode.io.JarJar;
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.*;
+
 
 // TODO: Update to new version from OpenJDK
 
