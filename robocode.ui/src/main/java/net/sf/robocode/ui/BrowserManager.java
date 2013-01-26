@@ -9,9 +9,10 @@ package net.sf.robocode.ui;
 
 
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 
+import java.awt.Desktop;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -24,21 +25,21 @@ public class BrowserManager {
 
 	public static void openURL(String url) throws IOException {
 
-		// Check if the JVM is version 1.6.0 or higher
-		if (System.getProperty("java.version").charAt(2) >= '6') {
-			// Try calling java.awt.Desktop.getDesktop().browse(new URI(url)) that is available from Java 6
-			try {
-				Class<?> desktopClass = Class.forName("java.awt.Desktop"); 
-				Object desktop = desktopClass.getDeclaredMethod("getDesktop", (Class<?>[]) null).invoke((Object) null,
-						(Object[]) null);
-
-				desktopClass.getDeclaredMethod("browse", URI.class).invoke(desktop, new URI(url));
-				return; // leave
-
-			} catch (ClassNotFoundException e) {} catch (SecurityException e) {} catch (NoSuchMethodException e) {} catch (IllegalArgumentException e) {} catch (IllegalAccessException e) {} catch (InvocationTargetException e) {} catch (URISyntaxException e) {}
-			// If calling java.awt.Desktop.getDesktop().browse(new URI(url)) fails, we fall down to the code below
+		// Plan A: try to open the URL using the Java 6 Desktop class
+		if (Desktop.isDesktopSupported()) {
+			Desktop desktop = Desktop.getDesktop();
+			if (desktop.isSupported(Desktop.Action.BROWSE)) {
+				try {
+					desktop.browse(new URI(url));
+					return; // success
+				} catch (URISyntaxException e) {
+					Logger.logError(e);
+				}
+			}
+			// Fall thru to plan B
 		}
 
+		// Plan B: try to open URL by calling a command-line tool for the specific OS
 		url = FileUtil.quoteFileName(url);
 
 		Runtime rt = Runtime.getRuntime();
