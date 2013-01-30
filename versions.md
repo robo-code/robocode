@@ -1,4 +1,4 @@
-## Version 1.8.0.0 Alpha 2 (10-Jan-2013)
+## Version 1.8.0.0 (30-Jan-2013)
 
 ### Bug fix
 * [Bug-346][]: Cannot extract sources from robot packages.
