@@ -19,6 +19,8 @@ import net.sf.robocode.security.HiddenAccess;
 import robocode.control.events.*;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -43,6 +45,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 
 	private BattleObserver battleObserver;
 	private BattleSpecification battleSpecification;
+	private List<IBattleListener> listeners = new ArrayList<IBattleListener>();
 
 	/**
 	 * Creates a new RobocodeEngine for controlling Robocode.
@@ -139,6 +142,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * {@inheritDoc}
 	 */
 	public void addBattleListener(IBattleListener listener) {
+		listeners.add(listener);
 		ContainerBase.getComponent(IBattleManagerBase.class).addListener(listener);
 	}
 
@@ -146,6 +150,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * {@inheritDoc}
 	 */
 	public void removeBattleListener(IBattleListener listener) {
+		listeners.remove(listener);
 		ContainerBase.getComponent(IBattleManagerBase.class).removeListener(listener);
 	}
 
@@ -157,6 +162,10 @@ public class RobocodeEngine implements IRobocodeEngine {
 		if (battleObserver != null) {
 			ContainerBase.getComponent(IBattleManagerBase.class).removeListener(battleObserver);
 		}
+		for (IBattleListener listener : listeners) {
+			ContainerBase.getComponent(IBattleManagerBase.class).removeListener(listener);
+		}
+		listeners.clear();
 		HiddenAccess.cleanup();
 	}
 

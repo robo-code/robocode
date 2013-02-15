@@ -1,3 +1,8 @@
+## Version 1.8.0.1 Alpha 1 (15-Feb-2013)
+
+### Bug fix
+* Fixed memory leak in the RobocodeEngine when an instance is finalized.
+
 ## Version 1.8.0.0 (30-Jan-2013)
 
 ### Bug fix
