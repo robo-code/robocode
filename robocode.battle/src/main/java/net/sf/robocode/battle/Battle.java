@@ -678,7 +678,6 @@ public final class Battle extends BaseBattle {
 					} else {
 						robotPeer.waitSleeping(millisWait, nanoWait);
 					}
-					robotPeer.checkSkippedTurn();
 				}
 			}
 		}
@@ -700,11 +699,6 @@ public final class Battle extends BaseBattle {
 				} else {
 					robotPeer.waitSleeping(millisWait, nanoWait);
 				}
-			}
-		}
-		for (RobotPeer robotPeer : robotsAtRandom) {
-			if (robotPeer.isAlive()) {
-				robotPeer.checkSkippedTurn();
 			}
 		}
 	}

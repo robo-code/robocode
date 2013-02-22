@@ -107,7 +107,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private double gunHeat;
 	private double x;
 	private double y;
-	private int skippedTurns;
 
 	private boolean scan;
 	private boolean turnedRadarWithGun; // last round
@@ -119,6 +118,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// waiting for next tick
 	private final AtomicBoolean isSleeping = new AtomicBoolean(false);
 	private final AtomicBoolean halt = new AtomicBoolean(false);
+
+	// last and current execution time and detecting skipped turns
+	private int lastExecutionTime = -1;
+	private int currentExecutionTime;
 
 	private boolean isExecFinishedAndDisabled;
 	private boolean isEnergyDrained;
@@ -493,6 +496,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		waitForNextTurn();
 
+		checkSkippedTurn();
+
 		// from battle to robot
 		final ExecCommands resCommands = new ExecCommands(this.commands.get(), false);
 		final RobotStatus resStatus = status.get();
@@ -626,18 +631,23 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public void checkSkippedTurn() {
-		if (isHalt() || isSleeping() || !isRunning() || battle.isDebugging() || isPaintEnabled()) {
-			skippedTurns = 0;
-		} else {
-			skippedTurns++;
-			events.get().clear(false);
-			if (isAlive()) {
-				addEvent(new SkippedTurnEvent(battle.getTime()));
-			}
-			println("SYSTEM: " + getShortName() + " skipped turn " + battle.getTime());
+		// Store last and current execution time for detecting skipped turns
+		lastExecutionTime = currentExecutionTime;
+		currentExecutionTime = battle.getTime();
 
-			if ((!isIORobot && skippedTurns > MAX_SKIPPED_TURNS)
-					|| (isIORobot && skippedTurns > MAX_SKIPPED_TURNS_WITH_IO)) {
+		int numSkippedTurns =  (currentExecutionTime - lastExecutionTime) - 1;
+		if (numSkippedTurns >= 1) {
+			events.get().clear(false);
+
+			if (isAlive()) {
+				for (int skippedTurn = lastExecutionTime + 1; skippedTurn < currentExecutionTime; skippedTurn++) {
+					addEvent(new SkippedTurnEvent(skippedTurn));
+					println("SYSTEM: " + getShortName() + " skipped turn " + skippedTurn);
+				}
+			}
+
+			if ((!isIORobot && (numSkippedTurns > MAX_SKIPPED_TURNS))
+					|| (isIORobot && (numSkippedTurns > MAX_SKIPPED_TURNS_WITH_IO))) {
 				println("SYSTEM: " + getShortName() + " has not performed any actions in a reasonable amount of time.");
 				println("SYSTEM: No score will be generated.");
 				setHalt(true);
@@ -710,7 +720,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		scanArc.setAngleExtent(0);
 		scanArc.setFrame(-100, -100, 1, 1);
 
-		skippedTurns = 0;
+		lastExecutionTime = -1;
 
 		status = new AtomicReference<RobotStatus>();
 

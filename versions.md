@@ -1,6 +1,7 @@
-## Version 1.8.0.1 Alpha 1 (15-Feb-2013)
+## Version 1.8.1.0 Alpha 2 (22-Feb-2013)
 
 ### Bug fix
+* [Bug-335][]: Skipped turns ... issues.
 * Fixed memory leak in the RobocodeEngine when an instance is finalized.
 
 ## Version 1.8.0.0 (30-Jan-2013)
@@ -2808,6 +2809,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-332]: http://sourceforge.net/p/robocode/bugs/332/  (Use OpenGL backend under linux)
 [Bug-333]: http://sourceforge.net/p/robocode/bugs/333/  (.NET runs release dll not debug dll so can't debug)
 [Bug-334]: http://sourceforge.net/p/robocode/bugs/334/  (Snapshot API never shows bullets in "HIT_WALL" status)
+[Bug-335]: http://sourceforge.net/p/robocode/bugs/335/  (Skipped turns ... issues)
 [Bug-337]: http://sourceforge.net/p/robocode/bugs/337/  (Hangups with New Editor in 1.7.4.0)
 [Bug-338]: http://sourceforge.net/p/robocode/bugs/338/  ("Accept-Encoding: gzip" not in Roborumble HTTP Headers)
 [Bug-339]: http://sourceforge.net/p/robocode/bugs/339/  (All Text Missing)
