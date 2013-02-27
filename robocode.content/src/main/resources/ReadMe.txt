@@ -1,10 +1,6 @@
 ## ReadMe for Robocode
 
-Updated 04-Mar-2012 by Flemming N. Larsen
-
-Send all feedback, comments, and issues to the tracker at the
-[Robocode project](http://sourceforge.net/tracker/?group_id=37202) at
-SourceForge.net.
+Updated 27-Feb-2013 by Flemming N. Larsen
 
 Robocode Home Page:
 [http://robocode.sourceforge.net/](http://robocode.sourceforge.net/)
@@ -30,29 +26,35 @@ Robocode Home Page:
 
 ### 1. WHAT IS ROBOCODE?
 
-Robocode is a programming game where the goal is to develop a robot
-battle tank to battle against other tanks in Java or .NET. The robot
-battles are running in real-time and on-screen.
+Robocode is a programming game where the goal is to code a robot battle
+tank to compete against other robots in a battle arena. So the name
+Robocode is a short for "Robot code". The player is the programmer of
+the robot, who will have no direct influence on the game. Instead, the
+player must write the AI of the robot telling it how to behave and
+react on events occurring in the battle arena. Battles are running in
+real-time and on-screen.
 
-The motto of Robocode is: Build the best, destroy the rest!
+**The motto of Robocode is: Build the best, destroy the rest!**
 
 Besides being a programming game, Robocode is used for learning how to
-program, primarily in the Java language, but other languages like C# and
-Scala are becoming popular as well.
+program, primarily in the Java language, but other languages like C#
+and Scala are becoming popular as well.
 
 Schools and universities are using Robocode as part of teaching how to
-program, but also for studying artificial intelligence (AI). The concept
-of Robocode is easy to understand, and a fun way to learn how to
-program.
+program, but also for studying artificial intelligence (AI). The
+concept of Robocode is easy to understand, and a fun way to learn how
+to program.
 
-Robocode comes with its own installer, built-in robot editor and Java 
-compiler, and only pre-requires a Java Virtual Machine (JVM) to exist on 
-the system where it must be installed. Hence, everything a robot 
-developer needs to get started is provided with the main Robocode 
-distribution file (`robocode-xxx-setup.jar`). Robocode also supports 
-developing robots using external IDEs like e.g. 
-[Eclipse](http://www.eclipse.org/downloads/), [IntelliJ 
-IDEA](http://www.jetbrains.com/idea/), [NetBeans](http://netbeans.org/), 
+Robocode offers complete development environment, and comes with its
+own installer, built-in robot editor and Java compiler. Robocode only
+pre-requires that a JVM (Java Virtual Machine) to exist already on the
+system where Robocode is going to be installed. Hence, everything a
+robot developer needs to get started is provided with the main Robocode
+distribution file (`robocode-xxx-setup.jar`). Robocode also supports
+developing robots using external IDEs like e.g.
+[Eclipse](http://www.eclipse.org/downloads/),
+[IntelliJ IDEA](http://www.jetbrains.com/idea/),
+[NetBeans](http://netbeans.org/),
 [Visual Studio](http://msdn.microsoft.com/en-gb/vstudio/) etc., which 
 supports the developer much better than the robot editor in Robocode.
 
@@ -78,31 +80,52 @@ License).
 
 ### 2. HISTORY OF ROBOCODE
 
-The Robocode game was originally started by Matthew A. Nelson, aka Mat
-Nelson, as a personal endeavor in late 2000 and became a professional
-one when he brought it to IBM, in the form of an AlphaWorks download, in
-July 2001.
+The Robocode game was originally started by **Mathew A. Nelson** as a
+personal endeavor in late 2000 and became a professional one when he
+brought it to IBM, in the form of an AlphaWorks download, in July 2001.
 
-In the beginning of 2005, Robocode was brought to SourceForge as Open
-Source with Robocode version 1.0.7. At this point, the development of
-Robocode had somewhat stopped. In the meanwhile, the community around
-Robocode began to develop their own versions of Robocode in order to get
-rid of bugs and also to put new features into Robocode, the
-Contributions for Open Source Robocode and later on the RobocodeNG
-project by Flemming N. Larsen.
+IBM was interested in Robocode, as they saw an opportunity to promote
+Robocode as a fun way to get started with learning how to program in
+Java. IBM wrote lots of articles about Robocode, e.g. like
+[Rock 'em, sock 'em Robocode!](http://www.ibm.com/developerworks/java/library/j-robocode/)
+from AlphaWorks / developerWorks at IBM, a series of articles like
+[Secrets from the Robocode masters](http://www.ibm.com/developerworks/java/library/j-robotips/),
+and "Robocode Rumble / RoboLeague".
 
-As nothing seemed to happen with Robocode in more than a year, Flemming
-N. Larsen took over the Robocode project at SourceForge as administrator
-and developer in July 2006. The RobocodeNG project was dropped, but the
-Robocode 2006 variant, which contained a lot of contributions from the
-Robocode community, was merged into the official Robocode with version
-1.1. Since then, lots of new versions of Robocode have been released
-with more and more features and contributions from the community.
+The inspiration for creating Robocode came from
+[Robot Battle](http://www.robotbattle.com/history.php), a programming
+game written by Brad Schick in 1992, which should still be alive. Robot
+Battle was, in turn, inspired by
+[RobotWar](http://www.robotbattle.com/history.php), an Apple II+ game
+from the early 1980s.
 
-Recently (from version 1.7.2.0), the .NET platform is supported through
-a .NET plug-in provided by Pavel Savara based on
-[jni4net](http://jni4net.sourceforge.net/), also developed by Pavel
-Savara.
+The articles from IBM and the Robocode community behind the RoboWiki made
+Robocode very popular as programming game, and for many years Robocode has been
+used for education and research at schools and universities all over the world.
+
+In the beginning of 2005, Mathew convinced IBM to release Robocode as
+**Open Source** on SourceForge. At this point, the development of Robocode had
+somewhat stopped. The community around Robocode began to develop their own
+versions of Robocode with bug fixes and new features, e.g. the
+‘Contributions for Open Source Robocode’ and later on the two projects,
+RobocodeNG and Robocode 2006, by **Flemming N. Larsen**.
+
+Eventually, Flemming took over the Robocode project at SourceForge as
+administrator and developer in July 2006 to continue the original Robocode game.
+The RobocodeNG project was dropped, but Robocode 2006 was merged into the
+official Robocode version 1.1 containing lots of improvements. Since then,
+lots of new versions of Robocode have been released with more and more features
+and contributions from the community.
+
+In May 2007, the [RoboRumble](http://robowiki.net/wiki/RoboRumble) client got
+built into Robocode. RoboRumble is widely used by the Robocode community for
+creating up-to-date robot ranking lists for the 1-to-1, Melee, Team, and
+Twin Dual competitions.
+
+Since May 2010 a **.NET plugin** is provided for Robocode using a .NET / Java
+bridge, which makes it possible to develop robots for .NET beside developing
+robots in Java. This part was made by **Pavel Savara**, who is a major Robocode
+contributor.
 
 ### 3. SYSTEM REQUIREMENTS
 
@@ -118,8 +141,8 @@ been set up prior to running Robocode:
 
 -   `JAVA_HOME` must be setup to point at the home directory for Java
     (JDK or JRE).  
-	Windows example: `JAVA_HOME=C:\Program Files\Java\jdk1.5.0_22`  
-	UNIX, Linux, Mac OS example: `JAVA_HOME=/usr/local/jdk1.5.0_22`
+	Windows example: `JAVA_HOME=C:\Program Files\Java\jdk1.6.0_41`  
+	UNIX, Linux, Mac OS example: `JAVA_HOME=/usr/local/jdk1.6.0_41`
 
 -   `PATH` must include the path to the `bin` of the Java home
     directory (`JAVA_HOME`) that includes `java.exe` for starting the
@@ -162,8 +185,9 @@ good starting point:
 The Robocode API is provided as HTML pages for both the Java and .NET
 platform.
 
--   [Java API](http://robocode.sourceforge.net/docs/robocode/)
--   [.NET API](http://robocode.sourceforge.net/docs/robocode.dotnet/Index.html)
+-   [Java Robot API](http://robocode.sourceforge.net/docs/robocode/)
+-   [Java Control API](http://robocode.sourceforge.net/docs/robocode/index.html?robocode/control/package-summary.html)
+-   [.NET Robot API](http://robocode.sourceforge.net/docs/robocode.dotnet/Index.html)
 -   [.NET Control API](http://robocode.sourceforge.net/docs/robocode.dotnet.control/Index.html)
 
 The Robocode API actually consists of 3 different APIs.
@@ -178,7 +202,7 @@ The Robocode API actually consists of 3 different APIs.
 	`Robocode.RobotInterfaces`.  
     The Robot Interfaces are used for developing new robot types with a
     different API that the standard Robot API.  
-    ***Note:** The game rules and robot behaviors cannot be changed.*
+    **Note:** *The game rules and robot behaviors cannot be changed.*
 
 -   **Control API**: Within the Java package `robocode.control` and .NET 
     namespace `Robocode.Control`.  
@@ -253,11 +277,11 @@ In order to get started with RoboRumble, you should read this page:
 Note that the RoboRumble@Home client is built into Robocode and can
 be started using the batch/shell/command files:
 
-                Windows           UNIX / Linux     Mac OS
---------------- ----------------- ---------------- ---------------------
-**RoboRumble**  `roborumble.bat`  `roborumble.sh`  `roborumble.command`
-**MeleeRumble** `meleerumble.bat` `meleerumble.sh` `meleerumble.command`
-**TeamRumble**  `teamrumble.bat`  `teamrumble.sh`  `teamrumble.command`
+|                 | Windows           | UNIX / Linux     | Mac OS                |
+| --------------- | ----------------- | ---------------- | --------------------- |
+| **RoboRumble**  | `roborumble.bat`  | `roborumble.sh`  | `roborumble.command`  |
+| **MeleeRumble** | `meleerumble.bat` | `meleerumble.sh` | `meleerumble.command` |
+| **TeamRumble**  | `teamrumble.bat`  | `teamrumble.sh`  | `teamrumble.command`  |
 
 Two other competitions exists which are:
 
@@ -314,9 +338,8 @@ sites about Robocode:
 If you discover a defect (bug) in Robocode you are encouraged to report
 the issue as soon as you discover it - the sooner the better.
 
-A bug report should be put on the [Bug
-Tracker](http://sourceforge.net/tracker/?func=browse&group_id=37202&atid=419486&status=1)
-on the SourceForge site for Robocode. Each bug report will be
+A bug report should be reported on the [Bugs](http://http://sourceforge.net/p/robocode/bugs//p/robocode/bugs/)
+page on the SourceForge site for Robocode. Each bug report will be
 prioritized among other bug reports depending on its impact on the game.
 
 It will be a great help if you describe how to see or which steps to do
@@ -345,8 +368,8 @@ bug fixes under the terms of
 If you got an idea for a new feature or improvement for Robocode, you
 are very welcome to share your idea by summiting a feature request.
 
-A feature request should be put on the [Feature Requests
-Tracker](http://sourceforge.net/tracker/?func=browse&group_id=37202&atid=419489&status=1)
+A feature request should be put on the
+[Feature Requests](http://sourceforge.net/p/robocode/feature-requests/)
 on the SourceForge site for Robocode. Each feature request will be
 prioritized among other feature requests.
 
