@@ -1,6 +1,6 @@
 ## ReadMe for Robocode
 
-Updated 27-Feb-2013 by Flemming N. Larsen
+Updated 06-Mar-2013 by Flemming N. Larsen
 
 Robocode Home Page:
 [http://robocode.sourceforge.net/](http://robocode.sourceforge.net/)
@@ -107,8 +107,9 @@ In the beginning of 2005, Mathew convinced IBM to release Robocode as
 **Open Source** on SourceForge. At this point, the development of Robocode had
 somewhat stopped. The community around Robocode began to develop their own
 versions of Robocode with bug fixes and new features, e.g. the
-‘Contributions for Open Source Robocode’ and later on the two projects,
-RobocodeNG and Robocode 2006, by **Flemming N. Larsen**.
+[OpenSourceRobocode/Contributions](http://old.robowiki.net/robowiki?OpenSourceRobocode/Contributions)
+and later on the two projects,
+[RobocodeNG and Robocode 2006](http://old.robowiki.net/robowiki?RobocodeNG/Archive), by **Flemming N. Larsen**.
 
 Eventually, Flemming took over the Robocode project at SourceForge as
 administrator and developer in July 2006 to continue the original Robocode game.
@@ -278,7 +279,7 @@ Note that the RoboRumble@Home client is built into Robocode and can
 be started using the batch/shell/command files:
 
 |                 | Windows           | UNIX / Linux     | Mac OS                |
-| --------------- | ----------------- | ---------------- | --------------------- |
+|-----------------+-------------------+------------------+-----------------------|
 | **RoboRumble**  | `roborumble.bat`  | `roborumble.sh`  | `roborumble.command`  |
 | **MeleeRumble** | `meleerumble.bat` | `meleerumble.sh` | `meleerumble.command` |
 | **TeamRumble**  | `teamrumble.bat`  | `teamrumble.sh`  | `teamrumble.command`  |
