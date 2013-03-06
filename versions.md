@@ -1,7 +1,8 @@
-## Version 1.8.1.0 Alpha 2 (22-Feb-2013)
+## Version 1.8.1.0 Alpha 3 (06-Mar-2013)
 
-### Bug fix
+### Bug fixes
 * [Bug-335][]/[Bug-336][]: Skipped turns ... issues.
+* [Bug-350][]: Bullet id from battle record XML file is sometimes -1 causing a NumberFormatException.
 * Fixed memory leak in the RobocodeEngine when an instance is finalized.
 
 ## Version 1.8.0.0 (30-Jan-2013)
@@ -2822,6 +2823,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-346]: http://sourceforge.net/p/robocode/bugs/346/  (Cannot extract sources from robot packages)
 [Bug-347]: http://sourceforge.net/p/robocode/bugs/347/  (/bin/sh^M bad interpreter)
 [Bug-348]: http://sourceforge.net/p/robocode/bugs/348/  (.NET: UnauthorizedAccessException in AppDomainShell.Dispose())
+[Bug-350]: http://sourceforge.net/p/robocode/bugs/350/  (Bullet id from battle record XML file is sometimes -1 causing a NumberFormatException)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)

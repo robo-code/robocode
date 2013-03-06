@@ -1520,8 +1520,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					if (teammate.isAlive() && teammate != this) {
 						teammate.updateEnergy(-30);
 
-						BulletPeer sBullet = new BulletPeer(this, battleRules, -1);
-
+						BulletPeer sBullet = new BulletPeer(this, battleRules, 0);
 						sBullet.setState(BulletState.HIT_VICTIM);
 						sBullet.setX(teammate.x);
 						sBullet.setY(teammate.y);

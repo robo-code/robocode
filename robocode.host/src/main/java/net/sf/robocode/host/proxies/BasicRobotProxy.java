@@ -53,7 +53,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	private ExecResults execResults;
 
 	private final Map<Integer, Bullet> bullets = new ConcurrentHashMap<Integer, Bullet>();
-	private int bulletCounter = -1; 
+	private int nextBulletId = 1; // 0 is used for bullet explosions 
 
 	private final AtomicInteger setCallCount = new AtomicInteger(0);
 	private final AtomicInteger getCallCount = new AtomicInteger(0);
@@ -486,7 +486,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		BulletCommand wrapper;
 		Event currentTopEvent = eventManager.getCurrentTopEvent();
 
-		bulletCounter++;
+		nextBulletId++;
 
 		if (currentTopEvent != null && currentTopEvent.getTime() == status.getTime() && !statics.isAdvancedRobot()
 				&& status.getGunHeadingRadians() == status.getRadarHeadingRadians()
@@ -495,13 +495,13 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			ScannedRobotEvent e = (ScannedRobotEvent) currentTopEvent;
 			double fireAssistAngle = Utils.normalAbsoluteAngle(status.getHeadingRadians() + e.getBearingRadians());
 
-			bullet = new Bullet(fireAssistAngle, getX(), getY(), power, statics.getName(), null, true, bulletCounter);
-			wrapper = new BulletCommand(power, true, fireAssistAngle, bulletCounter);
+			bullet = new Bullet(fireAssistAngle, getX(), getY(), power, statics.getName(), null, true, nextBulletId);
+			wrapper = new BulletCommand(power, true, fireAssistAngle, nextBulletId);
 		} else {
 			// this is normal bullet
 			bullet = new Bullet(status.getGunHeadingRadians(), getX(), getY(), power, statics.getName(), null, true,
-					bulletCounter);
-			wrapper = new BulletCommand(power, false, 0, bulletCounter);
+					nextBulletId);
+			wrapper = new BulletCommand(power, false, 0, nextBulletId);
 		}
 
 		firedEnergy += power;
@@ -509,7 +509,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		commands.getBullets().add(wrapper);
 
-		bullets.put(bulletCounter, bullet);
+		bullets.put(nextBulletId, bullet);
 
 		return bullet;
 	}
