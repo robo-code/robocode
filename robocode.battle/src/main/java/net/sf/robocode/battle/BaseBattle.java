@@ -203,30 +203,21 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 			while (!isAborted && roundNum < getNumRounds()) {
 				try {
-
 					preloadRound();
-
 					initializeRound();
-
 					runRound();
-
-					finalizeRound();
-
-					cleanupRound();
-
 				} catch (Exception e) {
 					logError("Exception running a battle round", e);
 					isAborted = true;
+				} finally {
+					finalizeRound();
+					cleanupRound();
 				}
-
 				roundNum++;
 			}
-
+		} finally {
 			finalizeBattle();
-
 			cleanup();
-		} catch (Throwable e) {
-			logError("Exception running a battle: ", e);
 		}
 	}
 
