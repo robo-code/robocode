@@ -202,7 +202,10 @@ public class RobocodeEngine implements IRobocodeEngine {
 	 * {@inheritDoc}
 	 */
 	public void setVisible(boolean visible) {
-		ContainerBase.getComponent(IWindowManagerBase.class).setVisibleForRobotEngine(visible);
+		IWindowManagerBase windowManager = ContainerBase.getComponent(IWindowManagerBase.class);
+		if (windowManager != null) {
+			windowManager.setVisibleForRobotEngine(visible);
+		}
 	}
 
 	/**
