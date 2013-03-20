@@ -2,9 +2,9 @@
 
 ### Bug fixes
 * [Bug-335][]/[Bug-336][]: Skipped turns ... issues.
+* [Bug-349][]: Instances of RobocodeEngine don't seem to be independant - memory leak and performance decrease.
 * [Bug-350][]: Bullet id from battle record XML file is sometimes -1 causing a NumberFormatException.
 * [Bug-353][]: RobocodeEngine.setVisible() can cause a NullPointerException.
-* Fixed memory leak in the RobocodeEngine when an instance is finalized.
 
 ## Version 1.8.0.0 (30-Jan-2013)
 
@@ -2824,6 +2824,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-346]: http://sourceforge.net/p/robocode/bugs/346/  (Cannot extract sources from robot packages)
 [Bug-347]: http://sourceforge.net/p/robocode/bugs/347/  (/bin/sh^M bad interpreter)
 [Bug-348]: http://sourceforge.net/p/robocode/bugs/348/  (.NET: UnauthorizedAccessException in AppDomainShell.Dispose())
+[Bug-349]: http://sourceforge.net/p/robocode/bugs/349/  (Instances of RobocodeEngine don't seem to be independant - memory leak and performance decrease)
 [Bug-350]: http://sourceforge.net/p/robocode/bugs/350/  (Bullet id from battle record XML file is sometimes -1 causing a NumberFormatException)
 [Bug-353]: http://sourceforge.net/p/robocode/bugs/353/  (RobocodeEngine.setVisible() can cause a NullPointerException)
 
