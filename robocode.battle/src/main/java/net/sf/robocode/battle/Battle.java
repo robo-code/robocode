@@ -494,17 +494,11 @@ public final class Battle extends BaseBattle {
 
 	private BattleResults[] computeBattleResults() {
 		ArrayList<BattleResults> results = new ArrayList<BattleResults>();
-
-		List<ContestantPeer> orderedContestants = new ArrayList<ContestantPeer>(contestants);
-		Collections.sort(orderedContestants);
-		Collections.reverse(orderedContestants);
-
-		// noinspection ForLoopReplaceableByForEach
 		for (int i = 0; i < contestants.size(); i++) {
 			results.add(null);
 		}
 		for (int rank = 0; rank < contestants.size(); rank++) {
-			ContestantPeer contestant = orderedContestants.get(rank);
+			ContestantPeer contestant = contestants.get(rank);
 			contestant.getStatistics().setRank(rank + 1);
 			BattleResults battleResults = contestant.getStatistics().getFinalResults();
 
