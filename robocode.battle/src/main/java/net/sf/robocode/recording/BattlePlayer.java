@@ -44,7 +44,7 @@ public final class BattlePlayer extends BaseBattle {
 		battleRules = recordManager.recordInfo.battleRules;
 		paint = new boolean[recordManager.recordInfo.robotCount];
 		eventDispatcher.onBattleStarted(new BattleStartedEvent(battleRules, recordManager.recordInfo.robotCount, true));
-		if (isPaused()) {
+		if (isPaused) {
 			eventDispatcher.onBattlePaused(new BattlePausedEvent());
 		}
 	}

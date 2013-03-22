@@ -28,9 +28,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class BaseBattle implements IBattle, Runnable {
 
-	// Maximum turns to display the battle when battle ended
-	private final static int TURNS_DISPLAYED_AFTER_ENDING = 30;
 	private final static int MAX_TPS = 10000;
+
+	// Maximum turns to display the battle when battle ended
+	protected final static int TURNS_DISPLAYED_AFTER_ENDING = 30;
 
 	// Objects we use
 	private Thread battleThread;
@@ -46,7 +47,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	protected int currentTime;
 	protected int totalTurns;
 
-	private int endTimer;
+	protected int endTimer;
 
 	// TPS (turns per second) calculation stuff
 	private int tps;
@@ -59,7 +60,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	protected boolean isAborted;
 
 	// Battle control
-	boolean isPaused;
+	protected boolean isPaused;
 	private int stepCount;
 	private boolean runBackward;
 	private boolean roundOver;
@@ -72,14 +73,6 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		this.eventDispatcher = eventDispatcher;
 
 		this.battleManager = battleManager;
-	}
-
-	protected int getEndTimer() {
-		return endTimer;
-	}
-
-	protected boolean isPaused() {
-		return isPaused;
 	}
 
 	public void setBattleThread(Thread newBattleThread) {
@@ -308,7 +301,6 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 	protected void finalizeTurn() {
 		synchronizeTPS();
-
 		calculateTPS();
 	}
 

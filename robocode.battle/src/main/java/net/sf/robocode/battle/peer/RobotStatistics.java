@@ -56,21 +56,6 @@ public class RobotStatistics implements ContestantStatistics {
 		this.robots = robots;
 	}
 
-	public RobotStatistics(RobotPeer robotPeer, int robots, BattleResults results) {
-		this(robotPeer, robots);
-
-		totalScore = results.getScore();
-		totalSurvivalScore = results.getSurvival();
-		totalLastSurvivorBonus = results.getLastSurvivorBonus();
-		totalBulletDamageScore = results.getBulletDamage();
-		totalBulletKillBonus = results.getBulletDamageBonus();
-		totalRammingDamageScore = results.getRamDamage();
-		totalRammingKillBonus = results.getRamDamageBonus();
-		totalFirsts = results.getFirsts();
-		totalSeconds = results.getSeconds();
-		totalThirds = results.getThirds();
-	}
-
 	public void setRank(int rank) {
 		this.rank = rank;
 	}

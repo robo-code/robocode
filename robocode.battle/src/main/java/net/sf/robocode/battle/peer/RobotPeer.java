@@ -635,7 +635,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		lastExecutionTime = currentExecutionTime;
 		currentExecutionTime = battle.getTime();
 
-		int numSkippedTurns =  (currentExecutionTime - lastExecutionTime) - 1;
+		int numSkippedTurns = (currentExecutionTime - lastExecutionTime) - 1;
 		if (numSkippedTurns >= 1) {
 			events.get().clear(false);
 

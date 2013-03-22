@@ -431,12 +431,12 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 			commands.setOutputText(out.readAndReset());
 			commands.setGraphicsCalls(graphicsProxy.readoutQueuedCalls());
 
-			// call server
+			// Call server
 			execResults = peer.waitForBattleEndImpl(commands);
 
 			updateStatus(execResults.getCommands(), execResults.getStatus());
 
-			// add new events
+			// Add remaining events like BattleEndedEvent Otherwise, the robot might never receive those events
 			if (execResults.getEvents() != null) {
 				for (Event event : execResults.getEvents()) {
 					if (event instanceof BattleEndedEvent) {
