@@ -205,6 +205,10 @@ public class RobocodeEngine implements IRobocodeEngine {
 		IWindowManagerBase windowManager = ContainerBase.getComponent(IWindowManagerBase.class);
 		if (windowManager != null) {
 			windowManager.setVisibleForRobotEngine(visible);
+		} else {
+			Logger.logError(
+					"setVisible: No window manager was found.\n"
+							+ "Perhaps you are missing the robocode.ui-1.x.x.x-jar file or the GUI has been disabled?");
 		}
 	}
 
