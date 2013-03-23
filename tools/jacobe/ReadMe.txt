@@ -1,13 +1,13 @@
-Code beautifier described by Flemming N. Larsen (AKA Fnl):
+Code beautifier described by Flemming N. Larsen:
 
 The Jacobe Code Beautifier is used as code beautifier for Robocode.
 You can read about it and download it from here:
 
-http://www.tiobe.com/jacobe.htm
+http://www.tiobe.com/index.php/content/products/jacobe/Jacobe.html
 
-Jacobe is quite good for Java as it follows the Java code conventions from Sun:
+Jacobe is quite good for Java as it follows the Java code conventions from Oracle:
 
-http://java.sun.com/docs/codeconv/
+http://www.oracle.com/technetwork/java/codeconv-138413.html
 
 Jacobe can be integrated with Eclipse by using the Eclipse plugin for Jacobe.
 The plugin can be downloaded from the same page used when downloading Jacobe
@@ -38,7 +38,7 @@ You can also code beautify the sources of Robocode by using the target named
 "jacobe" in the build.xml file provided in this directory. Here you'll
 need to download and install the Jacobe Ant Task:
 
-http://www.tiobe.com/downloads/jacobe-ant-task.zip
+http://www.tiobe.com/content/products/jacobe/jacobe-ant-task.zip
 
 You should copy the jacode.jar file inside the jacobe-ant-task.zip file
 into this folder, and also add the home folder where the Jacode executable
@@ -46,4 +46,4 @@ is located into your PATH environment variable.
 
 You can read more about the Jacobe Ant task here:
 
-http://www.tiobe.com/downloads/jacobe_task_doc.htm
+http://www.tiobe.com/index.php/content/products/jacobe/jacobe_task_doc.html
