@@ -188,16 +188,16 @@ public class ResultsUpload {
 				if (minibots.length() != 0 && !matchtype.equals("NANO") && !matchtype.equals("MICRO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 1500)) {
 					data = "game=" + minibots + commonData;
-					errorsfound = errorsfound | senddata(minibots, data, outtxt, false, results, i, battlesnum, null);
+					errorsfound = errorsfound | senddata(minibots, data, outtxt, true, results, i, battlesnum, prioritybattles);
 				}
 				if (microbots.length() != 0 && !matchtype.equals("NANO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 750)) {
 					data = "game=" + microbots + commonData;
-					errorsfound = errorsfound | senddata(microbots, data, outtxt, false, results, i, battlesnum, null);
+					errorsfound = errorsfound | senddata(microbots, data, outtxt, true, results, i, battlesnum, prioritybattles);
 				}
 				if (nanobots.length() != 0 && size.checkCompetitorsForSize(first[0], second[0], 250)) {
 					data = "game=" + nanobots + commonData;
-					errorsfound = errorsfound | senddata(nanobots, data, outtxt, false, results, i, battlesnum, null);
+					errorsfound = errorsfound | senddata(nanobots, data, outtxt, true, results, i, battlesnum, prioritybattles);
 				}
 			}
 		}
@@ -223,7 +223,7 @@ public class ResultsUpload {
 		}
 	}
 
-	private void saverror(PrintStream outtxt, String match, String bot1, String bot2, boolean saveonerror) {
+	private void saveError(PrintStream outtxt, String match, String bot1, String bot2, boolean saveonerror) {
 		if (saveonerror) {
 			outtxt.println(match);
 			outtxt.println(bot1);
@@ -299,7 +299,7 @@ public class ResultsUpload {
 				}
 			}
 			if (!ok) {
-				saverror(outtxt, results.get(i * 3), results.get(i * 3 + 1), results.get(i * 3 + 2), saveonerror);
+				saveError(outtxt, results.get(i * 3), results.get(i * 3 + 1), results.get(i * 3 + 2), saveonerror);
 				if (saveonerror) {
 					errorsfound = true;
 				}
@@ -309,7 +309,7 @@ public class ResultsUpload {
 			if (saveonerror) {
 				errorsfound = true;
 			}
-			saverror(outtxt, results.get(i * 3), results.get(i * 3 + 1), results.get(i * 3 + 2), saveonerror);
+			saveError(outtxt, results.get(i * 3), results.get(i * 3 + 1), results.get(i * 3 + 2), saveonerror);
 		} finally {
 			if (wr != null) {
 				wr.close();
