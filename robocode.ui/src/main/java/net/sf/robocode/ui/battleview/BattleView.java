@@ -549,17 +549,19 @@ public class BattleView extends Canvas {
 				g.fill(bulletArea);
 
 			} else if (drawExplosions) {
-				if (!bulletSnapshot.isExplosion()) {
-					double scale = sqrt(1000 * bulletSnapshot.getPower()) / 128;
+				int explosionIndex = bulletSnapshot.getExplosionImageIndex();
+				int frame = bulletSnapshot.getFrame();
 
-					at.scale(scale, scale);
+				// Sanity check to avoid bug-354 - Replaying an XML record can cause an ArrayIndexOutOfBoundsException
+				if (explosionIndex >= 0 && frame >= 0) {
+					if (!bulletSnapshot.isExplosion()) {
+						double scale = sqrt(1000 * bulletSnapshot.getPower()) / 128;
+						at.scale(scale, scale);
+					}
+					RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(explosionIndex, frame);
+					explosionRenderImage.setTransform(at);
+					explosionRenderImage.paint(g);
 				}
-
-				RenderImage explosionRenderImage = imageManager.getExplosionRenderImage(
-						bulletSnapshot.getExplosionImageIndex(), bulletSnapshot.getFrame());
-
-				explosionRenderImage.setTransform(at);
-				explosionRenderImage.paint(g);
 			}
 		}
 		g.setClip(savedClip);

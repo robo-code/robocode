@@ -1,4 +1,4 @@
-## Version 1.8.1.0 Alpha 4 (20-Mar-2013)
+## Version 1.8.1.0 (23-Mar-2013)
 
 ### Bug fixes
 * [Bug-335][]/[Bug-336][]: Skipped turns ... issues.
@@ -7,6 +7,7 @@
 * [Bug-351][]: Robot.onBattleEnded(BattleEndedEvent) provides wrong scores.
 * [Bug-352][]: Results from BattleCompletedEvent.getIndexedResults() are always sorted.
 * [Bug-353][]: RobocodeEngine.setVisible() can cause a NullPointerException.
+* [Bug-354][]: Replaying an XML record can cause an ArrayIndexOutOfBoundsException.
 
 ## Version 1.8.0.0 (30-Jan-2013)
 
@@ -2831,6 +2832,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-351]: http://sourceforge.net/p/robocode/bugs/351/  (Robot.onBattleEnded(BattleEndedEvent) provides wrong scores)
 [Bug-352]: http://sourceforge.net/p/robocode/bugs/352/  (Results from BattleCompletedEvent.getIndexedResults() are always sorted)
 [Bug-353]: http://sourceforge.net/p/robocode/bugs/353/  (RobocodeEngine.setVisible() can cause a NullPointerException)
+[Bug-354]: http://sourceforge.net/p/robocode/bugs/354/  (Replaying an XML record can cause an ArrayIndexOutOfBoundsException)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
