@@ -154,6 +154,14 @@ public class JavaDocument extends StyledDocument {
 		});
 	}
 
+	public boolean isAutoIndentEnabled() {
+		return isAutoIndentEnabled;
+	}
+
+	public void setAutoIndentEnabled(boolean enable) {
+		isAutoIndentEnabled = enable;
+	}
+	
 	@Override
 	public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
 		// Process auto indentation on inserted string
@@ -229,7 +237,7 @@ public class JavaDocument extends StyledDocument {
 				}
 				// Extend the current indentation text based on the current indentation
 				// Note: Will replace tabulator characters with spaces etc. if this must be done.
-				indentation.text += getStartIndentation(currentIndentation);
+				indentation.text += getStartIndentation(currentIndentation); // FIXME
 			}
 		}
 		return indentation;

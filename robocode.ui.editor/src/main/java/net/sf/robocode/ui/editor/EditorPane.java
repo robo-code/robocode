@@ -111,7 +111,13 @@ public class EditorPane extends JTextPane {
 	// Make sure to discard all undo/redo edits when text is read as one block
 	@Override
 	public void read(Reader in, Object desc) throws IOException {
+		// Bug-357: Tab characters are inserted in the last line of a robot source file when opening it.
+		// This bug was fixed by disabling auto-indentation while reading the file.
+		JavaDocument javaDocument = (JavaDocument) getDocument();
+		boolean isAutoIndentEnabled = javaDocument.isAutoIndentEnabled();
+		javaDocument.setAutoIndentEnabled(false);
 		super.read(in, desc);
+		javaDocument.setAutoIndentEnabled(isAutoIndentEnabled); // Restore auto-indentation flag
 		undoManager.discardAllEdits();
 	}
      
