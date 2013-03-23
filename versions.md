@@ -8,6 +8,7 @@
 * [Bug-352][]: Results from BattleCompletedEvent.getIndexedResults() are always sorted.
 * [Bug-353][]: RobocodeEngine.setVisible() can cause a NullPointerException.
 * [Bug-354][]: Replaying an XML record can cause an ArrayIndexOutOfBoundsException.
+* [Bug-356][]: Update Roborumble URLs from Darkcanuck to LiteRumble.
 * [Bug-357][]: Tab characters are inserted in the last line of a robot source file when opening it.
 
 ## Version 1.8.0.0 (30-Jan-2013)
@@ -2834,6 +2835,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-352]: http://sourceforge.net/p/robocode/bugs/352/  (Results from BattleCompletedEvent.getIndexedResults() are always sorted)
 [Bug-353]: http://sourceforge.net/p/robocode/bugs/353/  (RobocodeEngine.setVisible() can cause a NullPointerException)
 [Bug-354]: http://sourceforge.net/p/robocode/bugs/354/  (Replaying an XML record can cause an ArrayIndexOutOfBoundsException)
+[Bug-356]: http://sourceforge.net/p/robocode/bugs/356/  (Update Roborumble URLs from Darkcanuck to LiteRumble)
 [Bug-357]: http://sourceforge.net/p/robocode/bugs/357/  (Tab characters are inserted in the last line of a robot source file when opening it)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)

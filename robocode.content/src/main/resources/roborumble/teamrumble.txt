@@ -127,7 +127,7 @@ PARTICIPANTSFILE=./roborumble/files/participTeams.txt
 
 STARTAG=pre
 
-UPDATEBOTSURL=http://darkcanuck.net/rumble/RemoveOldParticipant
+UPDATEBOTSURL=http://literumble.appspot.com/RemoveOldParticipant
 
 #-------------------------------------------------------------------------------
 # Properties to control the way battles are run 
@@ -175,7 +175,7 @@ PRIORITYBATTLESFILE=./roborumble/temp/priorityTeams.txt
 #           File containing the number of battles fought by the robots, which is
 #           returned by the server when results are uploaded to the server.
 
-RESULTSURL=http://darkcanuck.net/rumble/UploadedResults
+RESULTSURL=http://literumble.appspot.com/UploadedResults
 
 BATTLESNUMFILE=./roborumble/temp/teambattlesnumber.txt
 
@@ -198,6 +198,6 @@ BATTLESNUMFILE=./roborumble/temp/teambattlesnumber.txt
 # RATINGS.NANOBOTS:
 #           File name for the rating file of the NanoRumble.
 
-RATINGS.URL=http://darkcanuck.net/rumble/RatingsFile
+RATINGS.URL=http://literumble.appspot.com/RatingsFile
 
 RATINGS.GENERAL=./roborumble/temp/ratings_teamrumble.txt
