@@ -50,7 +50,7 @@ EXCLUDE=
 DOWNLOAD=YES
 EXECUTE=YES
 UPLOAD=YES
-ITERATE=NOT
+ITERATE=YES
 
 # MELEE     Must be set if this rumble is meant for melee battles.
 #
