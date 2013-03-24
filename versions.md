@@ -1,4 +1,4 @@
-## Version 1.8.1.0 Alpha 7 (24-Mar-2013)
+## Version 1.8.1.0 (24-Mar-2013)
 
 ### Bug fixes
 * [Bug-335][]/[Bug-336][]: Skipped turns ... issues.
