@@ -37,6 +37,7 @@ import static java.lang.Math.toRadians;
  * @see AdvancedRobot
  * @see TeamRobot
  * @see Droid
+ * @see RateControlRobot
  *
  * @author Nutch Poovarawan from Cubic Creative (designer)
  * @author Flemming N. Larsen (original)

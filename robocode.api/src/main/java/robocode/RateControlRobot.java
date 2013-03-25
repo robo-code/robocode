@@ -36,6 +36,12 @@ import static java.lang.Math.toDegrees;
  * Look into the source code for the {@code sample.VelociRobot} in order to see how to use this
  * robot type. 
  *
+ * @see JuniorRobot
+ * @see Robot
+ * @see AdvancedRobot
+ * @see TeamRobot
+ * @see Droid
+ *
  * @author Joshua Galecki (original)
  * @author Flemming N. Larsen (contributor)
  *

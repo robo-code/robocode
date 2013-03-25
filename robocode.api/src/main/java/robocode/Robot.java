@@ -32,10 +32,12 @@ import java.awt.*;
  *      robocode.sourceforge.net</a>
  * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
  *      Building your first robot<a>
+ *
  * @see JuniorRobot
  * @see AdvancedRobot
  * @see TeamRobot
  * @see Droid
+ * @see RateControlRobot
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
