@@ -5,10 +5,10 @@
   <classpathentry kind="src" path="/robocode.dotnet.installer"/>
   <classpathentry kind="src" path="/robocode.dotnet.content"/>
   <classpathentry kind="src" path="/robocode.dotnet.host"/>
-  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.host/1.8.1.0-Alpha/robocode.host-1.8.1.0-Alpha.jar"/>
-  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.core/1.8.1.0-Alpha/robocode.core-1.8.1.0-Alpha.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.host/1.8.1.0/robocode.host-1.8.1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.core/1.8.1.0/robocode.core-1.8.1.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.14.2/picocontainer-2.14.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.repository/1.8.1.0-Alpha/robocode.repository-1.8.1.0-Alpha.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.repository/1.8.1.0/robocode.repository-1.8.1.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/net/sf/jni4net/jni4net.j/0.8.6.0/jni4net.j-0.8.6.0.jar"/>
 </classpath>
