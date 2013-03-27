@@ -33,11 +33,11 @@ namespace net.sf.robocode.dotnet
             var shell = new AppDomainShell();
             shell.Init(false);
             shell.Open(typeof(ThreadAttack).Assembly.Location);
-            RobotType type = shell.GetRobotType(typeof(ThreadAttack).FullName);
-            Assert.AreEqual(RobotType.ADVANCED, type);
+            RobotType robotType = shell.GetRobotType(typeof(ThreadAttack).FullName);
+            Assert.IsTrue(robotType.isAdvancedRobot());
             shell.Open(typeof(MyFirstRobot).Assembly.Location);
-            type = shell.GetRobotType(typeof(MyFirstRobot).FullName);
-            Assert.AreEqual(RobotType.STANDARD, type);
+            robotType = shell.GetRobotType(typeof(MyFirstRobot).FullName);
+            Assert.IsTrue(robotType.isStandardRobot());
             shell.Dispose();
         }
 

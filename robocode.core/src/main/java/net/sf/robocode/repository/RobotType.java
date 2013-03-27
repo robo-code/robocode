@@ -13,23 +13,27 @@ import java.io.Serializable;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
-public class RobotType implements Serializable {
+public final class RobotType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	transient public static final RobotType INVALID = new RobotType(0);
-	transient public static final RobotType JUNIOR = new RobotType(1);
-	transient public static final RobotType STANDARD = new RobotType(2);
-	transient public static final RobotType ADVANCED = new RobotType(4);
-	transient public static final RobotType TEAM = new RobotType(8);
-	transient public static final RobotType DROID = new RobotType(16);
-	transient public static final RobotType INTERACTIVE = new RobotType(32);
-	transient public static final RobotType PAINTING = new RobotType(64);
+	static final transient int
+			NONE_FLAG = 0,
+			JUNIOR_FLAG = 1,
+			STANDARD_FLAG = 2,
+			ADVANCED_FLAG = 4,
+			TEAM_FLAG = 8,
+			DROID_FLAG = 16,
+			INTERACTIVE_FLAG = 32,
+			PAINTING_FLAG = 64;
 
-	private int code;
+	public static final transient RobotType INVALID = new RobotType(NONE_FLAG);
 
-	public RobotType(int code) {
-		this.code = code;
+	private int typeFlags;
+
+	public RobotType(int typeFlags) {
+		this.typeFlags = typeFlags;
 	}
 
 	public RobotType(
@@ -39,74 +43,74 @@ public class RobotType implements Serializable {
 			boolean isPaintRobot,
 			boolean isAdvancedRobot,
 			boolean isTeamRobot,
-			boolean isDroid
-			) {
-		this.code = 0;
+			boolean isDroid) {
+
+		typeFlags = NONE_FLAG;
+
 		if (isJuniorRobot) {
-			code += JUNIOR.getCode();
+			typeFlags |= JUNIOR_FLAG;
 		}
 		if (isStandardRobot) {
-			code += STANDARD.getCode();
+			typeFlags |= STANDARD_FLAG;
 		}
 		if (isInteractiveRobot) {
-			code += INTERACTIVE.getCode();
+			typeFlags |= INTERACTIVE_FLAG;
 		}
 		if (isPaintRobot) {
-			code += PAINTING.getCode();
+			typeFlags |= PAINTING_FLAG;
 		}
 		if (isAdvancedRobot) {
-			code += ADVANCED.getCode();
+			typeFlags |= ADVANCED_FLAG;
 		}
 		if (isTeamRobot) {
-			code += TEAM.getCode();
+			typeFlags |= TEAM_FLAG;
 		}
 		if (isDroid) {
-			code += DROID.getCode();
+			typeFlags |= DROID_FLAG;
 		}
 	}
 
-	public int getCode() {
-		return code;
+	public int getTypeFlags() {
+		return typeFlags;
 	}
 
 	public boolean isValid() {
 		return isJuniorRobot() || isStandardRobot() || isAdvancedRobot();
 	}
 
-	public boolean isDroid() {
-		return (code & DROID.code) != 0;
-	}
-
-	public boolean isTeamRobot() {
-		return (code & TEAM.code) != 0;
-	}
-
-	public boolean isAdvancedRobot() {
-		return (code & ADVANCED.code) != 0;
+	public boolean isJuniorRobot() {
+		return (typeFlags & JUNIOR_FLAG) != 0;
 	}
 
 	public boolean isStandardRobot() {
-		return (code & STANDARD.code) != 0;
+		return (typeFlags & STANDARD_FLAG) != 0;
 	}
 
 	public boolean isInteractiveRobot() {
-		return (code & INTERACTIVE.code) != 0;
+		return (typeFlags & INTERACTIVE_FLAG) != 0;
 	}
 
 	public boolean isPaintRobot() {
-		return (code & PAINTING.code) != 0;
+		return (typeFlags & PAINTING_FLAG) != 0;
 	}
 
-	public boolean isJuniorRobot() {
-		return (code & JUNIOR.code) != 0;
+	public boolean isAdvancedRobot() {
+		return (typeFlags & ADVANCED_FLAG) != 0;
+	}
+
+	public boolean isTeamRobot() {
+		return (typeFlags & TEAM_FLAG) != 0;
+	}
+
+	public boolean isDroid() {
+		return (typeFlags & DROID_FLAG) != 0;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-
-		result = prime * result + code;
+		result = prime * result + typeFlags;
 		return result;
 	}
 
@@ -115,17 +119,10 @@ public class RobotType implements Serializable {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
 		RobotType other = (RobotType) obj;
-
-		if (code != other.code) {
-			return false;
-		}
-		return true;
+		return (typeFlags == other.typeFlags);
 	}
 }
