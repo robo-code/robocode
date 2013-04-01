@@ -90,8 +90,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			}
 		}
 		battleProperties.setSelectedRobots(getRobotSelectionPanel().getSelectedRobotsAsString());
-		battleProperties.setBattlefieldWidth(getBattleFieldTab().getBattleFieldWidth());
-		battleProperties.setBattlefieldHeight(getBattleFieldTab().getBattleFieldHeight());
 		battleProperties.setNumRounds(getRobotSelectionPanel().getNumRounds());
 		battleProperties.setGunCoolingRate(getRulesTab().getGunCoolingRate());
 		battleProperties.setInactivityTime(getRulesTab().getInactivityTime());
@@ -112,6 +110,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private NewBattleBattleFieldTab getBattleFieldTab() {
 		if (battleFieldTab == null) {
 			battleFieldTab = new NewBattleBattleFieldTab();
+			battleFieldTab.setup(battleProperties);
 		}
 		return battleFieldTab;
 	}
@@ -239,8 +238,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		if (battleProperties == null) {
 			return;
 		}
-		getBattleFieldTab().setBattleFieldWidth(battleProperties.getBattlefieldWidth());
-		getBattleFieldTab().setBattleFieldHeight(battleProperties.getBattlefieldHeight());
 		getRulesTab().setGunCoolingRate(battleProperties.getGunCoolingRate());
 		getRulesTab().setInactivityTime(battleProperties.getInactivityTime());
 		getRulesTab().setHideEnemyNames(battleProperties.getHideEnemyNames());
