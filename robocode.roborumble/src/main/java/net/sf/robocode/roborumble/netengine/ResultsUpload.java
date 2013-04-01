@@ -188,16 +188,19 @@ public class ResultsUpload {
 				if (minibots.length() != 0 && !matchtype.equals("NANO") && !matchtype.equals("MICRO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 1500)) {
 					data = "game=" + minibots + commonData;
-					errorsfound = errorsfound | senddata(minibots, data, outtxt, true, results, i, battlesnum, prioritybattles);
+					errorsfound = errorsfound
+							| senddata(minibots, data, outtxt, true, results, i, battlesnum, prioritybattles);
 				}
 				if (microbots.length() != 0 && !matchtype.equals("NANO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 750)) {
 					data = "game=" + microbots + commonData;
-					errorsfound = errorsfound | senddata(microbots, data, outtxt, true, results, i, battlesnum, prioritybattles);
+					errorsfound = errorsfound
+							| senddata(microbots, data, outtxt, true, results, i, battlesnum, prioritybattles);
 				}
 				if (nanobots.length() != 0 && size.checkCompetitorsForSize(first[0], second[0], 250)) {
 					data = "game=" + nanobots + commonData;
-					errorsfound = errorsfound | senddata(nanobots, data, outtxt, true, results, i, battlesnum, prioritybattles);
+					errorsfound = errorsfound
+							| senddata(nanobots, data, outtxt, true, results, i, battlesnum, prioritybattles);
 				}
 			}
 		}

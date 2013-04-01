@@ -193,7 +193,7 @@ public class NewBattleBattleFieldTab extends JPanel {
 			}
 		}
 	}
-	
+
 
 	private class BattlefieldSizeLabel extends JLabel {
 		@Override

@@ -91,9 +91,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		}
 		battleProperties.setSelectedRobots(getRobotSelectionPanel().getSelectedRobotsAsString());
 		battleProperties.setNumRounds(getRobotSelectionPanel().getNumRounds());
-		battleProperties.setGunCoolingRate(getRulesTab().getGunCoolingRate());
-		battleProperties.setInactivityTime(getRulesTab().getInactivityTime());
-		battleProperties.setHideEnemyNames(getRulesTab().getHideEnemyNames());
 
 		// Dispose this dialog before starting the battle due to pause/resume battle state
 		dispose();
@@ -140,7 +137,8 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	 */
 	private NewBattleRulesTab getRulesTab() {
 		if (rulesTab == null) {
-			rulesTab = new net.sf.robocode.ui.dialog.NewBattleRulesTab();
+			rulesTab = new NewBattleRulesTab();
+			rulesTab.setup(battleProperties);
 		}
 		return rulesTab;
 	}
@@ -238,10 +236,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		if (battleProperties == null) {
 			return;
 		}
-		getRulesTab().setGunCoolingRate(battleProperties.getGunCoolingRate());
-		getRulesTab().setInactivityTime(battleProperties.getInactivityTime());
-		getRulesTab().setHideEnemyNames(battleProperties.getHideEnemyNames());
-
 		// When opening a battle, we use the 'number of rounds' from the battle properties.
 		// When starting a new battle, we use the 'number of rounds' from the settings manager instead.
 		int numRounds = isOpeningBattle ? battleProperties.getNumRounds() : settingsManager.getNumberOfRounds();
