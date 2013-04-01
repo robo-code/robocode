@@ -9,6 +9,7 @@ package net.sf.robocode.ui.dialog;
 
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -23,121 +24,148 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class NewBattleBattleFieldTab extends JPanel {
 
-	private final static int MIN_SIZE = 400;
-	private final static int MAX_SIZE = 5000;
-	private final static int STEP_SIZE = 100;
+	private final static int MIN_BATTLEFIELD_SIZE = 400;
+	private final static int MAX_BATTLEFIELD_SIZE = 5000;
+	private final static int BATTLEFIELD_STEP_SIZE = 100;
 
 	private final EventHandler eventHandler = new EventHandler();
 
-	private final SizeButton[] sizeButtons = {
-		new SizeButton(400, 400), new SizeButton(600, 400), new SizeButton(600, 600), new SizeButton(800, 600),
-		new SizeButton(800, 800), new SizeButton(1000, 800), new SizeButton(1000, 1000), new SizeButton(1200, 1200),
-		new SizeButton(2000, 2000), new SizeButton(5000, 5000)
+	private SizeButton[] predefinedSizeButtons = {
+		new SizeButton(400, 400),
+		new SizeButton(600, 400),
+		new SizeButton(600, 600),
+		new SizeButton(800, 600),
+		new SizeButton(800, 800),
+		new SizeButton(1000, 800),
+		new SizeButton(1000, 1000),
+		new SizeButton(1200, 1200),
+		new SizeButton(2000, 2000),
+		new SizeButton(5000, 5000)
 	};
 
-	private final JSlider battleFieldWidthSlider = createBattleFieldWidthSlider();
-	private final JSlider battleFieldHeightSlider = createBattleFieldHeightSlider();
-
-	private final JLabel battleFieldSizeLabel = createBattleFieldSizeLabel();
+	private JSlider battlefieldWidthSlider;
+	private JSlider battlefieldHeightSlider;
+	private JLabel battlefieldSizeLabel;
 
 	public NewBattleBattleFieldTab() {
 		super();
 
-		JPanel sliderPanel = createSliderPanel();
-
-		add(sliderPanel);
-		JPanel buttonsPanel = createButtonsPanel();
-
-		add(buttonsPanel);
+		add(createBattlefieldSizePanel());
 	}
 
 	public int getBattleFieldWidth() {
-		return battleFieldWidthSlider.getValue();
+		return battlefieldWidthSlider.getValue();
 	}
 
 	public void setBattleFieldWidth(int width) {
-		battleFieldWidthSlider.setValue(width);
-		battleFieldSliderValuesChanged();
+		battlefieldWidthSlider.setValue(width);
+		updateBattlefieldSizeLabel();
 	}
 
 	public int getBattleFieldHeight() {
-		return battleFieldHeightSlider.getValue();
+		return battlefieldHeightSlider.getValue();
 	}
 
 	public void setBattleFieldHeight(int height) {
-		battleFieldHeightSlider.setValue(height);
-		battleFieldSliderValuesChanged();
+		battlefieldHeightSlider.setValue(height);
+		updateBattlefieldSizeLabel();
 	}
 
-	private JPanel createButtonsPanel() {
+	private JPanel createBattlefieldSizePanel() {
 		JPanel panel = new JPanel();
+		
+		Border border = BorderFactory.createCompoundBorder(
+				BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Battlefield Size"),
+				BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		panel.setBorder(border);
 
-		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Default Sizes"));
-
-		panel.setLayout(new GridLayout(sizeButtons.length, 1));
-
-		for (SizeButton button : sizeButtons) {
-			panel.add(button);
-		}
-
-		return panel;
-	}
-
-	private JPanel createSliderPanel() {
-		JPanel panel = new JPanel();
-
-		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Battlefield Size"));
-
-		// We want the BorderLayout to put the vertical scrollbar
-		// to the right of the horizontal one... so small hack:
 		panel.setLayout(new BorderLayout());
 
-		panel.add(battleFieldHeightSlider, BorderLayout.EAST);
+		JPanel sliderPanel = createBattlefieldSlidersPanel();
+		panel.add(sliderPanel, BorderLayout.CENTER);
 
-		JPanel subPanel = new JPanel();
+		JPanel buttonsPanel = createPredefinedSizesPanel();
+		panel.add(buttonsPanel, BorderLayout.EAST);
 
-		subPanel.setLayout(new BorderLayout());
-		subPanel.add(battleFieldWidthSlider, BorderLayout.SOUTH);
-		subPanel.add(battleFieldSizeLabel, BorderLayout.CENTER);
+		return panel;
+	}
+	
+	private JPanel createBattlefieldSlidersPanel() {
+		battlefieldWidthSlider = createBattlefieldSizeSlider();
+		battlefieldWidthSlider.setOrientation(SwingConstants.HORIZONTAL);
 
-		panel.add(subPanel, BorderLayout.CENTER);
+		battlefieldHeightSlider = createBattlefieldSizeSlider();
+		battlefieldHeightSlider.setOrientation(SwingConstants.VERTICAL);
+		battlefieldHeightSlider.setInverted(true);
+
+		battlefieldSizeLabel = new BattlefieldSizeLabel();
+		battlefieldSizeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		battlefieldSizeLabel.setMinimumSize(new Dimension(250, 250));
+
+		JPanel panel = new JPanel();
+
+		GroupLayout layout = new GroupLayout(panel);
+		panel.setLayout(layout);
+
+		GroupLayout.SequentialGroup leftToRight = layout.createSequentialGroup();
+
+		GroupLayout.ParallelGroup left = layout.createParallelGroup();
+		left.addComponent(battlefieldSizeLabel);
+		left.addComponent(battlefieldWidthSlider);
+		leftToRight.addGroup(left);
+		
+		GroupLayout.ParallelGroup right = layout.createParallelGroup();
+		right.addComponent(battlefieldHeightSlider);
+		leftToRight.addGroup(right);
+		
+		GroupLayout.SequentialGroup topToBottom = layout.createSequentialGroup();
+
+		GroupLayout.ParallelGroup top = layout.createParallelGroup();
+		top.addComponent(battlefieldSizeLabel);
+		top.addComponent(battlefieldHeightSlider);
+		topToBottom.addGroup(top);
+
+		GroupLayout.ParallelGroup bottom = layout.createParallelGroup();
+		bottom.addComponent(battlefieldWidthSlider);
+		topToBottom.addGroup(bottom);
+
+		layout.setHorizontalGroup(leftToRight);
+	    layout.setVerticalGroup(topToBottom);
 
 		return panel;
 	}
 
-	private JSlider createBattleFieldWidthSlider() {
+	private JPanel createPredefinedSizesPanel() {
+		JPanel panel = new JPanel();
+
+		Border border = BorderFactory.createCompoundBorder(
+				BorderFactory.createEmptyBorder(0, 20, 0, 0),
+				BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Predefined Sizes"));
+		panel.setBorder(border);
+
+		panel.setLayout(new GridLayout(predefinedSizeButtons.length, 1));
+		
+		for (SizeButton button : predefinedSizeButtons) {
+			panel.add(button);
+		}
+		return panel;
+	}
+
+	private JSlider createBattlefieldSizeSlider() {
 		JSlider slider = new JSlider();
-
-		slider.setMinimum(MIN_SIZE);
-		slider.setMaximum(MAX_SIZE);
-		slider.setMajorTickSpacing(STEP_SIZE);
+		slider.setMinimum(MIN_BATTLEFIELD_SIZE);
+		slider.setMaximum(MAX_BATTLEFIELD_SIZE);
+		slider.setMajorTickSpacing(BATTLEFIELD_STEP_SIZE);
 		slider.setSnapToTicks(true);
+		slider.setPaintTicks(true);
 		slider.addChangeListener(eventHandler);
-
 		return slider;
 	}
 
-	private JSlider createBattleFieldHeightSlider() {
-		JSlider slider = createBattleFieldWidthSlider();
-
-		slider.setOrientation(SwingConstants.VERTICAL);
-
-		return slider;
-	}
-
-	private JLabel createBattleFieldSizeLabel() {
-		JLabel label = new JLabel();
-
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-
-		return label;
-	}
-
-	private void battleFieldSliderValuesChanged() {
-		int w = battleFieldWidthSlider.getValue();
-		int h = battleFieldHeightSlider.getValue();
-
-		battleFieldSizeLabel.setText(w + " x " + h);
+	private void updateBattlefieldSizeLabel() {
+		int w = battlefieldWidthSlider.getValue();
+		int h = battlefieldHeightSlider.getValue();
+		battlefieldSizeLabel.setText(w + " x " + h);
 	}
 
 	private class SizeButton extends JButton {
@@ -146,31 +174,42 @@ public class NewBattleBattleFieldTab extends JPanel {
 
 		public SizeButton(int width, int height) {
 			super(width + "x" + height);
-
 			this.width = width;
 			this.height = height;
-
 			addActionListener(eventHandler);
 		}
 	}
 
-
 	private class EventHandler implements ActionListener, ChangeListener {
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() instanceof SizeButton) {
 				SizeButton button = (SizeButton) e.getSource();
-
-				battleFieldWidthSlider.setValue(button.width);
-				battleFieldHeightSlider.setValue(button.height);
-				battleFieldSliderValuesChanged();
+				battlefieldWidthSlider.setValue(button.width);
+				battlefieldHeightSlider.setValue(button.height);
+				updateBattlefieldSizeLabel();
 			}
 		}
 
+		@Override
 		public void stateChanged(ChangeEvent e) {
-			if ((e.getSource() == battleFieldWidthSlider) || (e.getSource() == battleFieldHeightSlider)) {
-				battleFieldSliderValuesChanged();
+			if ((e.getSource() == battlefieldWidthSlider) || (e.getSource() == battlefieldHeightSlider)) {
+				updateBattlefieldSizeLabel();
 			}
+		}
+	}
+	
+	private class BattlefieldSizeLabel extends JLabel {
+		@Override
+		public void paintComponent(Graphics g) {
+			g.setColor(SystemColor.activeCaption);
+			
+			int width = getWidth() * battlefieldWidthSlider.getValue() / MAX_BATTLEFIELD_SIZE;
+			int height = getHeight() * battlefieldHeightSlider.getValue() / MAX_BATTLEFIELD_SIZE;
+
+			g.fillRect(0, 0, width, height);
+			super.paintComponent(g);
 		}
 	}
 }

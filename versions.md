@@ -1,3 +1,8 @@
+## Version 1.8.1.1 Alpha (01-Apr-2013)
+
+### Changes
+* Improved the UI for setting the battlefield size when creating a new battle.
+
 ## Version 1.8.1.0 (24-Mar-2013)
 
 ### Bug fixes
