@@ -46,9 +46,8 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private BattleProperties battleProperties;
 
 	private WizardTabbedPane tabbedPane;
-	private NewBattleBattleFieldTab battleFieldTab;
+	private NewBattleRulesTab battleFieldTab;
 
-	private NewBattleRulesTab rulesTab;
 	private WizardController wizardController;
 
 	private RobotSelectionPanel robotSelectionPanel;
@@ -106,9 +105,9 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		battleManager.startNewBattle(battleProperties, false, false);
 	}
 
-	private NewBattleBattleFieldTab getBattleFieldTab() {
+	private NewBattleRulesTab getBattleFieldTab() {
 		if (battleFieldTab == null) {
-			battleFieldTab = new NewBattleBattleFieldTab();
+			battleFieldTab = new NewBattleRulesTab();
 			battleFieldTab.setup(settingsManager, battleProperties);
 		}
 		return battleFieldTab;
@@ -121,17 +120,8 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		panel.add(getWizardController(), BorderLayout.SOUTH);
 		panel.add(getTabbedPane(), BorderLayout.CENTER);
 		panel.registerKeyboardAction(eventHandler, "Refresh",
-					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK),
-					JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+				KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		return panel;
-	}
-
-	private NewBattleRulesTab getRulesTab() {
-		if (rulesTab == null) {
-			rulesTab = new NewBattleRulesTab();
-			rulesTab.setup(settingsManager, battleProperties);
-		}
-		return rulesTab;
 	}
 
 	public List<IRobotSpecItem> getSelectedRobots() {
@@ -198,20 +188,16 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 			tabbedPane.insertTab("Robots", null, getRobotSelectionPanel(), null, 0);
 			tabbedPane.setMnemonicAt(0, KeyEvent.VK_R);
 			tabbedPane.setDisplayedMnemonicIndexAt(0, 0);
-			tabbedPane.insertTab("BattleField", null, getBattleFieldTab(), null, 1);
-			tabbedPane.setMnemonicAt(1, KeyEvent.VK_F);
-			tabbedPane.setDisplayedMnemonicIndexAt(1, 6);
-			tabbedPane.insertTab("Rules", null, getRulesTab(), null, 2);
-			tabbedPane.setMnemonicAt(2, KeyEvent.VK_U);
-			tabbedPane.setDisplayedMnemonicIndexAt(2, 1);
+			tabbedPane.insertTab("Rules", null, getBattleFieldTab(), null, 1);
+			tabbedPane.setMnemonicAt(1, KeyEvent.VK_U);
+			tabbedPane.setDisplayedMnemonicIndexAt(1, 1);
 		}
 		return tabbedPane;
 	}
 
 	private class EventHandler implements AncestorListener, ActionListener {
 		@Override
-		public void ancestorAdded(AncestorEvent event) {
-		}
+		public void ancestorAdded(AncestorEvent event) {}
 
 		@Override
 		public void ancestorRemoved(AncestorEvent event) {
@@ -219,8 +205,7 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		}
 
 		@Override
-		public void ancestorMoved(AncestorEvent event) {
-		}
+		public void ancestorMoved(AncestorEvent event) {}
 
 		@Override
 		public void actionPerformed(ActionEvent event) {

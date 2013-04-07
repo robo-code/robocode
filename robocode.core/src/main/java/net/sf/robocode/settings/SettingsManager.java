@@ -132,7 +132,6 @@ public class SettingsManager implements ISettingsManager {
 	private boolean battleDefaultHideEnemyNames = false;
 	private int battleDefaultNumberOfRounds = 10;
 
-
 	private final Properties props = new SortedProperties();
 
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy H:mm:ss");
