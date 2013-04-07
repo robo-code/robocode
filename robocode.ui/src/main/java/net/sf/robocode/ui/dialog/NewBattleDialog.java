@@ -10,17 +10,21 @@ package net.sf.robocode.ui.dialog;
 
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.core.Container;
 import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
-import java.awt.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
 import java.util.List;
 
 
@@ -37,12 +41,12 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private final static int MIN_ROBOTS = 1;
 
 	private final EventHandler eventHandler = new EventHandler();
-	private JPanel newBattleDialogContentPane;
+
+	private ISettingsManager settingsManager;
+	private BattleProperties battleProperties;
+
 	private WizardTabbedPane tabbedPane;
 	private NewBattleBattleFieldTab battleFieldTab;
-
-	private BattleProperties battleProperties;
-	private boolean isOpeningBattle;
 
 	private NewBattleRulesTab rulesTab;
 	private WizardController wizardController;
@@ -50,19 +54,25 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	private RobotSelectionPanel robotSelectionPanel;
 
 	private final IBattleManager battleManager;
-	private final ISettingsManager settingsManager;
 
-	public NewBattleDialog(IWindowManager windowManager, IBattleManager battleManager, ISettingsManager settingsManager) {
+	public NewBattleDialog(IWindowManager windowManager, IBattleManager battleManager) {
 		super(windowManager.getRobocodeFrame(), true);
 		this.battleManager = battleManager;
-		this.settingsManager = settingsManager;
 	}
 
-	public void setup(BattleProperties battleProperties, boolean openBattle) {
+	public void setup(ISettingsManager settingsManager, BattleProperties battleProperties) { // XXX
+		this.settingsManager = settingsManager;
 		this.battleProperties = battleProperties;
-		this.isOpeningBattle = openBattle;
+
 		robotSelectionPanel = null;
-		initialize();
+
+		setTitle("New Battle");
+		setPreferredSize(new Dimension(850, 650));
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+		addCancelByEscapeKey();
+
+		add(createNewBattleDialogPanel());
 	}
 
 	public void cancelButtonActionPerformed() {
@@ -89,9 +99,6 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 				return;
 			}
 		}
-		battleProperties.setSelectedRobots(getRobotSelectionPanel().getSelectedRobotsAsString());
-		battleProperties.setNumRounds(getRobotSelectionPanel().getNumRounds());
-
 		// Dispose this dialog before starting the battle due to pause/resume battle state
 		dispose();
 
@@ -99,65 +106,36 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		battleManager.startNewBattle(battleProperties, false, false);
 	}
 
-	/**
-	 * Return the battleFieldTab
-	 *
-	 * @return JPanel
-	 */
 	private NewBattleBattleFieldTab getBattleFieldTab() {
 		if (battleFieldTab == null) {
 			battleFieldTab = new NewBattleBattleFieldTab();
-			battleFieldTab.setup(battleProperties);
+			battleFieldTab.setup(settingsManager, battleProperties);
 		}
 		return battleFieldTab;
 	}
 
-	/**
-	 * Return the newBattleDialogContentPane
-	 *
-	 * @return JPanel
-	 */
-	private JPanel getNewBattleDialogContentPane() {
-		if (newBattleDialogContentPane == null) {
-			newBattleDialogContentPane = new JPanel();
-			newBattleDialogContentPane.setLayout(new BorderLayout());
-			newBattleDialogContentPane.add(getWizardController(), BorderLayout.SOUTH);
-			newBattleDialogContentPane.add(getTabbedPane(), BorderLayout.CENTER);
-			newBattleDialogContentPane.registerKeyboardAction(eventHandler, "Refresh",
+	private JPanel createNewBattleDialogPanel() {
+		JPanel panel = new JPanel();
+
+		panel.setLayout(new BorderLayout());
+		panel.add(getWizardController(), BorderLayout.SOUTH);
+		panel.add(getTabbedPane(), BorderLayout.CENTER);
+		panel.registerKeyboardAction(eventHandler, "Refresh",
 					KeyStroke.getKeyStroke(KeyEvent.VK_R, MENU_SHORTCUT_KEY_MASK),
 					JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		}
-		return newBattleDialogContentPane;
+		return panel;
 	}
 
-	/**
-	 * Return the rulesTab property value.
-	 *
-	 * @return robocode.dialog.NewBattleRulesTab
-	 */
 	private NewBattleRulesTab getRulesTab() {
 		if (rulesTab == null) {
 			rulesTab = new NewBattleRulesTab();
-			rulesTab.setup(battleProperties);
+			rulesTab.setup(settingsManager, battleProperties);
 		}
 		return rulesTab;
 	}
 
 	public List<IRobotSpecItem> getSelectedRobots() {
 		return getRobotSelectionPanel().getSelectedRobots();
-	}
-
-	/**
-	 * Initialize the class.
-	 */
-	private void initialize() {
-		setTitle("New Battle");
-		setPreferredSize(new Dimension(850, 650));
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setContentPane(getNewBattleDialogContentPane());
-		addCancelByEscapeKey();
-
-		processBattleProperties();		
 	}
 
 	private void addCancelByEscapeKey() {
@@ -197,13 +175,11 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 	 */
 	private RobotSelectionPanel getRobotSelectionPanel() {
 		if (robotSelectionPanel == null) {
-			String selectedRobots = "";
+			robotSelectionPanel = Container.createComponent(RobotSelectionPanel.class);
+			robotSelectionPanel.addAncestorListener(eventHandler);
 
-			if (battleProperties != null) {
-				selectedRobots = battleProperties.getSelectedRobots();
-			}
-			robotSelectionPanel = net.sf.robocode.core.Container.createComponent(RobotSelectionPanel.class);
 			final boolean ignoreTeamRobots = false; // TODO do we really want to have this !properties.getOptionsTeamShowTeamRobots();
+			String selectedRobots = (battleProperties == null) ? "" : battleProperties.getSelectedRobots();
 
 			robotSelectionPanel.setup(MIN_ROBOTS, MAX_ROBOTS, true, "Select robots for the battle", false, false, false,
 					false, false, ignoreTeamRobots, selectedRobots);
@@ -232,20 +208,23 @@ public class NewBattleDialog extends JDialog implements WizardListener {
 		return tabbedPane;
 	}
 
-	private void processBattleProperties() {
-		if (battleProperties == null) {
-			return;
+	private class EventHandler implements AncestorListener, ActionListener {
+		@Override
+		public void ancestorAdded(AncestorEvent event) {
 		}
-		// When opening a battle, we use the 'number of rounds' from the battle properties.
-		// When starting a new battle, we use the 'number of rounds' from the settings manager instead.
-		int numRounds = isOpeningBattle ? battleProperties.getNumRounds() : settingsManager.getNumberOfRounds();
 
-		getRobotSelectionPanel().setNumRounds(numRounds);
-	}
+		@Override
+		public void ancestorRemoved(AncestorEvent event) {
+			battleProperties.setSelectedRobots(getRobotSelectionPanel().getSelectedRobotsAsString());
+		}
 
-	private class EventHandler extends WindowAdapter implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equals("Refresh")) {
+		@Override
+		public void ancestorMoved(AncestorEvent event) {
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			if (event.getActionCommand().equals("Refresh")) {
 				getRobotSelectionPanel().refreshRobotList(true);
 			}
 		}

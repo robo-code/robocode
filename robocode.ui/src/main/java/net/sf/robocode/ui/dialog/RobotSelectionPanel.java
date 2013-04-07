@@ -11,13 +11,9 @@ package net.sf.robocode.ui.dialog;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -56,8 +52,6 @@ public class RobotSelectionPanel extends WizardPanel {
 	private JPanel mainPanel;
 	private int maxRobots = 1;
 	private int minRobots = 1;
-	private JPanel numRoundsPanel;
-	private JTextField numRoundsTextField;
 	private boolean onlyShowSource;
 	private boolean onlyShowWithPackage;
 	private boolean onlyShowRobots;
@@ -66,14 +60,10 @@ public class RobotSelectionPanel extends WizardPanel {
 	private boolean ignoreTeamRobots;
 	private String preSelectedRobots;
 	private final List<AvailableRobotsPanel.ItemWrapper> selectedRobots = new ArrayList<AvailableRobotsPanel.ItemWrapper>();
-	private boolean showNumRoundsPanel;
-	private final ISettingsManager properties;
 	private final IRepositoryManager repositoryManager;
-	private boolean nummerOfRoundSetByGame;
 
-	public RobotSelectionPanel(ISettingsManager properties, IRepositoryManager repositoryManager) {
+	public RobotSelectionPanel(IRepositoryManager repositoryManager) {
 		super();
-		this.properties = properties;
 		this.repositoryManager = repositoryManager;
 	}
 
@@ -81,7 +71,6 @@ public class RobotSelectionPanel extends WizardPanel {
 			boolean showNumRoundsPanel, String instructions, boolean onlyShowSource, boolean onlyShowWithPackage,
 			boolean onlyShowRobots, boolean onlyShowDevelopment, boolean onlyShowInJar, boolean ignoreTeamRobots,
 			String preSelectedRobots) {
-		this.showNumRoundsPanel = showNumRoundsPanel;
 		this.minRobots = minRobots;
 		this.maxRobots = maxRobots;
 		this.instructions = instructions;
@@ -195,9 +184,6 @@ public class RobotSelectionPanel extends WizardPanel {
 			buttonsPanel.setLayout(new BorderLayout(5, 5));
 			buttonsPanel.setBorder(BorderFactory.createEmptyBorder(21, 5, 5, 5));
 			buttonsPanel.add(getAddButtonsPanel(), BorderLayout.NORTH);
-			if (showNumRoundsPanel) {
-				buttonsPanel.add(getNumRoundsPanel(), BorderLayout.CENTER);
-			}
 			buttonsPanel.add(getRemoveButtonsPanel(), BorderLayout.SOUTH);
 		}
 		return buttonsPanel;
@@ -414,84 +400,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		return mainPanel;
 	}
 
-	public int getNumRounds() {
-		try {
-			return Integer.parseInt(getNumRoundsTextField().getText());
-		} catch (NumberFormatException e) {
-			int numRounds = properties.getNumberOfRounds();
-
-			getNumRoundsTextField().setText("" + numRounds);
-			return numRounds;
-		}
-	}
-
-	private JPanel getNumRoundsPanel() {
-		if (numRoundsPanel == null) {
-			numRoundsPanel = new JPanel();
-			numRoundsPanel.setLayout(new BoxLayout(numRoundsPanel, BoxLayout.Y_AXIS));
-			numRoundsPanel.setBorder(BorderFactory.createEmptyBorder());
-			numRoundsPanel.add(new JPanel());
-			JPanel j = new JPanel();
-
-			j.setLayout(new BoxLayout(j, BoxLayout.Y_AXIS));
-			TitledBorder border = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-					"Number of Rounds");
-
-			j.setBorder(border);
-			j.add(getNumRoundsTextField());
-			j.setPreferredSize(new Dimension(border.getMinimumSize(j).width, j.getPreferredSize().height));
-			j.setMinimumSize(j.getPreferredSize());
-			j.setMaximumSize(j.getPreferredSize());
-			numRoundsPanel.add(j);
-			numRoundsPanel.add(new JPanel());
-		}
-		return numRoundsPanel;
-	}
-
-	private JTextField getNumRoundsTextField() {
-		final ISettingsManager props = properties;
-
-		if (numRoundsTextField == null) {
-			numRoundsTextField = new JTextField();
-			numRoundsTextField.setAutoscrolls(false);
-
-			// Center in panel
-			numRoundsTextField.setAlignmentX((float) .5);
-			// Center text in text field
-			numRoundsTextField.setHorizontalAlignment(SwingConstants.CENTER);
-
-			// Add document listener
-			numRoundsTextField.getDocument().addDocumentListener(new DocumentListener() {
-
-				public void changedUpdate(DocumentEvent e) {}
-
-				public void insertUpdate(DocumentEvent e) {
-					handleChange();
-				}
-
-				public void removeUpdate(DocumentEvent e) {
-					handleChange();
-				}
-
-				private void handleChange() {
-					// Ignore the change if the 'number of rounds' was set by the game, not the user
-					if (nummerOfRoundSetByGame) {
-						return;
-					}
-					
-					// Here we assume that the user made the change
-					try {
-						int numRounds = Integer.parseInt(numRoundsTextField.getText());
-
-						props.setNumberOfRounds(numRounds); // Update the user settings
-					} catch (NumberFormatException ignored) {}
-				}
-			});
-		}
-
-		return numRoundsTextField;
-	}
-
 	public int getSelectedRobotsCount() {
 		return selectedRobots.size();
 	}
@@ -539,16 +447,6 @@ public class RobotSelectionPanel extends WizardPanel {
 		} else {
 			showDescription(null);
 		}
-	}
-
-	public void setNumRounds(int numRounds) {
-		// Set flag that 'number of rounds' was set by the game, not user
-		nummerOfRoundSetByGame = true;
-
-		getNumRoundsTextField().setText("" + numRounds);
-
-		// Clear flag for 'number of rounds'
-		nummerOfRoundSetByGame = false;
 	}
 
 	private void setSelectedRobots(String selectedRobotsString) {

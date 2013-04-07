@@ -12,10 +12,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 import net.sf.robocode.battle.BattleProperties;
+import net.sf.robocode.settings.ISettingsManager;
 
 
 /**
@@ -25,34 +27,43 @@ import net.sf.robocode.battle.BattleProperties;
 @SuppressWarnings("serial")
 public class NewBattleRulesTab extends JPanel {
 
+	private ISettingsManager settingsManager;
 	private BattleProperties battleProperties;
 	
-	private final EventHandler eventHandler = new EventHandler();
-
+	private final JLabel numberOfRoundsLabel = new JLabel("Number of Rounds:");
 	private final JLabel gunCoolingRateLabel = new JLabel("Gun Cooling Rate:");
 	private final JLabel inactivityTimeLabel = new JLabel("Inactivity Time:");
 	private final JLabel hideEnemyNamesLabel = new JLabel("Hide Enemy Names:");
 
-	private final JTextField gunCoolingRateField = new JTextField();
-	private final JTextField inactivityTimeField = new JTextField();
+	private final JButton restoreDefaultsButton = new JButton("Restore Defaults");
+	
+	private final JTextField numberOfRoundsTextField = new JTextField(5);
+	private final JTextField gunCoolingRateTextField = new JTextField(5);
+	private final JTextField inactivityTimeTextField = new JTextField(5);
 	private final JCheckBox hideEnemyNamesCheckBox = new JCheckBox();
 
 	public NewBattleRulesTab() {
 		super();
 	}
 
-	public void setup(BattleProperties battleProperties) {
+	public void setup(ISettingsManager settingsManager, final BattleProperties battleProperties) {
+		this.settingsManager = settingsManager;
 		this.battleProperties = battleProperties;
 
-		gunCoolingRateField.setText("" + battleProperties.getGunCoolingRate());
-		inactivityTimeField.setText("" + battleProperties.getInactivityTime());
-		hideEnemyNamesCheckBox.setSelected(battleProperties.getHideEnemyNames());
+		EventHandler eventHandler = new EventHandler();
 
-		gunCoolingRateField.getDocument().addDocumentListener(eventHandler);
-		inactivityTimeField.getDocument().addDocumentListener(eventHandler);
-		hideEnemyNamesCheckBox.addActionListener(eventHandler);
-		
+		JPanel rulesPanel = createRulesPanel();
+		rulesPanel.addAncestorListener(eventHandler);
+		add(rulesPanel);
+
+		restoreDefaultsButton.addActionListener(eventHandler);
+		add(restoreDefaultsButton);
+	}
+
+	private JPanel createRulesPanel() {
 		JPanel panel = new JPanel();
+
+		panel.addAncestorListener(new EventHandler());
 		panel.setBorder(BorderFactory.createEtchedBorder());
 
 		GroupLayout layout = new GroupLayout(panel);
@@ -63,30 +74,37 @@ public class NewBattleRulesTab extends JPanel {
 		GroupLayout.SequentialGroup leftToRight = layout.createSequentialGroup();
 
 		GroupLayout.ParallelGroup left = layout.createParallelGroup();
+		left.addComponent(numberOfRoundsLabel);
 		left.addComponent(gunCoolingRateLabel);
 		left.addComponent(inactivityTimeLabel);
 		left.addComponent(hideEnemyNamesLabel);
 		leftToRight.addGroup(left);
 		
 		GroupLayout.ParallelGroup right = layout.createParallelGroup();
-		right.addComponent(gunCoolingRateField);
-		right.addComponent(inactivityTimeField);
+		right.addComponent(numberOfRoundsTextField);
+		right.addComponent(gunCoolingRateTextField);
+		right.addComponent(inactivityTimeTextField);
 		right.addComponent(hideEnemyNamesCheckBox);
 		leftToRight.addGroup(right);
 		
 		GroupLayout.SequentialGroup topToBottom = layout.createSequentialGroup();
 
-		GroupLayout.ParallelGroup row1 = layout.createParallelGroup();
+		GroupLayout.ParallelGroup row0 = layout.createParallelGroup(Alignment.BASELINE);
+		row0.addComponent(numberOfRoundsLabel);
+		row0.addComponent(numberOfRoundsTextField);
+		topToBottom.addGroup(row0);
+
+		GroupLayout.ParallelGroup row1 = layout.createParallelGroup(Alignment.BASELINE);
 		row1.addComponent(gunCoolingRateLabel);
-		row1.addComponent(gunCoolingRateField);
+		row1.addComponent(gunCoolingRateTextField);
 		topToBottom.addGroup(row1);
 
-		GroupLayout.ParallelGroup row2 = layout.createParallelGroup();
+		GroupLayout.ParallelGroup row2 = layout.createParallelGroup(Alignment.BASELINE);
 		row2.addComponent(inactivityTimeLabel);
-		row2.addComponent(inactivityTimeField);
+		row2.addComponent(inactivityTimeTextField);
 		topToBottom.addGroup(row2);
 
-		GroupLayout.ParallelGroup row3 = layout.createParallelGroup();
+		GroupLayout.ParallelGroup row3 = layout.createParallelGroup(Alignment.CENTER);
 		row3.addComponent(hideEnemyNamesLabel);
 		row3.addComponent(hideEnemyNamesCheckBox);
 		topToBottom.addGroup(row3);
@@ -94,50 +112,76 @@ public class NewBattleRulesTab extends JPanel {
 		layout.setHorizontalGroup(leftToRight);
 		layout.setVerticalGroup(topToBottom);
 		
-		add(panel);
-	}
+		return panel;
+	}	
 	
-	private class EventHandler implements ActionListener, DocumentListener {
+	private class EventHandler implements AncestorListener, ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			update();
+		public void ancestorAdded(AncestorEvent event) {
+			pushBattlePropertiesToUIComponents();
+			numberOfRoundsTextField.setText("" + battleProperties.getNumRounds());
+			gunCoolingRateTextField.setText("" + battleProperties.getGunCoolingRate());
+			inactivityTimeTextField.setText("" + battleProperties.getInactivityTime());
+			hideEnemyNamesCheckBox.setSelected(battleProperties.getHideEnemyNames());
 		}
 
 		@Override
-		public void changedUpdate(DocumentEvent e) {
-			update();
-		}
-
-		@Override
-		public void insertUpdate(DocumentEvent e) {
-			update();
-		}
-
-		@Override
-		public void removeUpdate(DocumentEvent e) {
-			update();
-		}
-
-		private void update() {
+		public void ancestorRemoved(AncestorEvent event) {
+			Integer numberOfRounds;
+			try {
+				numberOfRounds = Integer.parseInt(numberOfRoundsTextField.getText());
+			} catch (NumberFormatException e) {
+				numberOfRounds = null;
+			}
+			if (numberOfRounds != null) {
+				settingsManager.setBattleDefaultNumberOfRounds(numberOfRounds);
+				battleProperties.setNumRounds(numberOfRounds);
+			}
 			Double gunCoolingRate;
 			try {
-				gunCoolingRate = Double.parseDouble(gunCoolingRateField.getText());
+				gunCoolingRate = Double.parseDouble(gunCoolingRateTextField.getText());
 			} catch (NumberFormatException e) {
 				gunCoolingRate = null;
 			}
 			if (gunCoolingRate != null) {
+				settingsManager.setBattleDefaultGunCoolingRate(gunCoolingRate);
 				battleProperties.setGunCoolingRate(gunCoolingRate);
 			}
 			Integer inactivityTime;
 			try {
-				inactivityTime = Integer.parseInt(inactivityTimeField.getText());
+				inactivityTime = Integer.parseInt(inactivityTimeTextField.getText());
 			} catch (NumberFormatException e) {
 				inactivityTime = null;
 			}
 			if (inactivityTime != null) {
+				settingsManager.setBattleDefaultInactivityTime(inactivityTime);
 				battleProperties.setInactivityTime(inactivityTime);
 			}
-			battleProperties.setHideEnemyNames(hideEnemyNamesCheckBox.isSelected());
+			boolean hideEnemyNames = hideEnemyNamesCheckBox.isSelected();
+			settingsManager.setBattleDefaultHideEnemyNames(hideEnemyNames);
+			battleProperties.setHideEnemyNames(hideEnemyNames);
+		}
+
+		@Override
+		public void ancestorMoved(AncestorEvent event) {}
+
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			if (event.getSource() == restoreDefaultsButton) {
+				battleProperties.setNumRounds(10);
+				battleProperties.setGunCoolingRate(0.1);
+				battleProperties.setInactivityTime(450);
+				battleProperties.setHideEnemyNames(false);
+				
+				pushBattlePropertiesToUIComponents();
+			}
+		}
+
+		private void pushBattlePropertiesToUIComponents() {
+			numberOfRoundsTextField.setText("" + battleProperties.getNumRounds());
+			gunCoolingRateTextField.setText("" + battleProperties.getGunCoolingRate());
+			inactivityTimeTextField.setText("" + battleProperties.getInactivityTime());
+			hideEnemyNamesCheckBox.setSelected(battleProperties.getHideEnemyNames());
 		}
 	}
 }

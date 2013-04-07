@@ -124,8 +124,14 @@ public class SettingsManager implements ISettingsManager {
 	private long consoleQuota = 8192;
 	private long cpuConstant = -1;
 
-	// Number of Rounds
-	private int numberOfRounds = 10;
+	// Battle default settings
+	private int battleDefaultBattlefieldWidth = 800;
+	private int battleDefaultBattlefieldHeight = 600;
+	private double battleDefaultGunCoolingRate = 0.1;
+	private long battleDefaultInactivityTime = 450;
+	private boolean battleDefaultHideEnemyNames = false;
+	private int battleDefaultNumberOfRounds = 10;
+
 
 	private final Properties props = new SortedProperties();
 
@@ -136,9 +142,7 @@ public class SettingsManager implements ISettingsManager {
 	private final List<ISettingsListener> listeners = new ArrayList<ISettingsListener>();
 
 	public SettingsManager() {
-
 		FileInputStream in = null;
-
 		try {
 			in = new FileInputStream(FileUtil.getRobocodeConfigFile());
 			this.load(in);
@@ -158,10 +162,8 @@ public class SettingsManager implements ISettingsManager {
 
 	public void saveProperties() {
 		FileOutputStream out = null;
-
 		try {
 			out = new FileOutputStream(FileUtil.getRobocodeConfigFile());
-
 			this.store(out, "Robocode Properties");
 		} catch (IOException e) {
 			Logger.logError(e);
@@ -626,13 +628,58 @@ public class SettingsManager implements ISettingsManager {
 		return optionsCommonNotifyAboutNewBetaVersions;
 	}
 
-	public int getNumberOfRounds() {
-		return numberOfRounds;
+	public int getBattleDefaultBattlefieldWidth() {
+		return battleDefaultBattlefieldWidth;
 	}
 
-	public void setNumberOfRounds(int numberOfRounds) {
-		this.numberOfRounds = Math.max(1, numberOfRounds);
-		props.setProperty(NUMBER_OF_ROUNDS, "" + this.numberOfRounds);
+	public void setBattleDefaultBattlefieldWidth(int battlefieldWidth) {
+		this.battleDefaultBattlefieldWidth = Math.max(400, battlefieldWidth);
+		props.setProperty(BATTLE_DEFAULT_BATTLEFIELD_WIDTH, "" + this.battleDefaultBattlefieldWidth);
+	}
+
+	public int getBattleDefaultBattlefieldHeight() {
+		return battleDefaultBattlefieldHeight;
+	}
+
+	public void setBattleDefaultBattlefieldHeight(int battlefieldHeight) {
+		this.battleDefaultBattlefieldHeight = Math.max(400, battlefieldHeight);
+		props.setProperty(BATTLE_DEFAULT_BATTLEFIELD_HEIGHT, "" + this.battleDefaultBattlefieldHeight);
+	}
+
+	public double getBattleDefaultGunCoolingRate() {
+		return battleDefaultGunCoolingRate;
+	}
+
+	public void setBattleDefaultGunCoolingRate(double gunCoolingRate) {
+		this.battleDefaultGunCoolingRate = Math.max(0.1, gunCoolingRate);
+		props.setProperty(BATTLE_DEFAULT_GUN_COOLING_RATE, "" + this.battleDefaultGunCoolingRate);
+	}
+
+	public long getBattleDefaultInactivityTime() {
+		return battleDefaultInactivityTime;
+	}
+
+	public void setBattleDefaultInactivityTime(long inactivityTime) {
+		this.battleDefaultInactivityTime = Math.max(0, inactivityTime);
+		props.setProperty(BATTLE_DEFAULT_INACTIVITY_TIME, "" + this.battleDefaultInactivityTime);
+	}
+
+	public boolean getBattleDefaultHideEnemyNames() {
+		return battleDefaultHideEnemyNames;
+	}
+
+	public void setBattleDefaultHideEnemyNames(boolean hideEnemyNames) {
+		this.battleDefaultHideEnemyNames = hideEnemyNames;
+		props.setProperty(BATTLE_DEFAULT_HIDE_ENEMY_NAMES, "" + this.battleDefaultHideEnemyNames);
+	}
+
+	public int getBattleDefaultNumberOfRounds() {
+		return battleDefaultNumberOfRounds;
+	}
+
+	public void setBattleDefaultNumberOfRounds(int numberOfRounds) {
+		this.battleDefaultNumberOfRounds = Math.max(1, numberOfRounds);
+		props.setProperty(BATTLE_DEFAULT_NUMBER_OF_ROUNDS, "" + this.battleDefaultNumberOfRounds);
 	}
 
 	public void store(FileOutputStream out, String desc) throws IOException {
@@ -717,11 +764,16 @@ public class SettingsManager implements ISettingsManager {
 			setVersionChecked(new Date());
 		}
 
+		battleDefaultBattlefieldWidth = Integer.parseInt(props.getProperty(BATTLE_DEFAULT_BATTLEFIELD_WIDTH, "800"));
+		battleDefaultBattlefieldHeight = Integer.parseInt(props.getProperty(BATTLE_DEFAULT_BATTLEFIELD_HEIGHT, "600"));
+		battleDefaultGunCoolingRate = Double.parseDouble(props.getProperty(BATTLE_DEFAULT_GUN_COOLING_RATE, "0.1"));
+		battleDefaultInactivityTime = Long.parseLong(props.getProperty(BATTLE_DEFAULT_INACTIVITY_TIME, "450"));
+		battleDefaultHideEnemyNames = Boolean.parseBoolean(props.getProperty(BATTLE_DEFAULT_HIDE_ENEMY_NAMES, "false"));
+		battleDefaultNumberOfRounds = Integer.parseInt(props.getProperty(BATTLE_DEFAULT_NUMBER_OF_ROUNDS, "10"));
+
 		robotFilesystemQuota = Long.parseLong(props.getProperty(ROBOT_FILESYSTEM_QUOTA, "" + 200000));
 		consoleQuota = Long.parseLong(props.getProperty(CONSOLE_QUOTA, "8192"));
 		cpuConstant = Long.parseLong(props.getProperty(CPU_CONSTANT, "-1"));
-
-		numberOfRounds = Integer.parseInt(props.getProperty(NUMBER_OF_ROUNDS, "10"));
 	}
 
 	public String getLastRunVersion() {

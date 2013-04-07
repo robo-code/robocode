@@ -215,7 +215,7 @@ public class MenuBar extends JMenuBar {
 	 * Handle battleNew menu item action
 	 */
 	private void battleNewActionPerformed() {
-		windowManager.showNewBattleDialog(battleManager.getBattleProperties(), false);
+		windowManager.showNewBattleDialog(battleManager.getBattleProperties());
 	}
 
 	private void battleOpenActionPerformed() {
@@ -223,10 +223,9 @@ public class MenuBar extends JMenuBar {
 			battleManager.pauseBattle();
 
 			String path = windowManager.showBattleOpenDialog(".battle", "Battles");
-
 			if (path != null) {
 				battleManager.setBattleFilename(path);
-				windowManager.showNewBattleDialog(battleManager.loadBattleProperties(), true);
+				windowManager.showNewBattleDialog(battleManager.loadBattleProperties());
 			}
 		} finally {
 			battleManager.resumeBattle();

@@ -127,13 +127,11 @@ public class BattleManager implements IBattleManager {
 		}
 
 		Battle realBattle = Container.createComponent(Battle.class);
-
 		realBattle.setup(battlingRobotsList, battleProperties, isPaused());
 
 		battle = realBattle;
 
 		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), realBattle);
-
 		battleThread.setPriority(Thread.NORM_PRIORITY);
 		battleThread.setName("Battle Thread");
 		realBattle.setBattleThread(battleThread);
@@ -239,7 +237,6 @@ public class BattleManager implements IBattleManager {
 	public BattleProperties loadBattleProperties() {
 		BattleProperties res = new BattleProperties();
 		FileInputStream in = null;
-
 		try {
 			in = new FileInputStream(getBattleFilename());
 			res.load(in);

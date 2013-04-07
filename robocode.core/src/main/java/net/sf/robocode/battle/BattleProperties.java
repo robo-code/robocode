@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Properties;
 
+import net.sf.robocode.core.ContainerBase;
+import net.sf.robocode.settings.ISettingsManager;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -37,12 +40,14 @@ public class BattleProperties implements Serializable {
 			BATTLE_SELECTEDROBOTS = "robocode.battle.selectedRobots",
 			BATTLE_INITIAL_POSITIONS = "robocode.battle.initialPositions";
 
-	private int battlefieldWidth = 800;
-	private int battlefieldHeight = 600;
-	private int numRounds = 10;
-	private double gunCoolingRate = 0.1;
-	private long inactivityTime = 450;
-	private boolean hideEnemyNames;
+	private final ISettingsManager settings = ContainerBase.getComponent(ISettingsManager.class);
+
+	private int battlefieldWidth = settings.getBattleDefaultBattlefieldWidth();
+	private int battlefieldHeight = settings.getBattleDefaultBattlefieldHeight();
+	private int numRounds = settings.getBattleDefaultNumberOfRounds();
+	private double gunCoolingRate = settings.getBattleDefaultGunCoolingRate();
+	private long inactivityTime = settings.getBattleDefaultInactivityTime();
+	private boolean hideEnemyNames = settings.getBattleDefaultHideEnemyNames();
 	private String selectedRobots;
 	private String initialPositions;
 
@@ -254,12 +259,55 @@ public class BattleProperties implements Serializable {
 
 	public void load(FileInputStream in) throws IOException {
 		props.load(in);
-		battlefieldWidth = Integer.parseInt(props.getProperty(BATTLEFIELD_WIDTH, "800"));
-		battlefieldHeight = Integer.parseInt(props.getProperty(BATTLEFIELD_HEIGHT, "600"));
-		gunCoolingRate = Double.parseDouble(props.getProperty(BATTLE_GUNCOOLINGRATE, "0.1"));
-		inactivityTime = Long.parseLong(props.getProperty(BATTLE_RULES_INACTIVITYTIME, "450"));
-		hideEnemyNames = Boolean.parseBoolean(props.getProperty(BATTLE_HIDE_ENEMY_NAMES, "false"));
-		numRounds = Integer.parseInt(props.getProperty(BATTLE_NUMROUNDS, "10"));
+
+		String value = props.getProperty(BATTLEFIELD_WIDTH);
+		if (value != null) {
+			try {
+				battlefieldWidth = Integer.parseInt(value);
+			} catch (NumberFormatException ignore) {
+				battlefieldWidth = settings.getBattleDefaultBattlefieldWidth();
+			}
+		}
+		value = props.getProperty(BATTLEFIELD_HEIGHT);
+		if (value != null) {
+			try {
+				battlefieldHeight = Integer.parseInt(value);
+			} catch (NumberFormatException ignore) {
+				battlefieldHeight = settings.getBattleDefaultBattlefieldHeight();
+			}
+		}
+		value = props.getProperty(BATTLE_GUNCOOLINGRATE);
+		if (value != null) {
+			try {
+				gunCoolingRate = Double.parseDouble(value);
+			} catch (NumberFormatException ignore) {
+				gunCoolingRate = settings.getBattleDefaultGunCoolingRate();
+			}
+		}
+		value = props.getProperty(BATTLE_RULES_INACTIVITYTIME);
+		if (value != null) {
+			try {
+				inactivityTime = Long.parseLong(value);
+			} catch (NumberFormatException ignore) {
+				inactivityTime = settings.getBattleDefaultInactivityTime();
+			}
+		}
+		value = props.getProperty(BATTLE_HIDE_ENEMY_NAMES);
+		if (value != null) {
+			try {
+				hideEnemyNames = Boolean.parseBoolean(value);
+			} catch (NumberFormatException ignore) {
+				hideEnemyNames = settings.getBattleDefaultHideEnemyNames();
+			}
+		}
+		value = props.getProperty(BATTLE_NUMROUNDS);
+		if (value != null) {
+			try {
+				numRounds = Integer.parseInt(value);
+			} catch (NumberFormatException ignore) {
+				numRounds = settings.getBattleDefaultNumberOfRounds();
+			}
+		}
 		selectedRobots = props.getProperty(BATTLE_SELECTEDROBOTS, "");
 		initialPositions = props.getProperty(BATTLE_INITIAL_POSITIONS, "");
 	}

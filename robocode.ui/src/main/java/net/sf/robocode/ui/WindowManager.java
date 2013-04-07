@@ -44,7 +44,7 @@ public class WindowManager implements IWindowManagerExt {
 	private final AwtBattleAdaptor awtAdaptor;
 	private RobotPackager robotPackager;
 	private RobotExtractor robotExtractor;
-	private final ISettingsManager properties;
+	private final ISettingsManager settingsManager;
 	private final IBattleManager battleManager;
 	private final ICpuManager cpuManager;
 	private final IRepositoryManager repositoryManager;
@@ -59,8 +59,8 @@ public class WindowManager implements IWindowManagerExt {
 	private boolean oldRankingHideState = true;
 	private boolean showResults = true;
 
-	public WindowManager(ISettingsManager properties, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager, IVersionManager versionManager) {
-		this.properties = properties;
+	public WindowManager(ISettingsManager settingsManager, IBattleManager battleManager, ICpuManager cpuManager, IRepositoryManager repositoryManager, IImageManager imageManager, IVersionManager versionManager) {
+		this.settingsManager = settingsManager;
 		this.battleManager = battleManager;
 		this.repositoryManager = repositoryManager;
 		this.cpuManager = cpuManager;
@@ -117,7 +117,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public boolean isShowResultsEnabled() {
-		return properties.getOptionsCommonShowResults() && showResults;
+		return settingsManager.getOptionsCommonShowResults() && showResults;
 	}
 
 	public void setEnableShowResults(boolean enable) {
@@ -287,7 +287,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showRankingDialog(boolean visible) {
-		boolean currentRankingHideState = properties.getOptionsCommonDontHideRankings();
+		boolean currentRankingHideState = settingsManager.getOptionsCommonDontHideRankings();
 
 		// Check if the Ranking hide states has changed
 		if (currentRankingHideState != oldRankingHideState) {
@@ -363,12 +363,12 @@ public class WindowManager implements IWindowManagerExt {
 		splashScreen.dispose();
 	}
 
-	public void showNewBattleDialog(BattleProperties battleProperties, boolean openBattle) {
+	public void showNewBattleDialog(BattleProperties battleProperties) {
 		try {
 			battleManager.pauseBattle();
 			final NewBattleDialog battleDialog = Container.createComponent(NewBattleDialog.class);
 
-			battleDialog.setup(battleProperties, openBattle);
+			battleDialog.setup(settingsManager, battleProperties);
 			WindowUtil.packCenterShow(getRobocodeFrame(), battleDialog);
 		} finally {
 			battleManager.resumeBattle();
@@ -518,7 +518,7 @@ public class WindowManager implements IWindowManagerExt {
 				filename += ".csv";
 			}
 
-			boolean append = properties.getOptionsCommonAppendWhenSavingResults();
+			boolean append = settingsManager.getOptionsCommonAppendWhenSavingResults();
 
 			tableModel.saveToFile(filename, append);
 		}
@@ -598,7 +598,6 @@ public class WindowManager implements IWindowManagerExt {
 
 	public void runIntroBattle() {
 		final File intro = new File(FileUtil.getCwd(), "battles/intro.battle");
-
 		if (intro.exists()) {
 			battleManager.setBattleFilename(intro.getPath());
 			battleManager.loadBattleProperties();

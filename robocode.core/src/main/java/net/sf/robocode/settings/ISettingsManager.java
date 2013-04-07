@@ -200,9 +200,29 @@ public interface ISettingsManager {
 
 	boolean getOptionsCommonNotifyAboutNewBetaVersions();
 
-	int getNumberOfRounds();
+	int getBattleDefaultBattlefieldWidth();
 
-	void setNumberOfRounds(int numberOfRounds);
+	void setBattleDefaultBattlefieldWidth(int battlefieldWidth);
+
+	int getBattleDefaultBattlefieldHeight();
+
+	void setBattleDefaultBattlefieldHeight(int battlefieldHeight);
+
+	double getBattleDefaultGunCoolingRate();
+
+	void setBattleDefaultGunCoolingRate(double gunCoolingRate);
+
+	long getBattleDefaultInactivityTime();
+
+	void setBattleDefaultInactivityTime(long inactivityTime);
+
+	boolean getBattleDefaultHideEnemyNames();
+
+	void setBattleDefaultHideEnemyNames(boolean hideEnemyNames);
+
+	int getBattleDefaultNumberOfRounds();
+
+	void setBattleDefaultNumberOfRounds(int numberOfRounds);
 
 	void store(FileOutputStream out, String desc) throws IOException;
 
@@ -278,5 +298,10 @@ public interface ISettingsManager {
 			CPU_CONSTANT = "robocode.cpu.constant",
 			LAST_RUN_VERSION = "robocode.version.lastrun",
 
-			NUMBER_OF_ROUNDS = "robocode.numberOfBattles";
+			BATTLE_DEFAULT_BATTLEFIELD_WIDTH = "robocode.battle.default.battlefieldWidth",
+			BATTLE_DEFAULT_BATTLEFIELD_HEIGHT = "robocode.battle.default.battlefieldHeight",
+			BATTLE_DEFAULT_NUMBER_OF_ROUNDS = "robocode.battle.default.numberOfBattles",
+			BATTLE_DEFAULT_GUN_COOLING_RATE = "robocode.battle.default.gunCoolingRate",
+			BATTLE_DEFAULT_INACTIVITY_TIME = "robocode.battle.default.inactivityTime",
+			BATTLE_DEFAULT_HIDE_ENEMY_NAMES = "robocode.battle.default.hideEnemyNames";
 }

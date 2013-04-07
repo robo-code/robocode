@@ -10,10 +10,13 @@ package net.sf.robocode.ui.dialog;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.sf.robocode.battle.BattleProperties;
+import net.sf.robocode.settings.ISettingsManager;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,6 +34,7 @@ public class NewBattleBattleFieldTab extends JPanel {
 	private final static int MAX_BATTLEFIELD_SIZE = 5000;
 	private final static int BATTLEFIELD_STEP_SIZE = 100;
 
+	private ISettingsManager settingsManager;
 	private BattleProperties battleProperties;
 
 	private final EventHandler eventHandler = new EventHandler();
@@ -49,16 +53,15 @@ public class NewBattleBattleFieldTab extends JPanel {
 		super();
 	}
 
-	public void setup(BattleProperties battleProperties) {
+	public void setup(ISettingsManager settingsManager, BattleProperties battleProperties) {
+		this.settingsManager = settingsManager;
 		this.battleProperties = battleProperties;
 
 		battlefieldWidthSlider = createBattlefieldSizeSlider();
 		battlefieldWidthSlider.setOrientation(SwingConstants.HORIZONTAL);
-		battlefieldWidthSlider.setValue(battleProperties.getBattlefieldWidth());
 
 		battlefieldHeightSlider = createBattlefieldSizeSlider();
 		battlefieldHeightSlider.setOrientation(SwingConstants.VERTICAL);
-		battlefieldHeightSlider.setValue(battleProperties.getBattlefieldHeight());
 		battlefieldHeightSlider.setInverted(true);
 
 		battlefieldSizeLabel = new BattlefieldSizeLabel();
@@ -75,6 +78,7 @@ public class NewBattleBattleFieldTab extends JPanel {
 
 	private JPanel createBattlefieldSizePanel() {
 		JPanel panel = new JPanel();
+		panel.addAncestorListener(eventHandler);
 		
 		Border border = BorderFactory.createCompoundBorder(
 				BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Battlefield Size"),
@@ -154,10 +158,6 @@ public class NewBattleBattleFieldTab extends JPanel {
 	private void updateBattlefieldSizeLabel() {
 		int w = battlefieldWidthSlider.getValue();
 		int h = battlefieldHeightSlider.getValue();
-
-		battleProperties.setBattlefieldWidth(w);
-		battleProperties.setBattlefieldHeight(h);
-
 		battlefieldSizeLabel.setText(w + " x " + h);
 	}
 
@@ -174,12 +174,34 @@ public class NewBattleBattleFieldTab extends JPanel {
 	}
 
 
-	private class EventHandler implements ActionListener, ChangeListener {
+	private class EventHandler implements AncestorListener, ActionListener, ChangeListener {
+		@Override
+		public void ancestorAdded(AncestorEvent event) {
+			battlefieldWidthSlider.setValue(battleProperties.getBattlefieldWidth());
+			battlefieldHeightSlider.setValue(battleProperties.getBattlefieldHeight());
+			updateBattlefieldSizeLabel();
+		}
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() instanceof SizeButton) {
-				SizeButton button = (SizeButton) e.getSource();
+		public void ancestorRemoved(AncestorEvent event) {
+			int weight = battlefieldWidthSlider.getValue();
+			int height = battlefieldHeightSlider.getValue();
+
+			settingsManager.setBattleDefaultBattlefieldWidth(weight);
+			settingsManager.setBattleDefaultBattlefieldHeight(height);
+			
+			battleProperties.setBattlefieldWidth(weight);
+			battleProperties.setBattlefieldHeight(height);			
+		}
+
+		@Override
+		public void ancestorMoved(AncestorEvent event) {
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			if (event.getSource() instanceof SizeButton) {
+				SizeButton button = (SizeButton) event.getSource();
 				battlefieldWidthSlider.setValue(button.width);
 				battlefieldHeightSlider.setValue(button.height);
 				updateBattlefieldSizeLabel();
@@ -187,8 +209,8 @@ public class NewBattleBattleFieldTab extends JPanel {
 		}
 
 		@Override
-		public void stateChanged(ChangeEvent e) {
-			if ((e.getSource() == battlefieldWidthSlider) || (e.getSource() == battlefieldHeightSlider)) {
+		public void stateChanged(ChangeEvent event) {
+			if ((event.getSource() == battlefieldWidthSlider) || (event.getSource() == battlefieldHeightSlider)) {
 				updateBattlefieldSizeLabel();
 			}
 		}
