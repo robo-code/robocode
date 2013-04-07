@@ -10,6 +10,7 @@ package net.sf.robocode.host.io;
 
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 
 import java.io.*;
 import java.net.JarURLConnection;
@@ -104,6 +105,7 @@ public class RobotFileSystemManager {
 		try {
 			return (readableRootDirectory == null) ? null : new File(readableRootDirectory).getCanonicalFile();
 		} catch (IOException e) {
+			Logger.logError(e);
 			return null;
 		}
 	}
@@ -114,6 +116,7 @@ public class RobotFileSystemManager {
 					? null
 					: new File(writableRootDirectory, robotProxy.getStatics().getShortClassName() + ".data").getCanonicalFile();
 		} catch (IOException e) {
+			Logger.logError(e);
 			return null;
 		}
 	}
@@ -127,7 +130,7 @@ public class RobotFileSystemManager {
 		// TODO the file is never replaced from jar or directory after it was created
 		// TODO it would be good to replace it when it have bigger last modified date
 		if (!file.exists()) {
-			if (!parent.exists() && !parent.mkdirs()) {
+			if (parent != null && !parent.exists() && !parent.mkdirs()) {
 				return file;
 			}
 			InputStream is = null;
@@ -143,7 +146,10 @@ public class RobotFileSystemManager {
 				os = new FileOutputStream(file);
 
 				copyStream(is, os);
-			} catch (IOException ignore) {} finally {
+			} catch (IOException e) {
+				Logger.logError(e);
+				return null;
+			} finally {
 				FileUtil.cleanupStream(is);
 				FileUtil.cleanupStream(os);
 			}

@@ -697,7 +697,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * method.
 	 *
 	 * @param filename the file name of the data file for your robot
-	 * @return a file representing the data file for your robot
+	 * @return a file representing the data file for your robot or null if the data
+	 * 		   file could not be created due to an error.
 	 * @see #getDataDirectory()
 	 * @see RobocodeFileOutputStream
 	 * @see RobocodeFileWriter
