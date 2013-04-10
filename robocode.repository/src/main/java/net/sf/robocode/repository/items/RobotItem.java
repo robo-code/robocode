@@ -62,8 +62,8 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	private static final String PROPERTIES_EXTENSION = ".properties";
 	private static final String HTML_EXTENSION = ".html";
 
-	private static final boolean ALWAYS_USE_CACHE_FOR_DATA = System.getProperty("ALWAYSUSECACHEFORDATA", "false").equals(
-			"true");
+	private static final boolean ALWAYS_USE_CACHE_FOR_DATA =
+			System.getProperty("ALWAYSUSECACHEFORDATA", "false").equals("true");
 
 	RobotType robotType;
 
@@ -554,20 +554,22 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		if (getRootPackage() == null) {
 			return null;
 		}
-		File dir;
+		String dir;
 
 		if (root.isJAR()) {
 			String jarFile = getClassPathURL().getFile();
 
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
-			dir = FileUtil.getRobotsDataDir();
+			dir = FileUtil.getRobotsDataDir().getPath();
 			if (jarFile.length() > 0) {
-				dir = new File(dir, File.separator + jarFile + '_');
+				dir += File.separator + jarFile + '_';
 			}
+			dir += File.separator;
 		} else {
-			dir = ALWAYS_USE_CACHE_FOR_DATA ? FileUtil.getRobotsDataDir() : root.getPath();
+			dir = ALWAYS_USE_CACHE_FOR_DATA ? FileUtil.getRobotsDataDir().getAbsolutePath() : getClassPathURL().getFile();
 		}
-		return dir + File.separator + getFullPackage().replace('.', File.separatorChar);
+
+		return dir + (ALWAYS_USE_CACHE_FOR_DATA ? "" : getRootPackage());
 	}
 
 	public RobotSpecification createRobotSpecification(RobotSpecification battleRobotSpec, String teamId) {

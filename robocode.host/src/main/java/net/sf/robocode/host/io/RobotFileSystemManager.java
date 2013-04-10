@@ -174,13 +174,11 @@ public class RobotFileSystemManager {
 
 	public boolean isReadable(String fileName) {
 		File allowedDirectory = getReadableDirectory();
-
 		if (allowedDirectory == null) {
 			return false;
 		}
 
 		File attemptedFile;
-
 		try {
 			attemptedFile = new File(fileName).getCanonicalFile();
 		} catch (IOException e) {
