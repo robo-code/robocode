@@ -62,8 +62,8 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	private static final String PROPERTIES_EXTENSION = ".properties";
 	private static final String HTML_EXTENSION = ".html";
 
-	private static final boolean ALWAYS_USE_CACHE_FOR_DATA =
-			System.getProperty("ALWAYSUSECACHEFORDATA", "false").equals("true");
+	private static final boolean ALWAYS_USE_CACHE_FOR_DATA = System.getProperty("ALWAYSUSECACHEFORDATA", "false").equals(
+			"true");
 
 	RobotType robotType;
 
@@ -547,7 +547,7 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		} else {
 			dir = getClassPathURL().getFile();
 		}
-		return dir + getRootPackage();
+		return dir + File.separator + getFullPackage().replace('.', File.separatorChar);
 	}
 
 	public String getWritableDirectory() {
@@ -566,10 +566,11 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 			}
 			dir += File.separator;
 		} else {
-			dir = ALWAYS_USE_CACHE_FOR_DATA ? FileUtil.getRobotsDataDir().getAbsolutePath() : getClassPathURL().getFile();
+			dir = ALWAYS_USE_CACHE_FOR_DATA
+					? FileUtil.getRobotsDataDir().getAbsolutePath()
+					: getClassPathURL().getFile();
 		}
-
-		return dir + (ALWAYS_USE_CACHE_FOR_DATA ? "" : getRootPackage());
+		return dir + File.separator + getFullPackage().replace('.', File.separatorChar);
 	}
 
 	public RobotSpecification createRobotSpecification(RobotSpecification battleRobotSpec, String teamId) {

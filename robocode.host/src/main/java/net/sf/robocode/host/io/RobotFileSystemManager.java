@@ -137,18 +137,20 @@ public class RobotFileSystemManager {
 			OutputStream os = null;
 
 			try {
-				URL unUrl = new URL(rootPath + dataDir + filename);
-				final URLConnection connection = unUrl.openConnection();
+				URL url = new URL(rootPath + dataDir + filename);
 
+				URLConnection connection = url.openConnection();
 				connection.setUseCaches(false);
-
-				is = connection.getInputStream();
+				try {
+					is = connection.getInputStream();
+				} catch (FileNotFoundException ignore) {// Expected as no file might exists with the specified input 'filename'
+				}
 				os = new FileOutputStream(file);
-
-				copyStream(is, os);
+				if (is != null) {
+					copyStream(is, os);
+				}
 			} catch (IOException e) {
 				Logger.logError(e);
-				return null;
 			} finally {
 				FileUtil.cleanupStream(is);
 				FileUtil.cleanupStream(os);
