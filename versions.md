@@ -1,4 +1,7 @@
-## Version 1.8.2.0 Alpha (08-Apr-2013)
+## Version 1.8.2.0 Alpha (14-Apr-2013)
+
+### Bug fixes
+* [Bug-358][]: Robot in default package cannot write to files. Should at least get a warning.
 
 ### Changes
 * Improved the UI regarding Battle Rules:
@@ -2850,6 +2853,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-355]: http://sourceforge.net/p/robocode/bugs/355/  (Priority battles not accepted for mini/micro/nano rumbles)
 [Bug-356]: http://sourceforge.net/p/robocode/bugs/356/  (Update Roborumble URLs from Darkcanuck to LiteRumble)
 [Bug-357]: http://sourceforge.net/p/robocode/bugs/357/  (Tab characters are inserted in the last line of a robot source file when opening it)
+[Bug-358]: http://sourceforge.net/p/robocode/bugs/358/  (Robot in default package cannot write to files. Should at least get a warning)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)

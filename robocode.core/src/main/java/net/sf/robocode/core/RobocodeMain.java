@@ -104,6 +104,13 @@ public final class RobocodeMain extends RobocodeMainBase {
 	}
 
 	public void run() {
+		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {			
+			@Override
+			public void uncaughtException(Thread thread, Throwable t) {
+				t.printStackTrace();
+			}
+		});
+
 		try {
 			hostManager.initSecurity();
 

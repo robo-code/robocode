@@ -242,14 +242,15 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 				drainEnergy();
 				println(e);
 				logMessage(statics.getName() + ": Exception: " + e); // without stack here
+			} catch (ThreadDeath e) {
+				drainEnergy();
+				println(e);
+				logMessage(statics.getName() + " stopped successfully.");
+				throw e; // must be re-thrown in order to stop the thread
 			} catch (Throwable t) {
 				drainEnergy();
-				if (t instanceof ThreadDeath) {
-					logMessage(statics.getName() + " stopped successfully.");
-				} else {
-					println(t);
-					logMessage(statics.getName() + ": Throwable: " + t); // without stack here
-				}
+				println(t);
+				logMessage(statics.getName() + ": Throwable: " + t); // without stack here
 			} finally {
 				waitForBattleEndImpl();
 			}
