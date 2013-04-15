@@ -79,6 +79,9 @@ namespace robocode.control.snapshot {
         bool isDroid();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
+        bool isSentryRobot();
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         bool isPaintRobot();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
@@ -158,17 +161,19 @@ namespace robocode.control.snapshot {
         
         internal static global::net.sf.jni4net.jni.MethodId j4n_isDroid20;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_isPaintRobot21;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_isSentryRobot21;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_isPaintEnabled22;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_isPaintRobot22;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_isSGPaintEnabled23;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_isPaintEnabled23;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getDebugProperties24;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_isSGPaintEnabled24;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getOutputStreamSnapshot25;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getDebugProperties25;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getScoreSnapshot26;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getOutputStreamSnapshot26;
+        
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getScoreSnapshot27;
         
         private @__IRobotSnapshot(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
@@ -197,12 +202,13 @@ namespace robocode.control.snapshot {
             global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getRadarColor18 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "getRadarColor", "()I");
             global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getScanColor19 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "getScanColor", "()I");
             global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isDroid20 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "isDroid", "()Z");
-            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isPaintRobot21 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "isPaintRobot", "()Z");
-            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isPaintEnabled22 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "isPaintEnabled", "()Z");
-            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isSGPaintEnabled23 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "isSGPaintEnabled", "()Z");
-            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getDebugProperties24 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "getDebugProperties", "()[Lrobocode/control/snapshot/IDebugProperty;");
-            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getOutputStreamSnapshot25 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "getOutputStreamSnapshot", "()Ljava/lang/String;");
-            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getScoreSnapshot26 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "getScoreSnapshot", "()Lrobocode/control/snapshot/IScoreSnapshot;");
+            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isSentryRobot21 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "isSentryRobot", "()Z");
+            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isPaintRobot22 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "isPaintRobot", "()Z");
+            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isPaintEnabled23 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "isPaintEnabled", "()Z");
+            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isSGPaintEnabled24 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "isSGPaintEnabled", "()Z");
+            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getDebugProperties25 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "getDebugProperties", "()[Lrobocode/control/snapshot/IDebugProperty;");
+            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getOutputStreamSnapshot26 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "getOutputStreamSnapshot", "()Ljava/lang/String;");
+            global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getScoreSnapshot27 = @__env.GetMethodID(global::robocode.control.snapshot.@__IRobotSnapshot.staticClass, "getScoreSnapshot", "()Lrobocode/control/snapshot/IScoreSnapshot;");
         }
         
         public global::java.lang.String getName() {
@@ -352,45 +358,52 @@ namespace robocode.control.snapshot {
             }
         }
         
+        public bool isSentryRobot() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
+            return ((bool)(@__env.CallBooleanMethod(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isSentryRobot21)));
+            }
+        }
+        
         public bool isPaintRobot() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((bool)(@__env.CallBooleanMethod(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isPaintRobot21)));
+            return ((bool)(@__env.CallBooleanMethod(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isPaintRobot22)));
             }
         }
         
         public bool isPaintEnabled() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((bool)(@__env.CallBooleanMethod(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isPaintEnabled22)));
+            return ((bool)(@__env.CallBooleanMethod(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isPaintEnabled23)));
             }
         }
         
         public bool isSGPaintEnabled() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((bool)(@__env.CallBooleanMethod(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isSGPaintEnabled23)));
+            return ((bool)(@__env.CallBooleanMethod(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_isSGPaintEnabled24)));
             }
         }
         
         public robocode.control.snapshot.IDebugProperty[] getDebugProperties() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return global::net.sf.jni4net.utils.Convertor.ArrayFullJ2C<robocode.control.snapshot.IDebugProperty[], global::robocode.control.snapshot.IDebugProperty>(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getDebugProperties24));
+            return global::net.sf.jni4net.utils.Convertor.ArrayFullJ2C<robocode.control.snapshot.IDebugProperty[], global::robocode.control.snapshot.IDebugProperty>(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getDebugProperties25));
             }
         }
         
         public global::java.lang.String getOutputStreamSnapshot() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getOutputStreamSnapshot25));
+            return global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getOutputStreamSnapshot26));
             }
         }
         
         public global::robocode.control.snapshot.IScoreSnapshot getScoreSnapshot() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::robocode.control.snapshot.IScoreSnapshot>(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getScoreSnapshot26));
+            return global::net.sf.jni4net.utils.Convertor.FullJ2C<global::robocode.control.snapshot.IScoreSnapshot>(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.snapshot.@__IRobotSnapshot.j4n_getScoreSnapshot27));
             }
         }
         
@@ -418,12 +431,13 @@ namespace robocode.control.snapshot {
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getRadarColor", "getRadarColor18", "()I"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getScanColor", "getScanColor19", "()I"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isDroid", "isDroid20", "()Z"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isPaintRobot", "isPaintRobot21", "()Z"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isPaintEnabled", "isPaintEnabled22", "()Z"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isSGPaintEnabled", "isSGPaintEnabled23", "()Z"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getDebugProperties", "getDebugProperties24", "()[Lrobocode/control/snapshot/IDebugProperty;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getOutputStreamSnapshot", "getOutputStreamSnapshot25", "()Ljava/lang/String;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getScoreSnapshot", "getScoreSnapshot26", "()Lrobocode/control/snapshot/IScoreSnapshot;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isSentryRobot", "isSentryRobot21", "()Z"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isPaintRobot", "isPaintRobot22", "()Z"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isPaintEnabled", "isPaintEnabled23", "()Z"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isSGPaintEnabled", "isSGPaintEnabled24", "()Z"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getDebugProperties", "getDebugProperties25", "()[Lrobocode/control/snapshot/IDebugProperty;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getOutputStreamSnapshot", "getOutputStreamSnapshot26", "()Ljava/lang/String;"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getScoreSnapshot", "getScoreSnapshot27", "()Lrobocode/control/snapshot/IScoreSnapshot;"));
             return methods;
         }
         
@@ -679,7 +693,19 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static bool isPaintRobot21(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static bool isSentryRobot21(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+            // ()Z
+            // ()Z
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            bool @__return = default(bool);
+            try {
+            global::robocode.control.snapshot.IRobotSnapshot @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::robocode.control.snapshot.IRobotSnapshot>(@__env, @__obj);
+            @__return = ((bool)(@__real.isSentryRobot()));
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
+            return @__return;
+        }
+        
+        private static bool isPaintRobot22(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -691,7 +717,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static bool isPaintEnabled22(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static bool isPaintEnabled23(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -703,7 +729,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static bool isSGPaintEnabled23(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static bool isSGPaintEnabled24(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -715,7 +741,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static global::net.sf.jni4net.utils.JniHandle getDebugProperties24(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getDebugProperties25(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()[Lrobocode/control/snapshot/IDebugProperty;
             // ()[Lrobocode/control/snapshot/IDebugProperty;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -727,7 +753,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static global::net.sf.jni4net.utils.JniHandle getOutputStreamSnapshot25(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getOutputStreamSnapshot26(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Ljava/lang/String;
             // ()Ljava/lang/String;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -739,7 +765,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static global::net.sf.jni4net.utils.JniHandle getScoreSnapshot26(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static global::net.sf.jni4net.utils.JniHandle getScoreSnapshot27(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Lrobocode/control/snapshot/IScoreSnapshot;
             // ()Lrobocode/control/snapshot/IScoreSnapshot;
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);

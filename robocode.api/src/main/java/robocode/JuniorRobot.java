@@ -36,8 +36,9 @@ import static java.lang.Math.toRadians;
  * @see Robot
  * @see AdvancedRobot
  * @see TeamRobot
- * @see Droid
  * @see RateControlRobot
+ * @see Droid
+ * @see SentryRobot
  *
  * @author Nutch Poovarawan from Cubic Creative (designer)
  * @author Flemming N. Larsen (original)

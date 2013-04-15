@@ -190,6 +190,15 @@ public interface IRobotSnapshot {
 	boolean isDroid();
 
 	/**
+	 * Checks if this robot is a {@link robocode.SentryRobot SentryRobot}.
+	 *
+	 * @return {@code true} if this robot is a SentryRobot; {@code false} otherwise.
+	 *
+	 * @since 1.9.0.0
+	 */
+	boolean isSentryRobot();
+
+	/**
 	 * Checks if this robot is a {@link robocode.robotinterfaces.IPaintRobot IPaintRobot} or is invoking getGraphics()
 	 *
 	 * @return {@code true} if this robot is a painting; {@code false} otherwise.

@@ -113,15 +113,13 @@ namespace net.sf.robocode.security
         {
             return statusHelper.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
                                              bodyTurnRemaining, radarTurnRemaining, gunTurnRemaining, distanceRemaining,
-                                             gunHeat, others, roundNum,
-                                             numRounds, time);
+                                             gunHeat, others, roundNum, numRounds, time);
         }
 
-        public static BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds,
-                                              double gunCoolingRate, long inactivityTime)
+        public static BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime,
+            bool hideEnemyNames, int sentryRobotAttackRange)
         {
-            return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate,
-                                           inactivityTime);
+            return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime, hideEnemyNames, sentryRobotAttackRange);
         }
 
         public static string GetRobotName()

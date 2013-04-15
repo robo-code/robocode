@@ -27,7 +27,9 @@ import java.util.Vector;
  * @see JuniorRobot
  * @see Robot
  * @see AdvancedRobot
+ * @see RateControlRobot
  * @see Droid
+ * @see SentryRobot
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)

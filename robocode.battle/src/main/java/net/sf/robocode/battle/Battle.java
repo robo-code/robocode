@@ -86,13 +86,13 @@ public final class Battle extends BaseBattle {
 		this.cpuConstant = cpuManager.getCpuConstant();
 	}
 
-	public void setup(RobotSpecification[] battlingRobotsList, BattleProperties battleProperties, boolean paused) {
+	public void setup(RobotSpecification[] battlingRobotsList, BattleProperties battleProps, boolean paused) {
 		isPaused = paused;
-		battleRules = HiddenAccess.createRules(battleProperties.getBattlefieldWidth(),
-				battleProperties.getBattlefieldHeight(), battleProperties.getNumRounds(), battleProperties.getGunCoolingRate(),
-				battleProperties.getInactivityTime(), battleProperties.getHideEnemyNames());
+		battleRules = HiddenAccess.createRules(battleProps.getBattlefieldWidth(), battleProps.getBattlefieldHeight(),
+				battleProps.getNumRounds(), battleProps.getGunCoolingRate(), battleProps.getInactivityTime(),
+				battleProps.getHideEnemyNames(), battleProps.getSentryRobotAttackRange());
 		robotsCount = battlingRobotsList.length;
-		computeInitialPositions(battleProperties.getInitialPositions());
+		computeInitialPositions(battleProps.getInitialPositions());
 		createPeers(battlingRobotsList);
 	}
 
@@ -720,12 +720,10 @@ public final class Battle extends BaseBattle {
 
 		while (matcher.find()) {
 			String pos = matcher.group();
-
 			if (pos.length() > 0) {
 				positions.add(pos);
 			}
 		}
-
 		if (positions.size() == 0) {
 			return;
 		}
@@ -738,7 +736,7 @@ public final class Battle extends BaseBattle {
 		for (int i = 0; i < positions.size(); i++) {
 			coords = positions.get(i).split(",");
 
-			final Random random = RandomFactory.getRandom();
+			Random random = RandomFactory.getRandom();
 
 			x = RobotPeer.WIDTH + random.nextDouble() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
 			y = RobotPeer.HEIGHT + random.nextDouble() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
@@ -746,23 +744,24 @@ public final class Battle extends BaseBattle {
 
 			int len = coords.length;
 
-			if (len >= 1) {
-				// noinspection EmptyCatchBlock
+			if (len >= 1 && coords[0].trim().length() > 0) {
 				try {
 					x = Double.parseDouble(coords[0].replaceAll("[\\D]", ""));
-				} catch (NumberFormatException e) {}
-
-				if (len >= 2) {
-					// noinspection EmptyCatchBlock
+				} catch (NumberFormatException e) {
+					Logger.logError(e);
+				}
+				if (len >= 2 && coords[1].trim().length() > 0) {
 					try {
 						y = Double.parseDouble(coords[1].replaceAll("[\\D]", ""));
-					} catch (NumberFormatException e) {}
-
-					if (len >= 3) {
-						// noinspection EmptyCatchBlock
+					} catch (NumberFormatException e) {
+						Logger.logError(e);
+					}
+					if (len >= 3 && coords[2].trim().length() > 0) {
 						try {
 							heading = Math.toRadians(Double.parseDouble(coords[2].replaceAll("[\\D]", "")));
-						} catch (NumberFormatException e) {}
+						} catch (NumberFormatException e) {
+							Logger.logError(e);							
+						}
 					}
 				}
 			}

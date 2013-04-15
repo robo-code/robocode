@@ -229,20 +229,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// statics 
 	// -------------------
 
-	public boolean isDroid() {
-		return statics.isDroid();
-	}
-
 	public boolean isJuniorRobot() {
 		return statics.isJuniorRobot();
-	}
-
-	public boolean isInteractiveRobot() {
-		return statics.isInteractiveRobot();
-	}
-
-	public boolean isPaintRobot() {
-		return statics.isPaintRobot();
 	}
 
 	public boolean isAdvancedRobot() {
@@ -251,6 +239,22 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public boolean isTeamRobot() {
 		return statics.isTeamRobot();
+	}
+
+	public boolean isDroid() {
+		return statics.isDroid();
+	}
+
+	public boolean isSentryRobot() {
+		return statics.isSentryRobot();
+	}
+
+	public boolean isInteractiveRobot() {
+		return statics.isInteractiveRobot();
+	}
+
+	public boolean isPaintRobot() {
+		return statics.isPaintRobot();
 	}
 
 	public String getName() {
@@ -679,9 +683,20 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		if (!valid) {
 			final Random random = RandomFactory.getRandom();
 
-			for (int j = 0; j < 1000; j++) {
-				x = RobotPeer.WIDTH + random.nextDouble() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
-				y = RobotPeer.HEIGHT + random.nextDouble() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+			for (int j = 0; j < 1000; j++) { // XXX
+				x = RobotPeer.WIDTH;
+				y = RobotPeer.HEIGHT;
+
+				double rndX = random.nextDouble();
+				double rndY = random.nextDouble();
+
+				if (isSentryRobot()) {
+					x += rndX * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+					y += rndY * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+				} else {
+					x += rndX * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+					y += rndY * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);					
+				}
 				bodyHeading = 2 * Math.PI * random.nextDouble();
 				gunHeading = radarHeading = bodyHeading;
 				updateBoundingBox();
@@ -697,15 +712,17 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		isWinner = false;
 		velocity = 0;
 
-		if (statics.isTeamLeader() && statics.isDroid()) {
-			energy = 220;
-		} else if (statics.isTeamLeader()) {
-			energy = 200;
-		} else if (statics.isDroid()) {
-			energy = 120;
-		} else {
-			energy = 100;
+		energy = 100;
+		if (statics.isSentryRobot()) {
+			energy += 400;
 		}
+		if (statics.isTeamLeader()) {
+			energy += 100;
+		}
+		if (statics.isDroid()) {
+			energy += 20;
+		}
+
 		gunHeat = 3;
 
 		setHalt(false);

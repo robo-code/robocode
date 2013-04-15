@@ -14,7 +14,11 @@ using net.sf.robocode.security;
 namespace Robocode
 {
     ///<summary>
-    ///  Contains the battle rules
+    ///  Contains the battle rules returned by <see cref="Robocode.Control.Events.BattleStartedEvent.BattleRules">BattleStartedEvent.BattleRules</see>
+    ///  when a battle is started and <see cref="Robocode.Control.Events.BattleCompletedEvent.BattleRules">BattleCompletedEvent.getBattleRules</see>
+    ///  when a battle is completed.
+    ///  <seealso cref="Robocode.Control.Events.BattleStartedEvent"/>BattleStartedEvent</seealso>
+    ///  <seealso cref="Robocode.Control.Events.BattleCompletedEvent"/>BattleCompletedEvent</seealso>
     ///</summary>
     [Serializable]
     public sealed class BattleRules
@@ -24,6 +28,8 @@ namespace Robocode
         private readonly int numRounds;
         private readonly double gunCoolingRate;
         private readonly long inactivityTime;
+        private readonly bool hideEnemyNames;
+        private readonly int sentryRobotAttackRange;
 
         ///<summary>
         ///  Returns the battlefield width.
@@ -82,14 +88,32 @@ namespace Robocode
             get { return inactivityTime; }
         }
 
-        private BattleRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate,
-                            long inactivityTime)
+        ///<summary>
+        ///  Returns true if the enemy names are hidden, i.e. anonymous; false otherwise.
+        ///</summary>
+        public bool HideEnemyNames
+        {
+            get { return hideEnemyNames; }
+        }
+
+        ///<summary>
+        ///  Returns the attack range for a <see cref="Robocode.SentryRobot">SentryRobot</see>.
+        ///</summary>
+        public int SentryRobotAttackRange
+        {
+            get { return sentryRobotAttackRange; }
+        }
+
+        private BattleRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime,
+            bool hideEnemyNames, int sentryRobotAttackRange)
         {
             this.battlefieldWidth = battlefieldWidth;
             this.battlefieldHeight = battlefieldHeight;
             this.numRounds = numRounds;
             this.gunCoolingRate = gunCoolingRate;
             this.inactivityTime = inactivityTime;
+            this.hideEnemyNames = hideEnemyNames;
+            this.sentryRobotAttackRange = sentryRobotAttackRange;
         }
 
         private static IHiddenRulesHelper createHiddenHelper()
@@ -99,10 +123,10 @@ namespace Robocode
 
         private class HiddenHelper : IHiddenRulesHelper
         {
-            public BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds,
-                                           double gunCoolingRate, long inactivityTime)
+            public BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime,
+                bool hideEnemyNames, int sentryRobotAttackRange)
             {
-                return new BattleRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime);
+                return new BattleRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime, hideEnemyNames, sentryRobotAttackRange);
             }
         }
     }

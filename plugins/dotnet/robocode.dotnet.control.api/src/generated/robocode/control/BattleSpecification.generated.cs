@@ -27,13 +27,17 @@ namespace robocode.control {
         
         internal static global::net.sf.jni4net.jni.MethodId j4n_getHideEnemyNames4;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getRobots5;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getSentryRobotAttackRange5;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n__ctorBattleSpecification6;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getRobots6;
         
         internal static global::net.sf.jni4net.jni.MethodId j4n__ctorBattleSpecification7;
         
         internal static global::net.sf.jni4net.jni.MethodId j4n__ctorBattleSpecification8;
+        
+        internal static global::net.sf.jni4net.jni.MethodId j4n__ctorBattleSpecification9;
+        
+        internal static global::net.sf.jni4net.jni.MethodId j4n__ctorBattleSpecification10;
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(IJDLrobocode/control/BattlefieldSpecification;[Lrobocode/control/RobotSpecificat" +
             "ion;)V")]
@@ -41,7 +45,7 @@ namespace robocode.control {
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 20)){
-            @__env.NewObject(global::robocode.control.BattleSpecification.staticClass, global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification6, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par3), global::net.sf.jni4net.utils.Convertor.ParArrayStrongCp2J(@__env, par4));
+            @__env.NewObject(global::robocode.control.BattleSpecification.staticClass, global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification7, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par3), global::net.sf.jni4net.utils.Convertor.ParArrayStrongCp2J(@__env, par4));
             }
         }
         
@@ -51,7 +55,17 @@ namespace robocode.control {
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 22)){
-            @__env.NewObject(global::robocode.control.BattleSpecification.staticClass, global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification7, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par3), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par4), global::net.sf.jni4net.utils.Convertor.ParArrayStrongCp2J(@__env, par5));
+            @__env.NewObject(global::robocode.control.BattleSpecification.staticClass, global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification8, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par3), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par4), global::net.sf.jni4net.utils.Convertor.ParArrayStrongCp2J(@__env, par5));
+            }
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Lrobocode/control/BattlefieldSpecification;IJDIZ[Lrobocode/control/RobotSpecific" +
+            "ation;)V")]
+        public BattleSpecification(global::robocode.control.BattlefieldSpecification par0, int par1, long par2, double par3, int par4, bool par5, robocode.control.RobotSpecification[] par6) : 
+                base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 24)){
+            @__env.NewObject(global::robocode.control.BattleSpecification.staticClass, global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification9, this, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par3), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par4), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par5), global::net.sf.jni4net.utils.Convertor.ParArrayStrongCp2J(@__env, par6));
             }
         }
         
@@ -61,7 +75,7 @@ namespace robocode.control {
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 16)){
-            @__env.NewObject(global::robocode.control.BattleSpecification.staticClass, global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification8, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1), global::net.sf.jni4net.utils.Convertor.ParArrayStrongCp2J(@__env, par2));
+            @__env.NewObject(global::robocode.control.BattleSpecification.staticClass, global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification10, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par1), global::net.sf.jni4net.utils.Convertor.ParArrayStrongCp2J(@__env, par2));
             }
         }
         
@@ -82,12 +96,15 @@ namespace robocode.control {
             global::robocode.control.BattleSpecification.j4n_getBattlefield2 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "getBattlefield", "()Lrobocode/control/BattlefieldSpecification;");
             global::robocode.control.BattleSpecification.j4n_getNumRounds3 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "getNumRounds", "()I");
             global::robocode.control.BattleSpecification.j4n_getHideEnemyNames4 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "getHideEnemyNames", "()Z");
-            global::robocode.control.BattleSpecification.j4n_getRobots5 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "getRobots", "()[Lrobocode/control/RobotSpecification;");
-            global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification6 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "<init>", "(IJDLrobocode/control/BattlefieldSpecification;[Lrobocode/control/RobotSpecificat" +
+            global::robocode.control.BattleSpecification.j4n_getSentryRobotAttackRange5 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "getSentryRobotAttackRange", "()I");
+            global::robocode.control.BattleSpecification.j4n_getRobots6 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "getRobots", "()[Lrobocode/control/RobotSpecification;");
+            global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification7 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "<init>", "(IJDLrobocode/control/BattlefieldSpecification;[Lrobocode/control/RobotSpecificat" +
                     "ion;)V");
-            global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification7 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "<init>", "(IJDZLrobocode/control/BattlefieldSpecification;[Lrobocode/control/RobotSpecifica" +
+            global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification8 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "<init>", "(IJDZLrobocode/control/BattlefieldSpecification;[Lrobocode/control/RobotSpecifica" +
                     "tion;)V");
-            global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification8 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "<init>", "(ILrobocode/control/BattlefieldSpecification;[Lrobocode/control/RobotSpecificatio" +
+            global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification9 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "<init>", "(Lrobocode/control/BattlefieldSpecification;IJDIZ[Lrobocode/control/RobotSpecific" +
+                    "ation;)V");
+            global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification10 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "<init>", "(ILrobocode/control/BattlefieldSpecification;[Lrobocode/control/RobotSpecificatio" +
                     "n;)V");
         }
         
@@ -131,11 +148,19 @@ namespace robocode.control {
             }
         }
         
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
+        public virtual int getSentryRobotAttackRange() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
+            return ((int)(@__env.CallIntMethod(this, global::robocode.control.BattleSpecification.j4n_getSentryRobotAttackRange5)));
+            }
+        }
+        
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()[Lrobocode/control/RobotSpecification;")]
         public virtual robocode.control.RobotSpecification[] getRobots() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return global::net.sf.jni4net.utils.Convertor.ArrayStrongJ2Cp<robocode.control.RobotSpecification[], global::robocode.control.RobotSpecification>(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.BattleSpecification.j4n_getRobots5));
+            return global::net.sf.jni4net.utils.Convertor.ArrayStrongJ2Cp<robocode.control.RobotSpecification[], global::robocode.control.RobotSpecification>(@__env, @__env.CallObjectMethodPtr(this, global::robocode.control.BattleSpecification.j4n_getRobots6));
             }
         }
         
