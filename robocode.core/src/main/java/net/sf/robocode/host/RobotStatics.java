@@ -208,16 +208,10 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 	private static class SerializableHelper implements ISerializableHelper {
 		public int sizeOf(RbSerializer serializer, Object object) {
 			RobotStatics obj = (RobotStatics) object;
-			int size = RbSerializer.SIZEOF_TYPEINFO
-					+ RbSerializer.SIZEOF_BOOL * 9
-					+ serializer.sizeOf(obj.name)
-					+ serializer.sizeOf(obj.shortName)
-					+ serializer.sizeOf(obj.veryShortName)
-					+ serializer.sizeOf(obj.fullClassName)
-					+ serializer.sizeOf(obj.shortClassName)
-					+ RbSerializer.SIZEOF_INT * 6
-					+ RbSerializer.SIZEOF_DOUBLE
-					+ RbSerializer.SIZEOF_LONG;
+			int size = RbSerializer.SIZEOF_TYPEINFO + RbSerializer.SIZEOF_BOOL * 9 + serializer.sizeOf(obj.name)
+					+ serializer.sizeOf(obj.shortName) + serializer.sizeOf(obj.veryShortName)
+					+ serializer.sizeOf(obj.fullClassName) + serializer.sizeOf(obj.shortClassName)
+					+ RbSerializer.SIZEOF_INT * 6 + RbSerializer.SIZEOF_DOUBLE + RbSerializer.SIZEOF_LONG;
 
 			if (obj.teammates != null) {
 				for (String mate : obj.teammates) {
@@ -280,8 +274,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 			String fullClassName = serializer.deserializeString(buffer);
 			String shortClassName = serializer.deserializeString(buffer);
 
-			BattleRules battleRules = HiddenAccess.createRules(
-					serializer.deserializeInt(buffer), // battleFieldWidth
+			BattleRules battleRules = HiddenAccess.createRules(serializer.deserializeInt(buffer), // battleFieldWidth
 					serializer.deserializeInt(buffer), // battleFieldHeight
 					serializer.deserializeInt(buffer), // numOfRounds
 					serializer.deserializeDouble(buffer), // gunCoolingRate
