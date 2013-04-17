@@ -1048,21 +1048,18 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			hitWall = true;
 			fixx = getBattleFieldWidth() - HALF_WIDTH_OFFSET - x;
 			angle = normalRelativeAngle(PI / 2 - bodyHeading);
-		}
 
-		if (x < HALF_WIDTH_OFFSET) {
+		} else if (x < HALF_WIDTH_OFFSET) {
 			hitWall = true;
 			fixx = HALF_WIDTH_OFFSET - x;
 			angle = normalRelativeAngle(3 * PI / 2 - bodyHeading);
-		}
 
-		if (y > getBattleFieldHeight() - HALF_HEIGHT_OFFSET) {
+		} else if (y > getBattleFieldHeight() - HALF_HEIGHT_OFFSET) {
 			hitWall = true;
 			fixy = getBattleFieldHeight() - HALF_HEIGHT_OFFSET - y;
 			angle = normalRelativeAngle(-bodyHeading);
-		}
 
-		if (y < HALF_HEIGHT_OFFSET) {
+		} else if (y < HALF_HEIGHT_OFFSET) {
 			hitWall = true;
 			fixy = HALF_HEIGHT_OFFSET - y;
 			angle = normalRelativeAngle(PI - bodyHeading);
@@ -1091,12 +1088,17 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			x += fixx;
 			y += fixy;
 
-			x = (HALF_WIDTH_OFFSET >= x)
-					? HALF_WIDTH_OFFSET
-					: ((getBattleFieldWidth() - HALF_WIDTH_OFFSET < x) ? getBattleFieldWidth() - HALF_WIDTH_OFFSET : x);
-			y = (HALF_HEIGHT_OFFSET >= y)
-					? HALF_HEIGHT_OFFSET
-					: ((getBattleFieldHeight() - HALF_HEIGHT_OFFSET < y) ? getBattleFieldHeight() - HALF_HEIGHT_OFFSET : y);
+			if (x < HALF_WIDTH_OFFSET) {
+				x = HALF_WIDTH_OFFSET;
+			} else if (x > (getBattleFieldWidth() - HALF_WIDTH_OFFSET)) {
+				x = getBattleFieldWidth() - HALF_WIDTH_OFFSET;
+			}
+			
+			if (y < HALF_WIDTH_OFFSET) {
+				y = HALF_WIDTH_OFFSET;
+			} else if (y > (getBattleFieldHeight() - HALF_HEIGHT_OFFSET)) {
+				y = getBattleFieldHeight() - HALF_HEIGHT_OFFSET;
+			}
 
 			// Update energy, but do not reset inactiveTurnCount
 			if (statics.isAdvancedRobot()) {
@@ -1107,8 +1109,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 			currentCommands.setDistanceRemaining(0);
 			velocity = 0;
-		}
-		if (hitWall) {
+
 			setState(RobotState.HIT_WALL);
 		}
 	}
