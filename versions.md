@@ -1,4 +1,4 @@
-## Version 1.8.2.0 Alpha (14-Apr-2013)
+## Version 1.9.0.0 Alpha 1 (17-Apr-2013) The SentryRobot Release
 
 ### Bug fixes
 * [Bug-358][]: Robot in default package cannot write to files. Should at least get a warning.
