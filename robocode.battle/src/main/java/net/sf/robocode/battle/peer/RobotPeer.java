@@ -683,20 +683,35 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		if (!valid) {
 			final Random random = RandomFactory.getRandom();
 
-			for (int j = 0; j < 1000; j++) { // XXX
-				x = RobotPeer.WIDTH;
-				y = RobotPeer.HEIGHT;
+			double maxWidth = battleRules.getBattlefieldWidth() - RobotPeer.WIDTH;
+			double maxHeight = battleRules.getBattlefieldHeight() - RobotPeer.HEIGHT;
 
+			double halfRobotWidth = RobotPeer.WIDTH / 2;
+			double halfRobotHeight = RobotPeer.HEIGHT / 2;
+
+			int minBorderWidth = Math.max(RobotPeer.WIDTH, (100 - RobotPeer.WIDTH));						
+			int minBorderHeight = Math.max(RobotPeer.HEIGHT, (100 - RobotPeer.HEIGHT));	
+
+			for (int j = 0; j < 1000; j++) {
 				double rndX = random.nextDouble();
 				double rndY = random.nextDouble();
 
+				x = halfRobotWidth;
+				y = halfRobotHeight;
+
 				if (isSentryRobot()) {
-					x += rndX * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
-					y += rndY * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+					if (rndX / battleRules.getBattlefieldWidth() > rndY / battleRules.getBattlefieldHeight()) {
+						x = halfRobotWidth + rndX * maxWidth;
+						y = halfRobotHeight + ((rndY * 2 * minBorderHeight - minBorderHeight) + battleRules.getBattlefieldHeight()) % maxHeight;
+					} else {
+						x = halfRobotWidth + ((rndX * 2 * minBorderWidth - minBorderWidth) + battleRules.getBattlefieldWidth())	% maxWidth;
+						y = halfRobotHeight + rndY * maxHeight;
+					}
 				} else {
-					x += rndX * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
-					y += rndY * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);					
+					x = RobotPeer.WIDTH +  rndX * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+					y = RobotPeer.HEIGHT + rndY * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
 				}
+
 				bodyHeading = 2 * Math.PI * random.nextDouble();
 				gunHeading = radarHeading = bodyHeading;
 				updateBoundingBox();
@@ -893,6 +908,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		// Now check for robot collision
 		checkRobotCollision(robots);
 
+//		if (isSentryRobot()) {
+//			checkSentryBorderCollision();
+//		}
+		
 		// Scan false means robot did not call scan() manually.
 		// But if we're moving, scan
 		if (!scan) {
@@ -1109,9 +1128,14 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 			currentCommands.setDistanceRemaining(0);
 			velocity = 0;
-
+		}
+		if (hitWall) {
 			setState(RobotState.HIT_WALL);
 		}
+	}
+
+	private void checkSentryBorderCollision() {
+		
 	}
 
 	private double getBattleFieldHeight() {
