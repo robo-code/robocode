@@ -24,7 +24,7 @@ public class BattleSpecification implements java.io.Serializable {
 	private final double gunCoolingRate;
 	private final long inactivityTime;
 	private final boolean hideEnemyNames;
-	private final int sentryRobotAttackRange;
+	private final int sentryRobotBorderSize;
 	private final RobotSpecification[] robots;
 
 	/**
@@ -75,19 +75,19 @@ public class BattleSpecification implements java.io.Serializable {
 	 * @param numRounds	is the number of rounds in this battle.
 	 * @param inactivityTime is the inactivity time allowed for the robots before they will loose energy.
 	 * @param gunCoolingRate is the gun cooling rate for the robots.
-	 * @param sentryRobotAttackRange is the attack range for a sentry robot.
+	 * @param sentryRobotBorderSize is the border size that defines the attack range for a {@link robocode.SentryRobot SentryRobot}.
 	 * @param hideEnemyNames  flag specifying if enemy names are hidden from robots.
 	 * @param robots is the robots participating in this battle.
 	 * 
 	 * @since 1.9.0.0
 	 */
-	public BattleSpecification(BattlefieldSpecification battlefieldSize, int numRounds, long inactivityTime, double gunCoolingRate, int sentryRobotAttackRange, boolean hideEnemyNames, RobotSpecification[] robots) {
+	public BattleSpecification(BattlefieldSpecification battlefieldSize, int numRounds, long inactivityTime, double gunCoolingRate, int sentryRobotBorderSize, boolean hideEnemyNames, RobotSpecification[] robots) {
 		this.battlefieldWidth = battlefieldSize.getWidth();
 		this.battlefieldHeight = battlefieldSize.getHeight();
 		this.numRounds = numRounds;
 		this.inactivityTime = inactivityTime;
 		this.gunCoolingRate = gunCoolingRate;
-		this.sentryRobotAttackRange = sentryRobotAttackRange;
+		this.sentryRobotBorderSize = sentryRobotBorderSize;
 		this.hideEnemyNames = hideEnemyNames;
 		this.robots = robots;
 	}
@@ -140,14 +140,15 @@ public class BattleSpecification implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the attack range of a sentry robot.
+	 * Returns the border size that sentry robots are restricted to. Sentry robots cannot move outside this border or
+	 * do any harm to other robots outside this border.
 	 *
-	 * @return the attack range of a sentry robot in units/pixels.
+	 * @return the border size in units/pixels that sentry robots are restricted to.
 	 *
 	 * @since 1.9.0.0
 	 */
-	public int getSentryRobotAttackRange() {
-		return sentryRobotAttackRange;
+	public int getSentryRobotBorderSize() {
+		return sentryRobotBorderSize;
 	}
 
 	/**

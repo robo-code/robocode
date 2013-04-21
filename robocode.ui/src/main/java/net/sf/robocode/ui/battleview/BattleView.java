@@ -331,16 +331,11 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawGround(Graphics2D g) {
-		if (!drawGround) {
-			// Ground should not be drawn
-			g.setColor(Color.BLACK);
-			g.fillRect(0, 0, battleField.getWidth(), battleField.getHeight());
-		} else {
+		if (drawGround) {
 			// Create pre-rendered ground image if it is not available
 			if (groundImage == null) {
 				createGroundImage();
 			}
-
 			// Draw the pre-rendered ground if it is available
 			if (groundImage != null) {
 				int groundWidth = (int) (battleField.getWidth() * scale) + 1;
@@ -356,7 +351,16 @@ public class BattleView extends Canvas {
 
 				g.setTransform(savedTx);
 			}
+		} else {
+			// Ground should not be drawn
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, battleField.getWidth(), battleField.getHeight());
 		}
+		g.setColor(new Color(0xff, 0x00, 0x00, 0x80));
+		g.fillRect(0, 0, 100, battleField.getHeight());
+		g.fillRect(battleField.getWidth() - 100, 0, 100, battleField.getHeight());
+		g.fillRect(100, 0, battleField.getWidth() - 2 * 100, 100);
+		g.fillRect(100, battleField.getHeight() - 100, battleField.getWidth() - 2 * 100, 100);
 	}
 
 	private void drawBorder(Graphics2D g) {

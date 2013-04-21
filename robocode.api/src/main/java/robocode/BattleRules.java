@@ -34,7 +34,7 @@ public final class BattleRules implements java.io.Serializable {
 	private final double gunCoolingRate;
 	private final long inactivityTime;
 	private final boolean hideEnemyNames;
-	private final int sentryRobotAttackRange;
+	private final int sentryRobotBorderSize;
 
 	/**
 	 * Returns the battlefield width.
@@ -108,23 +108,24 @@ public final class BattleRules implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the attack range for a {@link robocode.SentryRobot SentryRobot}.
+	 * Returns the border size that defines the attack range for a {@link robocode.SentryRobot SentryRobot}
+	 * from the border.
 	 * 
 	 * @return 1.9.0.0
 	 */
-	public int getSentryRobotAttackRange() {
-		return sentryRobotAttackRange;
+	public int getSentryRobotBorderSize() {
+		return sentryRobotBorderSize;
 	}
 	
 	private BattleRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime, boolean hideEnemyNames,
-			int sentryRobotAttackRange) {
+			int sentryRobotBorderSize) {
 		this.battlefieldWidth = battlefieldWidth;
 		this.battlefieldHeight = battlefieldHeight;
 		this.numRounds = numRounds;
 		this.gunCoolingRate = gunCoolingRate;
 		this.inactivityTime = inactivityTime;
 		this.hideEnemyNames = hideEnemyNames;
-		this.sentryRobotAttackRange = sentryRobotAttackRange;
+		this.sentryRobotBorderSize = sentryRobotBorderSize;
 	}
 
 	static IHiddenRulesHelper createHiddenHelper() {
@@ -133,9 +134,9 @@ public final class BattleRules implements java.io.Serializable {
 
 	private static class HiddenHelper implements IHiddenRulesHelper {
 
-		public BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime, boolean hideEnemyNames, int sentryRobotAttackRange) {
+		public BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime, boolean hideEnemyNames, int sentryRobotBorderSize) {
 			return new BattleRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime,
-					hideEnemyNames, sentryRobotAttackRange);
+					hideEnemyNames, sentryRobotBorderSize);
 		}
 	}
 }

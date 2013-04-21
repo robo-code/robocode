@@ -246,7 +246,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 			serializer.serialize(buffer, obj.battleRules.getGunCoolingRate());
 			serializer.serialize(buffer, obj.battleRules.getInactivityTime());
 			serializer.serialize(buffer, obj.battleRules.getHideEnemyNames());
-			serializer.serialize(buffer, obj.battleRules.getSentryRobotAttackRange());
+			serializer.serialize(buffer, obj.battleRules.getSentryRobotBorderSize());
 			if (obj.teammates != null) {
 				for (String mate : obj.teammates) {
 					serializer.serialize(buffer, mate);
@@ -280,7 +280,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 					serializer.deserializeDouble(buffer), // gunCoolingRate
 					serializer.deserializeLong(buffer), // inactivityTime
 					serializer.deserializeBoolean(buffer), // hideEnemyNames
-					serializer.deserializeInt(buffer)); // sentryRobotAttackRange
+					serializer.deserializeInt(buffer)); // sentryRobotBorderSize
 
 			List<String> teammates = new ArrayList<String>();
 			Object item = serializer.deserializeString(buffer);
