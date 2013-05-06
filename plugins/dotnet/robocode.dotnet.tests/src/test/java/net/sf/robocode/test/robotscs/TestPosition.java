@@ -66,8 +66,8 @@ public class TestPosition extends RobocodeTestBed {
 		}
 
 		if (lastTurn == 1700) {
-			Assert.assertNear(38.69810137, crazy.getX());
-			Assert.assertNear(214.9945902, crazy.getY());
+			Assert.assertNear(206.2666373, crazy.getX());
+			Assert.assertNear(158.0687066, crazy.getY());
 			Assert.assertNear(339.9178023, target.getX());
 			Assert.assertNear(455.7698379, target.getY());
 		}
@@ -75,6 +75,6 @@ public class TestPosition extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertThat(lastTurn, is(1740));
+		Assert.assertThat(lastTurn, is(2043));
 	}
 }

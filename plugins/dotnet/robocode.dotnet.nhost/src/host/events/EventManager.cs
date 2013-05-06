@@ -512,10 +512,6 @@ namespace net.sf.robocode.dotnet.host.events
                         HiddenAccessN.Dispatch(evnt, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
                     }
                 }
-// fnl: EventInterruptedException should go to the ProcessEvents() method
-//              catch (EventInterruptedException ignore)
-//              {
-//              }
                 catch (Exception ex)
                 {
                     if (ex is SecurityException)
@@ -526,9 +522,9 @@ namespace net.sf.robocode.dotnet.host.events
                     {
                         robotProxy.punishSecurityViolation(robotProxy.getStatics().getName() + " " + ex.InnerException + ": " + ex.Message);
                     }
-                    else if (!(ex is AbortedException || ex is DeathException || ex is DisabledException || ex is WinException))
+                    else if (!(ex is EventInterruptedException || ex is AbortedException || ex is DeathException || ex is DisabledException || ex is WinException))
                     {
-                        robotProxy.println("SYSTEM: Exception occurred on " + evnt.GetType().Name);
+                        robotProxy.println("SYSTEM: " + ex.GetType().Name + " occurred on " + evnt.GetType().Name);
                         robotProxy.GetOut().WriteLine(ex.StackTrace);
                     }
                     throw;

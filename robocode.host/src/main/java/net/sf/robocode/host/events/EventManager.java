@@ -422,7 +422,7 @@ public final class EventManager implements IEventManager {
 					HiddenAccess.dispatch(event, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
 				}
 			} catch (Exception ex) {
-				robotProxy.println("SYSTEM: Exception occurred on " + event.getClass().getName());
+				robotProxy.println("SYSTEM: " + ex.getClass().getName() + " occurred on " + event.getClass().getName());
 				ex.printStackTrace(robotProxy.getOut());
 			}
 		}
