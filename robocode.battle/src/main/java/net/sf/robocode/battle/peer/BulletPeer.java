@@ -141,8 +141,8 @@ public class BulletPeer {
 						damage = 0;
 					} else {					
 						int range = battleRules.getSentryRobotBorderSize();
-						if (x > range && x < (battleRules.getBattlefieldWidth() - range) &&
-							y > range && y < (battleRules.getBattlefieldHeight() - range)) {
+						if (x > range && x < (battleRules.getBattlefieldWidth() - range) && y > range
+								&& y < (battleRules.getBattlefieldHeight() - range)) {
 	
 							damage = 0;
 						}
@@ -166,7 +166,9 @@ public class BulletPeer {
 					if (!teamFire) {
 						double bonus = owner.getRobotStatistics().scoreBulletKill(otherRobot.getName());
 						if (bonus > 0) {
-							owner.println("SYSTEM: Bonus for killing " + (owner.getNameForEvent(otherRobot) + ": " + (int) (bonus + .5)));
+							owner.println(
+									"SYSTEM: Bonus for killing "
+											+ (owner.getNameForEvent(otherRobot) + ": " + (int) (bonus + .5)));
 						}
 					}
 				}

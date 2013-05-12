@@ -689,8 +689,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			double halfRobotWidth = RobotPeer.WIDTH / 2;
 			double halfRobotHeight = RobotPeer.HEIGHT / 2;
 
-			int minBorderWidth = Math.max(RobotPeer.WIDTH, (100 - RobotPeer.WIDTH));						
-			int minBorderHeight = Math.max(RobotPeer.HEIGHT, (100 - RobotPeer.HEIGHT));	
+			int minBorderWidth = Math.max(RobotPeer.WIDTH, (100 - RobotPeer.WIDTH)); // FIXME: Replace 100 with constant
+			int minBorderHeight = Math.max(RobotPeer.HEIGHT, (100 - RobotPeer.HEIGHT)); // FIXME: Replace 100 with constant
 
 			for (int j = 0; j < 1000; j++) {
 				double rndX = random.nextDouble();
@@ -702,13 +702,22 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				if (isSentryRobot()) {
 					if (rndX / battleRules.getBattlefieldWidth() > rndY / battleRules.getBattlefieldHeight()) {
 						x = halfRobotWidth + rndX * maxWidth;
-						y = halfRobotHeight + ((rndY * 2 * minBorderHeight - minBorderHeight) + battleRules.getBattlefieldHeight()) % maxHeight;
+						y = halfRobotHeight
+								+ ((rndY * 2 * minBorderHeight - minBorderHeight) + battleRules.getBattlefieldHeight())
+										% maxHeight;
 					} else {
-						x = halfRobotWidth + ((rndX * 2 * minBorderWidth - minBorderWidth) + battleRules.getBattlefieldWidth())	% maxWidth;
+						x = halfRobotWidth
+								+ ((rndX * 2 * minBorderWidth - minBorderWidth) + battleRules.getBattlefieldWidth())
+										% maxWidth;
 						y = halfRobotHeight + rndY * maxHeight;
 					}
+					// Make sure that the sentry robot is not placed outside the sentry robot border
+					if (x > minBorderWidth && x < (battleRules.getBattlefieldWidth() - minBorderWidth)
+							&& y > minBorderWidth && y < (battleRules.getBattlefieldHeight() - minBorderWidth)) {
+						continue; // loop again to find better location
+					}
 				} else {
-					x = RobotPeer.WIDTH +  rndX * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+					x = RobotPeer.WIDTH + rndX * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
 					y = RobotPeer.HEIGHT + rndY * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
 				}
 
