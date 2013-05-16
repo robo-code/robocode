@@ -22,16 +22,16 @@ import robocode.util.Utils;
 
 
 /**
- * Guard - a sample sentry robot that guards the borders of the battlefield.
+ * Guard - a sample border sentry robot that guards the borders of the battlefield.
  *
  * @author Flemming N. Larsen (original)
  * 
  * @since 1.9.0.0
  */
-public class Guard extends AdvancedRobot implements SentryRobot {
+public class Guard extends AdvancedRobot implements BorderSentryRobot {
 
 	// TODO: Do not fire on other SentryRobots! (using new API method -> part of the sample)
-	// TODO: getSentryRobotAttackRange() skal kaldes (using new API method -> part of the sample)
+	// TODO: getBorderBorderSentryRobotAttackRange() skal kaldes (using new API method -> part of the sample)
 
 	// Map used retrieve the scanned data for a robot based on the robot name
 	Map<String/* Name of robot */, ScannedRobotData> scannedRobotData = new HashMap<String, ScannedRobotData>();
@@ -102,7 +102,7 @@ public class Guard extends AdvancedRobot implements SentryRobot {
 		// Now, make a copy of current scan data that should contain target candidates
 		List<ScannedRobotData> targetCandidates = new ArrayList<ScannedRobotData>(currentScanData);
 
-		// Remove all target candidates that are outside our sentry robot's attack range as we
+		// Remove all target candidates that are outside our border sentry robot's attack range as we
 		// will not be able to harm those robots with our gun fire (is game rules).
 		for (Iterator<ScannedRobotData> it = targetCandidates.iterator(); it.hasNext();) {
 			ScannedRobotData robotData = it.next();
@@ -114,7 +114,7 @@ public class Guard extends AdvancedRobot implements SentryRobot {
 
 		// If we don't have any target candidates, we have no candidates to fire at.
 		// However, we will then use the current scan data for moving out robot as close to the nearest robot
-		// outside the sentry robot's attack range, so we have a better chance to hit it when it moves too
+		// outside the border sentry robot's attack range, so we have a better chance to hit it when it moves too
 		// close to the border.
 		if (targetCandidates.size() == 0) {
 			targetCandidates = new ArrayList<ScannedRobotData>(currentScanData);
@@ -238,10 +238,10 @@ public class Guard extends AdvancedRobot implements SentryRobot {
 
 		// Get close to our target if we have a target robot
 		if (target != null) {
-			final int sentryRobotAttackRange = 100; // FIXME
+			final int BorderSentryRobotAttackRange = 100; // FIXME
 
 			// Calculate the range from the walls/borders, our robot should keep within
-			int borderRange = sentryRobotAttackRange - 20;
+			int borderRange = BorderSentryRobotAttackRange - 20;
 
 			// The horizontal and vertical flags are used for determining, if our robot should
 			// move horizontal or vertical.
@@ -306,14 +306,14 @@ public class Guard extends AdvancedRobot implements SentryRobot {
 	 * This method checks if a point (x, y) is outside of the attack range for a SentryRobot.
 	 * @param x is the x coordinate.
 	 * @param y is the y coordinate.
-	 * @return true if the point is outside the attack range of sentry robots; false otherwise.
+	 * @return true if the point is outside the attack range of border sentry robots; false otherwise.
 	 */
 	private boolean isOutsideSentryAttackRange(double x, double y) {
-		final int sentryRobotAttackRange = 100; // FIXME replace with API method
-		return (x > sentryRobotAttackRange && // minimum border x
-				y > sentryRobotAttackRange && // minimum border y 
-				x < ((int) getBattleFieldWidth() - sentryRobotAttackRange) && // maximum border x
-				y < ((int) getBattleFieldHeight() - sentryRobotAttackRange)); // maximum border y
+		final int BorderSentryRobotAttackRange = 100; // FIXME replace with API method
+		return (x > BorderSentryRobotAttackRange && // minimum border x
+				y > BorderSentryRobotAttackRange && // minimum border y 
+				x < ((int) getBattleFieldWidth() - BorderSentryRobotAttackRange) && // maximum border x
+				y < ((int) getBattleFieldHeight() - BorderSentryRobotAttackRange)); // maximum border y
 	}
 
 	/**

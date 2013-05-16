@@ -501,12 +501,12 @@ namespace Robocode.Control
             double gunCoolingRate = obj.Invoke<double>("getGunCoolingRate", "()D", new object[] { });
             long inactivityTime = obj.Invoke<long>("getInactivityTime", "()J", new object[] { });
             bool hideEnemyNames = obj.Invoke<bool>("getHideEnemyNames", "()B", new object[] { });
-            int sentryRobotAttackRange = obj.Invoke<int>("getSentryRobotAttackRange", "()I", new object[] { });
+            int borderSentryRobotAttackRange = obj.Invoke<int>("getBorderSentryRobotAttackRange", "()I", new object[] { });
 
             MethodInfo method = typeof(BattleRules).GetMethod("createHiddenHelper", BindingFlags.Static | BindingFlags.NonPublic);
             IHiddenRulesHelper rulesHelper = (IHiddenRulesHelper)method.Invoke(null, null);
 
-            return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime, hideEnemyNames, sentryRobotAttackRange);
+            return rulesHelper.createRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime, hideEnemyNames, borderSentryRobotAttackRange);
         }
 
         private static BattleResults MapBattleResults(java.lang.Object obj)

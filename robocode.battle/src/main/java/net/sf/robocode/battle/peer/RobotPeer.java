@@ -711,7 +711,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 										% maxWidth;
 						y = halfRobotHeight + rndY * maxHeight;
 					}
-					// Make sure that the sentry robot is not placed outside the sentry robot border
+					// Make sure that the border sentry robot is not placed outside the border sentry robot border
 					if (x > minBorderWidth && x < (battleRules.getBattlefieldWidth() - minBorderWidth)
 							&& y > minBorderWidth && y < (battleRules.getBattlefieldHeight() - minBorderWidth)) {
 						continue; // loop again to find better location
@@ -914,7 +914,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		// First and foremost, we can never go through a wall:
 		checkWallCollision();
 
-		// If this robot is a sentry robot then check if it hits its "range border"
+		// If this robot is a border sentry robot then check if it hits its "range border"
 		if (isSentryRobot()) {
 			checkSentryOutsideBorder();
 		}

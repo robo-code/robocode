@@ -190,7 +190,7 @@ public interface IRobotSnapshot {
 	boolean isDroid();
 
 	/**
-	 * Checks if this robot is a {@link robocode.SentryRobot SentryRobot}.
+	 * Checks if this robot is a {@link robocode.BorderSentryRobot BorderSentryRobot}.
 	 *
 	 * @return {@code true} if this robot is a SentryRobot; {@code false} otherwise.
 	 *

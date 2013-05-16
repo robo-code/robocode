@@ -44,7 +44,7 @@ public class BattleProperties implements Serializable {
 	private double gunCoolingRate = 0.1;
 	private long inactivityTime = 450;
 	private boolean hideEnemyNames = false;
-	private int sentryRobotBorderSize = 100;
+	private int borderSentryRobotAttackRange = 100;
 	private String selectedRobots;
 	private String initialPositions;
 
@@ -266,25 +266,25 @@ public class BattleProperties implements Serializable {
 	}
 
 	/**
-	 * Returns the border size that defines the attack range for a {@link robocode.SentryRobot SentryRobot}.
+	 * Returns the border size that defines the attack range for a {@link robocode.BorderSentryRobot SentryRobot}.
 	 *
 	 * @return the border size in units/pixels.
 	 *
 	 * @since 1.9.0.0
 	 */
-	public int getSentryRobotBorderSize() {
-		return sentryRobotBorderSize;
+	public int getBorderSentryRobotAttackRange() {
+		return borderSentryRobotAttackRange;
 	}
 
 	/**
-	 * Sets the border size that defines the attack range for a {@link robocode.SentryRobot SentryRobot}.
+	 * Sets the border size that defines the attack range for a {@link robocode.BorderSentryRobot SentryRobot}.
 	 *
 	 * @param borderSize is the border range in units/pixels.
 	 *
 	 * @since 1.9.0.0
 	 */
-	public void setSentryRobotBorderSize(int borderSize) {
-		sentryRobotBorderSize = borderSize;
+	public void setBorderSentryRobotAttackRange(int attackRange) {
+		borderSentryRobotAttackRange = attackRange;
 	}
 	
 	public void store(FileOutputStream out, String desc) throws IOException {
@@ -301,6 +301,6 @@ public class BattleProperties implements Serializable {
 		numRounds = Integer.parseInt(props.getProperty(BATTLE_NUMROUNDS, "10"));
 		selectedRobots = props.getProperty(BATTLE_SELECTEDROBOTS, "");
 		initialPositions = props.getProperty(BATTLE_INITIAL_POSITIONS, "");
-		sentryRobotBorderSize = Integer.parseInt(props.getProperty(SENTRY_ROBOT_ATTACK_RANGE, "100"));
+		borderSentryRobotAttackRange = Integer.parseInt(props.getProperty(SENTRY_ROBOT_ATTACK_RANGE, "100"));
 	}
 }

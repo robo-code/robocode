@@ -108,7 +108,7 @@ public final class BattleRules implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the border size that defines the attack range for a {@link robocode.SentryRobot SentryRobot}
+	 * Returns the border size that defines the attack range for a {@link robocode.BorderSentryRobot SentryRobot}
 	 * from the border.
 	 * 
 	 * @return 1.9.0.0

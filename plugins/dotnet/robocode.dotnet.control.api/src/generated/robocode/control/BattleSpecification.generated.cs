@@ -27,7 +27,7 @@ namespace robocode.control {
         
         internal static global::net.sf.jni4net.jni.MethodId j4n_getHideEnemyNames4;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getSentryRobotBorderSize5;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getBorderSentryRobotAttackRange5;
         
         internal static global::net.sf.jni4net.jni.MethodId j4n_getRobots6;
         
@@ -96,7 +96,7 @@ namespace robocode.control {
             global::robocode.control.BattleSpecification.j4n_getBattlefield2 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "getBattlefield", "()Lrobocode/control/BattlefieldSpecification;");
             global::robocode.control.BattleSpecification.j4n_getNumRounds3 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "getNumRounds", "()I");
             global::robocode.control.BattleSpecification.j4n_getHideEnemyNames4 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "getHideEnemyNames", "()Z");
-            global::robocode.control.BattleSpecification.j4n_getSentryRobotBorderSize5 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "getSentryRobotBorderSize", "()I");
+            global::robocode.control.BattleSpecification.j4n_getBorderSentryRobotAttackRange5 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "getBorderSentryRobotAttackRange", "()I");
             global::robocode.control.BattleSpecification.j4n_getRobots6 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "getRobots", "()[Lrobocode/control/RobotSpecification;");
             global::robocode.control.BattleSpecification.j4n__ctorBattleSpecification7 = @__env.GetMethodID(global::robocode.control.BattleSpecification.staticClass, "<init>", "(IJDLrobocode/control/BattlefieldSpecification;[Lrobocode/control/RobotSpecificat" +
                     "ion;)V");
@@ -149,10 +149,10 @@ namespace robocode.control {
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
-        public virtual int getSentryRobotBorderSize() {
+        public virtual int getBorderSentryRobotAttackRange() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((int)(@__env.CallIntMethod(this, global::robocode.control.BattleSpecification.j4n_getSentryRobotBorderSize5)));
+            return ((int)(@__env.CallIntMethod(this, global::robocode.control.BattleSpecification.j4n_getBorderSentryRobotAttackRange5)));
             }
         }
         

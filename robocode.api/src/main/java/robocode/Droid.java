@@ -17,6 +17,7 @@ package robocode;
  * @see AdvancedRobot
  * @see TeamRobot
  * @see RateControlRobot
+ * @see BorderSentryRobot
  *
  * @author Mathew A. Nelson (original)
  */

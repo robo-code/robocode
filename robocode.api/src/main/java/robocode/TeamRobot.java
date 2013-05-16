@@ -29,7 +29,7 @@ import java.util.Vector;
  * @see AdvancedRobot
  * @see RateControlRobot
  * @see Droid
- * @see SentryRobot
+ * @see BorderSentryRobot
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)

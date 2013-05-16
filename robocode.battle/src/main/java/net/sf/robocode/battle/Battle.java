@@ -90,7 +90,7 @@ public final class Battle extends BaseBattle {
 		isPaused = paused;
 		battleRules = HiddenAccess.createRules(battleProps.getBattlefieldWidth(), battleProps.getBattlefieldHeight(),
 				battleProps.getNumRounds(), battleProps.getGunCoolingRate(), battleProps.getInactivityTime(),
-				battleProps.getHideEnemyNames(), battleProps.getSentryRobotBorderSize());
+				battleProps.getHideEnemyNames(), battleProps.getBorderSentryRobotAttackRange());
 		robotsCount = battlingRobotsList.length;
 		computeInitialPositions(battleProps.getInitialPositions());
 		createPeers(battlingRobotsList);
