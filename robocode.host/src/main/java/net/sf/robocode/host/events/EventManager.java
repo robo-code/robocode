@@ -511,7 +511,7 @@ public final class EventManager implements IEventManager {
 	 */
 	private void registerEventNames() {
 		eventNames = new HashMap<String, Event>();
-		dummyScannedRobotEvent = new ScannedRobotEvent(null, 0, 0, 0, 0, 0);
+		dummyScannedRobotEvent = new ScannedRobotEvent(null, 0, 0, 0, 0, 0, false);
 		registerEventNames(new BattleEndedEvent(false, null));
 		registerEventNames(new BulletHitBulletEvent(null, null));
 		registerEventNames(new BulletHitEvent(null, 0, null));

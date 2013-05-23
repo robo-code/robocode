@@ -1,7 +1,11 @@
-## Version 1.9.0.0 Alpha 1 (23-May-2013) The SentryRobot Release
+## Version 1.9.0.0 Alpha 1 (23-May-2013) The BorderSentryRobot Release
 
 ### Bug fixes
 * [Bug-358][]: Robot in default package cannot write to files. Should at least get a warning.
+
+### New features
+* Added a new robot type, the BorderSentryRobot, which is used for implementing sentry robots used for guarding the borders of the battlefield.
+	* A new method named ``isSentryRobot()`` has been added to the ``ScannedRobotEvent`` event class.
 
 ### Changes
 * Improved the UI regarding Battle Rules:

@@ -35,15 +35,13 @@ namespace Robocode
         private readonly double bearing;
         private readonly double distance;
         private readonly double velocity;
+        private readonly bool isSentryRobot;
 
+        [Obsolete("ScannedRobotEvent() is obsolete.\n" +
+            "Please use ScannedRobotEvent(string, double, double, double, double, double, bool) instead.")]
         internal ScannedRobotEvent()
+            : this(null, 0, 0, 0, 0, 0, false)
         {
-            name = null;
-            energy = 0;
-            bearing = 0;
-            distance = 0;
-            heading = 0;
-            velocity = 0;
         }
 
         /// <summary>
@@ -55,8 +53,24 @@ namespace Robocode
         /// <param name="distance">The distance from your robot to the scanned robot</param>
         /// <param name="heading">The heading of the scanned robot</param>
         /// <param name="velocity">The velocity of the scanned robot</param>
-        public ScannedRobotEvent(string name, double energy, double bearing, double distance, double heading,
-                                 double velocity)
+        [Obsolete("ScannedRobotEvent(string, double, double, double, double, double) is obsolete.\n" +
+            "Please use ScannedRobotEvent(string, double, double, double, double, double, bool) instead.")]
+        public ScannedRobotEvent(string name, double energy, double bearing, double distance, double heading, double velocity) :
+            this(name, energy, bearing, distance, heading, velocity, false)
+        {
+        }
+
+        /// <summary>
+        /// Called by the game to create a new ScannedRobotEvent.
+        /// </summary>
+        /// <param name="name">The name of the scanned robot</param>
+        /// <param name="energy">The energy of the scanned robot</param>
+        /// <param name="bearing">The bearing of the scanned robot, in radians</param>
+        /// <param name="distance">The distance from your robot to the scanned robot</param>
+        /// <param name="heading">The heading of the scanned robot</param>
+        /// <param name="velocity">The velocity of the scanned robot</param>
+        /// <param name="isSentryRobot">Flag specifying if the scanned robot is a sentry robot</param>
+        public ScannedRobotEvent(string name, double energy, double bearing, double distance, double heading, double velocity, bool isSentryRobot)
         {
             this.name = name;
             this.energy = energy;
@@ -64,6 +78,7 @@ namespace Robocode
             this.distance = distance;
             this.heading = heading;
             this.velocity = velocity;
+            this.isSentryRobot = isSentryRobot;
         }
 
         /// <summary>
@@ -184,7 +199,7 @@ namespace Robocode
             {
                 var obj = (ScannedRobotEvent) objec;
 
-                return RbSerializerN.SIZEOF_TYPEINFO + serializer.sizeOf(obj.name) + 5*RbSerializerN.SIZEOF_DOUBLE;
+                return RbSerializerN.SIZEOF_TYPEINFO + serializer.sizeOf(obj.name) + 5 * RbSerializerN.SIZEOF_DOUBLE + RbSerializerN.SIZEOF_BOOL;
             }
 
             public void serialize(RbSerializerN serializer, ByteBuffer buffer, object objec)
@@ -197,6 +212,7 @@ namespace Robocode
                 serializer.serialize(buffer, obj.bearing);
                 serializer.serialize(buffer, obj.distance);
                 serializer.serialize(buffer, obj.velocity);
+                serializer.serialize(buffer, obj.isSentryRobot);
             }
 
             public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
@@ -207,8 +223,9 @@ namespace Robocode
                 double bearing = buffer.getDouble();
                 double distance = buffer.getDouble();
                 double velocity = buffer.getDouble();
+                bool isSentryRobot = serializer.deserializeBoolean(buffer);
 
-                return new ScannedRobotEvent(name, energy, bearing, distance, heading, velocity);
+                return new ScannedRobotEvent(name, energy, bearing, distance, heading, velocity, isSentryRobot);
             }
         }
     }

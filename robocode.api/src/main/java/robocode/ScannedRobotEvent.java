@@ -40,6 +40,7 @@ public class ScannedRobotEvent extends Event {
 	private final double bearing;
 	private final double distance;
 	private final double velocity;
+	private final boolean isSentryRobot;
 
 	/**
 	 * This constructor is only provided in order to preserve backwards compatibility with old robots that
@@ -49,16 +50,10 @@ public class ScannedRobotEvent extends Event {
 	 * The internal logic of this event class might change. Hence, your robot might
 	 * not work in future Robocode versions, if you choose to inherit from this class.
 	 *
-	 * @deprecated Use {@link #ScannedRobotEvent(String, double, double, double, double, double)} instead.
+	 * @deprecated Use {@link #ScannedRobotEvent(String, double, double, double, double, double, boolean)} instead.
 	 */
 	public ScannedRobotEvent() {
-		super();
-		this.name = null;
-		this.energy = 0;
-		this.bearing = 0;
-		this.distance = 0;
-		this.heading = 0;
-		this.velocity = 0;
+		this(null, 0, 0, 0, 0, 0, false);
 	}
 
 	/**
@@ -70,8 +65,27 @@ public class ScannedRobotEvent extends Event {
 	 * @param distance the distance from your robot to the scanned robot
 	 * @param heading  the heading of the scanned robot
 	 * @param velocity the velocity of the scanned robot
+	 *
+	 * @deprecated Use {@link #ScannedRobotEvent(String, double, double, double, double, double, boolean)} instead.
 	 */
 	public ScannedRobotEvent(String name, double energy, double bearing, double distance, double heading, double velocity) {
+		this(name, energy, bearing, distance, heading, velocity, false);
+	}
+
+	/**
+	 * Called by the game to create a new ScannedRobotEvent.
+	 *
+	 * @param name	 the name of the scanned robot
+	 * @param energy   the energy of the scanned robot
+	 * @param bearing  the bearing of the scanned robot, in radians
+	 * @param distance the distance from your robot to the scanned robot
+	 * @param heading  the heading of the scanned robot
+	 * @param velocity the velocity of the scanned robot
+	 * @param isSentryRobot flag specifying if the scanned robot is a sentry robot
+	 * 
+	 * @since 1.9.0.0
+	 */
+	public ScannedRobotEvent(String name, double energy, double bearing, double distance, double heading, double velocity, boolean isSentryRobot) {
 		super();
 		this.name = name;
 		this.energy = energy;
@@ -79,6 +93,7 @@ public class ScannedRobotEvent extends Event {
 		this.distance = distance;
 		this.heading = heading;
 		this.velocity = velocity;
+		this.isSentryRobot = isSentryRobot;
 	}
 
 	/**
@@ -255,12 +270,21 @@ public class ScannedRobotEvent extends Event {
 	}
 
 	/**
+	 * Checks if the scanned robot is a sentry robot.
+	 * @return {@code true} if the scanned robot is a sentry robot; {@code false} otherwise.
+	 * 
+	 * @since 1.9.0.0
+	 */
+	public boolean isSentryRobot() {
+		return isSentryRobot;
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public final int compareTo(Event event) {
 		final int res = super.compareTo(event);
-
 		if (res != 0) {
 			return res;
 		}
@@ -287,7 +311,6 @@ public class ScannedRobotEvent extends Event {
 	@Override
 	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 		IBasicEvents listener = robot.getBasicEventListener();
-
 		if (listener != null) {
 			listener.onScannedRobot(this);
 		}
@@ -308,19 +331,19 @@ public class ScannedRobotEvent extends Event {
 	private static class SerializableHelper implements ISerializableHelper {
 		public int sizeOf(RbSerializer serializer, Object object) {
 			ScannedRobotEvent obj = (ScannedRobotEvent) object;
-
-			return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.name) + 5 * RbSerializer.SIZEOF_DOUBLE;
+			return RbSerializer.SIZEOF_TYPEINFO + serializer.sizeOf(obj.name) + 5 * RbSerializer.SIZEOF_DOUBLE
+					+ RbSerializer.SIZEOF_BOOL;
 		}
 
 		public void serialize(RbSerializer serializer, ByteBuffer buffer, Object object) {
 			ScannedRobotEvent obj = (ScannedRobotEvent) object;
-
 			serializer.serialize(buffer, obj.name);
 			serializer.serialize(buffer, obj.energy);
 			serializer.serialize(buffer, obj.heading);
 			serializer.serialize(buffer, obj.bearing);
 			serializer.serialize(buffer, obj.distance);
 			serializer.serialize(buffer, obj.velocity);
+			serializer.serialize(buffer, obj.isSentryRobot);
 		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
@@ -330,8 +353,9 @@ public class ScannedRobotEvent extends Event {
 			double bearing = buffer.getDouble();
 			double distance = buffer.getDouble();
 			double velocity = buffer.getDouble();
+			boolean isSentryRobot = serializer.deserializeBoolean(buffer);
 
-			return new ScannedRobotEvent(name, energy, bearing, distance, heading, velocity);
+			return new ScannedRobotEvent(name, energy, bearing, distance, heading, velocity, isSentryRobot);
 		}
 	}
 }
