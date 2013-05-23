@@ -178,6 +178,7 @@ public class WindowUtil {
 	}
 
 	public static void messageError(String s) {
+		Toolkit.getDefaultToolkit().beep();
 		JOptionPane.showMessageDialog(null, s, "Message", JOptionPane.ERROR_MESSAGE);
 	}
 

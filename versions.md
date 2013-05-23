@@ -1,4 +1,4 @@
-## Version 1.8.2.0 Alpha (14-Apr-2013)
+## Version 1.8.2.0 Alpha (23-May-2013)
 
 ### Bug fixes
 * [Bug-358][]: Robot in default package cannot write to files. Should at least get a warning.
@@ -8,6 +8,7 @@
 	* All Battle Rules have been assembled into one single Rules tab.
 	* Number of Round has been moved from the New Battle dialog to the Rules tab.
 	* Improved the visualization of the battle field size.
+	* Added input validation to text fields.
 * [Req-64][]: Change default battle settings like e.g. "Number of Rounds".
 	* When the battle rules are changed in the user interface, Robocode will remember these as the user's default settings.
 	* A new Restore Defaults button has been added to get the game default settings back.
