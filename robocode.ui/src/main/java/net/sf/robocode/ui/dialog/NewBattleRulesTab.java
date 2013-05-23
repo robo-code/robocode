@@ -53,9 +53,9 @@ public class NewBattleRulesTab extends JPanel {
 
 	private final JButton restoreDefaultsButton = new JButton("Restore Defaults");
 	
-	private final JTextField numberOfRoundsTextField = new JTextField(5);
-	private final JTextField gunCoolingRateTextField = new JTextField(5);
-	private final JTextField inactivityTimeTextField = new JTextField(5);
+	private JTextField numberOfRoundsTextField;
+	private JTextField gunCoolingRateTextField;
+	private JTextField inactivityTimeTextField;
 	private final JCheckBox hideEnemyNamesCheckBox = new JCheckBox();
 
 	private JSlider battlefieldWidthSlider;
@@ -189,9 +189,9 @@ public class NewBattleRulesTab extends JPanel {
 		leftToRight.addGroup(left);
 		
 		GroupLayout.ParallelGroup right = layout.createParallelGroup();
-		right.addComponent(numberOfRoundsTextField);
-		right.addComponent(gunCoolingRateTextField);
-		right.addComponent(inactivityTimeTextField);
+		right.addComponent(getNumberOfRoundsTextField());
+		right.addComponent(getGunCoolingRateTextField());
+		right.addComponent(getInactivityTimeTextField());
 		right.addComponent(hideEnemyNamesCheckBox);
 		leftToRight.addGroup(right);
 		
@@ -204,7 +204,7 @@ public class NewBattleRulesTab extends JPanel {
 
 		GroupLayout.ParallelGroup row1 = layout.createParallelGroup(Alignment.BASELINE);
 		row1.addComponent(gunCoolingRateLabel);
-		row1.addComponent(gunCoolingRateTextField);
+		row1.addComponent(getGunCoolingRateTextField());
 		topToBottom.addGroup(row1);
 
 		GroupLayout.ParallelGroup row2 = layout.createParallelGroup(Alignment.BASELINE);
@@ -223,6 +223,88 @@ public class NewBattleRulesTab extends JPanel {
 		return panel;
 	}	
 
+	private JTextField getNumberOfRoundsTextField() {
+		if (numberOfRoundsTextField == null) {
+			numberOfRoundsTextField = new JTextField(5);
+			numberOfRoundsTextField.setText("" + battleProperties.getNumRounds());
+			numberOfRoundsTextField.setInputVerifier(
+					new InputVerifier() {
+				@Override
+				public boolean verify(JComponent input) {
+					boolean isValid = false;
+
+					String text = ((JTextField) input).getText();
+					if (text != null && text.matches("\\d+")) {
+						int numRounds = Integer.parseInt(text);
+						isValid = (numRounds > 0);
+					}
+					if (!isValid) {
+						WindowUtil.messageError(
+								"'Number of Rounds' must be an integer value > 0.\n" + "Default value is 10.");
+						numberOfRoundsTextField.setText("" + battleProperties.getNumRounds());
+					}
+					return isValid;
+				}
+			});
+		}
+		return numberOfRoundsTextField;
+	}
+
+	private JTextField getGunCoolingRateTextField() {
+		if (gunCoolingRateTextField == null) {
+			gunCoolingRateTextField = new JTextField(5);
+			gunCoolingRateTextField.setText("" + battleProperties.getGunCoolingRate());
+			gunCoolingRateTextField.setInputVerifier(
+					new InputVerifier() {
+				@Override
+				public boolean verify(JComponent input) {
+					boolean isValid = false;
+
+					String text = ((JTextField) input).getText();
+					if (text != null && text.matches("\\d*(\\.\\d+)?")) {
+						double gunCoolingRate = Double.parseDouble(text);
+						isValid = (gunCoolingRate > 0 && gunCoolingRate <= 0.7);
+					}
+					if (!isValid) {
+						WindowUtil.messageError(
+								"'Gun Cooling Rate' must be a floating point number > 0 and <= 0.7.\n"
+										+ "Default value is 0.1.");
+						gunCoolingRateTextField.setText("" + battleProperties.getGunCoolingRate());
+					}
+					return isValid;
+				}
+			});
+		}
+		return gunCoolingRateTextField;
+	}
+
+	private JTextField getInactivityTimeTextField() {
+		if (inactivityTimeTextField == null) {
+			inactivityTimeTextField = new JTextField(5);
+			inactivityTimeTextField.setText("" + battleProperties.getInactivityTime());
+			inactivityTimeTextField.setInputVerifier(
+					new InputVerifier() {
+				@Override
+				public boolean verify(JComponent input) {
+					boolean isValid = false;
+
+					String text = ((JTextField) input).getText();
+					if (text != null && text.matches("\\d+")) {
+						int inactivityTime = Integer.parseInt(text);
+						isValid = (inactivityTime >= 0);
+					}
+					if (!isValid) {
+						WindowUtil.messageError(
+								"'Inactivity Time' must be an integer value >= 0.\n" + "Default value is 450.");
+						inactivityTimeTextField.setText("" + battleProperties.getInactivityTime());
+					}
+					return isValid;
+				}
+			});
+		}
+		return inactivityTimeTextField;
+	}
+	
 	private JSlider createBattlefieldSizeSlider() {
 		JSlider slider = new JSlider();
 		slider.setMinimum(MIN_BATTLEFIELD_SIZE);
@@ -256,9 +338,8 @@ public class NewBattleRulesTab extends JPanel {
 		@Override
 		public void ancestorAdded(AncestorEvent event) {
 			pushBattlePropertiesToUIComponents();
-			numberOfRoundsTextField.setText("" + battleProperties.getNumRounds());
-			gunCoolingRateTextField.setText("" + battleProperties.getGunCoolingRate());
-			inactivityTimeTextField.setText("" + battleProperties.getInactivityTime());
+
+			getInactivityTimeTextField().setText("" + battleProperties.getInactivityTime());
 			hideEnemyNamesCheckBox.setSelected(battleProperties.getHideEnemyNames());
 			battlefieldWidthSlider.setValue(battleProperties.getBattlefieldWidth());
 			battlefieldHeightSlider.setValue(battleProperties.getBattlefieldHeight());
@@ -269,7 +350,7 @@ public class NewBattleRulesTab extends JPanel {
 		public void ancestorRemoved(AncestorEvent event) {
 			Integer numberOfRounds;
 			try {
-				numberOfRounds = Integer.parseInt(numberOfRoundsTextField.getText());
+				numberOfRounds = Integer.parseInt(getNumberOfRoundsTextField().getText());
 			} catch (NumberFormatException e) {
 				numberOfRounds = null;
 			}
@@ -279,7 +360,7 @@ public class NewBattleRulesTab extends JPanel {
 			}
 			Double gunCoolingRate;
 			try {
-				gunCoolingRate = Double.parseDouble(gunCoolingRateTextField.getText());
+				gunCoolingRate = Double.parseDouble(getGunCoolingRateTextField().getText());
 			} catch (NumberFormatException e) {
 				gunCoolingRate = null;
 			}
@@ -289,7 +370,7 @@ public class NewBattleRulesTab extends JPanel {
 			}
 			Integer inactivityTime;
 			try {
-				inactivityTime = Integer.parseInt(inactivityTimeTextField.getText());
+				inactivityTime = Integer.parseInt(getInactivityTimeTextField().getText());
 			} catch (NumberFormatException e) {
 				inactivityTime = null;
 			}
@@ -344,12 +425,12 @@ public class NewBattleRulesTab extends JPanel {
 		private void pushBattlePropertiesToUIComponents() {
 			battlefieldWidthSlider.setValue(battleProperties.getBattlefieldWidth());
 			battlefieldHeightSlider.setValue(battleProperties.getBattlefieldHeight());
-			numberOfRoundsTextField.setText("" + battleProperties.getNumRounds());
-			gunCoolingRateTextField.setText("" + battleProperties.getGunCoolingRate());
-			inactivityTimeTextField.setText("" + battleProperties.getInactivityTime());
+			getNumberOfRoundsTextField().setText("" + battleProperties.getNumRounds());
+			getGunCoolingRateTextField().setText("" + battleProperties.getGunCoolingRate());
+			getInactivityTimeTextField().setText("" + battleProperties.getInactivityTime());
 			hideEnemyNamesCheckBox.setSelected(battleProperties.getHideEnemyNames());
 
-			// TODO fnl: Added the rest of the settings!!!
+			// TODO fnl: Add the rest of the settings!!!
 		}
 	}
 
