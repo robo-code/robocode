@@ -31,12 +31,12 @@ import robocode.util.Utils;
 public class Guard extends AdvancedRobot implements BorderSentry {
 
 	// Map used retrieve the scanned data for a robot based on the robot name
-	Map<String/* Name of robot */, ScannedRobotData> scannedRobotData = new HashMap<String, ScannedRobotData>();
+	Map<String/* robot name */, ScannedRobotData> scannedRobotData = new HashMap<String, ScannedRobotData>();
 
 	// Current target robot, which we our robot should fire at
 	ScannedRobotData target;
 
-	// Last time when the robot shiftet its direction
+	// Last time when the robot shifted its direction
 	long lastDirectionShift;
 
 	// Current direction, where 1 means ahead/forward, and -1 means back
@@ -65,6 +65,7 @@ public class Guard extends AdvancedRobot implements BorderSentry {
 
 			// Move the robot
 			move();
+
 			// Execute all pending robot commands, meaning that the robot will now take action!
 			// This means that commands like, setFire(), setTurnLeft(), setTurnRadarRight() etc. will be executed.
 			execute();
@@ -100,7 +101,7 @@ public class Guard extends AdvancedRobot implements BorderSentry {
 		List<ScannedRobotData> targetCandidates = new ArrayList<ScannedRobotData>(currentScanData);
 
 		// Remove all target candidates that are outside our sentry robot's attack range as we
-		// will not be able to harm those robots with our gun fire (is game rules).
+		// will not be able to harm those robots with our gun fire (is a game rule).
 		for (Iterator<ScannedRobotData> it = targetCandidates.iterator(); it.hasNext();) {
 			ScannedRobotData robotData = it.next();
 			// Remove robot data if its location is outside the sentry attack range
@@ -156,11 +157,11 @@ public class Guard extends AdvancedRobot implements BorderSentry {
 			// that the target robot is not outside the entry attack range.
 			if (getRadarTurnRemaining() < 1 && !isOutsideSentryAttackRange(newTarget.x, newTarget.y)) {
 
-				// Calcuate the firepower we should use when firing at our target..
+				// Calculate the fire power we should use when firing at our target..
 				
 				// We want to use the maximum bullet power 3, when the target is within 100 units and
 				// the bullet power should become lesser the longer the distance is to our target.
-				// Hence, we calculate the firepower as 3 * 100 / distance to target.
+				// Hence, we calculate the fire power as 3 * 100 / distance to target.
 				double firePower = 300 / distanceTo(newTarget.x, newTarget.y);
 
 				// Set our gun to fire with the calculated amount of fire power.
@@ -194,7 +195,7 @@ public class Guard extends AdvancedRobot implements BorderSentry {
 		double distance = scannedRobotEvent.getDistance();
 		// Calculate the angle in radians to the scanned robot.
 		// Angle = our robot's heading (angle) + the bearing (delta angle) to the scanned robot.
-		double angle = Math.toRadians(getHeading() + scannedRobotEvent.getBearing());
+		double angle = getHeadingRadians() + scannedRobotEvent.getBearingRadians();
 
 		// Prepare an entry with scanned robot data that we can store in our scanned data map
 		ScannedRobotData robotData = new ScannedRobotData();
@@ -334,9 +335,9 @@ public class Guard extends AdvancedRobot implements BorderSentry {
 	private void paintCircle(double x, double y) {
 		// Get the robot graphics context
 		Graphics2D gfx = getGraphics();
-		// Set the pen color to the yelow color
+		// Set the pen color to the yellow color
 		gfx.setColor(Color.YELLOW);
-		// Set the stroke of the pen to be a basic solid stroke with a with of 2 pixels
+		// Set the stroke of the pen to be a basic solid stroke with a width of 2 pixels
 		gfx.setStroke(new BasicStroke(2));
 		// Draw a circle (oval) that has a radius of 20 pixels with the center in the input coordinates.
 		gfx.drawOval((int) x - 20, (int) y - 20, 40, 40);

@@ -149,6 +149,14 @@ namespace Robocode
             get { return velocity; }
         }
 
+        /// <summary>
+        /// <code>true</code> if the scanned robot is a sentry robot; <code>false</code> otherwise.
+        /// </summary>
+        public bool IsSentryRobot
+        {
+            get { return isSentryRobot; }
+        }
+
         /// <inheritdoc />
         public override sealed int CompareTo(Event evnt)
         {

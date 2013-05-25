@@ -935,7 +935,7 @@ namespace Robocode
         ///   Assuming both the robot and gun start Out facing up (0 degrees):
         ///   <code>
         ///   // Set gun to turn with the robot's turn
-        ///   setAdjustGunForRobotTurn(false); // This is the default
+        ///   SetAdjustGunForRobotTurn(false); // This is the default
         ///   TurnRight(90);
         ///   // At this point, both the robot and gun are facing right (90 degrees)
         ///   TurnLeft(90);
@@ -944,7 +944,7 @@ namespace Robocode
         ///   -- or --
         ///   <code>
         ///   // Set gun to turn independent from the robot's turn
-        ///   setAdjustGunForRobotTurn(true);
+        ///   SetAdjustGunForRobotTurn(true);
         ///   TurnRight(90);
         ///   // At this point, the robot is facing right (90 degrees), but the gun is still facing up.
         ///   TurnLeft(90);
@@ -1001,14 +1001,14 @@ namespace Robocode
         ///   degrees):
         ///   <code>
         ///   // Set radar to turn with the robots's turn
-        ///   setAdjustRadarForRobotTurn(false); // This is the default
+        ///   SetAdjustRadarForRobotTurn(false); // This is the default
         ///   TurnRight(90);
         ///   // At this point, the body, gun, and radar are all facing right (90 degrees);
         ///   </code>
         ///   -- or --
         ///   <code>
         ///   // Set radar to turn independent from the robot's turn
-        ///   setAdjustRadarForRobotTurn(true);
+        ///   SetAdjustRadarForRobotTurn(true);
         ///   TurnRight(90);
         ///   // At this point, the robot and gun are facing right (90 degrees), but the radar is still facing up.
         ///   </code>
