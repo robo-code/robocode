@@ -167,6 +167,7 @@ public class JavaHost implements IHost {
 				isPaintRobot = true;
 			}
 		}
+
 		return new RobotType(isJuniorRobot, isStandardRobot, isInteractiveRobot, isPaintRobot, isAdvancedRobot,
 				isTeamRobot, isDroid, isSentryRobot);
 	}

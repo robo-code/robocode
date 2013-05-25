@@ -573,6 +573,26 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
+	 * Returns the sentry border size for a {@link robocode.BorderSentry BorderSentry} that defines the how
+	 * far a BorderSentry is allowed to move from the border edges measured in units.<br>
+	 * Hence, the sentry border size defines the width/range of the border area surrounding the battlefield that
+	 * BorderSentrys cannot leave (sentry robots robots must stay in the border area), but it also define the
+	 * distance from the border edges where BorderSentrys are allowed/able to make damage to robots entering this
+	 * border area.
+	 * 
+	 * @return the border size in units/pixels.
+	 * 
+	 * @since 1.9.0.0
+	 */
+	public int getSentryBorderSize() {
+		if (peer != null) {
+			return peer.getSentryBorderSize();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
 	 * Returns how many opponents that are left in the current round.
 	 *
 	 * @return how many opponents that are left in the current round.

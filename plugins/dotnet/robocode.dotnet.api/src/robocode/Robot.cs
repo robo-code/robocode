@@ -50,8 +50,7 @@ namespace Robocode
     /// <seealso cref="IDroid"/>
     /// <seealso cref="IBorderSentry"/>
     ///</summary>
-    public abstract class Robot : IInteractiveRobot, IPaintRobot, IBasicEvents3, IInteractiveEvents,
-                                  IPaintEvents, IRunnable
+    public abstract class Robot : IInteractiveRobot, IPaintRobot, IBasicEvents3, IInteractiveEvents, IPaintEvents, IRunnable
     {
         private const int
             WIDTH = 40,
@@ -694,6 +693,26 @@ namespace Robocode
                 if (peer != null)
                 {
                     return peer.GetNumRounds();
+                }
+                UninitializedException();
+                return 0; // never called
+            }
+        }
+
+        ///<summary>
+        ///  Returns the sentry border size for a <see cref="Robocode.BorderSentry">BorderSentry</see> that defines the how
+        ///  far a BorderSentry is allowed to move from the border edges measured in units.<br/>
+        ///  Hence, the sentry border size defines the width/range of the border area surrounding the battlefield that
+        ///  BorderSentrys cannot leave (sentry robots robots must stay in the border area), but it also define the
+        ///  distance from the border edges where BorderSentrys are allowed/able to make damage to robots entering this
+        ///  border area.
+        ///</summary>
+        public int SentryBorderSize
+        {
+            get {
+                if (peer != null)
+                {
+                    return peer.GetSentryBorderSize();
                 }
                 UninitializedException();
                 return 0; // never called

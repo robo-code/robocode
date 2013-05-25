@@ -59,8 +59,7 @@ namespace net.sf.robocode.dotnet.host.proxies
         private readonly ByteBuffer execNetBuffer;
         private readonly RbSerializerN rbSerializerN;
 
-        public BasicRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer,
-                               RobotStatics statics)
+        public BasicRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics)
             : base(specification, hostManager, peer, statics)
         {
             eventManager = new EventManager(this);
@@ -341,6 +340,12 @@ namespace net.sf.robocode.dotnet.host.proxies
         {
             GetCall();
             return status.RoundNum;
+        }
+
+        public int GetSentryBorderSize()
+        {
+            GetCall();
+            return statics.getBattleRules().SentryBorderSize;
         }
 
         public IGraphics GetGraphics()

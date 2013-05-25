@@ -144,7 +144,7 @@ public class BattleSpecification implements java.io.Serializable {
 	 * far a BorderSentry is allowed to move from the border edges measured in units.<br>
 	 * Hence, the sentry border size defines the width/range of the border area surrounding the battlefield that
 	 * border sentry robots cannot leave (they must stay in the border area), but it also define the
-     * distance from the border edges where border sentry robots are allowed/able to make damage to robots entering this
+	 * distance from the border edges where border sentry robots are allowed/able to make damage to robots entering this
 	 * border area.
 	 *
 	 * @return the border size in units/pixels that border sentry robots are restricted to.
