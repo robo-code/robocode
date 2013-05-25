@@ -140,10 +140,9 @@ public class BulletPeer {
 					if (victim.isSentryRobot()) {
 						damage = 0;
 					} else {					
-						int range = battleRules.getSentryRobotBorderSize();
+						int range = battleRules.getSentryBorderSize();
 						if (x > range && x < (battleRules.getBattlefieldWidth() - range) && y > range
 								&& y < (battleRules.getBattlefieldHeight() - range)) {
-	
 							damage = 0;
 						}
 					}

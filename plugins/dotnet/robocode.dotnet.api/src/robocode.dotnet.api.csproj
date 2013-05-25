@@ -78,6 +78,7 @@
     <Compile Include="robocode\BulletHitEvent.cs" />
     <Compile Include="robocode\BulletMissedEvent.cs" />
     <Compile Include="robocode\Condition.cs" />
+    <Compile Include="robocode\IBorderSentry.cs" />
     <Compile Include="robocode\CustomEvent.cs" />
     <Compile Include="robocode\DeathEvent.cs" />
     <Compile Include="robocode\IDroid.cs" />

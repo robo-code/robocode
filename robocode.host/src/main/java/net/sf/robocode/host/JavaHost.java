@@ -19,7 +19,7 @@ import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.Droid;
 import robocode.Robot;
-import robocode.BorderSentryRobot;
+import robocode.BorderSentry;
 import robocode.control.RobotSpecification;
 import robocode.robotinterfaces.*;
 
@@ -137,7 +137,7 @@ public class JavaHost implements IHost {
 		if (Droid.class.isAssignableFrom(robotClass)) {
 			isDroid = true;
 		}
-		if (BorderSentryRobot.class.isAssignableFrom(robotClass)) {
+		if (BorderSentry.class.isAssignableFrom(robotClass)) {
 			isSentryRobot = true;
 		}
 

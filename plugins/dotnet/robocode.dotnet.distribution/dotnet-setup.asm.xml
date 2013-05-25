@@ -91,7 +91,7 @@
             <outputDirectory>robots</outputDirectory>
         </fileSet>
     </fileSets>
-<!--    <files>
+    <files>
         <file>
             <source>../robocode.dotnet.api/target/robocode.xml</source>
             <outputDirectory>libs</outputDirectory>
@@ -106,5 +106,5 @@
         <file>
             <source>../robocode.dotnet.control.api/target/Help/ControlAPI.chm</source>
         </file>
-    </files>-->
+    </files>
 </assembly>

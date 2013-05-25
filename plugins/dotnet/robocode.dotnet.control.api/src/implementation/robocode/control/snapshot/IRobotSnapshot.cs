@@ -44,7 +44,7 @@ namespace Robocode.Control.Snapshot
         string VeryShortName { get; }
 
         /// <summary>
-        /// Contains the name of the team, which can be the name of a robot if the contestant is not a team, but a robot.<br>
+        /// Contains the name of the team, which can be the name of a robot if the contestant is not a team, but a robot.
         /// </summary>
         /// <value>
         /// The name of the team.

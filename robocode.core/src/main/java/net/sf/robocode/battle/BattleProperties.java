@@ -36,7 +36,7 @@ public class BattleProperties implements Serializable {
 			BATTLE_HIDE_ENEMY_NAMES = "robocode.battle.hideEnemyNames",
 			BATTLE_SELECTEDROBOTS = "robocode.battle.selectedRobots",
 			BATTLE_INITIAL_POSITIONS = "robocode.battle.initialPositions",
-			SENTRY_ROBOT_ATTACK_RANGE = "robocode.sentryRobot.attackRange";
+			SENTRY_BORDER_SIZE = "robocode.sentryBorderSize";
 
 	private int battlefieldWidth = 800;
 	private int battlefieldHeight = 600;
@@ -44,7 +44,7 @@ public class BattleProperties implements Serializable {
 	private double gunCoolingRate = 0.1;
 	private long inactivityTime = 450;
 	private boolean hideEnemyNames = false;
-	private int borderSentryRobotAttackRange = 100;
+	private int sentryBorderSize = 100;
 	private String selectedRobots;
 	private String initialPositions;
 
@@ -266,27 +266,23 @@ public class BattleProperties implements Serializable {
 	}
 
 	/**
-	 * Returns the border size that defines the attack range for a {@link robocode.BorderSentryRobot SentryRobot}.
-	 *
+	 * Returns the sentry border size for a {@link robocode.BorderSentry BorderSentry}.
+	 * 
 	 * @return the border size in units/pixels.
-	 *
-	 * @since 1.9.0.0
 	 */
-	public int getBorderSentryRobotAttackRange() {
-		return borderSentryRobotAttackRange;
+	public int getSentryBorderSize() {
+		return sentryBorderSize;
 	}
 
 	/**
-	 * Sets the border size that defines the attack range for a {@link robocode.BorderSentryRobot SentryRobot}.
-	 *
-	 * @param borderSize is the border range in units/pixels.
-	 *
-	 * @since 1.9.0.0
+	 * Returns the sentry border size for a {@link robocode.BorderSentry BorderSentry}.
+	 * 
+	 * @param borderSize is the sentry border size in units/pixels.
 	 */
-	public void setBorderSentryRobotAttackRange(int attackRange) {
-		borderSentryRobotAttackRange = attackRange;
+	public void setSentryBorderSize(int borderSize) {
+		sentryBorderSize = borderSize;
 	}
-	
+
 	public void store(FileOutputStream out, String desc) throws IOException {
 		props.store(out, desc);
 	}
@@ -301,6 +297,6 @@ public class BattleProperties implements Serializable {
 		numRounds = Integer.parseInt(props.getProperty(BATTLE_NUMROUNDS, "10"));
 		selectedRobots = props.getProperty(BATTLE_SELECTEDROBOTS, "");
 		initialPositions = props.getProperty(BATTLE_INITIAL_POSITIONS, "");
-		borderSentryRobotAttackRange = Integer.parseInt(props.getProperty(SENTRY_ROBOT_ATTACK_RANGE, "100"));
+		sentryBorderSize = Integer.parseInt(props.getProperty(SENTRY_BORDER_SIZE, "100"));
 	}
 }

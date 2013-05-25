@@ -1148,7 +1148,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	private void checkSentryOutsideBorder() {
-		int range = battle.getBattleRules().getSentryRobotBorderSize();
+		int range = battle.getBattleRules().getSentryBorderSize();
 
 		int minX = range - HALF_WIDTH_OFFSET;
 		int minY = range - HALF_HEIGHT_OFFSET;

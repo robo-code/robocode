@@ -13,13 +13,13 @@ using net.sf.robocode.security;
 
 namespace Robocode
 {
-    ///<summary>
+    /// <summary>
     ///  Contains the battle rules returned by <see cref="Robocode.Control.Events.BattleStartedEvent.BattleRules">BattleStartedEvent.BattleRules</see>
-    ///  when a battle is started and <see cref="Robocode.Control.Events.BattleCompletedEvent.BattleRules">BattleCompletedEvent.getBattleRules</see>
+    ///  when a battle is started and <see cref="Robocode.Control.Events.BattleCompletedEvent.BattleRules">BattleCompletedEvent.BattleRules</see>
     ///  when a battle is completed.
-    ///  <seealso cref="Robocode.Control.Events.BattleStartedEvent"/>BattleStartedEvent</seealso>
-    ///  <seealso cref="Robocode.Control.Events.BattleCompletedEvent"/>BattleCompletedEvent</seealso>
-    ///</summary>
+    /// </summary>
+    /// <seealso cref="Robocode.Control.Events.BattleStartedEvent">BattleStartedEvent</seealso>
+    /// <seealso cref="Robocode.Control.Events.BattleCompletedEvent">BattleCompletedEvent</seealso>
     [Serializable]
     public sealed class BattleRules
     {
@@ -29,7 +29,7 @@ namespace Robocode
         private readonly double gunCoolingRate;
         private readonly long inactivityTime;
         private readonly bool hideEnemyNames;
-        private readonly int borderSentryRobotAttackRange;
+        private readonly int sentryBorderSize;
 
         ///<summary>
         ///  Returns the battlefield width.
@@ -97,15 +97,20 @@ namespace Robocode
         }
 
         ///<summary>
-        ///  Returns the attack range for a <see cref="Robocode.BorderSentryRobot">BorderSentryRobot</see>.
+        ///  Returns the sentry border size for a <see cref="robocode.BorderSentry">BorderSentry</see> that defines the how
+        ///  far a BorderSentry is allowed to move from the border edges measured in units.<br/>
+        ///  Hence, the sentry border size defines the width/range of the border area surrounding the battlefield that
+        ///  BorderSentrys cannot leave (sentry robots robots must stay in the border area), but it also define the
+        ///  distance from the border edges where BorderSentrys are allowed/able to make damage to robots entering this
+        ///  border area.
         ///</summary>
-        public int BorderSentryRobotAttackRange
+        public int SentryBorderSize
         {
-            get { return borderSentryRobotAttackRange; }
+            get { return sentryBorderSize; }
         }
 
         private BattleRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime,
-            bool hideEnemyNames, int borderSentryRobotAttackRange)
+            bool hideEnemyNames, int sentryBorderSize)
         {
             this.battlefieldWidth = battlefieldWidth;
             this.battlefieldHeight = battlefieldHeight;
@@ -113,7 +118,7 @@ namespace Robocode
             this.gunCoolingRate = gunCoolingRate;
             this.inactivityTime = inactivityTime;
             this.hideEnemyNames = hideEnemyNames;
-            this.borderSentryRobotAttackRange = borderSentryRobotAttackRange;
+            this.sentryBorderSize = sentryBorderSize;
         }
 
         private static IHiddenRulesHelper createHiddenHelper()

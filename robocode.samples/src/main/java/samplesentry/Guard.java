@@ -28,10 +28,10 @@ import robocode.util.Utils;
  * 
  * @since 1.9.0.0
  */
-public class Guard extends AdvancedRobot implements BorderSentryRobot {
+public class Guard extends AdvancedRobot implements BorderSentry {
 
 	// TODO: Do not fire on other SentryRobots! (using new API method -> part of the sample)
-	// TODO: getBorderBorderSentryRobotAttackRange() skal kaldes (using new API method -> part of the sample)
+	// TODO: getSentryBorderSize() skal kaldes (using new API method -> part of the sample)
 
 	// Map used retrieve the scanned data for a robot based on the robot name
 	Map<String/* Name of robot */, ScannedRobotData> scannedRobotData = new HashMap<String, ScannedRobotData>();
@@ -107,7 +107,7 @@ public class Guard extends AdvancedRobot implements BorderSentryRobot {
 		for (Iterator<ScannedRobotData> it = targetCandidates.iterator(); it.hasNext();) {
 			ScannedRobotData robotData = it.next();
 			// Remove robot data if its location is outside the sentry attack range
-			if (isOutsideSentryAttackRange(robotData.x, robotData.y)) {
+			if (isOutsideSentryBorderArea(robotData.x, robotData.y)) {
 				it.remove();
 			}
 		}
@@ -157,7 +157,7 @@ public class Guard extends AdvancedRobot implements BorderSentryRobot {
 
 			// Check that the radar turn has almost completed (has less than 1 degrees left to turn) and
 			// that the target robot is not outside the entry attack range.
-			if (getRadarTurnRemaining() < 1 && !isOutsideSentryAttackRange(newTarget.x, newTarget.y)) {
+			if (getRadarTurnRemaining() < 1 && !isOutsideSentryBorderArea(newTarget.x, newTarget.y)) {
 
 				// Calcuate the firepower we should use when firing at our target..
 				
@@ -238,10 +238,10 @@ public class Guard extends AdvancedRobot implements BorderSentryRobot {
 
 		// Get close to our target if we have a target robot
 		if (target != null) {
-			final int BorderSentryRobotAttackRange = 100; // FIXME
+			final int sentryBorderSize = 100; // FIXME
 
 			// Calculate the range from the walls/borders, our robot should keep within
-			int borderRange = BorderSentryRobotAttackRange - 20;
+			int borderRange = sentryBorderSize - 20;
 
 			// The horizontal and vertical flags are used for determining, if our robot should
 			// move horizontal or vertical.
@@ -308,12 +308,12 @@ public class Guard extends AdvancedRobot implements BorderSentryRobot {
 	 * @param y is the y coordinate.
 	 * @return true if the point is outside the attack range of border sentry robots; false otherwise.
 	 */
-	private boolean isOutsideSentryAttackRange(double x, double y) {
-		final int BorderSentryRobotAttackRange = 100; // FIXME replace with API method
-		return (x > BorderSentryRobotAttackRange && // minimum border x
-				y > BorderSentryRobotAttackRange && // minimum border y 
-				x < ((int) getBattleFieldWidth() - BorderSentryRobotAttackRange) && // maximum border x
-				y < ((int) getBattleFieldHeight() - BorderSentryRobotAttackRange)); // maximum border y
+	private boolean isOutsideSentryBorderArea(double x, double y) {
+		final int sentryBorderSize = 100; // FIXME replace with API method
+		return (x > sentryBorderSize && // minimum border x
+				y > sentryBorderSize && // minimum border y 
+				x < ((int) getBattleFieldWidth() - sentryBorderSize) && // maximum border x
+				y < ((int) getBattleFieldHeight() - sentryBorderSize)); // maximum border y
 	}
 
 	/**

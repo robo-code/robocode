@@ -24,7 +24,7 @@ public class BattleSpecification implements java.io.Serializable {
 	private final double gunCoolingRate;
 	private final long inactivityTime;
 	private final boolean hideEnemyNames;
-	private final int borderSentryRobotAttackRange;
+	private final int sentryBorderSize;
 	private final RobotSpecification[] robots;
 
 	/**
@@ -75,19 +75,19 @@ public class BattleSpecification implements java.io.Serializable {
 	 * @param numRounds	is the number of rounds in this battle.
 	 * @param inactivityTime is the inactivity time allowed for the robots before they will loose energy.
 	 * @param gunCoolingRate is the gun cooling rate for the robots.
-	 * @param sentryRobotBorderSize is the border size that defines the attack range for a {@link robocode.BorderSentryRobot SentryRobot}.
+	 * @param sentryBorderSize is the sentry border size for a {@link robocode.BorderSentry BorderSentry}.
 	 * @param hideEnemyNames  flag specifying if enemy names are hidden from robots.
 	 * @param robots is the robots participating in this battle.
 	 * 
 	 * @since 1.9.0.0
 	 */
-	public BattleSpecification(BattlefieldSpecification battlefieldSize, int numRounds, long inactivityTime, double gunCoolingRate, int borderSentryRobotAttackRange, boolean hideEnemyNames, RobotSpecification[] robots) {
+	public BattleSpecification(BattlefieldSpecification battlefieldSize, int numRounds, long inactivityTime, double gunCoolingRate, int sentryBorderSize, boolean hideEnemyNames, RobotSpecification[] robots) {
 		this.battlefieldWidth = battlefieldSize.getWidth();
 		this.battlefieldHeight = battlefieldSize.getHeight();
 		this.numRounds = numRounds;
 		this.inactivityTime = inactivityTime;
 		this.gunCoolingRate = gunCoolingRate;
-		this.borderSentryRobotAttackRange = borderSentryRobotAttackRange;
+		this.sentryBorderSize = sentryBorderSize;
 		this.hideEnemyNames = hideEnemyNames;
 		this.robots = robots;
 	}
@@ -140,15 +140,19 @@ public class BattleSpecification implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the border size that border sentry robots are restricted to. Border border sentry robots cannot move outside this border or
-	 * do any harm to other robots outside this border.
+	 * Returns the sentry border size for a {@link robocode.BorderSentry BorderSentry} that defines the how
+	 * far a BorderSentry is allowed to move from the border edges measured in units.<br>
+	 * Hence, the sentry border size defines the width/range of the border area surrounding the battlefield that
+	 * border sentry robots cannot leave (they must stay in the border area), but it also define the
+     * distance from the border edges where border sentry robots are allowed/able to make damage to robots entering this
+	 * border area.
 	 *
 	 * @return the border size in units/pixels that border sentry robots are restricted to.
-	 *
+	 * 
 	 * @since 1.9.0.0
 	 */
-	public int getBorderSentryRobotAttackRange() {
-		return borderSentryRobotAttackRange;
+	public int getSentryBorderSize() {
+		return sentryBorderSize;
 	}
 
 	/**

@@ -73,10 +73,16 @@ namespace net.sf.robocode.dotnet.utils
             bool isAdvancedRobot = false;
             bool isTeamRobot = false;
             bool isDroid = false;
+            bool isSentryRobot = false;
 
             if (typeof (IDroid).IsAssignableFrom(robotClass))
             {
                 isDroid = true;
+            }
+
+            if (typeof(IBorderSentry).IsAssignableFrom(robotClass))
+            {
+                isSentryRobot = true;
             }
 
             if (typeof (ITeamRobot).IsAssignableFrom(robotClass))
@@ -157,6 +163,7 @@ namespace net.sf.robocode.dotnet.utils
             if (isAdvancedRobot) type |= RobotTypeN.ADVANCED;
             if (isTeamRobot) type |= RobotTypeN.TEAM;
             if (isDroid) type |= RobotTypeN.DROID;
+            if (isSentryRobot) type |= RobotTypeN.SENTRY;
             return type;
         }
 

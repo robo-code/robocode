@@ -26,6 +26,7 @@ namespace Robocode.Control
         private readonly double gunCoolingRate;
         private readonly long inactivityTime;
         private readonly bool hideEnemyNames;
+        private readonly int sentryBorderSize;
         private readonly RobotSpecification[] robots;
 
         /// <summary>
@@ -70,6 +71,29 @@ namespace Robocode.Control
             this.numRounds = numRounds;
             this.inactivityTime = inactivityTime;
             this.gunCoolingRate = gunCoolingRate;
+            this.hideEnemyNames = hideEnemyNames;
+            this.battlefieldWidth = battlefieldSize.Width;
+            this.battlefieldHeight = battlefieldSize.Height;
+            this.robots = robots;
+        }
+
+        /// <summary>
+        /// Creates a new BattleSpecification with the given settings.
+        /// </summary>
+        /// <param name="numRounds">The number of rounds in this battle.</param>
+        /// <param name="inactivityTime">The inactivity time allowed for the robots before
+        /// they will loose energy.</param>
+        /// <param name="gunCoolingRate">The gun cooling rate for the robots.</param>
+        /// <param name="sentryBorderSize">The sentry border size for a <see cref="Robocode.IBorderSentry">BorderSentry</see>.</param>
+        /// <param name="hideEnemyNames">Flag specifying if enemy names are hidden from robots.</param>
+        /// <param name="battlefieldSize">The battlefield size.</param>
+        /// <param name="robots">The robots participating in this battle.</param>
+        public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, int sentryBorderSize, bool hideEnemyNames, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots)
+        {
+            this.numRounds = numRounds;
+            this.inactivityTime = inactivityTime;
+            this.gunCoolingRate = gunCoolingRate;
+            this.sentryBorderSize = sentryBorderSize;
             this.hideEnemyNames = hideEnemyNames;
             this.battlefieldWidth = battlefieldSize.Width;
             this.battlefieldHeight = battlefieldSize.Height;
@@ -129,6 +153,20 @@ namespace Robocode.Control
         public bool HideEnemyNames
         {
             get { return hideEnemyNames; }
+        }
+
+        ///<summary>
+        ///  Returns the sentry border size for a <see cref="Robocode.IBorderSentry">BorderSentry</see> that defines the how
+        ///  far a BorderSentry is allowed to move from the border edges measured in units.
+        ///  <p/>
+        ///  Hence, the sentry border size defines the width/range of the border area surrounding the battlefield that
+	    ///  border sentry robots cannot leave (they must stay in the border area), but it also define the
+        ///  distance from the border edges where border sentry robots are allowed/able to make damage to robots entering this
+        ///  border area.
+        ///</summary>
+        public int SentryBorderSize
+        {
+            get { return sentryBorderSize; }
         }
 
         /// <summary>

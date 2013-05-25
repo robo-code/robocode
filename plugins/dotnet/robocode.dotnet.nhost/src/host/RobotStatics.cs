@@ -220,7 +220,7 @@ namespace net.sf.robocode.host
                 serializer.serialize(buffer, obj.battleRules.GunCoolingRate);
                 serializer.serialize(buffer, obj.battleRules.InactivityTime);
                 serializer.serialize(buffer, obj.battleRules.HideEnemyNames);
-                serializer.serialize(buffer, obj.battleRules.BorderSentryRobotAttackRange);
+                serializer.serialize(buffer, obj.battleRules.SentryBorderSize);
                 if (obj.teammates != null)
                 {
                     foreach (string mate in obj.teammates)
@@ -256,7 +256,7 @@ namespace net.sf.robocode.host
                     serializer.deserializeDouble(buffer), // GunCoolingRate
                     serializer.deserializeLong(buffer), // InactivityTime
                     serializer.deserializeBoolean(buffer), // HideEnemyNames
-                    serializer.deserializeInt(buffer) // BorderSentryRobotAttackRange
+                    serializer.deserializeInt(buffer) // SentryBorderSize
                     );
 
                 var teammates = new List<string>();

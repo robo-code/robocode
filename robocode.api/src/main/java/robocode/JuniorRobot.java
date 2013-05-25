@@ -38,7 +38,7 @@ import static java.lang.Math.toRadians;
  * @see TeamRobot
  * @see RateControlRobot
  * @see Droid
- * @see BorderSentryRobot
+ * @see BorderSentry
  *
  * @author Nutch Poovarawan from Cubic Creative (designer)
  * @author Flemming N. Larsen (original)

@@ -26,10 +26,12 @@ namespace Robocode
     ///  <br/><see href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
     ///    Building your first robot
     ///  </see>
-    ///  <seealso cref="JuniorRobot" />
-    ///  <seealso cref="Robot" />
-    ///  <seealso cref="TeamRobot" />
-    ///  <seealso cref="IDroid" />
+    /// <seealso cref="JuniorRobot"/>
+    /// <seealso cref="Robot"/>
+    /// <seealso cref="TeamRobot"/>
+    /// <seealso cref="RateControlRobot"/>
+    /// <seealso cref="IDroid"/>
+    /// <seealso cref="IBorderSentry"/>
     ///</summary>
     public abstract class AdvancedRobot : Robot, IAdvancedRobot, IAdvancedEvents
     {

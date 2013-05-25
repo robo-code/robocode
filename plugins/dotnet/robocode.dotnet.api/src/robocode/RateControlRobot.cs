@@ -39,6 +39,12 @@ namespace Robocode
     ///   <p />
     ///   Look into the source code for the samplecs.VelociRobot in order to see how to use this
     ///   robot type.
+    /// <seealso cref="JuniorRobot"/>
+    /// <seealso cref="Robot"/>
+    /// <seealso cref="AdvancedRobot"/>
+    /// <seealso cref="TeamRobot"/>
+    /// <seealso cref="IDroid"/>
+    /// <seealso cref="IBorderSentry"/>
     /// </summary>
     public abstract class RateControlRobot : TeamRobot
     {

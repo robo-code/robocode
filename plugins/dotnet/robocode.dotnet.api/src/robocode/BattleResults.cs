@@ -165,7 +165,6 @@ namespace Robocode
             get { return thirds; }
         }
 
-        /// <inheritdoc />
         public int CompareTo(BattleResults o)
         {
             return score.CompareTo(o.score);

@@ -34,7 +34,7 @@ public final class BattleRules implements java.io.Serializable {
 	private final double gunCoolingRate;
 	private final long inactivityTime;
 	private final boolean hideEnemyNames;
-	private final int sentryRobotBorderSize;
+	private final int sentryBorderSize;
 
 	/**
 	 * Returns the battlefield width.
@@ -108,24 +108,30 @@ public final class BattleRules implements java.io.Serializable {
 	}
 
 	/**
-	 * Returns the border size that defines the attack range for a {@link robocode.BorderSentryRobot SentryRobot}
-	 * from the border.
+	 * Returns the sentry border size for a {@link robocode.BorderSentry BorderSentry} that defines the how
+	 * far a BorderSentry is allowed to move from the border edges measured in units.<br>
+	 * Hence, the sentry border size defines the width/range of the border area surrounding the battlefield that
+	 * BorderSentrys cannot leave (sentry robots robots must stay in the border area), but it also define the
+	 * distance from the border edges where BorderSentrys are allowed/able to make damage to robots entering this
+	 * border area.
 	 * 
-	 * @return 1.9.0.0
+	 * @return the border size in units/pixels.
+	 * 
+	 * @since 1.9.0.0
 	 */
-	public int getSentryRobotBorderSize() {
-		return sentryRobotBorderSize;
+	public int getSentryBorderSize() {
+		return sentryBorderSize;
 	}
 	
-	private BattleRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime, boolean hideEnemyNames,
-			int sentryRobotBorderSize) {
+	private BattleRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate,
+			long inactivityTime, boolean hideEnemyNames, int sentryBorderSize) {
 		this.battlefieldWidth = battlefieldWidth;
 		this.battlefieldHeight = battlefieldHeight;
 		this.numRounds = numRounds;
 		this.gunCoolingRate = gunCoolingRate;
 		this.inactivityTime = inactivityTime;
 		this.hideEnemyNames = hideEnemyNames;
-		this.sentryRobotBorderSize = sentryRobotBorderSize;
+		this.sentryBorderSize = sentryBorderSize;
 	}
 
 	static IHiddenRulesHelper createHiddenHelper() {
@@ -134,9 +140,9 @@ public final class BattleRules implements java.io.Serializable {
 
 	private static class HiddenHelper implements IHiddenRulesHelper {
 
-		public BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime, boolean hideEnemyNames, int sentryRobotBorderSize) {
+		public BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime, boolean hideEnemyNames, int sentryBorderSize) {
 			return new BattleRules(battlefieldWidth, battlefieldHeight, numRounds, gunCoolingRate, inactivityTime,
-					hideEnemyNames, sentryRobotBorderSize);
+					hideEnemyNames, sentryBorderSize);
 		}
 	}
 }

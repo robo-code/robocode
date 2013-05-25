@@ -38,7 +38,7 @@ import java.awt.*;
  * @see TeamRobot
  * @see Droid
  * @see RateControlRobot
- * @see BorderSentryRobot
+ * @see BorderSentry
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)

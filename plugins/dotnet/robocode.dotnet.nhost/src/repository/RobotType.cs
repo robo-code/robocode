@@ -23,6 +23,7 @@ namespace net.sf.robocode.repository
         DROID = 16,
         INTERACTIVE = 32,
         PAINTING = 64,
+        SENTRY = 128
     }
 
     partial class RobotType
