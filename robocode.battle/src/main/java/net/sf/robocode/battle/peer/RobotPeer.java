@@ -803,7 +803,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		newExecCommands.copyColors(commands.get());
 
 		currentCommands = newExecCommands;
-		int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
+		int others = battle.getActiveParticipants() - (isAlive() ? 1 : 0);
 		RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
 				currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),
 				currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others,
@@ -1727,7 +1727,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public void publishStatus(long currentTurn) {
 
 		final ExecCommands currentCommands = commands.get();
-		int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
+		int others = battle.getActiveParticipants() - (isAlive() ? 1 : 0);
 		RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
 				currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),
 				currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others,

@@ -68,7 +68,7 @@ public final class Battle extends BaseBattle {
 	private List<RobotPeer> robots = new ArrayList<RobotPeer>();
 	private List<ContestantPeer> contestants = new ArrayList<ContestantPeer>();
 	private final List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
-	private int activeRobots;
+	private int activeParticipants;
 
 	// Death events
 	private final List<RobotPeer> deathRobots = new CopyOnWriteArrayList<RobotPeer>();
@@ -251,8 +251,8 @@ public final class Battle extends BaseBattle {
 	 *
 	 * @return Returns a int
 	 */
-	public int getActiveRobots() {
-		return activeRobots;
+	public int getActiveParticipants() {
+		return activeParticipants;
 	}
 
 	@Override
@@ -340,7 +340,7 @@ public final class Battle extends BaseBattle {
 			}
 		}
 
-		computeActiveRobots();
+		computeActiveParticipants();
 
 		hostManager.resetThreadManager();
 	}
@@ -414,7 +414,7 @@ public final class Battle extends BaseBattle {
 
 		inactiveTurnCount++;
 
-		computeActiveRobots();
+		computeActiveParticipants();
 
 		publishStatuses();
 
@@ -626,16 +626,16 @@ public final class Battle extends BaseBattle {
 		}
 	}
 
-	private void computeActiveRobots() {
-		int ar = 0;
+	private void computeActiveParticipants() {
+		int activeCount = 0;
 
 		// Compute active robots
 		for (RobotPeer robotPeer : robots) {
-			if (robotPeer.isAlive()) {
-				ar++;
+			if (robotPeer.isAlive() && !robotPeer.isSentryRobot()) {
+				activeCount++;
 			}
 		}
-		this.activeRobots = ar;
+		this.activeParticipants = activeCount;
 	}
 
 	private void wakeupRobots() {
@@ -769,7 +769,7 @@ public final class Battle extends BaseBattle {
 	}
 
 	private boolean oneTeamRemaining() {
-		if (getActiveRobots() <= 1) {
+		if (getActiveParticipants() <= 1) {
 			return true;
 		}
 
