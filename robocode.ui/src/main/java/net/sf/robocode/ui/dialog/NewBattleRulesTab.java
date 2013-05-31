@@ -49,6 +49,7 @@ public class NewBattleRulesTab extends JPanel {
 	private final JLabel numberOfRoundsLabel = new JLabel("Number of Rounds:");
 	private final JLabel gunCoolingRateLabel = new JLabel("Gun Cooling Rate:");
 	private final JLabel inactivityTimeLabel = new JLabel("Inactivity Time:");
+	private final JLabel sentryBorderSizeLabel = new JLabel("Sentry Border Size");
 	private final JLabel hideEnemyNamesLabel = new JLabel("Hide Enemy Names:");
 
 	private final JButton restoreDefaultsButton = new JButton("Restore Defaults");
@@ -56,6 +57,7 @@ public class NewBattleRulesTab extends JPanel {
 	private JTextField numberOfRoundsTextField;
 	private JTextField gunCoolingRateTextField;
 	private JTextField inactivityTimeTextField;
+	private JTextField sentryBorderSizeTextField;
 	private final JCheckBox hideEnemyNamesCheckBox = new JCheckBox();
 
 	private JSlider battlefieldWidthSlider;
@@ -185,6 +187,7 @@ public class NewBattleRulesTab extends JPanel {
 		left.addComponent(numberOfRoundsLabel);
 		left.addComponent(gunCoolingRateLabel);
 		left.addComponent(inactivityTimeLabel);
+		left.addComponent(sentryBorderSizeLabel);
 		left.addComponent(hideEnemyNamesLabel);
 		leftToRight.addGroup(left);
 		
@@ -192,6 +195,7 @@ public class NewBattleRulesTab extends JPanel {
 		right.addComponent(getNumberOfRoundsTextField());
 		right.addComponent(getGunCoolingRateTextField());
 		right.addComponent(getInactivityTimeTextField());
+		right.addComponent(getSentryBorderSizeTextField());
 		right.addComponent(hideEnemyNamesCheckBox);
 		leftToRight.addGroup(right);
 		
@@ -212,10 +216,15 @@ public class NewBattleRulesTab extends JPanel {
 		row2.addComponent(inactivityTimeTextField);
 		topToBottom.addGroup(row2);
 
-		GroupLayout.ParallelGroup row3 = layout.createParallelGroup(Alignment.CENTER);
-		row3.addComponent(hideEnemyNamesLabel);
-		row3.addComponent(hideEnemyNamesCheckBox);
+		GroupLayout.ParallelGroup row3 = layout.createParallelGroup(Alignment.BASELINE);
+		row3.addComponent(sentryBorderSizeLabel);
+		row3.addComponent(sentryBorderSizeTextField);
 		topToBottom.addGroup(row3);
+
+		GroupLayout.ParallelGroup row4 = layout.createParallelGroup(Alignment.CENTER);
+		row4.addComponent(hideEnemyNamesLabel);
+		row4.addComponent(hideEnemyNamesCheckBox);
+		topToBottom.addGroup(row4);
 
 		layout.setHorizontalGroup(leftToRight);
 		layout.setVerticalGroup(topToBottom);
@@ -305,6 +314,33 @@ public class NewBattleRulesTab extends JPanel {
 		return inactivityTimeTextField;
 	}
 	
+	private JTextField getSentryBorderSizeTextField() {
+		if (sentryBorderSizeTextField == null) {
+			sentryBorderSizeTextField = new JTextField(5);
+			sentryBorderSizeTextField.setText("" + battleProperties.getSentryBorderSize());
+			sentryBorderSizeTextField.setInputVerifier(
+					new InputVerifier() {
+				@Override
+				public boolean verify(JComponent input) {
+					boolean isValid = false;
+
+					String text = ((JTextField) input).getText();
+					if (text != null && text.matches("\\d+")) {
+						int borderSize = Integer.parseInt(text);
+						isValid = (borderSize >= 50);
+					}
+					if (!isValid) {
+						WindowUtil.messageError(
+								"'Sentry Border Size' must be an integer value >= 50.\n" + "Default value is 100.");
+						sentryBorderSizeTextField.setText("" + battleProperties.getInactivityTime());
+					}
+					return isValid;
+				}
+			});
+		}
+		return sentryBorderSizeTextField;
+	}
+
 	private JSlider createBattlefieldSizeSlider() {
 		JSlider slider = new JSlider();
 		slider.setMinimum(MIN_BATTLEFIELD_SIZE);
@@ -338,12 +374,6 @@ public class NewBattleRulesTab extends JPanel {
 		@Override
 		public void ancestorAdded(AncestorEvent event) {
 			pushBattlePropertiesToUIComponents();
-
-			getInactivityTimeTextField().setText("" + battleProperties.getInactivityTime());
-			hideEnemyNamesCheckBox.setSelected(battleProperties.getHideEnemyNames());
-			battlefieldWidthSlider.setValue(battleProperties.getBattlefieldWidth());
-			battlefieldHeightSlider.setValue(battleProperties.getBattlefieldHeight());
-			updateBattlefieldSizeLabel();
 		}
 
 		@Override
@@ -377,6 +407,16 @@ public class NewBattleRulesTab extends JPanel {
 			if (inactivityTime != null) {
 				settingsManager.setBattleDefaultInactivityTime(inactivityTime);
 				battleProperties.setInactivityTime(inactivityTime);
+			}
+			Integer sentryBorderSize;
+			try {
+				sentryBorderSize = Integer.parseInt(getSentryBorderSizeTextField().getText());
+			} catch (NumberFormatException e) {
+				sentryBorderSize = null;
+			}
+			if (sentryBorderSize != null) {
+				settingsManager.setBattleDefaultSentryBorderSize(sentryBorderSize);
+				battleProperties.setSentryBorderSize(sentryBorderSize);
 			}
 			boolean hideEnemyNames = hideEnemyNamesCheckBox.isSelected();
 			settingsManager.setBattleDefaultHideEnemyNames(hideEnemyNames);
@@ -425,12 +465,13 @@ public class NewBattleRulesTab extends JPanel {
 		private void pushBattlePropertiesToUIComponents() {
 			battlefieldWidthSlider.setValue(battleProperties.getBattlefieldWidth());
 			battlefieldHeightSlider.setValue(battleProperties.getBattlefieldHeight());
+			updateBattlefieldSizeLabel();
+
 			getNumberOfRoundsTextField().setText("" + battleProperties.getNumRounds());
 			getGunCoolingRateTextField().setText("" + battleProperties.getGunCoolingRate());
 			getInactivityTimeTextField().setText("" + battleProperties.getInactivityTime());
+			getSentryBorderSizeTextField().setText("" + battleProperties.getSentryBorderSize());
 			hideEnemyNamesCheckBox.setSelected(battleProperties.getHideEnemyNames());
-
-			// TODO fnl: Add the rest of the settings!!!
 		}
 	}
 

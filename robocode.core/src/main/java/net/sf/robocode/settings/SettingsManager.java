@@ -129,6 +129,7 @@ public class SettingsManager implements ISettingsManager {
 	private int battleDefaultBattlefieldHeight = 600;
 	private double battleDefaultGunCoolingRate = 0.1;
 	private long battleDefaultInactivityTime = 450;
+	private int battleDefaultSentryBorderSize = 100;
 	private boolean battleDefaultHideEnemyNames = false;
 	private int battleDefaultNumberOfRounds = 10;
 
@@ -661,6 +662,15 @@ public class SettingsManager implements ISettingsManager {
 	public void setBattleDefaultInactivityTime(long inactivityTime) {
 		this.battleDefaultInactivityTime = Math.max(0, inactivityTime);
 		props.setProperty(BATTLE_DEFAULT_INACTIVITY_TIME, "" + this.battleDefaultInactivityTime);
+	}
+
+	public int getBattleDefaultSentryBorderSize() {
+		return battleDefaultSentryBorderSize;
+	}
+
+	public void setBattleDefaultSentryBorderSize(int sentryBorderSize) {
+		this.battleDefaultSentryBorderSize = sentryBorderSize;
+		props.setProperty(BATTLE_DEFAULT_SENTRY_BORDER_SIZE, "" + this.battleDefaultSentryBorderSize);
 	}
 
 	public boolean getBattleDefaultHideEnemyNames() {

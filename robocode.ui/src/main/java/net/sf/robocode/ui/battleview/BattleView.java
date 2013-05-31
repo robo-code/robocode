@@ -19,6 +19,7 @@ import net.sf.robocode.ui.IWindowManagerExt;
 import net.sf.robocode.ui.gfx.GraphicsState;
 import net.sf.robocode.ui.gfx.RenderImage;
 import net.sf.robocode.ui.gfx.RobocodeLogo;
+import robocode.BattleRules;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattleStartedEvent;
@@ -53,6 +54,8 @@ public class BattleView extends Canvas {
 
 	private final static int ROBOT_TEXT_Y_OFFSET = 24;
 
+	private BattleRules battleRules;
+	
 	// The battle and battlefield,
 	private BattleField battleField;
 
@@ -356,11 +359,15 @@ public class BattleView extends Canvas {
 			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, battleField.getWidth(), battleField.getHeight());
 		}
+
+		int borderSentrySize = battleRules.getSentryBorderSize();
+		
 		g.setColor(new Color(0xff, 0x00, 0x00, 0x80));
-		g.fillRect(0, 0, 100, battleField.getHeight());
-		g.fillRect(battleField.getWidth() - 100, 0, 100, battleField.getHeight());
-		g.fillRect(100, 0, battleField.getWidth() - 2 * 100, 100);
-		g.fillRect(100, battleField.getHeight() - 100, battleField.getWidth() - 2 * 100, 100);
+		g.fillRect(0, 0, borderSentrySize, battleField.getHeight());
+		g.fillRect(battleField.getWidth() - borderSentrySize, 0, borderSentrySize, battleField.getHeight());
+		g.fillRect(borderSentrySize, 0, battleField.getWidth() - 2 * borderSentrySize, borderSentrySize);
+		g.fillRect(borderSentrySize, battleField.getHeight() - borderSentrySize,
+				battleField.getWidth() - 2 * borderSentrySize, borderSentrySize);
 	}
 
 	private void drawBorder(Graphics2D g) {
@@ -655,8 +662,9 @@ public class BattleView extends Canvas {
 
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
-			battleField = new BattleField(event.getBattleRules().getBattlefieldWidth(),
-					event.getBattleRules().getBattlefieldHeight());
+			battleRules = event.getBattleRules();
+			
+			battleField = new BattleField(battleRules.getBattlefieldWidth(), battleRules.getBattlefieldHeight());
 
 			initialized = false;
 			setVisible(true);
