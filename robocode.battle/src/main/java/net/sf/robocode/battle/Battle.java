@@ -442,18 +442,16 @@ public final class Battle extends BaseBattle {
 					robotPeer.getRobotStatistics().generateTotals(); // Generate totals when round is ended
 
 					robotPeer.addEvent(roundEndedEvent);
-					if (robotPeer.isAlive()) {
-						if (!robotPeer.isWinner()) {
-							robotPeer.getRobotStatistics().scoreLastSurvivor();
-							robotPeer.setWinner(true);
-							robotPeer.println("SYSTEM: " + robotPeer.getNameForEvent(robotPeer) + " wins the round.");
-							robotPeer.addEvent(new WinEvent());
-							if (robotPeer.getTeamPeer() != null) {
-								if (robotPeer.isTeamLeader()) {
-									leaderFirsts = true;
-								} else {
-									winningTeam = robotPeer.getTeamPeer();
-								}
+					if (robotPeer.isAlive() && !robotPeer.isWinner() && !robotPeer.isSentryRobot()) {
+						robotPeer.getRobotStatistics().scoreLastSurvivor();
+						robotPeer.setWinner(true);
+						robotPeer.println("SYSTEM: " + robotPeer.getNameForEvent(robotPeer) + " wins the round.");
+						robotPeer.addEvent(new WinEvent());
+						if (robotPeer.getTeamPeer() != null) {
+							if (robotPeer.isTeamLeader()) {
+								leaderFirsts = true;
+							} else {
+								winningTeam = robotPeer.getTeamPeer();
 							}
 						}
 					}
@@ -692,11 +690,14 @@ public final class Battle extends BaseBattle {
 		int count = 0;
 
 		for (ContestantPeer c : contestants) {
-			if (c instanceof RobotPeer && ((RobotPeer) c).isAlive()) {
-				count++;
+			if (c instanceof RobotPeer) {
+				RobotPeer robot = (RobotPeer) c;
+				if (!robot.isSentryRobot() && robot.isAlive()) {
+					count++;
+				}
 			} else if (c instanceof TeamPeer && c != peer.getTeamPeer()) {
-				for (RobotPeer robotPeer : (TeamPeer) c) {
-					if (robotPeer.isAlive()) {
+				for (RobotPeer robot: (TeamPeer) c) {
+					if (!robot.isSentryRobot() && robot.isAlive()) {
 						count++;
 						break;
 					}

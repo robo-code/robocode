@@ -60,7 +60,7 @@ public class RobotStatistics implements ContestantStatistics {
 		this.rank = rank;
 	}
 
-	public void initialize() {
+	public void reset() {
 		resetScores();
 
 		isActive = true;
@@ -85,8 +85,11 @@ public class RobotStatistics implements ContestantStatistics {
 		totalRammingDamageScore += rammingDamageScore;
 		totalRammingKillBonus += rammingKillBonus;
 
-		totalScore = totalBulletDamageScore + totalRammingDamageScore + totalSurvivalScore + totalRammingKillBonus
+		totalScore = robotPeer.isSentryRobot()
+				? 0
+				: totalBulletDamageScore + totalRammingDamageScore + totalSurvivalScore + totalRammingKillBonus
 				+ totalBulletKillBonus + totalLastSurvivorBonus;
+
 		isInRound = false;
 	}
 
@@ -131,8 +134,10 @@ public class RobotStatistics implements ContestantStatistics {
 	}
 
 	public double getCurrentScore() {
-		return bulletDamageScore + rammingDamageScore + survivalScore + rammingKillBonus + bulletKillBonus
-				+ lastSurvivorBonus;
+		return robotPeer.isSentryRobot()
+				? 0
+				: (bulletDamageScore + rammingDamageScore + survivalScore + rammingKillBonus + bulletKillBonus
+				+ lastSurvivorBonus);
 	}
 
 	public double getCurrentSurvivalScore() {
@@ -160,13 +165,13 @@ public class RobotStatistics implements ContestantStatistics {
 	}
 
 	public void scoreSurvival() {
-		if (isActive) {
+		if (isActive && !robotPeer.isSentryRobot()) {
 			survivalScore += 50;
 		}
 	}
 
 	public void scoreLastSurvivor() {
-		if (isActive) {
+		if (isActive && !robotPeer.isSentryRobot()) {
 			int enemyCount = robots - 1;
 
 			if (robotPeer.getTeamPeer() != null) {
@@ -174,7 +179,7 @@ public class RobotStatistics implements ContestantStatistics {
 			}
 			lastSurvivorBonus += 10 * enemyCount;
 
-			if (robotPeer.getTeamPeer() == null || robotPeer.isTeamLeader()) {
+			if ((robotPeer.getTeamPeer() == null || robotPeer.isTeamLeader())) {
 				totalFirsts++;
 			}
 		}
@@ -232,25 +237,27 @@ public class RobotStatistics implements ContestantStatistics {
 	}
 
 	public void scoreRobotDeath(int enemiesRemaining) {
-		switch (enemiesRemaining) {
-		case 0:
-			if (!robotPeer.isWinner()) {
-				totalFirsts++;
+		if (!robotPeer.isSentryRobot()) {
+			switch (enemiesRemaining) {
+			case 0:
+				if (!robotPeer.isWinner()) {
+					totalFirsts++;
+				}
+				break;
+	
+			case 1:
+				totalSeconds++;
+				break;
+	
+			case 2:
+				totalThirds++;
+				break;
 			}
-			break;
-
-		case 1:
-			totalSeconds++;
-			break;
-
-		case 2:
-			totalThirds++;
-			break;
 		}
 	}
 
 	public void scoreFirsts() {
-		if (isActive) {
+		if (isActive && !robotPeer.isSentryRobot()) {
 			totalFirsts++;
 		}
 	}

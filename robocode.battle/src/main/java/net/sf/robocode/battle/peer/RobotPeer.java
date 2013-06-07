@@ -794,7 +794,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public void startRound(long waitMillis, int waitNanos) {
 		Logger.logMessage(".", false);
 
-		statistics.initialize();
+		statistics.reset();
 
 		ExecCommands newExecCommands = new ExecCommands();
 
