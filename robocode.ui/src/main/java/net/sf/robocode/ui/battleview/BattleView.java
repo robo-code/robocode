@@ -319,7 +319,7 @@ public class BattleView extends Canvas {
 		}
 
 		// Draw the border of the battlefield
-		drawBorder(g);
+		drawBorderEdge(g);
 
 		if (snapShot != null) {
 			// Draw all bullets
@@ -360,6 +360,13 @@ public class BattleView extends Canvas {
 			g.fillRect(0, 0, battleField.getWidth(), battleField.getHeight());
 		}
 
+		// Draw Sentry Border if it is enabled visually
+		if (properties.getOptionsViewSentryBorder()) {
+			drawSentryBorder(g);
+		}
+	}
+
+	private void drawSentryBorder(Graphics2D g) {
 		int borderSentrySize = battleRules.getSentryBorderSize();
 		
 		g.setColor(new Color(0xff, 0x00, 0x00, 0x80));
@@ -369,8 +376,8 @@ public class BattleView extends Canvas {
 		g.fillRect(borderSentrySize, battleField.getHeight() - borderSentrySize,
 				battleField.getWidth() - 2 * borderSentrySize, borderSentrySize);
 	}
-
-	private void drawBorder(Graphics2D g) {
+	
+	private void drawBorderEdge(Graphics2D g) {
 		final Shape savedClip = g.getClip();
 
 		g.setClip(null);

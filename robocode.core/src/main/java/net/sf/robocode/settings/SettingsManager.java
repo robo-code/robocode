@@ -46,7 +46,8 @@ public class SettingsManager implements ISettingsManager {
 			optionsViewScanArcs = false,
 			optionsViewExplosions = true,
 			optionsViewGround = true,
-			optionsViewExplosionDebris = true;
+			optionsViewExplosionDebris = true,
+			optionsViewSentryBorder = false;
 
 	// View Options (Turns Per Second)
 	private boolean
@@ -256,6 +257,15 @@ public class SettingsManager implements ISettingsManager {
 	public void setOptionsViewPreventSpeedupWhenMinimized(boolean preventSpeedupWhenMinimized) {
 		this.optionsViewPreventSpeedupWhenMinimized = preventSpeedupWhenMinimized;
 		props.setProperty(OPTIONS_VIEW_PREVENT_SPEEDUP_WHEN_MINIMIZED, "" + preventSpeedupWhenMinimized);
+	}
+
+	public boolean getOptionsViewSentryBorder() {
+		return optionsViewSentryBorder;
+	}
+
+	public void setOptionsViewSentryBorder(boolean optionsViewSentryBorder) {
+		this.optionsViewSentryBorder = optionsViewSentryBorder;
+		props.setProperty(OPTIONS_VIEW_SENTRY_BORDER, "" + optionsViewSentryBorder);
 	}
 
 	public int getOptionsRenderingAntialiasing() {
@@ -706,7 +716,7 @@ public class SettingsManager implements ISettingsManager {
 		optionsViewFPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true"));
 		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true"));
 		optionsViewExplosionDebris = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSION_DEBRIS, "true"));
-
+		optionsViewSentryBorder = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_SENTRY_BORDER, "false"));
 		optionsViewPreventSpeedupWhenMinimized = Boolean.valueOf(
 				props.getProperty(OPTIONS_VIEW_PREVENT_SPEEDUP_WHEN_MINIMIZED, "false"));
 
