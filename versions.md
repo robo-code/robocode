@@ -1,6 +1,8 @@
-## Version 1.8.2.0 Alpha (23-May-2013)
+## Version 1.8.2.0 Alpha 1 (12-Jun-2013)
 
 ### Bug fixes
+* [Bug-357][]: Tab characters are inserted in the last line of a robot source file when opening it.
+	* This bug was only partially fixed with version 1.8.1.0.
 * [Bug-358][]: Robot in default package cannot write to files. Should at least get a warning.
 
 ### Changes

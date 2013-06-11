@@ -8,7 +8,7 @@ xsi:schemaLocation="http://maven.apache.org/PROFILES/1.0.0 http://maven.apache.o
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <robocode.version>1.8.2.0-Alpha</robocode.version> <!-- Any string, but no spaces (use '-' instead of space) -->
+                <robocode.version>1.8.2.0-Alpha-1</robocode.version> <!-- Any string, but no spaces (use '-' instead of space) -->
                 <robocode.dotnet.version>1.8.2.0</robocode.dotnet.version> <!-- Only X.X.X.X format -->
             </properties>
         </profile>
