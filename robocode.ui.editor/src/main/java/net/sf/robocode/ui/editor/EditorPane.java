@@ -104,29 +104,35 @@ public class EditorPane extends JTextPane {
 	// Make sure to discard all undo/redo edits when text completely replaced
 	@Override
 	public void setText(String text) {
+		JavaDocument javaDocument = (JavaDocument) getDocument();
+
 		// Bug-357: Tab characters are inserted in the last line of a robot source file when opening it.
 		// This bug was fixed by disabling auto-indentation while reading the file.
-		JavaDocument javaDocument = (JavaDocument) getDocument();
-		boolean isAutoIndentEnabled = javaDocument.isAutoIndentEnabled();
-		javaDocument.setAutoIndentEnabled(false);
+		javaDocument.setReplacingText(true);
 		super.setText(text);
-		javaDocument.setAutoIndentEnabled(isAutoIndentEnabled); // Restore auto-indentation flag
+		javaDocument.setReplacingText(false);
+
 		undoManager.discardAllEdits();
 	}
 
 	// Make sure to discard all undo/redo edits when text is read as one block
 	@Override
 	public void read(Reader in, Object desc) throws IOException {
+		JavaDocument javaDocument = (JavaDocument) getDocument();
+
 		// Bug-357: Tab characters are inserted in the last line of a robot source file when opening it.
 		// This bug was fixed by disabling auto-indentation while reading the file.
-		JavaDocument javaDocument = (JavaDocument) getDocument();
-		boolean isAutoIndentEnabled = javaDocument.isAutoIndentEnabled();
-		javaDocument.setAutoIndentEnabled(false);
+		javaDocument.setReplacingText(true);
 		super.read(in, desc);
-		javaDocument.setAutoIndentEnabled(isAutoIndentEnabled); // Restore auto-indentation flag
+		javaDocument.setReplacingText(false);
+
 		undoManager.discardAllEdits();
 	}
-     
+
+	public boolean isModified() {
+		return undoManager.canUndoOrRedo();
+	}
+
 	public void undo() {
 		if (undoManager.canUndo()) {
 			undoManager.undo();
@@ -233,7 +239,7 @@ public class EditorPane extends JTextPane {
 					newText.append('\n');
 				}
 			}
-			
+
 			if (!stopUnindent) {
 				try {
 					// Replace the indented/unindented text in one single compound edit

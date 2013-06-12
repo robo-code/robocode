@@ -45,9 +45,12 @@ public class JavaDocument extends StyledDocument {
 	/** The text pane this document is used with necessary for setting the caret position when auto indenting */
 	private final EditorPane textPane;
 
+	/** Flag defining if the contained text is being loaded or replaced externally */
+	private boolean isReplacingText;
+
 	// Indentation //
 
-	/** Flag specifying if auto indentation is enabled */
+	/** Flag defining if auto indentation is enabled */
 	private boolean isAutoIndentEnabled = true;
 
 	/** Flag defining if spaces must be used for indentation; otherwise tabulation characters are being used */
@@ -154,12 +157,40 @@ public class JavaDocument extends StyledDocument {
 		});
 	}
 
+	/**
+	 * Checks if auto indentation is enabled.
+	 *
+	 * @return true if auto indentation is enabled; false otherwise.
+	 */
 	public boolean isAutoIndentEnabled() {
-		return isAutoIndentEnabled;
+		return isReplacingText ? false : isAutoIndentEnabled;
 	}
 
+	/**
+	 * Enable or disable auto indentation.
+	 *
+	 * @param enable is set to true, if auto indentation must be enabled; false is auto indentation must be disabled.
+	 */
 	public void setAutoIndentEnabled(boolean enable) {
 		isAutoIndentEnabled = enable;
+	}
+
+	/**
+	 * Checks if the contained text is currently being replaced externally.
+	 *
+	 * @return true if the text is being replaced; false otherwise.
+	 */
+	public boolean isReplacingText() {
+		return isReplacingText;
+	}
+
+	/**
+	 * Sets the flag if the contained text is currently being replaced externally or not.
+	 *
+	 * @param isReplacingText is true if the text is currently being replaced; false otherwise.
+	 */
+	public void setReplacingText(boolean isReplacingText) {
+		this.isReplacingText = isReplacingText;
 	}
 	
 	@Override
@@ -205,7 +236,7 @@ public class JavaDocument extends StyledDocument {
 		indentation.text = str;
 
 		// Apply auto indentation if it is enabled, and the new line character has been entered
-		if (isAutoIndentEnabled && str.equals("\n")) {
+		if (isAutoIndentEnabled() && str.equals("\n")) {
 
 			// Save the current indentation for later, as it might change from here on
 			int currentIndentation = getIndentationLengthFromOffset(offset);

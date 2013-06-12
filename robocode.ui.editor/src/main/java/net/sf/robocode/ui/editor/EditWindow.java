@@ -18,7 +18,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.text.Document;
 
 import java.awt.Font;
 import java.io.BufferedWriter;
@@ -110,20 +109,25 @@ public class EditWindow extends JInternalFrame {
 			editorPanel = new EditorPanel();
 			editorPanel.setFont(font);
 			setContentPane(editorPanel);
-			
-			Document document = editorPanel.getEditorPane().getDocument();
+
+			final JavaDocument document = (JavaDocument) editorPanel.getEditorPane().getDocument();
 
 			document.addDocumentListener(new DocumentListener() {
 				public void removeUpdate(DocumentEvent e) {
-					setModified(true);
+					updateMofificationState();
 				}
 
 				public void insertUpdate(DocumentEvent e) {
-					setModified(true);
+					updateMofificationState();
 				}
 
 				public void changedUpdate(DocumentEvent e) {
-					setModified(true);					
+					updateMofificationState();
+				}
+
+				// Bug-361 Problem in the text editor related with the .java file modification
+				private void updateMofificationState() {
+					setModified(editorPanel.getEditorPane().isModified());
 				}
 			});
 		} catch (Throwable e) {
@@ -136,11 +140,12 @@ public class EditWindow extends JInternalFrame {
 	}
 
 	public void setModified(boolean modified) {
-		boolean updated = modified != this.modified;
+		boolean updated = (modified != this.modified);
 
 		if (updated) {
-			StringBuffer titleBuf = new StringBuffer("Editing");
+			this.modified = modified;
 
+			StringBuffer titleBuf = new StringBuffer("Editing");
 			if (fileName != null) {
 				titleBuf.append(" - ").append(fileName);
 			} else if (robotName != null) {
@@ -150,8 +155,6 @@ public class EditWindow extends JInternalFrame {
 				titleBuf.append(" *");
 			}
 			setTitle(titleBuf.toString());
-
-			this.modified = modified;
 		}
 		editor.setSaveFileMenuItemsEnabled(modified);
 	}
