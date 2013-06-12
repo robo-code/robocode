@@ -48,7 +48,7 @@ public class CompoundUndoManager extends UndoManagerWithActions {
 			// text.
 			if (eventType != EventType.CHANGE) {
 				boolean isEndCompoundEdit = false;
-	
+
 				// Check if current compound edit must be ended as it contains at least one new line
 				if (eventType == EventType.INSERT) {
 					try {
@@ -113,7 +113,7 @@ public class CompoundUndoManager extends UndoManagerWithActions {
 		endCurrentCompoundEdit();
 		isCompoundMarkStart = false;
 	}
-	
+
 	private void reset() {
 		currentCompoundEdit = null;
 		lastEventType = EventType.INSERT; // important

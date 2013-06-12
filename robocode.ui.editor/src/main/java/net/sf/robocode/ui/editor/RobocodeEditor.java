@@ -158,8 +158,6 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 
 		EditWindow editWindow = new EditWindow(repositoryManager, this, robotsDirectory);
 
-		editWindow.setModified(false);
-
 		String templateName = "templates" + File.separatorChar + "newjavafile.tpt";
 
 		String template = "";
@@ -369,9 +367,7 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 		}
 
 		EditWindow editWindow = new EditWindow(repositoryManager, this, robotsDirectory);
-
 		editWindow.setRobotName(name);
-		editWindow.setModified(false);
 
 		String templateName = "templates" + File.separatorChar + "new" + robotType.toLowerCase() + ".tpt";
 
@@ -628,7 +624,6 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 				editorPane.setCaretPosition(0);
 
 				editWindow.setFileName(robotFilename);
-				editWindow.setModified(false);
 
 				addPlaceShowFocus(editWindow);
 			} catch (Exception e) {
