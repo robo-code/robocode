@@ -93,15 +93,16 @@ public class EditWindow extends JInternalFrame {
 					editor.setLineStatus(-1);
 				}
 			});
-			setResizable(true);
-			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-			setIconifiable(true);
-			setClosable(true);
-			setMaximum(false);
-			setFrameIcon(new ImageIcon(EditWindow.class.getResource("/net/sf/robocode/ui/icons/robocode-icon.png")));
-			setSize(550, 450); // Make sure it expands the whole window 
-			setMaximizable(true);
 			setTitle("Edit Window");
+			setFrameIcon(new ImageIcon(EditWindow.class.getResource("/net/sf/robocode/ui/icons/robocode-icon.png")));
+			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+			setResizable(true);
+			setIconifiable(true);
+			setMaximizable(true);
+			setClosable(true);
+
+			setSize(750, 500);
+
 			editor.addToWindowMenu(this);
 
 			Font font = new Font("Monospaced", Font.PLAIN, 14);

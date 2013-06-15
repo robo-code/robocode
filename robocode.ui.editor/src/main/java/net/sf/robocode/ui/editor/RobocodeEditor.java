@@ -21,6 +21,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyVetoException;
 import java.io.*;
 
 
@@ -40,10 +41,10 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 
 	private RobocodeEditorMenuBar robocodeEditorMenuBar;
 	private JDesktopPane desktopPane;
-	public boolean isApplication;
 
-	public final Point origin = new Point();
-	public final File robotsDirectory;
+	private final Point origin = new Point();
+	private final File robotsDirectory;
+
 	private JToolBar statusBar;
 	private JLabel lineLabel;
 
@@ -122,11 +123,17 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 		} else {
 			internalFrame.requestFocus();
 		}
+
+		// Make sure the internal frame is being maximized to fit the window when it is opened
+		try {
+			internalFrame.setMaximum(true);
+		} catch (PropertyVetoException e) {
+			Logger.logError(e);
+		}
 	}
 
 	public boolean close() {
 		JInternalFrame[] frames = getDesktopPane().getAllFrames();
-
 		if (frames != null) {
 			for (JInternalFrame frame : frames) {
 				if (frame != null) {
@@ -137,12 +144,7 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 				}
 			}
 		}
-
-		if (isApplication) {
-			System.exit(0);
-		} else {
-			dispose();
-		}
+		dispose();
 		return true;
 	}
 
@@ -407,7 +409,6 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 		}
 
 		EditorPane editorPane = editWindow.getEditorPane();
-
 		editorPane.setText(template);
 		editorPane.setCaretPosition(0);
 
@@ -449,8 +450,8 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 	public JDesktopPane getDesktopPane() {
 		if (desktopPane == null) {
 			desktopPane = new JDesktopPane();
-			desktopPane.setBackground(new Color(128, 128, 128));
-			desktopPane.setPreferredSize(new Dimension(600, 500));
+			desktopPane.setBackground(Color.GRAY);
+			desktopPane.setPreferredSize(new Dimension(750, 550));
 		}
 		return desktopPane;
 	}
@@ -535,36 +536,6 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 		setJMenuBar(getRobocodeEditorMenuBar());
 		setContentPane(getRobocodeEditorContentPane());
 		addComponentListener(eventHandler);
-	}
-
-	public static void main(String[] args) {
-		try {
-			// Set the Look and Feel (LAF)
-			final IWindowManager windowManager = Container.getComponent(IWindowManager.class);
-
-			windowManager.init();
-
-			RobocodeEditor robocodeEditor = Container.getComponent(RobocodeEditor.class);
-
-			robocodeEditor.isApplication = true; // used for close
-			robocodeEditor.pack();
-			// Center robocodeEditor
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			Dimension size = robocodeEditor.getSize();
-
-			if (size.height > screenSize.height) {
-				size.height = screenSize.height;
-			}
-			if (size.width > screenSize.width) {
-				size.width = screenSize.width;
-			}
-			robocodeEditor.setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 2);
-			robocodeEditor.setVisible(true);
-			// 2nd time for bug in some JREs
-			robocodeEditor.setVisible(true);
-		} catch (Throwable e) {
-			Logger.logError("Exception in RoboCodeEditor.main", e);
-		}
 	}
 
 	public void openRobot() {

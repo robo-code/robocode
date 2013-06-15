@@ -15,6 +15,7 @@
 * [Req-64][]: Change default battle settings like e.g. "Number of Rounds".
 	* When the battle rules are changed in the user interface, Robocode will remember these as the user's default settings.
 	* A new Restore Defaults button has been added to get the game default settings back.
+* Source code editor is now always maximized when opening and robot file or creating a new one.
 
 ## Version 1.8.1.0 (24-Mar-2013)
 
