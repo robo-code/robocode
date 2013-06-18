@@ -301,9 +301,7 @@ public class BotsDownload {
 
 				for (String record; (record = br.readLine()) != null;) {
 					String name = record.substring(0, record.indexOf(","));
-
-					name = name.replace(' ', '_');
-					size.checkCompetitorsForSize(name, name, 1500);
+					size.checkCompetitorForSize(name, 1500);
 				}
 			} catch (IOException e) {
 				System.out.println("Battles input file not found ... Aborting");

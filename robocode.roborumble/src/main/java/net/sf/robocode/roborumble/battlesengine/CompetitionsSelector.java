@@ -40,55 +40,40 @@ public class CompetitionsSelector {
 		sizes = getProperties(sizesfile);
 	}
 
-	public boolean checkCompetitorsForSize(String bot1, String bot2, long maxsize) {
-		String bot1name = bot1.replace(' ', '_');
-		String bot2name = bot2.replace(' ', '_');
+	public boolean checkCompetitorForSize(String botName, long maxsize) {
+		String name = botName.replace(' ', '_');
 
 		// Read sizes
-		long size1 = Long.parseLong(sizes.getProperty(bot1name, "0"));
-		long size2 = Long.parseLong(sizes.getProperty(bot2name, "0"));
+		long codeSize = Long.parseLong(sizes.getProperty(name, "0"));
 
 		// find out the size if not in the file
-		boolean fileneedsupdate = false;
+		boolean fileNeedsUpdate = false;
 
-		if (size1 == 0) {
-			fileneedsupdate = true;
-			File f = new File(repository + bot1name + ".jar");
+		if (codeSize == 0) {
+			fileNeedsUpdate = true;
 
+			File f = new File(repository + name + ".jar");
 			if (f.exists()) {
-				Item s1 = Codesize.processZipFile(f);
-
-				if (s1 != null) {
-					size1 = s1.getCodeSize();
+				Item item = Codesize.processZipFile(f);
+				if (item != null) {
+					codeSize = item.getCodeSize();
 				}
-				if (size1 != 0) {
-					sizes.setProperty(bot1name, Long.toString(size1));
-				}
-			}
-		}
-		if (size2 == 0) {
-			fileneedsupdate = true;
-			File f = new File(repository + bot2name + ".jar");
-
-			if (f.exists()) {
-				Item s2 = Codesize.processZipFile(f);
-
-				if (s2 != null) {
-					size2 = s2.getCodeSize();
-				}
-				if (size2 != 0) {
-					sizes.setProperty(bot2name, Long.toString(size2));
+				if (codeSize != 0) {
+					sizes.setProperty(name, Long.toString(codeSize));
 				}
 			}
 		}
 
 		// if the file needs update, then save the file
-		if (fileneedsupdate && size1 != 0 && size2 != 0) {
+		if (fileNeedsUpdate && codeSize != 0) {
 			storeProperties(sizes, sizesfile, "Bots code size");
 		}
 
-		// check the values
-		return (size1 != 0 && size1 < maxsize && size2 != 0 && size2 < maxsize);
+		// check the code size
+		return (codeSize != 0 && codeSize < maxsize);
+	}
+
+	public boolean checkCompetitorsForSize(String bot1, String bot2, long maxsize) {
+		return checkCompetitorForSize(bot1, maxsize) && checkCompetitorForSize(bot2, maxsize);
 	}
 }
-

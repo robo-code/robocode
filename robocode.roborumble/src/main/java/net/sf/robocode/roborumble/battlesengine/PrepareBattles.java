@@ -92,9 +92,9 @@ public class PrepareBattles {
 					boolean exists = (new File(botsrepository + jar)).exists();
 
 					if (exists) {
-						if ((runonly.equals("MINI") && size.checkCompetitorsForSize(name, name, 1500))
-								|| (runonly.equals("MICRO") && size.checkCompetitorsForSize(name, name, 750))
-								|| (runonly.equals("NANO") && size.checkCompetitorsForSize(name, name, 250))
+						if ((runonly.equals("MINI") && size.checkCompetitorForSize(name, 1500))
+								|| (runonly.equals("MICRO") && size.checkCompetitorForSize(name, 750))
+								|| (runonly.equals("NANO") && size.checkCompetitorForSize(name, 250))
 								|| (!runonly.equals("MINI") && !runonly.equals("MICRO") && !runonly.equals("NANO"))) {
 							names.add(name);
 						}
@@ -174,25 +174,25 @@ public class PrepareBattles {
 
 					if (exists) {
 						namesAll.add(name);
-						if (size.checkCompetitorsForSize(name, name, 1500)) {
+						if (size.checkCompetitorForSize(name, 1500)) {
 							namesMini.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 750)) {
+						if (size.checkCompetitorForSize(name, 750)) {
 							namesMicro.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 250)) {
+						if (size.checkCompetitorForSize(name, 250)) {
 							namesNano.add(name);
 						}
 						if (robotHasPriority(name, generalratings)) {
 							priorityAll.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 1500) && robotHasPriority(name, miniratings)) {
+						if (size.checkCompetitorForSize(name, 1500) && robotHasPriority(name, miniratings)) {
 							priorityMini.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 750) && robotHasPriority(name, microratings)) {
+						if (size.checkCompetitorForSize(name, 750) && robotHasPriority(name, microratings)) {
 							priorityMicro.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 250) && robotHasPriority(name, nanoratings)) {
+						if (size.checkCompetitorForSize(name, 250) && robotHasPriority(name, nanoratings)) {
 							priorityNano.add(name);
 						}
 						if (!isRobotInRatings(name)) {
@@ -392,25 +392,25 @@ public class PrepareBattles {
 
 					if (exists) {
 						namesAll.add(name);
-						if (size.checkCompetitorsForSize(name, name, 1500)) {
+						if (size.checkCompetitorForSize(name, 1500)) {
 							namesMini.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 750)) {
+						if (size.checkCompetitorForSize(name, 750)) {
 							namesMicro.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 250)) {
+						if (size.checkCompetitorForSize(name, 250)) {
 							namesNano.add(name);
 						}
 						if (robotHasPriority(name, generalratings)) {
 							priorityAll.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 1500) && robotHasPriority(name, miniratings)) {
+						if (size.checkCompetitorForSize(name, 1500) && robotHasPriority(name, miniratings)) {
 							priorityMini.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 750) && robotHasPriority(name, microratings)) {
+						if (size.checkCompetitorForSize(name, 750) && robotHasPriority(name, microratings)) {
 							priorityMicro.add(name);
 						}
-						if (size.checkCompetitorsForSize(name, name, 250) && robotHasPriority(name, nanoratings)) {
+						if (size.checkCompetitorForSize(name, 250) && robotHasPriority(name, nanoratings)) {
 							priorityNano.add(name);
 						}
 						if (!isRobotInRatings(name)) {
