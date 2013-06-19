@@ -1,10 +1,11 @@
-## Version 1.8.2.0 Alpha 1 (12-Jun-2013)
+## Version 1.8.2.0 Alpha 1 (19-Jun-2013)
 
 ### Bug fixes
 * [Bug-357][]: Tab characters are inserted in the last line of a robot source file when opening it.
 	* This bug was only partially fixed with version 1.8.1.0.
 * [Bug-358][]: Robot in default package cannot write to files. Should at least get a warning.
 * [Bug-361][]: Problem in the text editor related with the .java file modification.
+* [Bug-362][]: Rumble client does not remove participants in wrong codesize group.
 
 ### Changes
 * Improved the UI regarding Battle Rules:
@@ -2860,6 +2861,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-357]: http://sourceforge.net/p/robocode/bugs/357/  (Tab characters are inserted in the last line of a robot source file when opening it)
 [Bug-358]: http://sourceforge.net/p/robocode/bugs/358/  (Robot in default package cannot write to files. Should at least get a warning)
 [Bug-361]: http://sourceforge.net/p/robocode/bugs/361/  (Problem in the text editor related with the .java file modification)
+[Bug-362]: http://sourceforge.net/p/robocode/bugs/362/  (Rumble client does not remove participants in wrong codesize group)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)

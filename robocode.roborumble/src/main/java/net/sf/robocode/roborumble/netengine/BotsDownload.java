@@ -21,8 +21,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -48,10 +50,10 @@ public class BotsDownload {
 	private final String sizesfile;
 	private final CompetitionsSelector size;
 	private final String ratingsurl;
-	private String generalbots;
-	private final String minibots;
-	private final String microbots;
-	private final String nanobots;
+	private String generalBots;
+	private final String miniBots;
+	private final String microBots;
+	private final String nanoBots;
 	private final String generalbotsfile;
 	private final String minibotsfile;
 	private final String microbotsfile;
@@ -75,14 +77,14 @@ public class BotsDownload {
 
 		// Ratings files
 		ratingsurl = parameters.getProperty("RATINGS.URL", "");
-		generalbots = propertiesfile;
-		while (generalbots.indexOf("/") != -1) {
-			generalbots = generalbots.substring(generalbots.indexOf("/") + 1);
+		generalBots = propertiesfile;
+		while (generalBots.indexOf("/") != -1) {
+			generalBots = generalBots.substring(generalBots.indexOf("/") + 1);
 		}
-		generalbots = generalbots.substring(0, generalbots.indexOf("."));
-		minibots = parameters.getProperty("MINIBOTS", "");
-		microbots = parameters.getProperty("MICROBOTS", "");
-		nanobots = parameters.getProperty("NANOBOTS", "");
+		generalBots = generalBots.substring(0, generalBots.indexOf("."));
+		miniBots = parameters.getProperty("MINIBOTS", "");
+		microBots = parameters.getProperty("MICROBOTS", "");
+		nanoBots = parameters.getProperty("NANOBOTS", "");
 		generalbotsfile = parameters.getProperty("RATINGS.GENERAL", "");
 		minibotsfile = parameters.getProperty("RATINGS.MINIBOTS", "");
 		microbotsfile = parameters.getProperty("RATINGS.MICROBOTS", "");
@@ -128,17 +130,17 @@ public class BotsDownload {
 		}
 		boolean downloaded = true;
 
-		if (generalbots.length() != 0 && generalbotsfile.length() != 0) {
-			downloaded = downloadRatingsFile(generalbots, generalbotsfile) & downloaded;
+		if (generalBots.length() != 0 && generalbotsfile.length() != 0) {
+			downloaded = downloadRatingsFile(generalBots, generalbotsfile) & downloaded;
 		}
-		if (minibots.length() != 0 && minibotsfile.length() != 0) {
-			downloaded = downloadRatingsFile(minibots, minibotsfile) & downloaded;
+		if (miniBots.length() != 0 && minibotsfile.length() != 0) {
+			downloaded = downloadRatingsFile(miniBots, minibotsfile) & downloaded;
 		}
-		if (microbots.length() != 0 && microbotsfile.length() != 0) {
-			downloaded = downloadRatingsFile(microbots, microbotsfile) & downloaded;
+		if (microBots.length() != 0 && microbotsfile.length() != 0) {
+			downloaded = downloadRatingsFile(microBots, microbotsfile) & downloaded;
 		}
-		if (nanobots.length() != 0 && nanobotsfile.length() != 0) {
-			downloaded = downloadRatingsFile(nanobots, nanobotsfile) & downloaded;
+		if (nanoBots.length() != 0 && nanobotsfile.length() != 0) {
+			downloaded = downloadRatingsFile(nanoBots, nanobotsfile) & downloaded;
 		}
 		return downloaded;
 	}
@@ -246,7 +248,6 @@ public class BotsDownload {
 
 		try {
 			FileReader fr = new FileReader(participantsfile);
-
 			br = new BufferedReader(fr);
 
 			for (String record; (record = br.readLine()) != null;) {
@@ -282,7 +283,6 @@ public class BotsDownload {
 
 			if (!exists) {
 				boolean downloaded = downloadBot(botname, botjar, botid, botsrepository, tempdir);
-
 				if (!downloaded) {
 					System.out.println("Could not download " + botjar);
 				}
@@ -293,10 +293,8 @@ public class BotsDownload {
 	public void updateCodeSize() {
 		if (sizesfile.length() != 0) {
 			BufferedReader br = null;
-
 			try {
 				FileReader fr = new FileReader(participantsfile);
-
 				br = new BufferedReader(fr);
 
 				for (String record; (record = br.readLine()) != null;) {
@@ -317,13 +315,12 @@ public class BotsDownload {
 	}
 
 	private boolean downloadBot(String botname, String file, String id, String destination, String tempdir) {
-		String filed = tempdir + file;
-		String finald = destination + file;
+		String tempFileName = tempdir + file;
+		String repositoryFileName = destination + file;
 
 		// check if the bot exists in the repository
 
-		boolean exists = (new File(finald)).exists();
-
+		boolean exists = (new File(repositoryFileName)).exists();
 		if (exists) {
 			System.out.println("The bot already exists in the repository.");
 			return false;
@@ -343,7 +340,7 @@ public class BotsDownload {
 			url = id;
 		}
 
-		DownloadStatus downloadStatus = FileTransfer.download(url, filed, sessionId);
+		DownloadStatus downloadStatus = FileTransfer.download(url, tempFileName, sessionId);
 
 		if (downloadStatus == DownloadStatus.FILE_NOT_FOUND) {
 			System.out.println("Could not find " + botname + " from " + url);
@@ -355,17 +352,17 @@ public class BotsDownload {
 
 		// Check the bot and save it into the repository
 
-		if (checkJarFile(filed, botname)) {
-			if (!FileTransfer.copy(filed, finald)) {
-				System.out.println("Unable to copy " + filed + " into the repository");
+		if (checkJarFile(tempFileName, botname)) {
+			if (!FileTransfer.copy(tempFileName, repositoryFileName)) {
+				System.out.println("Unable to copy " + tempFileName + " into the repository");
 				return false;
 			}
 		} else {
-			System.out.println("Downloaded file is wrong or corrupted:" + file);
+			System.out.println("Downloaded file is wrong or corrupted: " + file);
 			return false;
 		}
 
-		System.out.println("Downloaded " + botname + " into " + finald);
+		System.out.println("Downloaded " + botname + " into " + repositoryFileName);
 		return true;
 	}
 
@@ -466,19 +463,30 @@ public class BotsDownload {
 
 	public void notifyServerForOldParticipants() {
 		// Load participants names
-		Map<String, String> namesall = new HashMap<String, String>();
-		BufferedReader br = null;
+		Set<String> namesAll = new HashSet<String>();
+		Set<String> namesMini = new HashSet<String>();
+		Set<String> namesMicro = new HashSet<String>();
+		Set<String> namesNano = new HashSet<String>();
 
+		BufferedReader br = null;
 		try {
 			FileReader fr = new FileReader(participantsfile);
-
 			br = new BufferedReader(fr);
 
 			for (String record; (record = br.readLine()) != null;) {
 				if (record.indexOf(",") != -1) {
 					String name = record.substring(0, record.indexOf(",")).replace(' ', '_');
 
-					namesall.put(name, name);
+					namesAll.add(name);
+					if (size.checkCompetitorForSize(name, 1500)) {
+						namesMini.add(name);
+					}
+					if (size.checkCompetitorForSize(name, 750)) {
+						namesMicro.add(name);
+					}
+					if (size.checkCompetitorForSize(name, 250)) {
+						namesNano.add(name);
+					}
 				}
 			}
 		} catch (IOException e) {
@@ -494,56 +502,56 @@ public class BotsDownload {
 		}
 
 		// Load ratings files
-		Properties generalratings = getProperties(generalbotsfile);
-		Properties miniratings = getProperties(minibotsfile);
-		Properties microratings = getProperties(microbotsfile);
-		Properties nanoratings = getProperties(nanobotsfile);
+		Properties generalRatings = getProperties(generalbotsfile);
+		Properties miniRatings = getProperties(minibotsfile);
+		Properties microRatings = getProperties(microbotsfile);
+		Properties nanoRatings = getProperties(nanobotsfile);
 
 		// Check general ratings
-		for (Enumeration<?> e = generalratings.propertyNames(); e.hasMoreElements();) {
+		for (Enumeration<?> e = generalRatings.propertyNames(); e.hasMoreElements();) {
 			String bot = (String) e.nextElement();
 
-			if (!(isExcluded(bot) || namesall.containsKey(bot))) {
+			if (!(isExcluded(bot) || namesAll.contains(bot))) {
 				// Remove the bot from the ratings file
-				System.out.println("Removing entry ... " + bot + " from " + generalbots);
-				removebot(generalbots, bot);
+				System.out.println("Removing entry ... " + bot + " from " + generalBots);
+				removeBot(generalBots, bot);
 			}
 		}
 		// Check mini ratings
-		for (Enumeration<?> e = miniratings.propertyNames(); e.hasMoreElements();) {
+		for (Enumeration<?> e = miniRatings.propertyNames(); e.hasMoreElements();) {
 			String bot = (String) e.nextElement();
 
-			if (!(isExcluded(bot) || namesall.containsKey(bot))) {
+			if (!(isExcluded(bot) || namesMini.contains(bot))) {
 				// Remove the bot from the ratings file
-				System.out.println("Removing entry ... " + bot + " from " + minibots);
-				removebot(minibots, bot);
+				System.out.println("Removing entry ... " + bot + " from " + miniBots);
+				removeBot(miniBots, bot);
 			}
 		}
 
 		// Check micro ratings
-		for (Enumeration<?> e = microratings.propertyNames(); e.hasMoreElements();) {
+		for (Enumeration<?> e = microRatings.propertyNames(); e.hasMoreElements();) {
 			String bot = (String) e.nextElement();
 
-			if (!(isExcluded(bot) || namesall.containsKey(bot))) {
+			if (!(isExcluded(bot) || namesMicro.contains(bot))) {
 				// Remove the bot from the ratings file
-				System.out.println("Removing entry ... " + bot + " from " + microbots);
-				removebot(microbots, bot);
+				System.out.println("Removing entry ... " + bot + " from " + microBots);
+				removeBot(microBots, bot);
 			}
 		}
 
 		// Check nano ratings
-		for (Enumeration<?> e = nanoratings.propertyNames(); e.hasMoreElements();) {
+		for (Enumeration<?> e = nanoRatings.propertyNames(); e.hasMoreElements();) {
 			String bot = (String) e.nextElement();
 
-			if (!(isExcluded(bot) || namesall.containsKey(bot))) {
+			if (!(isExcluded(bot) || namesNano.contains(bot))) {
 				// Remove the bot from the ratings file
-				System.out.println("Removing entry ... " + bot + " from " + nanobots);
-				removebot(nanobots, bot);
+				System.out.println("Removing entry ... " + bot + " from " + nanoBots);
+				removeBot(nanoBots, bot);
 			}
 		}
 	}
 
-	private void removebot(String game, String bot) {
+	private void removeBot(String game, String bot) {
 		if (removeboturl.length() == 0) {
 			System.out.println("UPDATEBOTS URL not defined!");
 			return;
