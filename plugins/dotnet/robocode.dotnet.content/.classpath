@@ -2,12 +2,12 @@
 <classpath>
   <classpathentry kind="src" path="src/main/resources" excluding="**/_svn/**|**/.svn/**|**/.git/**|**/*.java"/>
   <classpathentry kind="output" path="target/classes"/>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="src" path="/robocode.dotnet.host"/>
-  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.host/1.8.1.0/robocode.host-1.8.1.0.jar"/>
-  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.core/1.8.1.0/robocode.core-1.8.1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.host/1.8.2.0/robocode.host-1.8.2.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.core/1.8.2.0/robocode.core-1.8.2.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.14.2/picocontainer-2.14.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.repository/1.8.1.0/robocode.repository-1.8.1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.repository/1.8.2.0/robocode.repository-1.8.2.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/net/sf/jni4net/jni4net.j/0.8.6.0/jni4net.j-0.8.6.0.jar"/>
 </classpath>

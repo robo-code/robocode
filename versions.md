@@ -1,4 +1,4 @@
-## Version 1.8.2.0 Alpha 2 (21-Jun-2013)
+## Version 1.8.2.0 (22-Jun-2013)
 
 ### Bug fixes
 * [Bug-357][]: Tab characters are inserted in the last line of a robot source file when opening it.
@@ -6,7 +6,7 @@
 * [Bug-358][]: Robot in default package cannot write to files. Should at least get a warning.
 * [Bug-361][]: Problem in the text editor related with the .java file modification.
 * [Bug-362][]: Rumble client does not remove participants in wrong codesize group.
-	* Thanks goes to Julian Kent (aka Skilgannon) for providing a solution for this. :-)
+	* Thanks goes to Julian Kent ("Skilgannon") for providing a solution for this. :-)
 
 ### Changes
 * Improved the UI regarding Battle Rules:
