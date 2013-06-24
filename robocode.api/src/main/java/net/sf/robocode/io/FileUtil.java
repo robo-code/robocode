@@ -276,7 +276,7 @@ public class FileUtil {
 	/**
 	 * Returns the window configuration file.
 	 *
-	 * @return a File that the window configuration file.
+	 * @return a File that is the window configuration file.
 	 */
 	public static File getWindowConfigFile() {
 		return new File(getConfigDir(), "window.properties");
@@ -285,10 +285,19 @@ public class FileUtil {
 	/**
 	 * Returns the compiler configuration file.
 	 *
-	 * @return a File that the compiler configuration file.
+	 * @return a File that is the compiler configuration file.
 	 */
 	public static File getCompilerConfigFile() {
 		return new File(getConfigDir(), "compiler.properties");
+	}
+
+	/**
+	 * Returns the source code editor configuration file.
+	 *
+	 * @return a File that is the editor configuration file.
+	 */
+	public static File getEditorConfigFile() {
+		return new File(getConfigDir(), "editor.properties");
 	}
 
 	/**

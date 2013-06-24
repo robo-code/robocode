@@ -105,11 +105,18 @@ public class EditWindow extends JInternalFrame {
 
 			editor.addToWindowMenu(this);
 
-			Font font = new Font("Monospaced", Font.PLAIN, 14);
-
 			editorPanel = new EditorPanel();
-			editorPanel.setFont(font);
 			setContentPane(editorPanel);
+
+			Font font = EditorPropertiesManager.getEditorProperties().getFont();
+			editorPanel.setFont(font);
+
+			EditorPropertiesManager.addListener(new IEditorPropertyChangeListener() {
+				@Override
+				public void onFontChanged(Font newFont) {
+					editorPanel.setFont(newFont);
+				}
+			});
 
 			final JavaDocument document = (JavaDocument) editorPanel.getEditorPane().getDocument();
 

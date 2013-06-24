@@ -27,13 +27,9 @@ import java.awt.event.KeyEvent;
  */
 @SuppressWarnings("serial")
 public class RobocodeEditorMenuBar extends JMenuBar {
-	private JMenu fileMenu;
 
-	private JMenuItem fileOpenMenuItem;
-	private JMenuItem fileExtractMenuItem;
-	private JMenuItem fileSaveMenuItem;
-	private JMenuItem fileSaveAsMenuItem;
-	private JMenuItem fileExitMenuItem;
+	private final RobocodeEditor editor;
+	private final EventHandler eventHandler = new EventHandler();
 
 	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -89,25 +85,32 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 				windowCloseAllActionPerformed();
 			} else if (source == RobocodeEditorMenuBar.this.getWindowWindowsDialogMenuItem()) {
 				windowMoreWindowsActionPerformed();
+			} else if (source == RobocodeEditorMenuBar.this.getViewChangeFontMenuItem()) {
+				viewChangeFontActionPerformed();
 			}
 		}
 	}
 
+	// File menu
+	private JMenu fileMenu;
+	private JMenuItem fileOpenMenuItem;
+	private JMenuItem fileExtractMenuItem;
+	private JMenuItem fileSaveMenuItem;
+	private JMenuItem fileSaveAsMenuItem;
+	private JMenuItem fileExitMenuItem;
+	private JMenuItem fileNewJavaFileMenuItem;
+	private JMenu fileNewMenu;
+	private JMenuItem fileNewRobotMenuItem;
+	private JMenuItem fileNewJuniorRobotMenuItem;
+
+	// Compiler menu
 	private JMenuItem compilerCompileMenuItem;
 	private JMenu compilerMenu;
 	private JMenu compilerOptionsMenu;
 	private JMenuItem compilerOptionsPreferencesMenuItem;
 	private JMenuItem compilerOptionsResetCompilerMenuItem;
-	private final RobocodeEditor editor;
-	private final EventHandler eventHandler = new EventHandler();
-	private JMenuItem fileNewJavaFileMenuItem;
-	private JMenu fileNewMenu;
-	private JMenuItem fileNewRobotMenuItem;
-	private JMenuItem fileNewJuniorRobotMenuItem;
-	private JMenu helpMenu;
-	private JMenuItem helpRobocodeApiMenuItem;
 
-	// New Edit menu by Matthew Reeder
+	// Edit menu
 	private JMenu editMenu;
 	private JMenuItem editUndoMenuItem;
 	private JMenuItem editRedoMenuItem;
@@ -120,12 +123,20 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	private JMenuItem editReplaceMenuItem;
 	private JMenuItem editSelectAllMenuItem;
 
-	// New Window menu by Matthew Reeder
+	// View menu
+	private JMenu viewMenu;
+	private JMenuItem viewChangeFontMenuItem;
+	
+	// Window menu
 	private JMenu windowMenu;
 	private JMenuItem windowCloseMenuItem;
 	private JMenuItem windowCloseAllMenuItem;
 	private JMenuItem windowWindowsDialogMenuItem;
 	private MoreWindowsDialog moreWindowsDialog;
+
+	// Help menu
+	private JMenu helpMenu;
+	private JMenuItem helpRobocodeApiMenuItem;
 
 	public RobocodeEditorMenuBar(RobocodeEditor editor) {
 		super();
@@ -133,18 +144,25 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		initialize();
 	}
 
+	private void initialize() {
+		add(getFileMenu());
+		add(getEditMenu());
+		add(getViewMenu());
+		add(getCompilerMenu());
+		add(getWindowMenu());
+		add(getHelpMenu());
+	}
+
 	private void compilerCompileActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
-
 		if (editWindow != null) {
 			editWindow.compile();
 		}
 	}
 
 	private void compilerOptionsPreferencesActionPerformed() {
-		CompilerPreferencesDialog d = new CompilerPreferencesDialog(editor);
-
-		WindowUtil.packCenterShow(editor, d);
+		CompilerPreferencesDialog dialog = new CompilerPreferencesDialog(editor);
+		WindowUtil.packCenterShow(editor, dialog);
 	}
 
 	private void compilerOptionsResetCompilerActionPerformed() {
@@ -205,7 +223,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	private void editUndoActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
-
 		if (editWindow != null) {
 			editWindow.getEditorPane().undo();
 		}
@@ -213,7 +230,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	private void editRedoActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
-
 		if (editWindow != null) {
 			editWindow.getEditorPane().redo();
 		}
@@ -229,7 +245,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	private void editCopyActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
-
 		if (editWindow != null) {
 			editWindow.getEditorPane().copy();
 		}
@@ -237,7 +252,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	private void editPasteActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
-
 		if (editWindow != null) {
 			editWindow.getEditorPane().paste();
 		}
@@ -245,7 +259,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	private void editDeleteActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
-
 		if (editWindow != null) {
 			editWindow.getEditorPane().replaceSelection(null);
 		}
@@ -253,7 +266,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	private void editSelectAllActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
-
 		if (editWindow != null) {
 			editWindow.getEditorPane().selectAll();
 		}
@@ -273,7 +285,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	private void windowCloseActionPerformed() {
 		EditWindow editWindow = editor.getActiveWindow();
-
 		if (editWindow != null) {
 			editWindow.doDefaultCloseAction();
 		}
@@ -281,7 +292,6 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	private void windowCloseAllActionPerformed() {
 		JInternalFrame[] frames = editor.getDesktopPane().getAllFrames();
-
 		if (frames != null) {
 			for (JInternalFrame frame : frames) {
 				frame.doDefaultCloseAction();
@@ -293,6 +303,11 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		getMoreWindowsDialog().setVisible(true);
 	}
 
+	private void viewChangeFontActionPerformed() {
+		FontChooserDialog dialog = new FontChooserDialog(editor);
+		WindowUtil.packCenterShow(editor, dialog);		
+	}
+	
 	private JMenuItem getCompilerCompileMenuItem() {
 		if (compilerCompileMenuItem == null) {
 			compilerCompileMenuItem = new JMenuItem();
@@ -683,11 +698,25 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		editor.showHelpApi();
 	}
 
-	private void initialize() {
-		add(getFileMenu());
-		add(getEditMenu());
-		add(getCompilerMenu());
-		add(getWindowMenu());
-		add(getHelpMenu());
+	private JMenu getViewMenu() {
+		if (viewMenu == null) {
+			viewMenu = new JMenu();
+			viewMenu.setText("View");
+			viewMenu.setMnemonic('V');
+
+			viewMenu.add(getViewChangeFontMenuItem());
+		}
+		return viewMenu;
+	}
+
+	private JMenuItem getViewChangeFontMenuItem() {
+		if (viewChangeFontMenuItem == null) {
+			viewChangeFontMenuItem = new JMenuItem();
+			viewChangeFontMenuItem.setText("Change Font");
+			viewChangeFontMenuItem.setMnemonic('F');
+			// viewFontMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, MENU_SHORTCUT_KEY_MASK));
+			viewChangeFontMenuItem.addActionListener(eventHandler);
+		}
+		return viewChangeFontMenuItem;
 	}
 }
