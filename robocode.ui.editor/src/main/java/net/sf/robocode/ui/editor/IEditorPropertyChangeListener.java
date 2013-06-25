@@ -7,7 +7,9 @@
  *******************************************************************************/
 package net.sf.robocode.ui.editor;
 
+
 import java.awt.Font;
+
 
 public interface IEditorPropertyChangeListener {
 

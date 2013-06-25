@@ -9,10 +9,8 @@ package net.sf.robocode.ui.editor;
 
 
 import java.awt.Color;
-import java.awt.Insets;
 import java.awt.Rectangle;
 
-import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
@@ -39,10 +37,6 @@ public class LineNumberArea extends JTextArea {
 		setBackground(new Color(0xDD, 0xDD, 0xDD, 0xFF));
 		setSelectionColor(new Color(0xDD, 0xDD, 0xDD, 0xFF));
 
-		Insets insets = textComponent.getMargin();
-
-		setBorder(BorderFactory.createEmptyBorder(insets.top, insets.left, insets.bottom, insets.right));		
-		
 		textComponent.getDocument().addDocumentListener(documentListener);
 	}
 

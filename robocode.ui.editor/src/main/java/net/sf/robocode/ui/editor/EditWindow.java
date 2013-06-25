@@ -46,7 +46,7 @@ public class EditWindow extends JInternalFrame {
 	private EditorPane editorPane;
 
 	public EditWindow(IRepositoryManager repositoryManager, RobocodeEditor editor, File robotsDirectory) {
-		super();
+		super("Edit Window", true, true, true, true);
 		this.editor = editor;
 		this.robotsDirectory = robotsDirectory;
 		this.repositoryManager = repositoryManager;
@@ -93,13 +93,8 @@ public class EditWindow extends JInternalFrame {
 					editor.setLineStatus(-1);
 				}
 			});
-			setTitle("Edit Window");
 			setFrameIcon(new ImageIcon(EditWindow.class.getResource("/net/sf/robocode/ui/icons/robocode-icon.png")));
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-			setResizable(true);
-			setIconifiable(true);
-			setMaximizable(true);
-			setClosable(true);
 
 			setSize(750, 500);
 

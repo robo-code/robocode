@@ -7,6 +7,7 @@
  *******************************************************************************/
 package net.sf.robocode.ui.editor;
 
+
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.robocode.io.FileUtil;
+
 
 public class EditorPropertiesManager {
 

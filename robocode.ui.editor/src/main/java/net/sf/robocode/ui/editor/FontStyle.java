@@ -7,7 +7,9 @@
  *******************************************************************************/
 package net.sf.robocode.ui.editor;
 
+
 import java.awt.Font;
+
 
 /**
  * Font style enumeration type, which provides an abstraction over the style flags from

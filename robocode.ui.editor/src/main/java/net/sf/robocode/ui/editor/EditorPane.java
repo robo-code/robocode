@@ -162,13 +162,13 @@ public class EditorPane extends JTextPane {
 
 	private void setTabSize(int tabSize) {
 		document.setTabSize(tabSize);
-		
+
 		FontMetrics fm = getFontMetrics(getFont());
+
 		int charWidth = fm.charWidth('#');
 		int tabWidth = charWidth * tabSize;
 
 		TabStop[] tabs = new TabStop[100];
-
 		for (int j = 0; j < tabs.length; j++) {
 			tabs[j] = new TabStop((j + 1) * tabWidth);
 		}

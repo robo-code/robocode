@@ -11,10 +11,14 @@ package net.sf.robocode.ui.editor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Insets;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
@@ -54,7 +58,7 @@ public class EditorPanel extends JPanel {
 
 		scroll.setViewportView(editorPane);
 		scroll.getViewport().setBackground(Color.WHITE);
-		
+
 		lineNumberArea = new LineNumberArea(editorPane);
 		scroll.setRowHeaderView(lineNumberArea);
 
@@ -78,9 +82,17 @@ public class EditorPanel extends JPanel {
 		super.setFont(font);
 		if (editorPane != null) {
 			editorPane.setFont(font);
+
+			Border border = BorderFactory.createEmptyBorder(3, 3, 3, 3);
+			editorPane.setBorder(border);
 		}
 		if (lineNumberArea != null) {
 			lineNumberArea.setFont(font);
+
+			FontMetrics fm = getFontMetrics(font);
+			int delta = fm.getHeight() - fm.getDescent() - fm.getAscent();
+			Border border = BorderFactory.createEmptyBorder(delta + 3, 3, 3, 3);
+			lineNumberArea.setBorder(border);
 		}
 	}
 

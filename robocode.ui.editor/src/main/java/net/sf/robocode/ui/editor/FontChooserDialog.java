@@ -161,7 +161,9 @@ public class FontChooserDialog extends JDialog {
 
 	private JComboBox getFontSizeComboBox() {
 		if (fontSizeComboBox == null) {
-			String[] sizes = { "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72"	};
+			String[] sizes = {
+				"8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48",
+				"72"	};
 			fontSizeComboBox = new JComboBox(sizes);
 			fontSizeComboBox.setSelectedIndex(5);
 		}
@@ -262,9 +264,9 @@ public class FontChooserDialog extends JDialog {
 	}
 
 	private void setPreviewLabelFont(JPanel panel) {
-		String fontName = (String)fontNameComboBox.getSelectedItem();
-		int fontStyleFlags = FontStyle.fromName((String)fontStyleComboBox.getSelectedItem()).getFontStyleFlags();
-		int fontSize = Integer.parseInt((String)fontSizeComboBox.getSelectedItem());
+		String fontName = (String) fontNameComboBox.getSelectedItem();
+		int fontStyleFlags = FontStyle.fromName((String) fontStyleComboBox.getSelectedItem()).getFontStyleFlags();
+		int fontSize = Integer.parseInt((String) fontSizeComboBox.getSelectedItem());
 
 		Font font = new Font(fontName, fontStyleFlags, fontSize);
 		
@@ -281,7 +283,7 @@ public class FontChooserDialog extends JDialog {
 	private Font getSelectedFont() {
 		String fontName = (String) fontNameComboBox.getSelectedItem();
 		int fontStyle = FontStyle.fromName((String) fontStyleComboBox.getSelectedItem()).getFontStyleFlags();
-		int fontSize = Integer.parseInt((String)fontSizeComboBox.getSelectedItem());
+		int fontSize = Integer.parseInt((String) fontSizeComboBox.getSelectedItem());
 		
 		return new Font(fontName, fontStyle, fontSize);
 	}
@@ -318,7 +320,7 @@ public class FontChooserDialog extends JDialog {
 
 		for (int charCode = 0; charCode < 128; charCode++) {
 			if (Character.isValidCodePoint(charCode) && (Character.isLetter(charCode) || Character.isDigit(charCode))) {
-				int charWidth = fontMetrics.charWidth((char)charCode);
+				int charWidth = fontMetrics.charWidth((char) charCode);
 				if (lastCharWidth >= 0 && charWidth != lastCharWidth) {
 					return false; // font is not mono-spaced
 				}
@@ -339,6 +341,7 @@ public class FontChooserDialog extends JDialog {
 			return label;
 		}
 	}
+
 
 	private class FontStyleCellRenderer extends DefaultListCellRenderer {
 
