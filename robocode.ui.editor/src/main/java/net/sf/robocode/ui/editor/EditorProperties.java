@@ -21,9 +21,9 @@ import java.util.Properties;
  * @author Flemming N. Larsen (original)
  */
 public class EditorProperties {
-	public final static String FONT_NAME = "font.name";
-	public final static String FONT_STYLE = "font.style";
-	public final static String FONT_SIZE = "font.size";
+	public final static String FONT_NAME = "editor.fontName";
+	public final static String FONT_STYLE = "editor.fontStyle";
+	public final static String FONT_SIZE = "editor.fontSize";
 
 	private String fontName;
 	private int fontStyle;
@@ -77,6 +77,10 @@ public class EditorProperties {
 	}
 
 	public void store(OutputStream os, String header) throws IOException {
+		props.setProperty(FONT_NAME, fontName);
+		props.setProperty(FONT_STYLE, "" + fontStyle);
+		props.setProperty(FONT_SIZE, "" + fontSize);
+		
 		props.store(os, header);
 	}
 }

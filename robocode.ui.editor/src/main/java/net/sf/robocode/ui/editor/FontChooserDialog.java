@@ -57,6 +57,8 @@ public class FontChooserDialog extends JDialog {
 		setLayout(new GridBagLayout());
 		setResizable(false);
 
+		setInitialSelectedFont();
+
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -162,8 +164,7 @@ public class FontChooserDialog extends JDialog {
 	private JComboBox getFontSizeComboBox() {
 		if (fontSizeComboBox == null) {
 			String[] sizes = {
-				"8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48",
-				"72"	};
+				"8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72"	};
 			fontSizeComboBox = new JComboBox(sizes);
 			fontSizeComboBox.setSelectedIndex(5);
 		}
@@ -280,6 +281,46 @@ public class FontChooserDialog extends JDialog {
 		previewLabel.setPreferredSize(new Dimension(width, height));		
 	}
 
+	private void setInitialSelectedFont() {
+		Font font = EditorPropertiesManager.getEditorProperties().getFont();
+		
+		String fontName = font.getFamily();
+		int fontStyle = font.getStyle();
+		int fontSize = font.getSize();
+
+		// Set selected font name
+		ComboBoxModel model = getFontNameComboBox().getModel();
+		for (int i = 0; i < model.getSize(); i++) {
+			String name = (String) model.getElementAt(i);
+			if (name.equalsIgnoreCase(fontName)) {
+				model.setSelectedItem(name);
+				break;
+			}
+		}
+
+		// Set selected font style
+		model = getFontStyleComboBox().getModel();
+		for (int i = 0; i < model.getSize(); i++) {
+			String name = (String) model.getElementAt(i);
+			FontStyle style = FontStyle.fromName(name);
+			if (style != null && style.getFontStyleFlags() == fontStyle) {
+				model.setSelectedItem(name);
+				break;
+			}
+		}
+
+		// Set selected font size
+		model = getFontSizeComboBox().getModel();
+		for (int i = 0; i < model.getSize(); i++) {
+			String sizeString = (String) model.getElementAt(i);
+			int size = Integer.parseInt(sizeString);
+			if (size == fontSize) {
+				model.setSelectedItem(sizeString);
+				break;
+			}
+		}
+	}
+	
 	private Font getSelectedFont() {
 		String fontName = (String) fontNameComboBox.getSelectedItem();
 		int fontStyle = FontStyle.fromName((String) fontStyleComboBox.getSelectedItem()).getFontStyleFlags();
@@ -287,12 +328,13 @@ public class FontChooserDialog extends JDialog {
 		
 		return new Font(fontName, fontStyle, fontSize);
 	}
-	
+
 	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(getOkButton())) {
 				EditorProperties editorProperties = EditorPropertiesManager.getEditorProperties();
 				editorProperties.setFont(getSelectedFont());
+				EditorPropertiesManager.saveEditorProperties();
 				dispose();
 			}
 			if (e.getSource().equals(getCancelButton())) {

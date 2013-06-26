@@ -15,11 +15,13 @@ import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 
 
 public class EditorPropertiesManager {
@@ -67,5 +69,21 @@ public class EditorPropertiesManager {
 			}
 		}
 		return editorProperties;
+	}
+	
+	public static void saveEditorProperties() {
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(FileUtil.getEditorConfigFile());
+			getEditorProperties().store(out, "Robocode Compiler Properties");
+		} catch (IOException e) {
+			Logger.logError(e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException ignored) {}
+			}
+		}
 	}
 }
