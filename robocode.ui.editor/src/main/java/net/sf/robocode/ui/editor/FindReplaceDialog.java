@@ -8,6 +8,7 @@
 package net.sf.robocode.ui.editor;
 
 
+import static javax.swing.GroupLayout.Alignment.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -43,67 +44,52 @@ public class FindReplaceDialog extends JDialog implements ActionListener {
 		super(owner, false);
 		editor = owner;
 
-		JPanel bigPanel = new JPanel();
+		GroupLayout layout = new GroupLayout(getContentPane());
 
-		bigPanel.setLayout(new BoxLayout(bigPanel, BoxLayout.X_AXIS));
-		JPanel leftPanel = new JPanel();
+		getContentPane().setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
 
-		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-		JPanel findReplacePanel = new JPanel();
-
-		findReplacePanel.setLayout(new BoxLayout(findReplacePanel, BoxLayout.X_AXIS));
-		JPanel labelsPanel = new JPanel();
-
-		labelsPanel.setLayout(new BoxLayout(labelsPanel, BoxLayout.Y_AXIS));
-		labelsPanel.add(getFindLabel());
-		labelsPanel.add(getReplaceLabel());
-		findReplacePanel.add(labelsPanel);
-		JPanel fieldsPanel = new JPanel();
-
-		fieldsPanel.setLayout(new BoxLayout(fieldsPanel, BoxLayout.Y_AXIS));
-		fieldsPanel.add(getFindTextField());
-		fieldsPanel.add(getReplaceTextField());
-		findReplacePanel.add(fieldsPanel);
-		leftPanel.add(findReplacePanel);
 		JPanel optionsPanel = new JPanel();
 
-		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.X_AXIS));
-		JPanel checkboxPanel = new JPanel();
+		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
+		optionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Options"));
+		optionsPanel.add(getCaseSensitiveCheckBox());
+		optionsPanel.add(getWholeWordCheckBox());
+		optionsPanel.setAlignmentY(TOP_ALIGNMENT);
 
-		checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.Y_AXIS));
-		checkboxPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Options"));
-		checkboxPanel.add(getCaseSensitiveCheckBox());
-		checkboxPanel.add(getWholeWordCheckBox());
-		checkboxPanel.setAlignmentY(TOP_ALIGNMENT);
-		optionsPanel.add(checkboxPanel);
-		JPanel radioPanel = new JPanel();
+		JPanel usePanel = new JPanel();
 
-		radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
-		radioPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Use:"));
-		radioPanel.add(getLiteralButton());
-		radioPanel.add(getWildCardsButton());
-		radioPanel.add(getRegexButton());
-		radioPanel.setAlignmentY(TOP_ALIGNMENT);
+		usePanel.setLayout(new BoxLayout(usePanel, BoxLayout.Y_AXIS));
+		usePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Use"));
+		usePanel.add(getLiteralButton());
+		usePanel.add(getWildCardsButton());
+		usePanel.add(getRegexButton());
+		usePanel.setAlignmentY(TOP_ALIGNMENT);
+
 		ButtonGroup buttonGroup = new ButtonGroup();
 
 		buttonGroup.add(getLiteralButton());
 		buttonGroup.add(getWildCardsButton());
 		buttonGroup.add(getRegexButton());
-		optionsPanel.add(radioPanel);
-		leftPanel.add(optionsPanel);
-		leftPanel.setAlignmentY(TOP_ALIGNMENT);
-		bigPanel.add(leftPanel);
-		JPanel buttonPanel = new JPanel();
 
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-		buttonPanel.add(getFindNextButton());
-		buttonPanel.add(getReplaceFindButton());
-		buttonPanel.add(getReplaceButton());
-		buttonPanel.add(getReplaceAllButton());
-		buttonPanel.add(getCloseButton());
-		buttonPanel.setAlignmentY(TOP_ALIGNMENT);
-		bigPanel.add(buttonPanel);
-		setContentPane(bigPanel);
+		layout.setHorizontalGroup(
+				layout.createSequentialGroup().addGroup(layout.createParallelGroup(LEADING).addGroup(layout.createSequentialGroup().addComponent(getFindLabel()).addComponent(getFindTextField())).addGroup(layout.createSequentialGroup().addComponent(getReplaceLabel()).addComponent(getReplaceTextField())).addGroup(layout.createSequentialGroup().addComponent(optionsPanel).addComponent(usePanel))).addGroup(
+						layout.createParallelGroup(LEADING).addComponent(getFindNextButton()).addComponent(getReplaceFindButton()).addComponent(getReplaceButton()).addComponent(getReplaceAllButton()).addComponent(
+								getCloseButton())));
+
+		layout.linkSize(SwingConstants.HORIZONTAL, getFindLabel(), getReplaceLabel());
+		layout.linkSize(SwingConstants.HORIZONTAL, getFindNextButton(), getReplaceFindButton(), getReplaceButton(),
+				getReplaceAllButton(), getCloseButton());
+
+		layout.setVerticalGroup(
+				layout.createSequentialGroup().addGroup(layout.createParallelGroup(BASELINE).addComponent(getFindLabel()).addComponent(getFindTextField()).addComponent(getFindNextButton())).addGroup(layout.createParallelGroup(BASELINE).addComponent(getReplaceLabel()).addComponent(getReplaceTextField()).addComponent(getReplaceButton())).addGroup(
+						layout.createParallelGroup(BASELINE).addComponent(optionsPanel).addComponent(usePanel).addGroup(
+								layout.createSequentialGroup().addComponent(getReplaceFindButton()).addComponent(getReplaceAllButton()).addComponent(
+										getCloseButton()))));
+
+		pack();
+		setResizable(false);
 	}
 
 	public void showDialog(boolean showReplace) {

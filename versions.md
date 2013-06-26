@@ -1,5 +1,10 @@
-## Version 1.8.3.0 Alpha 1 (23-Jun-2013)
+## Version 1.8.3.0 Alpha 1 (27-Jun-2013)
 
+### Changes
+* [Req-121][]: Issues with editor font.
+	* It is now possible to change the editor font from the View -> Change Font menu in the Robot Editor.
+	* The selected font (font name, font style, font size) will be stored inside the new /config/editor.properties file.
+* The Find & Replace dialog has got a better layout.
 
 ## Version 1.8.2.0 (22-Jun-2013)
 
