@@ -12,6 +12,7 @@ import net.sf.robocode.ui.dialog.WindowUtil;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -85,8 +86,8 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 				windowCloseAllActionPerformed();
 			} else if (source == RobocodeEditorMenuBar.this.getWindowWindowsDialogMenuItem()) {
 				windowMoreWindowsActionPerformed();
-			} else if (source == RobocodeEditorMenuBar.this.getViewChangeFontMenuItem()) {
-				viewChangeFontActionPerformed();
+			} else if (source == RobocodeEditorMenuBar.this.getViewChangeFontAndColorsMenuItem()) {
+				viewChangeFontAndColorsActionPerformed();
 			}
 		}
 	}
@@ -125,7 +126,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	// View menu
 	private JMenu viewMenu;
-	private JMenuItem viewChangeFontMenuItem;
+	private JMenuItem viewChangeFontAndColorsMenuItem;
 	
 	// Window menu
 	private JMenu windowMenu;
@@ -303,11 +304,11 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		getMoreWindowsDialog().setVisible(true);
 	}
 
-	private void viewChangeFontActionPerformed() {
-		FontChooserDialog dialog = new FontChooserDialog(editor);
-		WindowUtil.packCenterShow(editor, dialog);		
+	private void viewChangeFontAndColorsActionPerformed() {
+		EditorFontAndColorsDialog dialog = new EditorFontAndColorsDialog(editor);
+		WindowUtil.packCenterShow(editor, dialog);
 	}
-	
+
 	private JMenuItem getCompilerCompileMenuItem() {
 		if (compilerCompileMenuItem == null) {
 			compilerCompileMenuItem = new JMenuItem();
@@ -704,19 +705,18 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			viewMenu.setText("View");
 			viewMenu.setMnemonic('V');
 
-			viewMenu.add(getViewChangeFontMenuItem());
+			viewMenu.add(getViewChangeFontAndColorsMenuItem());
 		}
 		return viewMenu;
 	}
 
-	private JMenuItem getViewChangeFontMenuItem() {
-		if (viewChangeFontMenuItem == null) {
-			viewChangeFontMenuItem = new JMenuItem();
-			viewChangeFontMenuItem.setText("Change Font");
-			viewChangeFontMenuItem.setMnemonic('F');
-			// viewFontMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, MENU_SHORTCUT_KEY_MASK));
-			viewChangeFontMenuItem.addActionListener(eventHandler);
+	private JMenuItem getViewChangeFontAndColorsMenuItem() {
+		if (viewChangeFontAndColorsMenuItem == null) {
+			viewChangeFontAndColorsMenuItem = new JMenuItem();
+			viewChangeFontAndColorsMenuItem.setText("Change Font and Colors");
+			viewChangeFontAndColorsMenuItem.setMnemonic('F');
+			viewChangeFontAndColorsMenuItem.addActionListener(eventHandler);
 		}
-		return viewChangeFontMenuItem;
+		return viewChangeFontAndColorsMenuItem;
 	}
 }
