@@ -71,7 +71,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 		// Set the font that must be used initially ----
 		setInitialSelectedFont();
 		
-		//---- General font settings ----
+		// ---- General font settings ----
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -84,12 +84,14 @@ public class EditorFontAndColorsDialog extends JDialog {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		gbc.weightx = 0.6;
-		gbc.gridwidth = 2;
 		add(getFontNamePanel(), gbc);
 
+		gbc.gridx = 1;
+		gbc.weightx = 0.3;
+		add(getFontStylePanel(), gbc);
+
 		gbc.gridx = 2;
-		gbc.weightx = 0.4;
-		gbc.gridwidth = 1;
+		gbc.weightx = 0.1;
 		add(getFontSizePanel(), gbc);
 		
 		gbc.gridx = 0;
@@ -102,7 +104,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 		gbc.weighty = 1.0;
 		add(getPreviewPanel(), gbc);
 
-		//----- Theme settings ----
+		// ----- Theme settings ----
 
 		gbc.weightx = 0;
 		gbc.weighty = 0;
@@ -113,7 +115,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 		gbc.gridwidth = 1;
 		add(getThemeComboBox(), gbc);
 
-		//---- Color buttons and font styles ----
+		// ---- Color buttons and font styles ----
 		
 		gbc.gridwidth = 1;
 
@@ -154,7 +156,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 		gbc2.gridy = gridy2++;
 		addColoredButtonAndFontStyleToPanel(getAnnotationColorAndStyle(), colorButtonsPanel, gbc2);
 
-		//------ OK & Cancel buttons ----
+		// ------ OK & Cancel buttons ----
 
 		JPanel okCancelPanel = new JPanel();
 		okCancelPanel.add(getOkButton());
@@ -204,7 +206,23 @@ public class EditorFontAndColorsDialog extends JDialog {
 		}
 		return fontNameComboBox;
 	}
-	
+
+	private JComboBox getFontStyleComboBox() {
+		if (fontStyleComboBox == null) {
+			fontStyleComboBox = createFontStyleComboBox(FontStyle.PLAIN);
+
+			fontStyleComboBox.addActionListener(
+					new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					setSelected(getNormalTextColorAndStyle().fontStyleComboBox,
+							(String) fontStyleComboBox.getSelectedItem());
+				}				
+			});
+		}
+		return fontStyleComboBox;
+	}
+
 	private JComboBox getFontSizeComboBox() {
 		if (fontSizeComboBox == null) {
 			String[] sizes = {
@@ -237,8 +255,26 @@ public class EditorFontAndColorsDialog extends JDialog {
 		return panel;
 	}
 
-	private JComboBox getFontStyleComboBox() {
-		return getNormalTextColorAndStyle().fontStyleComboBox;
+	private JPanel getFontStylePanel() {
+		JPanel panel = new JPanel();
+		JLabel label = new JLabel("Style");
+
+		panel.setLayout(new GridBagLayout());
+
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.anchor = GridBagConstraints.NORTHWEST;
+		panel.add(label, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.fill = GridBagConstraints.HORIZONTAL; 
+		gbc.weightx = 1.0;
+		panel.add(getFontStyleComboBox(), gbc);
+
+		return panel;
 	}
 
 	private JPanel getFontSizePanel() {
@@ -264,10 +300,10 @@ public class EditorFontAndColorsDialog extends JDialog {
 	}
 
 	private JLabel getPreviewLabel() {
-		 if (previewLabel == null) {
-			 previewLabel = new JLabel("AaBbYyZz");
-		 }
-		 return previewLabel;
+		if (previewLabel == null) {
+			previewLabel = new JLabel("AaBbYyZz");
+		}
+		return previewLabel;
 	}
 	
 	private JPanel getPreviewPanel() {
@@ -307,13 +343,23 @@ public class EditorFontAndColorsDialog extends JDialog {
 	private ColorAndStyle getNormalTextColorAndStyle() {
 		if (normalTextColorAndStyle == null) {
 			normalTextColorAndStyle = new ColorAndStyle("Normal Text Color", Color.BLACK, FontStyle.PLAIN);
+
+			normalTextColorAndStyle.fontStyleComboBox.addActionListener(
+					new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					setSelected(getFontStyleComboBox(),
+							(String) normalTextColorAndStyle.fontStyleComboBox.getSelectedItem());
+				}
+			});
 		}
 		return normalTextColorAndStyle;
 	}
 
 	private ColorAndStyle getQuotedTextColorAndStyle() {
 		if (quotedTextColorAndStyle == null) {
-			quotedTextColorAndStyle = new ColorAndStyle("Quoted Text Color", new Color(0x7F, 0x00, 0x00), FontStyle.PLAIN);
+			quotedTextColorAndStyle = new ColorAndStyle("Quoted Text Color", new Color(0x7F, 0x00, 0x00),
+					FontStyle.PLAIN);
 		}
 		return quotedTextColorAndStyle;
 	}
@@ -459,7 +505,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 			}
 		}
 	}
-	
+
 	private static JComboBox createFontStyleComboBox(FontStyle fontStyle) {
 		List<String> fontStyles = new ArrayList<String>();
 		for (FontStyle style : FontStyle.values()) {
@@ -523,14 +569,17 @@ public class EditorFontAndColorsDialog extends JDialog {
 		}
 	}
 	
+
 	private class FontCellRenderer extends DefaultListCellRenderer {
 
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	
+
 			Font font = new Font((String) value, Font.PLAIN, 20);
-			label.setFont(font);
+			if (font.canDisplayUpTo(label.getText()) == -1) { // -1 means, can display all of the string
+				label.setFont(font);
+			}
 			return label;
 		}
 	}
@@ -543,7 +592,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 			
 			FontStyle fontStyle = FontStyle.fromName((String) value);
 			int styleFlags = (fontStyle == null) ? Font.PLAIN : fontStyle.getFontStyleFlags();
-	
+
 			Font font = new Font((String) value, styleFlags, 12);
 			label.setFont(font);
 			return label;
