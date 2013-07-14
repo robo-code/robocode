@@ -34,7 +34,7 @@ public enum FontStyle {
 
 	public static FontStyle fromName(String name) {
 		for (FontStyle value : values()) {
-			if (value.name.equals(name)) {
+			if (value.name.equalsIgnoreCase(name)) {
 				return value;
 			}
 		}

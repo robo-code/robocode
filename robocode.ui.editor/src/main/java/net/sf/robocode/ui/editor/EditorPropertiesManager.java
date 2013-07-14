@@ -11,7 +11,6 @@ package net.sf.robocode.ui.editor;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 
-import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -40,9 +39,9 @@ public class EditorPropertiesManager {
 		listeners.remove(listener);
 	}
 
-	public static void notifyFontChanged(Font newFont) {
+	public static void notifyChange(IEditorProperties properties) {
 		for (IEditorPropertyChangeListener listener : listeners) {
-			listener.onFontChanged(newFont);
+			listener.onChange(properties);
 		}
 	}
 
@@ -75,7 +74,7 @@ public class EditorPropertiesManager {
 		FileOutputStream out = null;
 		try {
 			out = new FileOutputStream(FileUtil.getEditorConfigFile());
-			getEditorProperties().store(out, "Robocode Compiler Properties");
+			getEditorProperties().store(out, "Robocode Editor Properties");
 		} catch (IOException e) {
 			Logger.logError(e);
 		} finally {

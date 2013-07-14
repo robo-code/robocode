@@ -51,10 +51,10 @@ public class EditorFontAndColorsDialog extends JDialog {
 	private ColorAndStyle backgroundColorAndStyle;
 	private ColorAndStyle normalTextColorAndStyle;
 	private ColorAndStyle quotedTextColorAndStyle;
-	private ColorAndStyle keywordColorAndStyle;
-	private ColorAndStyle literalColorAndStyle;
-	private ColorAndStyle annotationColorAndStyle;
-	private ColorAndStyle commentColorAndStyle;
+	private ColorAndStyle keywordTextColorAndStyle;
+	private ColorAndStyle literalTextColorAndStyle;
+	private ColorAndStyle annotationTextColorAndStyle;
+	private ColorAndStyle commentTextColorAndStyle;
 	
 	private final EventHandler eventHandler = new EventHandler();
 
@@ -142,19 +142,19 @@ public class EditorFontAndColorsDialog extends JDialog {
 		addColoredButtonAndFontStyleToPanel(getNormalTextColorAndStyle(), colorButtonsPanel, gbc2);
 
 		gbc2.gridy = gridy2++;
-		addColoredButtonAndFontStyleToPanel(getCommentColorAndStyle(), colorButtonsPanel, gbc2);
+		addColoredButtonAndFontStyleToPanel(getCommentTextColorAndStyle(), colorButtonsPanel, gbc2);
 
 		gbc2.gridy = gridy2++;
 		addColoredButtonAndFontStyleToPanel(getQuotedTextColorAndStyle(), colorButtonsPanel, gbc2);
 
 		gbc2.gridy = gridy2++;
-		addColoredButtonAndFontStyleToPanel(getKeywordColorAndStyle(), colorButtonsPanel, gbc2);
+		addColoredButtonAndFontStyleToPanel(getKeywordTextColorAndStyle(), colorButtonsPanel, gbc2);
 
 		gbc2.gridy = gridy2++;
-		addColoredButtonAndFontStyleToPanel(getLiteralColorAndStyle(), colorButtonsPanel, gbc2);
+		addColoredButtonAndFontStyleToPanel(getLiteralTextColorAndStyle(), colorButtonsPanel, gbc2);
 
 		gbc2.gridy = gridy2++;
-		addColoredButtonAndFontStyleToPanel(getAnnotationColorAndStyle(), colorButtonsPanel, gbc2);
+		addColoredButtonAndFontStyleToPanel(getAnnotationTextColorAndStyle(), colorButtonsPanel, gbc2);
 
 		// ------ OK & Cancel buttons ----
 
@@ -364,32 +364,32 @@ public class EditorFontAndColorsDialog extends JDialog {
 		return quotedTextColorAndStyle;
 	}
 
-	private ColorAndStyle getKeywordColorAndStyle() {
-		if (keywordColorAndStyle == null) {
-			keywordColorAndStyle = new ColorAndStyle("Keyword Color", new Color(0x00, 0x00, 0xAF), FontStyle.BOLD);
+	private ColorAndStyle getKeywordTextColorAndStyle() {
+		if (keywordTextColorAndStyle == null) {
+			keywordTextColorAndStyle = new ColorAndStyle("Keyword Color", new Color(0x00, 0x00, 0xAF), FontStyle.BOLD);
 		}
-		return keywordColorAndStyle;
+		return keywordTextColorAndStyle;
 	}
 
-	private ColorAndStyle getLiteralColorAndStyle() {
-		if (literalColorAndStyle == null) {
-			literalColorAndStyle = new ColorAndStyle("Literal Color", new Color(0x00, 0x00, 0xAF), FontStyle.BOLD);
+	private ColorAndStyle getLiteralTextColorAndStyle() {
+		if (literalTextColorAndStyle == null) {
+			literalTextColorAndStyle = new ColorAndStyle("Literal Color", new Color(0x00, 0x00, 0xAF), FontStyle.BOLD);
 		}
-		return literalColorAndStyle;
+		return literalTextColorAndStyle;
 	}
 
-	private ColorAndStyle getAnnotationColorAndStyle() {
-		if (annotationColorAndStyle == null) {
-			annotationColorAndStyle = new ColorAndStyle("Annotation Color", new Color(0x7F, 0x7F, 0x7F), FontStyle.PLAIN);
+	private ColorAndStyle getAnnotationTextColorAndStyle() {
+		if (annotationTextColorAndStyle == null) {
+			annotationTextColorAndStyle = new ColorAndStyle("Annotation Color", new Color(0x7F, 0x7F, 0x7F), FontStyle.PLAIN);
 		}
-		return annotationColorAndStyle;
+		return annotationTextColorAndStyle;
 	}
 
-	private ColorAndStyle getCommentColorAndStyle() {
-		if (commentColorAndStyle == null) {
-			commentColorAndStyle = new ColorAndStyle("Comment Color", new Color(0x00, 0xAF, 0x00), FontStyle.PLAIN);
+	private ColorAndStyle getCommentTextColorAndStyle() {
+		if (commentTextColorAndStyle == null) {
+			commentTextColorAndStyle = new ColorAndStyle("Comment Color", new Color(0x00, 0xAF, 0x00), FontStyle.PLAIN);
 		}
-		return commentColorAndStyle;
+		return commentTextColorAndStyle;
 	}
 
 	private JComboBox getThemeComboBox() {
@@ -417,35 +417,46 @@ public class EditorFontAndColorsDialog extends JDialog {
 	}
 
 	private void setInitialSelectedFont() {
-		Font font = EditorPropertiesManager.getEditorProperties().getFont();
+		EditorProperties editorProperties = EditorPropertiesManager.getEditorProperties();
 
 		// Set selected font name
-		String fontName = font.getFamily();
-		setSelected(getFontNameComboBox(), fontName);
+		setSelected(getFontNameComboBox(), editorProperties.getFontName());
 
 		// Set selected font style
-		int fontStyleFlags = font.getStyle();
-		setSelected(getFontStyleComboBox(), FontStyle.fromStyleFlags(fontStyleFlags));
+		setSelected(getFontStyleComboBox(), editorProperties.getNormalTextStyle());
 
 		// Set selected font size
-		int fontSize = font.getSize();
-		setSelected(getFontSizeComboBox(), "" + fontSize);
+		setSelected(getFontSizeComboBox(), "" + editorProperties.getFontSize());
 	}
 	
-	private Font getSelectedFont() {
-		String fontName = (String) fontNameComboBox.getSelectedItem();
-		int fontStyle = FontStyle.fromName((String) fontStyleComboBox.getSelectedItem()).getFontStyleFlags();
-		int fontSize = Integer.parseInt((String) fontSizeComboBox.getSelectedItem());
-		
-		return new Font(fontName, fontStyle, fontSize);
-	}
-
 	private class EventHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(getOkButton())) {
 				EditorProperties editorProperties = EditorPropertiesManager.getEditorProperties();
-				editorProperties.setFont(getSelectedFont());
-				EditorPropertiesManager.saveEditorProperties();
+
+				editorProperties.setFontName(getSelectedName(getFontNameComboBox()));
+				editorProperties.setFontSize(Integer.parseInt(getSelectedName(getFontSizeComboBox())));
+
+				editorProperties.setBackgroundColor(getBackgroundColorAndStyle().getSelectedColor());
+
+				editorProperties.setNormalTextColor(getNormalTextColorAndStyle().getSelectedColor());
+				editorProperties.setNormalTextStyle(getNormalTextColorAndStyle().getSelectedStyle());
+
+				editorProperties.setQuotedTextColor(getQuotedTextColorAndStyle().getSelectedColor());
+				editorProperties.setQuotedTextStyle(getQuotedTextColorAndStyle().getSelectedStyle());
+
+				editorProperties.setKeywordTextColor(getKeywordTextColorAndStyle().getSelectedColor());
+				editorProperties.setKeywordTextStyle(getKeywordTextColorAndStyle().getSelectedStyle());
+
+				editorProperties.setLiteralTextColor(getLiteralTextColorAndStyle().getSelectedColor());
+				editorProperties.setLiteralTextStyle(getLiteralTextColorAndStyle().getSelectedStyle());
+
+				editorProperties.setAnnotationTextColor(getAnnotationTextColorAndStyle().getSelectedColor());
+				editorProperties.setAnnotationTextStyle(getAnnotationTextColorAndStyle().getSelectedStyle());
+
+				editorProperties.setCommentTextColor(getCommentTextColorAndStyle().getSelectedColor());
+				editorProperties.setCommentTextStyle(getCommentTextColorAndStyle().getSelectedStyle());
+
 				dispose();
 			}
 			if (e.getSource().equals(getCancelButton())) {
@@ -506,6 +517,14 @@ public class EditorFontAndColorsDialog extends JDialog {
 		}
 	}
 
+	private static String getSelectedName(JComboBox comboBox) {
+		return (String) comboBox.getSelectedItem();
+	}
+
+	private static FontStyle getSelectedStyle(JComboBox comboBox) {
+		return FontStyle.fromName((String) comboBox.getSelectedItem());
+	}
+	
 	private static JComboBox createFontStyleComboBox(FontStyle fontStyle) {
 		List<String> fontStyles = new ArrayList<String>();
 		for (FontStyle style : FontStyle.values()) {
@@ -566,6 +585,14 @@ public class EditorFontAndColorsDialog extends JDialog {
 			this.label = new JLabel(label);
 			this.coloredButton = createColoredButton(color);
 			this.fontStyleComboBox = fontStyle == null ? null : createFontStyleComboBox(fontStyle);
+		}
+		
+		public Color getSelectedColor() {
+			return (coloredButton == null) ? null : coloredButton.getBackground();
+		}
+
+		public FontStyle getSelectedStyle() {
+			return (fontStyleComboBox == null) ? null : EditorFontAndColorsDialog.getSelectedStyle(fontStyleComboBox);
 		}
 	}
 	
