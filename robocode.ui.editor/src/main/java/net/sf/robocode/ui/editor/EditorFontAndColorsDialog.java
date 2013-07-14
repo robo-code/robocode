@@ -457,6 +457,8 @@ public class EditorFontAndColorsDialog extends JDialog {
 				editorProperties.setCommentTextColor(getCommentTextColorAndStyle().getSelectedColor());
 				editorProperties.setCommentTextStyle(getCommentTextColorAndStyle().getSelectedStyle());
 
+				EditorPropertiesManager.saveEditorProperties();
+
 				dispose();
 			}
 			if (e.getSource().equals(getCancelButton())) {

@@ -63,7 +63,7 @@ public class EditorProperties implements IEditorProperties {
 	private final static String ANNOTATION_TEXT_STYLE = "editor.text.style.annotation";
 
 	private String fontName;
-	private int fontSize;
+	private Integer fontSize;
 
 	private ColorPropertyStrategy backgroundColor = new ColorPropertyStrategy(BACKGROUND_COLOR, DEFAULT_BACKGROUND_COLOR);
 	private ColorPropertyStrategy normalTextColor = new ColorPropertyStrategy(NORMAL_TEXT_COLOR, DEFAULT_NORMAL_TEXT_COLOR);
@@ -106,6 +106,14 @@ public class EditorProperties implements IEditorProperties {
 
 	@Override
 	public String getFontName() {
+		String fontName = this.fontName;
+		if (fontName == null) {
+			fontName = props.getProperty(FONT_NAME);
+		}
+		if (fontName == null) {
+			fontName = DEFAULT_FONT_NAME;
+		}
+		this.fontName = fontName;
 		return fontName;
 	}
 
@@ -116,6 +124,18 @@ public class EditorProperties implements IEditorProperties {
 
 	@Override
 	public int getFontSize() {
+		Integer fontSize = this.fontSize;
+		if (fontSize == null) {
+			String value = props.getProperty(FONT_SIZE);
+			try {
+				fontSize = Integer.parseInt(value);
+			} catch (NumberFormatException ignore) {
+			}
+		}
+		if (fontSize == null) {
+			fontSize = DEFAULT_FONT_SIZE;
+		}
+		this.fontSize = fontSize;
 		return fontSize;
 	}
 
@@ -239,22 +259,6 @@ public class EditorProperties implements IEditorProperties {
 	public void load(InputStream is) throws IOException {
 		props.load(is);
 
-		fontName = props.getProperty(FONT_NAME);
-		if (fontName == null) {
-			fontName = DEFAULT_FONT_NAME;
-		}
-
-		try {
-			String value = props.getProperty(FONT_SIZE);
-			if (value == null) {
-				fontSize = DEFAULT_FONT_SIZE; // default
-			} else {
-				fontSize = Integer.parseInt(value);
-			}
-		} catch (NumberFormatException e) {
-			fontSize = DEFAULT_FONT_SIZE; // default on error
-		}
-
 		for (IPropertyStrategy<?> propertyStrategy : colorAndStyleProps) {
 			propertyStrategy.load();
 		}
@@ -291,6 +295,7 @@ public class EditorProperties implements IEditorProperties {
 		ColorPropertyStrategy(String propertyName, Color defaultColor) {
 			this.propertyName = propertyName;
 			this.defaultColor = defaultColor;
+			this.color = defaultColor;
 		}
 
 		@Override
@@ -319,7 +324,9 @@ public class EditorProperties implements IEditorProperties {
 			String hexValue = props.getProperty(propertyName);
 			if (hexValue != null) {
 				try {
-					int rgb = (int)Long.parseLong(hexValue, 16);
+					// Yes, we need to use a Long instead of an Integer here +
+					// we mask out the alpha channel
+					int rgb = (int)Long.parseLong(hexValue, 16) & 0x00FFFFFF;
 					return new Color(rgb);
 				} catch (NumberFormatException ignore) {
 				}
@@ -337,6 +344,7 @@ public class EditorProperties implements IEditorProperties {
 		FontStylePropertyStrategy(String propertyName, FontStyle defaultStyle) {
 			this.propertyName = propertyName;
 			this.defaultStyle = defaultStyle;
+			this.style = defaultStyle;
 		}
 
 		@Override
@@ -368,6 +376,7 @@ public class EditorProperties implements IEditorProperties {
 	}	
 	
 	private static String toHexString(Color color) {
-		return Integer.toHexString(color.getRGB());
+		// We mask out the alpha channel and format as RRGGBB
+		return String.format("%06X", color.getRGB() & 0x00FFFFFF);
 	}
 }
