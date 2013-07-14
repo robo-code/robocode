@@ -8,7 +8,6 @@
 package net.sf.robocode.ui.editor;
 
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.FocusEvent;
@@ -77,22 +76,22 @@ public class JavaDocument extends StyledDocument {
 			Arrays.asList(new String[] { "false", "true", "null" }));
 
 	/** Normal text attribute set */
-	private final SimpleAttributeSet normalAttrSet;
+	private SimpleAttributeSet normalAttrSet;
 
 	/** Quoted text attribute set */
-	private final SimpleAttributeSet quoteAttrSet;
+	private SimpleAttributeSet quoteAttrSet;
 
 	/** Keyword attribute set */
-	private final SimpleAttributeSet keywordAttrSet;
+	private SimpleAttributeSet keywordAttrSet;
 
 	/** Predefined literal attribute set */
-	private final SimpleAttributeSet predefinedLiteralAttrSet;
+	private SimpleAttributeSet literalAttrSet;
 
 	/** Annotation attribute set */
-	private final SimpleAttributeSet annotationAttrSet;
+	private SimpleAttributeSet annotationAttrSet;
 
 	/** Comment attribute set */
-	private final SimpleAttributeSet commentAttrSet;
+	private SimpleAttributeSet commentAttrSet;
 
 	/** String buffer holding only space characters for fast replacement of tabulator characters */
 	private String spaceBuffer;
@@ -115,29 +114,17 @@ public class JavaDocument extends StyledDocument {
 		super();
 		this.textPane = textPane;
 
-		// Setup the styled attribute sets
+		// Setup text colors and styles
+		setTextColorsAndStyles();
 
-		normalAttrSet = new SimpleAttributeSet();
-		StyleConstants.setForeground(normalAttrSet, new Color(0x00, 0x00, 0x00, 0xFF));
-
-		quoteAttrSet = new SimpleAttributeSet();
-		StyleConstants.setForeground(quoteAttrSet, new Color(0x7F, 0x00, 0x00, 0xFF));
-
-		keywordAttrSet = new SimpleAttributeSet();
-		StyleConstants.setForeground(keywordAttrSet, new Color(0x00, 0x00, 0xAF, 0xFF));
-		StyleConstants.setBold(keywordAttrSet, true);
-
-		predefinedLiteralAttrSet = keywordAttrSet;
-
-		annotationAttrSet = new SimpleAttributeSet();
-		StyleConstants.setForeground(annotationAttrSet, new Color(0x7F, 0x7F, 0x7F, 0xFF));
-
-		commentAttrSet = new SimpleAttributeSet();
-		StyleConstants.setForeground(commentAttrSet, new Color(0x00, 0xAF, 0x00, 0xFF));
-
-		// Setup document listener in order to update caret position and update syntax highlighting
-		addDocumentListener(new JavaDocumentListener());
-
+		// Setup editor properties change listener
+		EditorPropertiesManager.addListener(new IEditorPropertyChangeListener() {
+			@Override
+			public void onChange(IEditorProperties properties) {
+				setTextColorsAndStyles();
+			}
+		});
+		
 		// Setup change listener and focus listener on the viewport of the text pane
 
 		JViewport viewport = textPane.getViewport();
@@ -218,6 +205,51 @@ public class JavaDocument extends StyledDocument {
 		this.tabSize = tabSize;
 	}
 
+	private void setTextColorsAndStyles() {
+		// Setup the styled attribute sets
+
+		EditorProperties editorProperties = EditorPropertiesManager.getEditorProperties();
+		
+		normalAttrSet = new SimpleAttributeSet();
+		FontStyle normalTextStyle = editorProperties.getNormalTextStyle();
+		StyleConstants.setForeground(normalAttrSet, editorProperties.getNormalTextColor());
+		StyleConstants.setBold(normalAttrSet, normalTextStyle.isBold());
+		StyleConstants.setItalic(normalAttrSet, normalTextStyle.isItalic());
+
+		quoteAttrSet = new SimpleAttributeSet();
+		FontStyle quoteTextStyle = editorProperties.getQuotedTextStyle();
+		StyleConstants.setForeground(quoteAttrSet, editorProperties.getQuotedTextColor());
+		StyleConstants.setBold(quoteAttrSet, quoteTextStyle.isBold());
+		StyleConstants.setItalic(quoteAttrSet, quoteTextStyle.isItalic());
+
+		keywordAttrSet = new SimpleAttributeSet();
+		FontStyle keywordTextStyle = editorProperties.getKeywordTextStyle();
+		StyleConstants.setForeground(keywordAttrSet, editorProperties.getKeywordTextColor());
+		StyleConstants.setBold(keywordAttrSet, keywordTextStyle.isBold());
+		StyleConstants.setItalic(keywordAttrSet, keywordTextStyle.isItalic());
+
+		literalAttrSet = new SimpleAttributeSet();
+		FontStyle literalTextStyle = editorProperties.getLiteralTextStyle();
+		StyleConstants.setForeground(literalAttrSet, editorProperties.getLiteralTextColor());
+		StyleConstants.setBold(literalAttrSet, literalTextStyle.isBold());
+		StyleConstants.setItalic(literalAttrSet, literalTextStyle.isItalic());
+
+		annotationAttrSet = new SimpleAttributeSet();
+		FontStyle annotationTextStyle = editorProperties.getAnnotationTextStyle();
+		StyleConstants.setForeground(annotationAttrSet, editorProperties.getAnnotationTextColor());
+		StyleConstants.setBold(annotationAttrSet, annotationTextStyle.isBold());
+		StyleConstants.setItalic(annotationAttrSet, annotationTextStyle.isItalic());
+
+		commentAttrSet = new SimpleAttributeSet();
+		FontStyle commentTextStyle = editorProperties.getCommentTextStyle();
+		StyleConstants.setForeground(commentAttrSet, editorProperties.getCommentTextColor());
+		StyleConstants.setBold(commentAttrSet, commentTextStyle.isBold());
+		StyleConstants.setItalic(commentAttrSet, commentTextStyle.isItalic());
+
+		// Setup document listener in order to update caret position and update syntax highlighting
+		addDocumentListener(new JavaDocumentListener());
+	}
+	
 	/**
 	 * Applies indentation for an inserted string at a given offset if auto indentation is enabled.
 	 * 
@@ -758,7 +790,7 @@ public class JavaDocument extends StyledDocument {
 			if (isKeyword(token)) {
 				setCharacterAttributes(startOffset, len, keywordAttrSet, true);
 			} else if (isPredefinedLiteral(token)) {
-				setCharacterAttributes(startOffset, len, predefinedLiteralAttrSet, true);
+				setCharacterAttributes(startOffset, len, literalAttrSet, true);
 			} else if (isAnnotation(token)) {
 				setCharacterAttributes(startOffset, len, annotationAttrSet, true);
 			} else {

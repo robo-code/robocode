@@ -57,4 +57,12 @@ public enum FontStyle {
 	public String getName() {
 		return name;
 	}
+
+	public boolean isBold() {
+		return this == BOLD || this == BOLD_ITALIC;
+	}
+
+	public boolean isItalic() {
+		return this == ITALIC || this == BOLD_ITALIC;
+	}
 }
