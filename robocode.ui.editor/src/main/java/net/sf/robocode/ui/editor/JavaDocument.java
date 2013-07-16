@@ -125,7 +125,7 @@ public class JavaDocument extends StyledDocument {
 			@Override
 			public void onChange(IEditorProperties properties) {
 				setTextColorsAndStyles();
-				updateSyntaxHighlighting();
+				updateSyntaxHighlighting(true);
 			}
 		});
 		
@@ -135,13 +135,13 @@ public class JavaDocument extends StyledDocument {
 
 		viewport.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				updateSyntaxHighlighting();
+				updateSyntaxHighlighting(false);
 			}
 		});
 
 		viewport.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
-				updateSyntaxHighlighting();
+				updateSyntaxHighlighting(false);
 			}
 
 			public void focusLost(FocusEvent e) {}
@@ -632,12 +632,12 @@ public class JavaDocument extends StyledDocument {
 	/**
 	 * Updates the syntax highlighting on the document using the EDT.
 	 */
-	private void updateSyntaxHighlighting() {
+	private void updateSyntaxHighlighting(final boolean force) {
 		// Apply syntax highlighting from the current offset
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					performSyntaxHighlighting();
+					performSyntaxHighlighting(force);
 				} catch (BadLocationException e) {
 					e.printStackTrace();
 				}
@@ -652,9 +652,9 @@ public class JavaDocument extends StyledDocument {
 	 * 
 	 * @throws BadLocationException
 	 */
-	private void performSyntaxHighlighting() throws BadLocationException {
+	private void performSyntaxHighlighting(boolean force) throws BadLocationException {
 		// Return if there is nothing to highlight
-		if (getLength() == 0) {
+		if (getLength() == 0 && !force) {
 			return;
 		}
 
@@ -669,7 +669,7 @@ public class JavaDocument extends StyledDocument {
 		int endOffset = textPane.viewToModel(endPoint);
 
 		// Return if the current start and end offset is equal to the last ones
-		if (startOffset == lastSyntaxHighlightStartOffset && endOffset == lastSyntaxHighlightEndOffset) {
+		if (!force && startOffset == lastSyntaxHighlightStartOffset && endOffset == lastSyntaxHighlightEndOffset) {
 			return;
 		}
 
@@ -985,7 +985,7 @@ public class JavaDocument extends StyledDocument {
 			caretPositionUpdater.updateCaretPosition(newCaretPosition);
 
 			// Apply syntax highlighting from the current offset
-			updateSyntaxHighlighting();
+			updateSyntaxHighlighting(false);
 		}
 
 		public void removeUpdate(final DocumentEvent e) {
@@ -993,7 +993,7 @@ public class JavaDocument extends StyledDocument {
 			caretPositionUpdater.updateCaretPosition(e.getOffset());
 
 			// Apply syntax highlighting from the current offset
-			updateSyntaxHighlighting();
+			updateSyntaxHighlighting(false);
 		}
 		
 		public void changedUpdate(DocumentEvent e) {}
