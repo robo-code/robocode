@@ -1,4 +1,7 @@
-## Version 1.8.3.0 Alpha 1 (27-Jun-2013)
+## Version 1.8.3.0 Alpha 1 (16-Jul-2013)
+
+### Bug fixes
+* Fixed a NullPointerException occurring with a new source file that was not saved before being compiled.
 
 ### Changes
 * [Req-121][]: Issues with editor font.

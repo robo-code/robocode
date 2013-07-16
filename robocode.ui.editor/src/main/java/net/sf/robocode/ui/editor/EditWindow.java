@@ -179,8 +179,12 @@ public class EditWindow extends JInternalFrame {
 			// in the output stream.
 			new Thread(new Runnable() {
 				public void run() {
+					if (fileName == null) {
+						error("You must save before compiling.");
+						return;
+					}
 					editor.getCompiler().compile(getRobotDir(), fileName);
-					repositoryManager.refresh(fileName);					
+					repositoryManager.refresh(fileName);
 				}
 			}).start();
 		} else {
