@@ -103,7 +103,10 @@ public class JavaDocument extends StyledDocument {
 	private int lastSyntaxHighlightEndOffset;
 
 	private int autoIndentationCaretPos = -1;
-	
+
+	private	boolean updateSyntaxHighlightingEDTidle = true;
+
+
 	/**
 	 * Constructor that creates a Java document.
 	 * 
@@ -141,6 +144,7 @@ public class JavaDocument extends StyledDocument {
 
 		viewport.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
+				System.out.print('f');
 				updateSyntaxHighlighting(false);
 			}
 
@@ -633,16 +637,22 @@ public class JavaDocument extends StyledDocument {
 	 * Updates the syntax highlighting on the document using the EDT.
 	 */
 	private void updateSyntaxHighlighting(final boolean force) {
-		// Apply syntax highlighting from the current offset
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					performSyntaxHighlighting(force);
-				} catch (BadLocationException e) {
-					e.printStackTrace();
+		// Only invoke the EDT, if this operation is not already initiated
+		if (updateSyntaxHighlightingEDTidle) {
+			updateSyntaxHighlightingEDTidle = false;
+
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						// Apply syntax highlighting from the current offset
+						performSyntaxHighlighting(force);
+						updateSyntaxHighlightingEDTidle = true;
+					} catch (BadLocationException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	/**
