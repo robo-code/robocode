@@ -76,22 +76,22 @@ public class JavaDocument extends StyledDocument {
 			Arrays.asList(new String[] { "false", "true", "null" }));
 
 	/** Normal text attribute set */
-	private SimpleAttributeSet normalAttrSet;
+	private final SimpleAttributeSet normalAttrSet = new SimpleAttributeSet();
 
 	/** Quoted text attribute set */
-	private SimpleAttributeSet quoteAttrSet;
+	private final SimpleAttributeSet quoteAttrSet = new SimpleAttributeSet();
 
 	/** Keyword attribute set */
-	private SimpleAttributeSet keywordAttrSet;
+	private final SimpleAttributeSet keywordAttrSet = new SimpleAttributeSet();
 
 	/** Predefined literal attribute set */
-	private SimpleAttributeSet literalAttrSet;
+	private final SimpleAttributeSet literalAttrSet = new SimpleAttributeSet();
 
 	/** Annotation attribute set */
-	private SimpleAttributeSet annotationAttrSet;
+	private final SimpleAttributeSet annotationAttrSet = new SimpleAttributeSet();
 
 	/** Comment attribute set */
-	private SimpleAttributeSet commentAttrSet;
+	private SimpleAttributeSet commentAttrSet = new SimpleAttributeSet();
 
 	/** String buffer holding only space characters for fast replacement of tabulator characters */
 	private String spaceBuffer;
@@ -117,11 +117,15 @@ public class JavaDocument extends StyledDocument {
 		// Setup text colors and styles
 		setTextColorsAndStyles();
 
+		// Setup document listener in order to update caret position and update syntax highlighting
+		addDocumentListener(new JavaDocumentListener());
+
 		// Setup editor properties change listener
 		EditorPropertiesManager.addListener(new IEditorPropertyChangeListener() {
 			@Override
 			public void onChange(IEditorProperties properties) {
 				setTextColorsAndStyles();
+				updateSyntaxHighlighting();
 			}
 		});
 		
@@ -209,45 +213,36 @@ public class JavaDocument extends StyledDocument {
 		// Setup the styled attribute sets
 
 		EditorProperties editorProperties = EditorPropertiesManager.getEditorProperties();
-		
-		normalAttrSet = new SimpleAttributeSet();
+
 		FontStyle normalTextStyle = editorProperties.getNormalTextStyle();
 		StyleConstants.setForeground(normalAttrSet, editorProperties.getNormalTextColor());
 		StyleConstants.setBold(normalAttrSet, normalTextStyle.isBold());
 		StyleConstants.setItalic(normalAttrSet, normalTextStyle.isItalic());
 
-		quoteAttrSet = new SimpleAttributeSet();
 		FontStyle quoteTextStyle = editorProperties.getQuotedTextStyle();
 		StyleConstants.setForeground(quoteAttrSet, editorProperties.getQuotedTextColor());
 		StyleConstants.setBold(quoteAttrSet, quoteTextStyle.isBold());
 		StyleConstants.setItalic(quoteAttrSet, quoteTextStyle.isItalic());
 
-		keywordAttrSet = new SimpleAttributeSet();
 		FontStyle keywordTextStyle = editorProperties.getKeywordTextStyle();
 		StyleConstants.setForeground(keywordAttrSet, editorProperties.getKeywordTextColor());
 		StyleConstants.setBold(keywordAttrSet, keywordTextStyle.isBold());
 		StyleConstants.setItalic(keywordAttrSet, keywordTextStyle.isItalic());
 
-		literalAttrSet = new SimpleAttributeSet();
 		FontStyle literalTextStyle = editorProperties.getLiteralTextStyle();
 		StyleConstants.setForeground(literalAttrSet, editorProperties.getLiteralTextColor());
 		StyleConstants.setBold(literalAttrSet, literalTextStyle.isBold());
 		StyleConstants.setItalic(literalAttrSet, literalTextStyle.isItalic());
 
-		annotationAttrSet = new SimpleAttributeSet();
 		FontStyle annotationTextStyle = editorProperties.getAnnotationTextStyle();
 		StyleConstants.setForeground(annotationAttrSet, editorProperties.getAnnotationTextColor());
 		StyleConstants.setBold(annotationAttrSet, annotationTextStyle.isBold());
 		StyleConstants.setItalic(annotationAttrSet, annotationTextStyle.isItalic());
 
-		commentAttrSet = new SimpleAttributeSet();
 		FontStyle commentTextStyle = editorProperties.getCommentTextStyle();
 		StyleConstants.setForeground(commentAttrSet, editorProperties.getCommentTextColor());
 		StyleConstants.setBold(commentAttrSet, commentTextStyle.isBold());
 		StyleConstants.setItalic(commentAttrSet, commentTextStyle.isItalic());
-
-		// Setup document listener in order to update caret position and update syntax highlighting
-		addDocumentListener(new JavaDocumentListener());
 	}
 	
 	/**
