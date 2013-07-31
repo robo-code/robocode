@@ -301,6 +301,15 @@ public class FileUtil {
 	}
 
 	/**
+	 * Returns the editor theme directory.
+	 *
+	 * @return a File that is the directory containing the editor theme files.
+	 */
+	public static File getEditorThemeConfigDir() {
+		return createDir(new File(cwd, "/theme/editor"));
+	}
+
+	/**
 	 * Cleans up a stream by flushing it and closing it if it is not null.
 	 *
 	 * @param stream the stream to clean up.

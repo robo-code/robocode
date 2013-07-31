@@ -45,7 +45,7 @@ public class EditorPanel extends JPanel {
 		statusTextField = new JTextField();
 		statusTextField.setEditable(false);
 
-		JScrollPane scroll = new JScrollPane();
+		final JScrollPane scroll = new JScrollPane();
 
 		editorPane = new EditorPane(scroll.getViewport());
 
@@ -56,7 +56,9 @@ public class EditorPanel extends JPanel {
 		});
 
 		scroll.setViewportView(editorPane);
-		scroll.getViewport().setBackground(Color.WHITE);
+
+		EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties(null);
+		scroll.getViewport().setBackground(themeProps.getBackgroundColor());
 
 		lineNumberArea = new LineNumberArea(editorPane);
 		scroll.setRowHeaderView(lineNumberArea);
@@ -65,6 +67,15 @@ public class EditorPanel extends JPanel {
 		add(statusTextField, BorderLayout.SOUTH);
 
 		updateStatus(1, 1);
+
+		EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
+			@Override
+			public void onChange(IEditorThemeProperties properties) {
+				Color bgColor = properties.getBackgroundColor();
+				scroll.getViewport().setBackground(bgColor);
+				getEditorPane().setBackground(bgColor);
+			}
+		});
 	}
 	
 	@Override

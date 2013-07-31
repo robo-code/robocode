@@ -21,7 +21,7 @@ import java.util.Properties;
  * 
  * @author Flemming N. Larsen (original)
  */
-public class EditorProperties implements IEditorProperties {
+public class EditorThemeProperties implements IEditorThemeProperties {
 
 	private final static String DEFAULT_FONT_NAME = "Monospaced";
 	private final static int DEFAULT_FONT_SIZE = 14;
@@ -62,37 +62,55 @@ public class EditorProperties implements IEditorProperties {
 	private final static String ANNOTATION_TEXT_COLOR = "editor.text.color.annotation";
 	private final static String ANNOTATION_TEXT_STYLE = "editor.text.style.annotation";
 
+	private String themeName;
+
 	private String fontName;
 	private Integer fontSize;
 
 	private ColorPropertyStrategy backgroundColor = new ColorPropertyStrategy(BACKGROUND_COLOR, DEFAULT_BACKGROUND_COLOR);
-	private ColorPropertyStrategy normalTextColor = new ColorPropertyStrategy(NORMAL_TEXT_COLOR, DEFAULT_NORMAL_TEXT_COLOR);
-	private FontStylePropertyStrategy normalTextStyle = new FontStylePropertyStrategy(NORMAL_TEXT_STYLE, DEFAULT_NORMAL_TEXT_STYLE);
-	private ColorPropertyStrategy commentTextColor = new ColorPropertyStrategy(COMMENT_TEXT_COLOR, DEFAULT_COMMENT_TEXT_COLOR);
-	private FontStylePropertyStrategy commentTextStyle = new FontStylePropertyStrategy(COMMENT_TEXT_STYLE, DEFAULT_COMMENT_TEXT_STYLE);
-	private ColorPropertyStrategy quotedTextColor = new ColorPropertyStrategy(QUOTED_TEXT_COLOR, DEFAULT_QUOTED_TEXT_COLOR);
-	private FontStylePropertyStrategy quotedTextStyle = new FontStylePropertyStrategy(QUOTED_TEXT_STYLE, DEFAULT_QUOTED_TEXT_STYLE);
-	private ColorPropertyStrategy keywordTextColor = new ColorPropertyStrategy(KEYWORD_TEXT_COLOR, DEFAULT_KEYWORD_TEXT_COLOR);
-	private FontStylePropertyStrategy keywordTextStyle = new FontStylePropertyStrategy(KEYWORD_TEXT_STYLE, DEFAULT_KEYWORD_TEXT_STYLE);
-	private ColorPropertyStrategy literalTextColor = new ColorPropertyStrategy(LITERAL_TEXT_COLOR, DEFAULT_LITERAL_TEXT_COLOR);
-	private FontStylePropertyStrategy literalTextStyle = new FontStylePropertyStrategy(LITERAL_TEXT_STYLE, DEFAULT_LITERAL_TEXT_STYLE);
-	private ColorPropertyStrategy annotationTextColor = new ColorPropertyStrategy(ANNOTATION_TEXT_COLOR, DEFAULT_ANNOTATION_TEXT_COLOR);
-	private FontStylePropertyStrategy annotationTextStyle = new FontStylePropertyStrategy(ANNOTATION_TEXT_STYLE, DEFAULT_ANNOTATION_TEXT_STYLE);
+	private ColorPropertyStrategy normalTextColor = new ColorPropertyStrategy(NORMAL_TEXT_COLOR,
+			DEFAULT_NORMAL_TEXT_COLOR);
+	private FontStylePropertyStrategy normalTextStyle = new FontStylePropertyStrategy(NORMAL_TEXT_STYLE,
+			DEFAULT_NORMAL_TEXT_STYLE);
+	private ColorPropertyStrategy commentTextColor = new ColorPropertyStrategy(COMMENT_TEXT_COLOR,
+			DEFAULT_COMMENT_TEXT_COLOR);
+	private FontStylePropertyStrategy commentTextStyle = new FontStylePropertyStrategy(COMMENT_TEXT_STYLE,
+			DEFAULT_COMMENT_TEXT_STYLE);
+	private ColorPropertyStrategy quotedTextColor = new ColorPropertyStrategy(QUOTED_TEXT_COLOR,
+			DEFAULT_QUOTED_TEXT_COLOR);
+	private FontStylePropertyStrategy quotedTextStyle = new FontStylePropertyStrategy(QUOTED_TEXT_STYLE,
+			DEFAULT_QUOTED_TEXT_STYLE);
+	private ColorPropertyStrategy keywordTextColor = new ColorPropertyStrategy(KEYWORD_TEXT_COLOR,
+			DEFAULT_KEYWORD_TEXT_COLOR);
+	private FontStylePropertyStrategy keywordTextStyle = new FontStylePropertyStrategy(KEYWORD_TEXT_STYLE,
+			DEFAULT_KEYWORD_TEXT_STYLE);
+	private ColorPropertyStrategy literalTextColor = new ColorPropertyStrategy(LITERAL_TEXT_COLOR,
+			DEFAULT_LITERAL_TEXT_COLOR);
+	private FontStylePropertyStrategy literalTextStyle = new FontStylePropertyStrategy(LITERAL_TEXT_STYLE,
+			DEFAULT_LITERAL_TEXT_STYLE);
+	private ColorPropertyStrategy annotationTextColor = new ColorPropertyStrategy(ANNOTATION_TEXT_COLOR,
+			DEFAULT_ANNOTATION_TEXT_COLOR);
+	private FontStylePropertyStrategy annotationTextStyle = new FontStylePropertyStrategy(ANNOTATION_TEXT_STYLE,
+			DEFAULT_ANNOTATION_TEXT_STYLE);
 	
 	private IPropertyStrategy<?>[] colorAndStyleProps = new IPropertyStrategy[] {
-		backgroundColor,
-		normalTextColor, normalTextStyle,
-		commentTextColor, commentTextStyle,
-		quotedTextColor, quotedTextStyle,
-		keywordTextColor, keywordTextStyle,
-		literalTextColor, literalTextStyle,
-		annotationTextColor, annotationTextStyle
+		backgroundColor, normalTextColor, normalTextStyle, commentTextColor, commentTextStyle, quotedTextColor,
+		quotedTextStyle, keywordTextColor, keywordTextStyle, literalTextColor, literalTextStyle, annotationTextColor,
+		annotationTextStyle
 	};
 	
 	private final Properties props = new Properties();
 
-	public EditorProperties() {
+	public EditorThemeProperties() {
 		super();
+	}
+
+	public String getThemeName() {
+		return themeName;
+	}
+
+	public void setThemeName(String themeName) {
+		this.themeName = themeName;
 	}
 
 	public Font getFont() {
@@ -129,8 +147,7 @@ public class EditorProperties implements IEditorProperties {
 			String value = props.getProperty(FONT_SIZE);
 			try {
 				fontSize = Integer.parseInt(value);
-			} catch (NumberFormatException ignore) {
-			}
+			} catch (NumberFormatException ignore) {}
 		}
 		if (fontSize == null) {
 			fontSize = DEFAULT_FONT_SIZE;
@@ -275,8 +292,8 @@ public class EditorProperties implements IEditorProperties {
 		props.store(os, header);
 	}
 	
-	private void notifyChange() {
-		EditorPropertiesManager.notifyChange(this);
+	public void notifyChange() {
+		EditorThemePropertiesManager.notifyChange(this);
 	}
 
 	interface IPropertyStrategy<V> {
@@ -285,6 +302,7 @@ public class EditorProperties implements IEditorProperties {
 		void load();
 		void save();
 	}
+
 
 	class ColorPropertyStrategy implements IPropertyStrategy<Color> {
 
@@ -326,14 +344,14 @@ public class EditorProperties implements IEditorProperties {
 				try {
 					// Yes, we need to use a Long instead of an Integer here +
 					// we mask out the alpha channel
-					int rgb = (int)Long.parseLong(hexValue, 16) & 0x00FFFFFF;
+					int rgb = (int) Long.parseLong(hexValue, 16) & 0x00FFFFFF;
 					return new Color(rgb);
-				} catch (NumberFormatException ignore) {
-				}
+				} catch (NumberFormatException ignore) {}
 			}
 			return null;
 		}
 	}
+
 
 	class FontStylePropertyStrategy implements IPropertyStrategy<FontStyle> {
 

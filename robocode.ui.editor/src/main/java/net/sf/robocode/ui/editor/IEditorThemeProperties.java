@@ -7,6 +7,7 @@
  *******************************************************************************/
 package net.sf.robocode.ui.editor;
 
+
 import java.awt.Color;
 import java.awt.Font;
 
@@ -18,7 +19,10 @@ import java.awt.Font;
  * 
  * @since 1.8.2.0
  */
-public interface IEditorProperties {
+public interface IEditorThemeProperties {
+
+	String getThemeName();
+
 	Font getFont();
 	String getFontName();
 	int getFontSize();

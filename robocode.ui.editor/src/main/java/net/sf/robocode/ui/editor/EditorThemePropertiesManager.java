@@ -19,15 +19,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 
 
-public class EditorPropertiesManager {
+public class EditorThemePropertiesManager {
 
 	private static final List<IEditorPropertyChangeListener> listeners = new ArrayList<IEditorPropertyChangeListener>();
 
-	private static EditorProperties editorProperties;
+	private static EditorThemeProperties editorProperties;
 
 	public static void addListener(IEditorPropertyChangeListener listener) {
 		if (!listeners.contains(listener)) {
@@ -39,24 +38,31 @@ public class EditorPropertiesManager {
 		listeners.remove(listener);
 	}
 
-	public static void notifyChange(IEditorProperties properties) {
+	public static void notifyChange(IEditorThemeProperties properties) {
 		for (IEditorPropertyChangeListener listener : listeners) {
 			listener.onChange(properties);
 		}
 	}
 
-	public static EditorProperties getEditorProperties() {
+	/**
+	 * Returns the current editor theme properties.
+	 *
+	 * @param filepath the filepath of an existing editor theme properties file used for initializing the
+	 *                 theme properties or null if the current values must be used as is.
+	 * @return editor theme properties.
+	 */
+	public static EditorThemeProperties getEditorThemeProperties(File filepath) {
 		if (editorProperties == null) {
-			editorProperties = new EditorProperties();
-
+			editorProperties = new EditorThemeProperties();
+		}
+		if (filepath != null) {
 			FileInputStream in = null;
 			File file = null;
 			try {
-				file = FileUtil.getEditorConfigFile();
-				in = new FileInputStream(file);
+				in = new FileInputStream(filepath);
 				editorProperties.load(in);
 			} catch (FileNotFoundException e) {
-				logMessage("Editor configuration file was not found. A new one will be created.");
+				logMessage("Editor theme properties file was not found. A new one will be created.");
 			} catch (IOException e) {
 				logError("Error while reading file: " + file, e);
 			} finally {
@@ -70,11 +76,11 @@ public class EditorPropertiesManager {
 		return editorProperties;
 	}
 	
-	public static void saveEditorProperties() {
+	public static void saveEditorThemeProperties(File filepath) {
 		FileOutputStream out = null;
 		try {
-			out = new FileOutputStream(FileUtil.getEditorConfigFile());
-			getEditorProperties().store(out, "Robocode Editor Properties");
+			out = new FileOutputStream(filepath);
+			getEditorThemeProperties(null).store(out, "Robocode Editor Theme Properties");
 		} catch (IOException e) {
 			Logger.logError(e);
 		} finally {

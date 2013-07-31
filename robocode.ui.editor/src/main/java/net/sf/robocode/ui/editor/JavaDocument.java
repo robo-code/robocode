@@ -104,8 +104,7 @@ public class JavaDocument extends StyledDocument {
 
 	private int autoIndentationCaretPos = -1;
 
-	private	boolean updateSyntaxHighlightingEDTidle = true;
-
+	private boolean updateSyntaxHighlightingEDTidle = true;
 
 	/**
 	 * Constructor that creates a Java document.
@@ -124,9 +123,9 @@ public class JavaDocument extends StyledDocument {
 		addDocumentListener(new JavaDocumentListener());
 
 		// Setup editor properties change listener
-		EditorPropertiesManager.addListener(new IEditorPropertyChangeListener() {
+		EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
 			@Override
-			public void onChange(IEditorProperties properties) {
+			public void onChange(IEditorThemeProperties properties) {
 				setTextColorsAndStyles();
 				updateSyntaxHighlighting(true);
 			}
@@ -216,35 +215,35 @@ public class JavaDocument extends StyledDocument {
 	private void setTextColorsAndStyles() {
 		// Setup the styled attribute sets
 
-		EditorProperties editorProperties = EditorPropertiesManager.getEditorProperties();
-
-		FontStyle normalTextStyle = editorProperties.getNormalTextStyle();
-		StyleConstants.setForeground(normalAttrSet, editorProperties.getNormalTextColor());
+		EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties(null);
+		
+		FontStyle normalTextStyle = themeProps.getNormalTextStyle();
+		StyleConstants.setForeground(normalAttrSet, themeProps.getNormalTextColor());
 		StyleConstants.setBold(normalAttrSet, normalTextStyle.isBold());
 		StyleConstants.setItalic(normalAttrSet, normalTextStyle.isItalic());
 
-		FontStyle quoteTextStyle = editorProperties.getQuotedTextStyle();
-		StyleConstants.setForeground(quoteAttrSet, editorProperties.getQuotedTextColor());
+		FontStyle quoteTextStyle = themeProps.getQuotedTextStyle();
+		StyleConstants.setForeground(quoteAttrSet, themeProps.getQuotedTextColor());
 		StyleConstants.setBold(quoteAttrSet, quoteTextStyle.isBold());
 		StyleConstants.setItalic(quoteAttrSet, quoteTextStyle.isItalic());
 
-		FontStyle keywordTextStyle = editorProperties.getKeywordTextStyle();
-		StyleConstants.setForeground(keywordAttrSet, editorProperties.getKeywordTextColor());
+		FontStyle keywordTextStyle = themeProps.getKeywordTextStyle();
+		StyleConstants.setForeground(keywordAttrSet, themeProps.getKeywordTextColor());
 		StyleConstants.setBold(keywordAttrSet, keywordTextStyle.isBold());
 		StyleConstants.setItalic(keywordAttrSet, keywordTextStyle.isItalic());
 
-		FontStyle literalTextStyle = editorProperties.getLiteralTextStyle();
-		StyleConstants.setForeground(literalAttrSet, editorProperties.getLiteralTextColor());
+		FontStyle literalTextStyle = themeProps.getLiteralTextStyle();
+		StyleConstants.setForeground(literalAttrSet, themeProps.getLiteralTextColor());
 		StyleConstants.setBold(literalAttrSet, literalTextStyle.isBold());
 		StyleConstants.setItalic(literalAttrSet, literalTextStyle.isItalic());
 
-		FontStyle annotationTextStyle = editorProperties.getAnnotationTextStyle();
-		StyleConstants.setForeground(annotationAttrSet, editorProperties.getAnnotationTextColor());
+		FontStyle annotationTextStyle = themeProps.getAnnotationTextStyle();
+		StyleConstants.setForeground(annotationAttrSet, themeProps.getAnnotationTextColor());
 		StyleConstants.setBold(annotationAttrSet, annotationTextStyle.isBold());
 		StyleConstants.setItalic(annotationAttrSet, annotationTextStyle.isItalic());
 
-		FontStyle commentTextStyle = editorProperties.getCommentTextStyle();
-		StyleConstants.setForeground(commentAttrSet, editorProperties.getCommentTextColor());
+		FontStyle commentTextStyle = themeProps.getCommentTextStyle();
+		StyleConstants.setForeground(commentAttrSet, themeProps.getCommentTextColor());
 		StyleConstants.setBold(commentAttrSet, commentTextStyle.isBold());
 		StyleConstants.setItalic(commentAttrSet, commentTextStyle.isItalic());
 	}

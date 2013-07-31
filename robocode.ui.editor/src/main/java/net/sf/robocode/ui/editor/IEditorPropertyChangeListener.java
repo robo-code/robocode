@@ -10,5 +10,5 @@ package net.sf.robocode.ui.editor;
 
 public interface IEditorPropertyChangeListener {
 
-	public void onChange(IEditorProperties properties);
+	public void onChange(IEditorThemeProperties properties);
 }
