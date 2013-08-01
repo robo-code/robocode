@@ -15,6 +15,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -28,21 +29,21 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
 /**
  * @author Flemming N. Larsen (original)
  *
- * @since 1.8.2.0
+ * @since 1.8.3.0
  */
 @SuppressWarnings("serial")
 public class EditorFontAndColorsDialog extends JDialog {
 
-	private static final String EDITOR_THEME_PROPERTIES_FILE_EXT = ".properties";
-	
 	private static final boolean ONLY_MONOSPACED = true;
 
 	private static final String[] FONT_SIZES = {
@@ -50,7 +51,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 	};
 
 	private JButton saveButton;
-	private JButton cancelButton;
+	private JButton closeButton;
 
 	private JComboBox fontNameComboBox;
 	private JComboBox fontStyleComboBox;
@@ -80,8 +81,8 @@ public class EditorFontAndColorsDialog extends JDialog {
 		setLayout(new GridBagLayout());
 		setResizable(false);
 
-		// Set the font that must be used initially ----
-		setInitialSelectedFont();
+		// Initialize the font and theme ----
+		initializeFontAndTheme();
 
 		getSaveButton().setEnabled(false);
 		
@@ -174,7 +175,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 
 		JPanel okCancelPanel = new JPanel();
 		okCancelPanel.add(getSaveButton());
-		okCancelPanel.add(getCancelButton(), gbc);
+		okCancelPanel.add(getCloseButton(), gbc);
 
 		gbc.gridy = ++gridy;
 		add(okCancelPanel, gbc);
@@ -189,13 +190,13 @@ public class EditorFontAndColorsDialog extends JDialog {
 		return saveButton;
 	}
 
-	private JButton getCancelButton() {
-		if (cancelButton == null) {
-			cancelButton = new JButton("Cancel");
-			cancelButton.setMnemonic('C');
-			cancelButton.addActionListener(eventHandler);
+	private JButton getCloseButton() {
+		if (closeButton == null) {
+			closeButton = new JButton("Close");
+			closeButton.setMnemonic('C');
+			closeButton.addActionListener(eventHandler);
 		}
-		return cancelButton;
+		return closeButton;
 	}
 
 	private JComboBox getFontNameComboBox() {
@@ -214,6 +215,10 @@ public class EditorFontAndColorsDialog extends JDialog {
 			} else {
 				fontNameList.addAll(fontFamilyNameList);
 			}
+			if (!fontNameList.contains("Monospaced")) {
+				fontNameList.add("Monospaced");
+			}
+			Collections.sort(fontNameList);
 			
 			fontNameComboBox = new JComboBox(fontNameList.toArray());
 			fontNameComboBox.setRenderer(new FontCellRenderer());
@@ -222,10 +227,15 @@ public class EditorFontAndColorsDialog extends JDialog {
 					new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					// Enable the save button, if and only if the selected font name in the font combo-box has change,
+					// but no new theme was selected in the theme combo-box.
 					EditorThemeProperties currentThemeProps = EditorThemePropertiesManager.getEditorThemeProperties(null);
 					String currentFontName = currentThemeProps.getFontName();
 					if (!((String) fontNameComboBox.getSelectedItem()).equals(currentFontName)) {
-						getSaveButton().setEnabled(true);
+						String currentThemeName = currentThemeProps.getThemeName();
+						if (((String) getThemeComboBox().getSelectedItem()).equals(currentThemeName)) {
+							getSaveButton().setEnabled(true);
+						}
 					}
 				}
 			});
@@ -371,14 +381,16 @@ public class EditorFontAndColorsDialog extends JDialog {
 
 	private ColorAndStyle getBackgroundColorAndStyle() {
 		if (backgroundColorAndStyle == null) {
-			backgroundColorAndStyle = new ColorAndStyle("Background Color", Color.WHITE, null);
+			Color themeColor = getThemeProperties().getBackgroundColor();
+			backgroundColorAndStyle = new ColorAndStyle("Background Color", themeColor, null);
 		}
 		return backgroundColorAndStyle;
 	}
 
 	private ColorAndStyle getNormalTextColorAndStyle() {
 		if (normalTextColorAndStyle == null) {
-			normalTextColorAndStyle = new ColorAndStyle("Normal Text Color", Color.BLACK, FontStyle.PLAIN);
+			Color themeColor = getThemeProperties().getNormalTextColor();
+			normalTextColorAndStyle = new ColorAndStyle("Normal Text Color", themeColor, FontStyle.PLAIN);
 
 			normalTextColorAndStyle.fontStyleComboBox.addActionListener(
 					new ActionListener() {
@@ -402,29 +414,32 @@ public class EditorFontAndColorsDialog extends JDialog {
 
 	private ColorAndStyle getKeywordTextColorAndStyle() {
 		if (keywordTextColorAndStyle == null) {
-			keywordTextColorAndStyle = new ColorAndStyle("Keyword Color", new Color(0x00, 0x00, 0xAF), FontStyle.BOLD);
+			Color themeColor = getThemeProperties().getKeywordTextColor();
+			keywordTextColorAndStyle = new ColorAndStyle("Keyword Color", themeColor, FontStyle.BOLD);
 		}
 		return keywordTextColorAndStyle;
 	}
 
 	private ColorAndStyle getLiteralTextColorAndStyle() {
 		if (literalTextColorAndStyle == null) {
-			literalTextColorAndStyle = new ColorAndStyle("Literal Color", new Color(0x00, 0x00, 0xAF), FontStyle.BOLD);
+			Color themeColor = getThemeProperties().getLiteralTextColor();
+			literalTextColorAndStyle = new ColorAndStyle("Literal Color", themeColor, FontStyle.BOLD);
 		}
 		return literalTextColorAndStyle;
 	}
 
 	private ColorAndStyle getAnnotationTextColorAndStyle() {
 		if (annotationTextColorAndStyle == null) {
-			annotationTextColorAndStyle = new ColorAndStyle("Annotation Color", new Color(0x7F, 0x7F, 0x7F),
-					FontStyle.PLAIN);
+			Color themeColor = getThemeProperties().getAnnotationTextColor();
+			annotationTextColorAndStyle = new ColorAndStyle("Annotation Color", themeColor, FontStyle.PLAIN);
 		}
 		return annotationTextColorAndStyle;
 	}
 
 	private ColorAndStyle getCommentTextColorAndStyle() {
 		if (commentTextColorAndStyle == null) {
-			commentTextColorAndStyle = new ColorAndStyle("Comment Color", new Color(0x00, 0xAF, 0x00), FontStyle.PLAIN);
+			Color themeColor = getThemeProperties().getCommentTextColor();
+			commentTextColorAndStyle = new ColorAndStyle("Comment Color", themeColor, FontStyle.PLAIN);
 		}
 		return commentTextColorAndStyle;
 	}
@@ -433,14 +448,14 @@ public class EditorFontAndColorsDialog extends JDialog {
 		if (themeComboBox == null) {
 			File[] themeFiles = FileUtil.getEditorThemeConfigDir().listFiles(new java.io.FileFilter() {
 				public boolean accept(File filepath) {
-					return filepath.getName().endsWith(EDITOR_THEME_PROPERTIES_FILE_EXT);
+					return filepath.getName().endsWith(EditorThemePropertiesManager.getFileExt());
 				}
 			});
 	
 			List<String> themeNames = new ArrayList<String>();
 			for (File file : themeFiles) {
 				String themeName = file.getName();
-				themeName = themeName.substring(0, themeName.lastIndexOf(EDITOR_THEME_PROPERTIES_FILE_EXT));
+				themeName = themeName.substring(0, themeName.lastIndexOf(EditorThemePropertiesManager.getFileExt()));
 				themeNames.add(themeName);
 			}
 	
@@ -464,12 +479,12 @@ public class EditorFontAndColorsDialog extends JDialog {
 		int width = fontMetrics.stringWidth(getPreviewLabel().getText());
 		int height = fontMetrics.getHeight();
 
-		getPreviewLabel().setPreferredSize(new Dimension(width, height));		
+		getPreviewLabel().setPreferredSize(new Dimension(width, height));
 	}
 
-	private void setInitialSelectedFont() {
-		// FIXME fnl Use name for current selected theme, e.g. from editor.properties
-		EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties(null);
+	private void initializeFontAndTheme() {
+		// Read the theme properties
+		IEditorThemeProperties themeProps = getThemeProperties();
 
 		// Set selected font name
 		setSelected(getFontNameComboBox(), themeProps.getFontName());
@@ -479,6 +494,25 @@ public class EditorFontAndColorsDialog extends JDialog {
 
 		// Set selected font size
 		setSelected(getFontSizeComboBox(), "" + themeProps.getFontSize());
+
+		// Set selected theme
+		setSelected(getThemeComboBox(), themeProps.getThemeName());
+	}
+
+	private IEditorThemeProperties getThemeProperties() {
+		// Get the selected theme name
+		String themeName = EditorPropertiesManager.getEditorProperties().getThemeName();
+
+		// Read the theme properties
+		File themeFile = EditorThemePropertiesManager.getFilepath(themeName);
+		EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties(themeFile);
+
+		// Make sure the theme name is set if it has not been set already
+		String themePropsName = themeProps.getThemeName();
+		if (themePropsName == null || themePropsName.trim().isEmpty()) {
+			themeProps.setThemeName(themeName);
+		}
+		return themeProps;
 	}
 	
 	private class EventHandler implements ActionListener {
@@ -488,7 +522,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 				performThemeComboBoxAction();
 			} else if (e.getSource().equals(getSaveButton())) {
 				performSaveButtonAction();
-			} else if (e.getSource().equals(getCancelButton())) {
+			} else if (e.getSource().equals(getCloseButton())) {
 				dispose();
 			}
 		}
@@ -607,8 +641,10 @@ public class EditorFontAndColorsDialog extends JDialog {
 
 	private void performThemeComboBoxAction() {
 		String themeName = (String) getThemeComboBox().getSelectedItem();
-		String fileName = themeName + EDITOR_THEME_PROPERTIES_FILE_EXT;
-		File file = new File(FileUtil.getEditorThemeConfigDir(), fileName);
+		File file = EditorThemePropertiesManager.getFilepath(themeName);
+
+		EditorPropertiesManager.getEditorProperties().setThemeName(themeName);
+		EditorPropertiesManager.saveEditorProperties();
 
 		EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties(file);
 
@@ -639,12 +675,8 @@ public class EditorFontAndColorsDialog extends JDialog {
 	}
 	
 	private void performSaveButtonAction() {
-		File configDirPath = FileUtil.getEditorThemeConfigDir();
-
-		String themeName = "My Theme";
-		String themeFileName = themeName + EDITOR_THEME_PROPERTIES_FILE_EXT;
-
-		File file = new File(configDirPath, themeFileName);
+		String themeName = "My theme";
+		File file = EditorThemePropertiesManager.getFilepath(themeName);
 
 		JFileChooser saveThemeDialog = new JFileChooser(FileUtil.getEditorThemeConfigDir());
 		saveThemeDialog.setDialogTitle("Save Theme");
@@ -653,7 +685,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 		FileFilter fileFilter = new FileFilter() {
 			@Override
 			public boolean accept(File filepath) {
-				return filepath.getName().endsWith(EDITOR_THEME_PROPERTIES_FILE_EXT);
+				return filepath.getName().endsWith(EditorThemePropertiesManager.getFileExt());
 			}
 
 			@Override
@@ -668,7 +700,12 @@ public class EditorFontAndColorsDialog extends JDialog {
 		int returnState = saveThemeDialog.showSaveDialog(this);
 
 		file = saveThemeDialog.getSelectedFile();
-		if (!file.isFile()) {
+
+		if (!file.getName().endsWith(EditorThemePropertiesManager.getFileExt())) {
+			file = new File(file.getAbsolutePath() + EditorThemePropertiesManager.getFileExt());
+		}
+
+		if (!FileUtil.isFilenameValid(file.getName())) {
 			JOptionPane.showMessageDialog(this, "Not a valid file name:\n" + file.getName(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 
@@ -684,11 +721,22 @@ public class EditorFontAndColorsDialog extends JDialog {
 				if (option == JOptionPane.NO_OPTION) {
 					return;
 				}
+			} else {
+				try {
+					file.createNewFile(); // File must be created if it does not exist already
+				} catch (IOException e) {
+					Logger.logError(e);
+					return;
+				}
 			}
+
+			setSelected(getThemeComboBox(), themeName);
+			EditorPropertiesManager.getEditorProperties().setThemeName(themeName);
+			EditorPropertiesManager.saveEditorProperties();
 
 			EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties(null);
 			themeProps.setThemeName(themeName);
-	
+
 			themeProps.setFontName(getSelectedName(getFontNameComboBox()));
 			themeProps.setFontSize(Integer.parseInt(getSelectedName(getFontSizeComboBox())));
 	

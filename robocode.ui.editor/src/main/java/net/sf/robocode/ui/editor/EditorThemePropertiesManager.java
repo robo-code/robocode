@@ -19,14 +19,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 
 
+/**
+ * Manages the editor theme property files.
+ * 
+ * @author Flemming N. Larsen (original)
+ * 
+ * @since 1.8.3.0
+ */
 public class EditorThemePropertiesManager {
+
+	private static final String EDITOR_THEME_PROPERTIES_FILE_EXT = ".properties";
 
 	private static final List<IEditorPropertyChangeListener> listeners = new ArrayList<IEditorPropertyChangeListener>();
 
-	private static EditorThemeProperties editorProperties;
+	private static EditorThemeProperties editorThemeProperties;
 
 	public static void addListener(IEditorPropertyChangeListener listener) {
 		if (!listeners.contains(listener)) {
@@ -52,15 +62,15 @@ public class EditorThemePropertiesManager {
 	 * @return editor theme properties.
 	 */
 	public static EditorThemeProperties getEditorThemeProperties(File filepath) {
-		if (editorProperties == null) {
-			editorProperties = new EditorThemeProperties();
+		if (editorThemeProperties == null) {
+			editorThemeProperties = new EditorThemeProperties();
 		}
 		if (filepath != null) {
 			FileInputStream in = null;
 			File file = null;
 			try {
 				in = new FileInputStream(filepath);
-				editorProperties.load(in);
+				editorThemeProperties.load(in);
 			} catch (FileNotFoundException e) {
 				logMessage("Editor theme properties file was not found. A new one will be created.");
 			} catch (IOException e) {
@@ -73,7 +83,7 @@ public class EditorThemePropertiesManager {
 				}
 			}
 		}
-		return editorProperties;
+		return editorThemeProperties;
 	}
 	
 	public static void saveEditorThemeProperties(File filepath) {
@@ -90,5 +100,20 @@ public class EditorThemePropertiesManager {
 				} catch (IOException ignored) {}
 			}
 		}
+	}
+	
+	public static File getFilepath(String themeName) {
+		if (themeName == null) {
+			return null;
+		}
+		File configDirPath = FileUtil.getEditorThemeConfigDir();
+
+		String themeFileName = themeName + EDITOR_THEME_PROPERTIES_FILE_EXT;
+
+		return new File(configDirPath, themeFileName);
+	}
+
+	public static String getFileExt() {
+		return EDITOR_THEME_PROPERTIES_FILE_EXT;
 	}
 }

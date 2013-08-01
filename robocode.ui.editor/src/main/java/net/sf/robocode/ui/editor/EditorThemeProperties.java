@@ -17,50 +17,56 @@ import java.util.Properties;
 
 
 /**
- * Handles the editor properties.
+ * Handles the editor theme properties.
  * 
  * @author Flemming N. Larsen (original)
+ * 
+ * @since 1.8.3.0
  */
 public class EditorThemeProperties implements IEditorThemeProperties {
 
-	private final static String DEFAULT_FONT_NAME = "Monospaced";
-	private final static int DEFAULT_FONT_SIZE = 14;
-	private final static Color DEFAULT_BACKGROUND_COLOR = Color.WHITE;
-	private final static Color DEFAULT_NORMAL_TEXT_COLOR = Color.BLACK;
-	private final static FontStyle DEFAULT_NORMAL_TEXT_STYLE = FontStyle.PLAIN;
-	private final static Color DEFAULT_COMMENT_TEXT_COLOR = new Color(0x00, 0xAF, 0x00);
-	private final static FontStyle DEFAULT_COMMENT_TEXT_STYLE = FontStyle.PLAIN;
-	private final static Color DEFAULT_QUOTED_TEXT_COLOR = new Color(0x7f, 0x00, 0x00);
-	private final static FontStyle DEFAULT_QUOTED_TEXT_STYLE = FontStyle.PLAIN;
-	private final static Color DEFAULT_KEYWORD_TEXT_COLOR = new Color(0x00, 0x00, 0xAF);
-	private final static FontStyle DEFAULT_KEYWORD_TEXT_STYLE = FontStyle.BOLD;
-	private final static Color DEFAULT_LITERAL_TEXT_COLOR = new Color(0x00, 0x00, 0xAF);
-	private final static FontStyle DEFAULT_LITERAL_TEXT_STYLE = FontStyle.BOLD;
-	private final static Color DEFAULT_ANNOTATION_TEXT_COLOR = new Color(0x7F, 0x7F, 0x7F);
-	private final static FontStyle DEFAULT_ANNOTATION_TEXT_STYLE = FontStyle.BOLD;
+	private static final String DEFAULT_THEME_NAME = EditorPropertiesManager.getEditorProperties().getThemeName();
 
-	private final static String FONT_NAME = "editor.font.name";
-	private final static String FONT_SIZE = "editor.font.size";
+	private static final String DEFAULT_FONT_NAME = "Monospaced";
+	private static final int DEFAULT_FONT_SIZE = 14;
+	private static final Color DEFAULT_BACKGROUND_COLOR = Color.WHITE;
+	private static final Color DEFAULT_NORMAL_TEXT_COLOR = Color.BLACK;
+	private static final FontStyle DEFAULT_NORMAL_TEXT_STYLE = FontStyle.PLAIN;
+	private static final Color DEFAULT_COMMENT_TEXT_COLOR = new Color(0x00, 0xAF, 0x00);
+	private static final FontStyle DEFAULT_COMMENT_TEXT_STYLE = FontStyle.PLAIN;
+	private static final Color DEFAULT_QUOTED_TEXT_COLOR = new Color(0x7f, 0x00, 0x00);
+	private static final FontStyle DEFAULT_QUOTED_TEXT_STYLE = FontStyle.PLAIN;
+	private static final Color DEFAULT_KEYWORD_TEXT_COLOR = new Color(0x00, 0x00, 0xAF);
+	private static final FontStyle DEFAULT_KEYWORD_TEXT_STYLE = FontStyle.BOLD;
+	private static final Color DEFAULT_LITERAL_TEXT_COLOR = new Color(0x00, 0x00, 0xAF);
+	private static final FontStyle DEFAULT_LITERAL_TEXT_STYLE = FontStyle.BOLD;
+	private static final Color DEFAULT_ANNOTATION_TEXT_COLOR = new Color(0x7F, 0x7F, 0x7F);
+	private static final FontStyle DEFAULT_ANNOTATION_TEXT_STYLE = FontStyle.BOLD;
 
-	private final static String BACKGROUND_COLOR = "editor.background.color";
+	private static final String THEME_NAME = "editor.theme";
 
-	private final static String NORMAL_TEXT_COLOR = "editor.text.color.normal";
-	private final static String NORMAL_TEXT_STYLE = "editor.text.style.normal";
+	private static final String FONT_NAME = "editor.font.name";
+	private static final String FONT_SIZE = "editor.font.size";
 
-	private final static String COMMENT_TEXT_COLOR = "editor.text.color.comment";
-	private final static String COMMENT_TEXT_STYLE = "editor.text.style.comment";
+	private static final String BACKGROUND_COLOR = "editor.background.color";
 
-	private final static String QUOTED_TEXT_COLOR = "editor.text.color.quoted";
-	private final static String QUOTED_TEXT_STYLE = "editor.text.style.quoted";
+	private static final String NORMAL_TEXT_COLOR = "editor.text.color.normal";
+	private static final String NORMAL_TEXT_STYLE = "editor.text.style.normal";
 
-	private final static String KEYWORD_TEXT_COLOR = "editor.text.color.keyword";
-	private final static String KEYWORD_TEXT_STYLE = "editor.text.style.keyword";
+	private static final String COMMENT_TEXT_COLOR = "editor.text.color.comment";
+	private static final String COMMENT_TEXT_STYLE = "editor.text.style.comment";
 
-	private final static String LITERAL_TEXT_COLOR = "editor.text.color.literal";
-	private final static String LITERAL_TEXT_STYLE = "editor.text.style.literal";
+	private static final String QUOTED_TEXT_COLOR = "editor.text.color.quoted";
+	private static final String QUOTED_TEXT_STYLE = "editor.text.style.quoted";
 
-	private final static String ANNOTATION_TEXT_COLOR = "editor.text.color.annotation";
-	private final static String ANNOTATION_TEXT_STYLE = "editor.text.style.annotation";
+	private static final String KEYWORD_TEXT_COLOR = "editor.text.color.keyword";
+	private static final String KEYWORD_TEXT_STYLE = "editor.text.style.keyword";
+
+	private static final String LITERAL_TEXT_COLOR = "editor.text.color.literal";
+	private static final String LITERAL_TEXT_STYLE = "editor.text.style.literal";
+
+	private static final String ANNOTATION_TEXT_COLOR = "editor.text.color.annotation";
+	private static final String ANNOTATION_TEXT_STYLE = "editor.text.style.annotation";
 
 	private String themeName;
 
@@ -101,16 +107,21 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 	
 	private final Properties props = new Properties();
 
-	public EditorThemeProperties() {
-		super();
-	}
-
 	public String getThemeName() {
+		String themeName = this.themeName;
+		if (themeName == null) {
+			themeName = props.getProperty(THEME_NAME);
+		}
+		if (themeName == null) {
+			themeName = DEFAULT_THEME_NAME;
+		}
+		this.themeName = themeName;
 		return themeName;
 	}
 
 	public void setThemeName(String themeName) {
 		this.themeName = themeName;
+		notifyChange();
 	}
 
 	public Font getFont() {
@@ -276,12 +287,23 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 	public void load(InputStream is) throws IOException {
 		props.load(is);
 
+		themeName = props.getProperty(THEME_NAME, DEFAULT_THEME_NAME);
+
+		fontName = props.getProperty(FONT_NAME, DEFAULT_FONT_NAME);
+
+		try {
+			fontSize = Integer.parseInt(props.getProperty(FONT_SIZE, "" + DEFAULT_FONT_SIZE));
+		} catch (NumberFormatException e) {
+			fontSize = DEFAULT_FONT_SIZE;
+		}
+
 		for (IPropertyStrategy<?> propertyStrategy : colorAndStyleProps) {
 			propertyStrategy.load();
 		}
 	}
 
 	public void store(OutputStream os, String header) throws IOException {
+		props.setProperty(THEME_NAME, themeName);
 		props.setProperty(FONT_NAME, fontName);
 		props.setProperty(FONT_SIZE, "" + fontSize);
 

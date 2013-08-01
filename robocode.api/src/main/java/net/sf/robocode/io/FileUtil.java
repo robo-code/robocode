@@ -333,4 +333,20 @@ public class FileUtil {
 			}
 		}
 	}
+
+	/**
+	 * Checks if a filename is valid.
+	 *
+	 * @param file the filename to check.
+	 * @return true if the filename is valid; false otherwise.
+	 */
+	public static boolean isFilenameValid(String file) {
+		File f = new File(file);
+		try {
+			f.getCanonicalPath();
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
 }
