@@ -9,7 +9,6 @@ package net.sf.robocode.ui.editor;
 
 
 import static net.sf.robocode.io.Logger.logError;
-import static net.sf.robocode.io.Logger.logMessage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,6 +54,21 @@ public class EditorThemePropertiesManager {
 	}
 
 	/**
+	 * Returns the editor theme properties preferred by the end user (configuration).
+	 *
+	 * @return editor theme properties.
+	 */
+	public static EditorThemeProperties getEditorThemeProperties() {
+		// Get the selected theme name
+		String themeName = EditorPropertiesManager.getEditorProperties().getThemeName();
+
+		// Read the theme properties
+		File themeFile = EditorThemePropertiesManager.getFilepath(themeName);
+
+		return EditorThemePropertiesManager.getEditorThemeProperties(themeFile);
+	}
+
+	/**
 	 * Returns the current editor theme properties.
 	 *
 	 * @param filepath the filepath of an existing editor theme properties file used for initializing the
@@ -72,7 +86,7 @@ public class EditorThemePropertiesManager {
 				in = new FileInputStream(filepath);
 				editorThemeProperties.load(in);
 			} catch (FileNotFoundException e) {
-				logMessage("Editor theme properties file was not found. A new one will be created.");
+				return null;
 			} catch (IOException e) {
 				logError("Error while reading file: " + file, e);
 			} finally {

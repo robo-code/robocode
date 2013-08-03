@@ -34,6 +34,7 @@ import javax.swing.text.Utilities;
 public class EditorPanel extends JPanel {
 
 	private JTextField statusTextField;
+	private final JScrollPane scrollPane;
 	private final EditorPane editorPane;
 	private final LineNumberArea lineNumberArea;
 
@@ -45,25 +46,24 @@ public class EditorPanel extends JPanel {
 		statusTextField = new JTextField();
 		statusTextField.setEditable(false);
 
-		final JScrollPane scroll = new JScrollPane();
+		scrollPane = new JScrollPane();
 
-		editorPane = new EditorPane(scroll.getViewport());
-
+		editorPane = new EditorPane(scrollPane.getViewport());
 		editorPane.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
 				updateStatus(getRow(e.getDot(), editorPane), getColumn(e.getDot(), editorPane));
 			}
 		});
 
-		scroll.setViewportView(editorPane);
+		scrollPane.setViewportView(editorPane);
 
-		EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties(null);
-		scroll.getViewport().setBackground(themeProps.getBackgroundColor());
+		EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties();
+		setBackgroundColor(themeProps);
 
 		lineNumberArea = new LineNumberArea(editorPane);
-		scroll.setRowHeaderView(lineNumberArea);
+		scrollPane.setRowHeaderView(lineNumberArea);
 
-		add(scroll, BorderLayout.CENTER);
+		add(scrollPane, BorderLayout.CENTER);
 		add(statusTextField, BorderLayout.SOUTH);
 
 		updateStatus(1, 1);
@@ -71,9 +71,7 @@ public class EditorPanel extends JPanel {
 		EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
 			@Override
 			public void onChange(IEditorThemeProperties properties) {
-				Color bgColor = properties.getBackgroundColor();
-				scroll.getViewport().setBackground(bgColor);
-				getEditorPane().setBackground(bgColor);
+				setBackgroundColor(properties);
 			}
 		});
 	}
@@ -137,5 +135,11 @@ public class EditorPanel extends JPanel {
 			e.printStackTrace();
 		}
 		return -1;
+	}
+	
+	private void setBackgroundColor(IEditorThemeProperties properties) {
+		Color bgColor = properties.getBackgroundColor();
+		scrollPane.getViewport().setBackground(bgColor);
+		editorPane.setBackground(bgColor);
 	}
 }

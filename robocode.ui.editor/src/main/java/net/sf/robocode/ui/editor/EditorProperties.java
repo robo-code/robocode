@@ -8,6 +8,7 @@
 package net.sf.robocode.ui.editor;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,6 +40,11 @@ public class EditorProperties implements IEditorProperties {
 		}
 		if (themeName == null) {
 			themeName = DEFAULT_THEME_NAME;
+		} else {
+			File file = EditorThemePropertiesManager.getFilepath(themeName);
+			if (!file.exists()) {
+				themeName = DEFAULT_THEME_NAME;
+			}
 		}
 		this.themeName = themeName;
 		return themeName;
