@@ -37,7 +37,7 @@ public class TestFairPlay extends RobocodeTestBed {
 
 	@Override
 	public int getNumRounds() {
-		return 100;
+		return 200;
 	}
 
 	@Override
@@ -56,11 +56,11 @@ public class TestFairPlay extends RobocodeTestBed {
 		double minTotal = Math.min(score1.getTotalScore(), score2.getTotalScore());
 		double maxTotal = Math.max(score1.getTotalScore(), score2.getTotalScore());
 
-		Assert.assertTrue("The total scores should be almost the same", maxTotal / minTotal <= 1.02);
+		Assert.assertTrue("The total scores should be almost the same", maxTotal / minTotal <= 1.05);
 
 		double minFirsts = Math.min(score1.getTotalFirsts(), score2.getTotalFirsts());
 		double maxFirsts = Math.max(score1.getTotalFirsts(), score2.getTotalFirsts());
 
-		Assert.assertTrue("The total firsts should be almost the same", maxFirsts / minFirsts <= 1.07);
+		Assert.assertTrue("The total firsts should be almost the same", maxFirsts / minFirsts <= 1.05);
 	}
 }

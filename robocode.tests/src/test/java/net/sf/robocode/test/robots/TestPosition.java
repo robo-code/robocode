@@ -42,10 +42,10 @@ public class TestPosition extends RobocodeTestBed {
 			IRobotSnapshot crazy = event.getStartSnapshot().getRobots()[0];
 			IRobotSnapshot target = event.getStartSnapshot().getRobots()[1];
 
-			Assert.assertNear(566.2968069, crazy.getX());
-			Assert.assertNear(165.0789361, crazy.getY());
-			Assert.assertNear(436.3146436, target.getX());
-			Assert.assertNear(350.7235444, target.getY());
+			Assert.assertNear(568.1445492, crazy.getX());
+			Assert.assertNear(163.0032275, crazy.getY());
+			Assert.assertNear(436.7181397, target.getX());
+			Assert.assertNear(351.5039067, target.getY());
 		}
 	}
 
@@ -54,27 +54,26 @@ public class TestPosition extends RobocodeTestBed {
 		super.onTurnEnded(event);
 		lastTurn = event.getTurnSnapshot().getTurn();
 
-		// System.out.println(event.getTurnSnapshot().getTurn());
 		IRobotSnapshot crazy = event.getTurnSnapshot().getRobots()[0];
 		IRobotSnapshot target = event.getTurnSnapshot().getRobots()[1];
 
 		if (lastTurn == 1) {
-			Assert.assertNear(565.4354411, crazy.getX());
-			Assert.assertNear(164.5709508, crazy.getY());
-			Assert.assertNear(436.3146436, target.getX());
-			Assert.assertNear(350.7235444, target.getY());
+			Assert.assertNear(567.2831835, crazy.getX());
+			Assert.assertNear(162.4952421, crazy.getY());
+			Assert.assertNear(436.7181397, target.getX());
+			Assert.assertNear(351.5039067, target.getY());
 		}
 
 		if (lastTurn == 1700) {
-			Assert.assertNear(38.69810137, crazy.getX());
-			Assert.assertNear(214.9945902, crazy.getY());
-			Assert.assertNear(339.9178023, target.getX());
-			Assert.assertNear(455.7698379, target.getY());
+			Assert.assertNear(373.9958377, crazy.getX());
+			Assert.assertNear(196.1380677, crazy.getY());
+			Assert.assertNear(340.3212984, target.getX());
+			Assert.assertNear(456.5502002, target.getY());
 		}
 	}
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertThat(lastTurn, is(1740));
+		Assert.assertThat(lastTurn, is(2080));
 	}
 }

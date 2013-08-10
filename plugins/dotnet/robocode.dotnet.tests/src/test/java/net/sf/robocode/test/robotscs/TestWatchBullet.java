@@ -38,10 +38,10 @@ public class TestWatchBullet extends RobocodeTestBed {
 		final String out = robot.getOutputStreamSnapshot();
 		final int time = event.getTurnSnapshot().getTurn();
 
-		test(out, time, 33, "33 483.34234 132.35505 347.84644 True");
-		test(out, time, 45, "45 455.55206 261.39652 347.84644 True");
-		test(out, time, 51, "51 441.65691 325.91725 347.84644 True");
-		test(out, time, 52, "52 439.34105 336.67071 347.84644 False");
+		test(out, time, 33, "33 487.43878 119.51132 347.66745 True");
+		test(out, time, 45, "45 459.24551 248.46534 347.66745 True");
+		test(out, time, 52, "52 442.79943 323.68851 347.66745 True");
+		test(out, time, 53, "53 440.44999 334.43468 347.66745 False");
 
 		if (out.contains("Failed bullet identity")) {
 			messagedIdentity = true;

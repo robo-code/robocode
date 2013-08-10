@@ -61,12 +61,12 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public static final int
-			WIDTH = 40,
-			HEIGHT = 40;
+			WIDTH = 36,
+			HEIGHT = 36;
 
 	private static final int
-			HALF_WIDTH_OFFSET = (WIDTH / 2 - 2),
-			HALF_HEIGHT_OFFSET = (HEIGHT / 2 - 2);
+			HALF_WIDTH_OFFSET = WIDTH / 2,
+			HALF_HEIGHT_OFFSET = HEIGHT / 2;
 
 	private static final int MAX_SKIPPED_TURNS = 30;
 	private static final int MAX_SKIPPED_TURNS_WITH_IO = 240;
@@ -1105,7 +1105,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public void updateBoundingBox() {
-		boundingBox.setRect(x - WIDTH / 2 + 2, y - HEIGHT / 2 + 2, WIDTH - 4, HEIGHT - 4);
+		boundingBox.setRect(x - HALF_WIDTH_OFFSET, y - HALF_HEIGHT_OFFSET, WIDTH, HEIGHT);
 	}
 
 	// TODO: Only add events to robots that are alive? + Remove checks if the Robot is alive before adding the event?

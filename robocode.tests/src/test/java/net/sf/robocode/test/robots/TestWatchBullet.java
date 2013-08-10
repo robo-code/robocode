@@ -36,10 +36,10 @@ public class TestWatchBullet extends RobocodeTestBed {
 		final String out = robot.getOutputStreamSnapshot();
 		final int time = event.getTurnSnapshot().getTurn();
 
-		test(out, time, 33, "33 483.3423438731687 132.35505419382304 347.8464407127698 true");
-		test(out, time, 45, "45 455.5520553019654 261.3965198594347 347.8464407127698 true");
-		test(out, time, 51, "51 441.6569110163638 325.91725269224054 347.8464407127698 true");
-		test(out, time, 52, "52 439.34105363543017 336.67070816437484 347.8464407127698 false");
+		test(out, time, 33, "33 487.438779505497 119.51131582855926 347.66745091446046 true");
+		test(out, time, 45, "45 459.24550664858225 248.46533618316306 347.66745091446046 true");
+		test(out, time, 52, "52 442.799430815382 323.6885147233484 347.66745091446046 true");
+		test(out, time, 53, "53 440.4499914106391 334.43468308623204 347.66745091446046 false");
 	}
 
 	private void test(String out, int timecurr, int timeWatch, String in) {

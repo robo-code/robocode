@@ -31,19 +31,18 @@ public class TestJunior extends RobocodeTestBed {
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		final IRobotSnapshot robot = event.getTurnSnapshot().getRobots()[0];
 
-		final String out = robot.getOutputStreamSnapshot();
+		IRobotSnapshot robot = event.getTurnSnapshot().getRobots()[0];
 
-		if (event.getTurnSnapshot().getTurn() == 589) {
-			// if (out.contains("robocode.BulletMissedEvent")) {
+		if (event.getTurnSnapshot().getTurn() == 590) {
+			String out = robot.getOutputStreamSnapshot();
 
 			test(out, "robocode.BulletMissedEvent 5");
 			test(out, "robocode.ScannedRobotEvent 100");
 			test(out, "robocode.BulletHitEvent 24");
-			test(out, "robocode.StatusEvent 589");
+			test(out, "robocode.StatusEvent 590");
 			test(out, "robocode.WinEvent 1");
-			test(out, "last bullet heading 6.0710656");
+			test(out, "last bullet heading 6.06794172");
 		}
 	}
 

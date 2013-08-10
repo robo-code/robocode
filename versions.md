@@ -1,7 +1,8 @@
-## Version 1.8.3.0 Alpha 1 (16-Jul-2013)
+## Version 1.8.3.0 Alpha 1 (10-Aug-2013)
 
 ### Bug fixes
 * Fixed a NullPointerException occurring with a new source file that was not saved before being compiled.
+* The getWidth() and getHeight() methods on the Robot class have always returned 40, even though a robot is 36x36 pixels in size. Hence, getWidth() and getHeight() have been changed to return the correct width and height, which is 36
 
 ### Changes
 * [Req-121][]: Issues with editor font.

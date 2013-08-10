@@ -48,8 +48,8 @@ import java.awt.*;
 public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBasicEvents3, IInteractiveEvents, IPaintEvents {
 
 	private static final int
-			WIDTH = 40,
-			HEIGHT = 40;
+			WIDTH = 36,
+			HEIGHT = 36;
 
 	/**
 	 * Constructs a new robot.
