@@ -34,10 +34,17 @@ public class LineNumberArea extends JTextArea {
  
 		setEditable(false);
 		setLineWrap(false);
-		setBackground(new Color(0xDD, 0xDD, 0xDD, 0xFF));
-		setSelectionColor(new Color(0xDD, 0xDD, 0xDD, 0xFF));
+
+		setColors(EditorThemePropertiesManager.getEditorThemeProperties());
 
 		textComponent.getDocument().addDocumentListener(documentListener);
+
+		EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
+			@Override
+			public void onChange(IEditorThemeProperties properties) {
+				setColors(properties);
+			}
+		});
 	}
 
 	private class TextDocumentListener implements DocumentListener {
@@ -96,5 +103,15 @@ public class LineNumberArea extends JTextArea {
 		private int getNumLines(Document doc) {
 			return doc.getDefaultRootElement().getElementIndex(doc.getLength());
 		}
+	}
+
+	private void setColors(IEditorThemeProperties properties) {
+		Color textColor = properties.getLineNumberTextColor();
+		setForeground(textColor);
+		setSelectedTextColor(textColor);
+
+		Color backgroundColor = properties.getLineNumberBackgroundColor();
+		setBackground(backgroundColor);
+		setSelectionColor(backgroundColor);
 	}
 }

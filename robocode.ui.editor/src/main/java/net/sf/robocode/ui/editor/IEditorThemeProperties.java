@@ -29,6 +29,14 @@ public interface IEditorThemeProperties {
 	
 	Color getBackgroundColor();
 
+	Color getLineNumberBackgroundColor();
+	Color getLineNumberTextColor();
+
+	Color getHighlightedLineColor();
+
+	Color getSelectionColor();
+	Color getSelectedTextColor();
+
 	Color getNormalTextColor();
 	FontStyle getNormalTextStyle();
 	

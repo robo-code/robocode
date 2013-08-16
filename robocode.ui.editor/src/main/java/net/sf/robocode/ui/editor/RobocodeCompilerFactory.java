@@ -80,9 +80,7 @@ public class RobocodeCompilerFactory {
 
 	private static String getJavaLib() {
 		String javahome = System.getProperty("java.home");
-
 		String javalib;
-
 		if (System.getProperty("os.name").indexOf("Mac") == 0) {
 			javalib = new File(javahome).getParentFile().getPath() + "/Classes/classes.jar";
 		} else {

@@ -25,30 +25,56 @@ import java.util.Properties;
  */
 public class EditorThemeProperties implements IEditorThemeProperties {
 
+	// ---- Default Colors and Styles ----
+
 	private static final String DEFAULT_THEME_NAME = EditorPropertiesManager.getEditorProperties().getThemeName();
 
 	private static final String DEFAULT_FONT_NAME = "Monospaced";
 	private static final int DEFAULT_FONT_SIZE = 14;
+
 	private static final Color DEFAULT_BACKGROUND_COLOR = Color.WHITE;
+
+	private static final Color DEFAULT_LINE_NUMBER_BACKGROUND_COLOR = new Color(0xDD, 0xDD, 0xDD);
+	private static final Color DEFAULT_LINE_NUMBER_TEXT_COLOR = Color.BLACK;
+
+	private static final Color DEFAULT_HIGHLIGHTED_LINE_COLOR = new Color(0xFF, 0xFF, 0x7F);
+	private static final Color DEFAULT_SELECTION_COLOR = new Color(0x33, 0x99, 0xFF);
+	private static final Color DEFAULT_SELECTED_TEXT_COLOR = Color.WHITE;
+
 	private static final Color DEFAULT_NORMAL_TEXT_COLOR = Color.BLACK;
 	private static final FontStyle DEFAULT_NORMAL_TEXT_STYLE = FontStyle.PLAIN;
+	
 	private static final Color DEFAULT_COMMENT_TEXT_COLOR = new Color(0x00, 0xAF, 0x00);
 	private static final FontStyle DEFAULT_COMMENT_TEXT_STYLE = FontStyle.PLAIN;
+
 	private static final Color DEFAULT_QUOTED_TEXT_COLOR = new Color(0x7f, 0x00, 0x00);
 	private static final FontStyle DEFAULT_QUOTED_TEXT_STYLE = FontStyle.PLAIN;
+	
 	private static final Color DEFAULT_KEYWORD_TEXT_COLOR = new Color(0x00, 0x00, 0xAF);
 	private static final FontStyle DEFAULT_KEYWORD_TEXT_STYLE = FontStyle.BOLD;
+	
 	private static final Color DEFAULT_LITERAL_TEXT_COLOR = new Color(0x00, 0x00, 0xAF);
 	private static final FontStyle DEFAULT_LITERAL_TEXT_STYLE = FontStyle.BOLD;
+	
 	private static final Color DEFAULT_ANNOTATION_TEXT_COLOR = new Color(0x7F, 0x7F, 0x7F);
 	private static final FontStyle DEFAULT_ANNOTATION_TEXT_STYLE = FontStyle.BOLD;
 
+	// ---- Property Names ----
+	
 	private static final String THEME_NAME = "editor.theme";
 
 	private static final String FONT_NAME = "editor.font.name";
 	private static final String FONT_SIZE = "editor.font.size";
 
 	private static final String BACKGROUND_COLOR = "editor.background.color";
+
+	private static final String LINE_NUMBER_BACKGROUND_COLOR = "editor.lineNumber.background.color";
+	private static final String LINE_NUMBER_TEXT_COLOR = "editor.lineNumber.text.color";
+
+	private static final String HIGHLIGHTED_LINE_COLOR = "editor.highlighted.line.color";
+
+	private static final String SELECTION_COLOR = "editor.selected.background.color";
+	private static final String SELECTED_TEXT_COLOR = "editor.selected.text.color";
 
 	private static final String NORMAL_TEXT_COLOR = "editor.text.color.normal";
 	private static final String NORMAL_TEXT_STYLE = "editor.text.style.normal";
@@ -74,6 +100,15 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 	private Integer fontSize;
 
 	private ColorPropertyStrategy backgroundColor = new ColorPropertyStrategy(BACKGROUND_COLOR, DEFAULT_BACKGROUND_COLOR);
+	private ColorPropertyStrategy lineNumberBackgroundColor = new ColorPropertyStrategy(LINE_NUMBER_BACKGROUND_COLOR,
+			DEFAULT_LINE_NUMBER_BACKGROUND_COLOR);
+	private ColorPropertyStrategy lineNumberTextColor = new ColorPropertyStrategy(LINE_NUMBER_TEXT_COLOR,
+			DEFAULT_LINE_NUMBER_TEXT_COLOR);
+	private ColorPropertyStrategy highlightedLineColor = new ColorPropertyStrategy(HIGHLIGHTED_LINE_COLOR,
+			DEFAULT_HIGHLIGHTED_LINE_COLOR);
+	private ColorPropertyStrategy selectionColor = new ColorPropertyStrategy(SELECTION_COLOR, DEFAULT_SELECTION_COLOR);
+	private ColorPropertyStrategy selectedTextColor = new ColorPropertyStrategy(SELECTED_TEXT_COLOR,
+			DEFAULT_SELECTED_TEXT_COLOR);
 	private ColorPropertyStrategy normalTextColor = new ColorPropertyStrategy(NORMAL_TEXT_COLOR,
 			DEFAULT_NORMAL_TEXT_COLOR);
 	private FontStylePropertyStrategy normalTextStyle = new FontStylePropertyStrategy(NORMAL_TEXT_STYLE,
@@ -100,7 +135,8 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 			DEFAULT_ANNOTATION_TEXT_STYLE);
 	
 	private IPropertyStrategy<?>[] colorAndStyleProps = new IPropertyStrategy[] {
-		backgroundColor, normalTextColor, normalTextStyle, commentTextColor, commentTextStyle, quotedTextColor,
+		backgroundColor, lineNumberBackgroundColor, lineNumberTextColor, highlightedLineColor, selectionColor,
+		selectedTextColor, normalTextColor, normalTextStyle, commentTextColor, commentTextStyle, quotedTextColor,
 		quotedTextStyle, keywordTextColor, keywordTextStyle, literalTextColor, literalTextStyle, annotationTextColor,
 		annotationTextStyle
 	};
@@ -167,8 +203,8 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return fontSize;
 	}
 
-	public void setBackgroundColor(Color textColor) {
-		backgroundColor.set(textColor);
+	public void setBackgroundColor(Color color) {
+		backgroundColor.set(color);
 	}
 
 	@Override
@@ -176,8 +212,53 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return backgroundColor.get();
 	}
 
-	public void setNormalTextColor(Color textColor) {
-		normalTextColor.set(textColor);
+	public void setLineNumberBackgroundColor(Color color) {
+		lineNumberBackgroundColor.set(color);
+	}
+
+	@Override
+	public Color getLineNumberBackgroundColor() {
+		return lineNumberBackgroundColor.get();
+	}
+
+	public void setLineNumberTextColor(Color color) {
+		lineNumberTextColor.set(color);
+	}
+
+	@Override
+	public Color getLineNumberTextColor() {
+		return lineNumberTextColor.get();
+	}
+
+	public void setHighlightedLineColor(Color color) {
+		highlightedLineColor.set(color);
+	}
+
+	@Override
+	public Color getHighlightedLineColor() {
+		return highlightedLineColor.get();
+	}
+	
+	public void setSelectionColor(Color color) {
+		selectionColor.set(color);
+	}
+
+	@Override
+	public Color getSelectionColor() {
+		return selectionColor.get();
+	}
+
+	public void setSelectedTextColor(Color color) {
+		selectedTextColor.set(color);
+	}
+
+	@Override
+	public Color getSelectedTextColor() {
+		return selectedTextColor.get();
+	}
+
+	public void setNormalTextColor(Color color) {
+		normalTextColor.set(color);
 	}
 
 	@Override
@@ -194,8 +275,8 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return normalTextStyle.get();
 	}
 
-	public void setCommentTextColor(Color textColor) {
-		commentTextColor.set(textColor);
+	public void setCommentTextColor(Color color) {
+		commentTextColor.set(color);
 	}
 
 	@Override
@@ -212,8 +293,8 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return commentTextStyle.get();
 	}
 
-	public void setQuotedTextColor(Color textColor) {
-		quotedTextColor.set(textColor);
+	public void setQuotedTextColor(Color color) {
+		quotedTextColor.set(color);
 	}
 
 	@Override
@@ -230,8 +311,8 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return quotedTextStyle.get();
 	}
 
-	public void setKeywordTextColor(Color textColor) {
-		keywordTextColor.set(textColor);
+	public void setKeywordTextColor(Color color) {
+		keywordTextColor.set(color);
 	}
 
 	@Override
@@ -248,8 +329,8 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return keywordTextStyle.get();
 	}
 
-	public void setLiteralTextColor(Color textColor) {
-		literalTextColor.set(textColor);
+	public void setLiteralTextColor(Color color) {
+		literalTextColor.set(color);
 	}
 
 	@Override
@@ -266,8 +347,8 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return literalTextStyle.get();
 	}
 
-	public void setAnnotationTextColor(Color textColor) {
-		annotationTextColor.set(textColor);
+	public void setAnnotationTextColor(Color color) {
+		annotationTextColor.set(color);
 	}
 
 	@Override

@@ -12,6 +12,8 @@ import javax.swing.text.*;
 
 public class HighlightLinePainter implements Highlighter.HighlightPainter {
 
+	private static final Color DEFAULT_COLOR = new Color(0xff, 0xff, 0x00, 0x7f); // transparent yellow
+	
 	private JTextComponent component;
 	private Color color;
 	private Rectangle lastView;
@@ -19,7 +21,17 @@ public class HighlightLinePainter implements Highlighter.HighlightPainter {
 	public HighlightLinePainter(JTextComponent component) {
 		this.component = component;
 
-		color = new Color(0xff, 0xff, 0x00, 0x7f); // transparent yellow
+		color = DEFAULT_COLOR;
+
+		EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
+			@Override
+			public void onChange(IEditorThemeProperties properties) {
+				Color highlightedLineColor = properties.getHighlightedLineColor();
+				if (!color.equals(highlightedLineColor)) {
+					setColor(highlightedLineColor);
+				}
+			}
+		});
 
 		component.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {

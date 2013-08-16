@@ -306,7 +306,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	private void viewChangeFontAndColorsActionPerformed() {
 		EditorFontAndColorsDialog dialog = new EditorFontAndColorsDialog(editor);
-		WindowUtil.packCenterShow(editor, dialog);
+		WindowUtil.packCenterShow(dialog);
 	}
 
 	private JMenuItem getCompilerCompileMenuItem() {

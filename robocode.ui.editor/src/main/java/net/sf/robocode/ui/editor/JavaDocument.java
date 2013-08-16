@@ -143,7 +143,6 @@ public class JavaDocument extends StyledDocument {
 
 		viewport.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
-				System.out.print('f');
 				updateSyntaxHighlighting(false);
 			}
 
@@ -215,7 +214,7 @@ public class JavaDocument extends StyledDocument {
 	private void setTextColorsAndStyles() {
 		// Setup the styled attribute sets
 
-		EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties(null);
+		EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties();
 		
 		FontStyle normalTextStyle = themeProps.getNormalTextStyle();
 		StyleConstants.setForeground(normalAttrSet, themeProps.getNormalTextColor());

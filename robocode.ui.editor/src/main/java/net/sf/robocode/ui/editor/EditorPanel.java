@@ -58,7 +58,7 @@ public class EditorPanel extends JPanel {
 		scrollPane.setViewportView(editorPane);
 
 		EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties();
-		setBackgroundColor(themeProps);
+		setColors(themeProps);
 
 		lineNumberArea = new LineNumberArea(editorPane);
 		scrollPane.setRowHeaderView(lineNumberArea);
@@ -71,7 +71,7 @@ public class EditorPanel extends JPanel {
 		EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
 			@Override
 			public void onChange(IEditorThemeProperties properties) {
-				setBackgroundColor(properties);
+				setColors(properties);
 			}
 		});
 	}
@@ -137,9 +137,15 @@ public class EditorPanel extends JPanel {
 		return -1;
 	}
 	
-	private void setBackgroundColor(IEditorThemeProperties properties) {
-		Color bgColor = properties.getBackgroundColor();
-		scrollPane.getViewport().setBackground(bgColor);
-		editorPane.setBackground(bgColor);
+	private void setColors(IEditorThemeProperties properties) {
+		Color backgroundColor = properties.getBackgroundColor();
+		scrollPane.getViewport().setBackground(backgroundColor);
+		editorPane.setBackground(backgroundColor);
+
+		Color selectionColor = properties.getSelectionColor();
+		editorPane.setSelectionColor(selectionColor);
+
+		Color selectedTextColor = properties.getSelectedTextColor();
+		editorPane.setSelectedTextColor(selectedTextColor);
 	}
 }

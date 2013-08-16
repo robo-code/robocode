@@ -36,6 +36,8 @@ public class EditorThemePropertiesManager {
 	private static final List<IEditorPropertyChangeListener> listeners = new ArrayList<IEditorPropertyChangeListener>();
 
 	private static EditorThemeProperties editorThemeProperties;
+	private static File selectedThemeFile;
+
 
 	public static void addListener(IEditorPropertyChangeListener listener) {
 		if (!listeners.contains(listener)) {
@@ -53,19 +55,23 @@ public class EditorThemePropertiesManager {
 		}
 	}
 
+	public static void setSelectedThemeFile(File file) {
+		EditorThemePropertiesManager.selectedThemeFile = file;
+	}
+	
 	/**
 	 * Returns the editor theme properties preferred by the end user (configuration).
 	 *
 	 * @return editor theme properties.
 	 */
 	public static EditorThemeProperties getEditorThemeProperties() {
-		// Get the selected theme name
-		String themeName = EditorPropertiesManager.getEditorProperties().getThemeName();
-
-		// Read the theme properties
-		File themeFile = EditorThemePropertiesManager.getFilepath(themeName);
-
-		return EditorThemePropertiesManager.getEditorThemeProperties(themeFile);
+		if (selectedThemeFile == null) {
+			// Get the selected theme name
+			String themeName = EditorPropertiesManager.getEditorProperties().getThemeName();
+			// Read the theme properties
+			selectedThemeFile = EditorThemePropertiesManager.getFilepath(themeName);			
+		}
+		return EditorThemePropertiesManager.getEditorThemeProperties(selectedThemeFile);
 	}
 
 	/**
@@ -75,11 +81,12 @@ public class EditorThemePropertiesManager {
 	 *                 theme properties or null if the current values must be used as is.
 	 * @return editor theme properties.
 	 */
-	public static EditorThemeProperties getEditorThemeProperties(File filepath) {
+	private static EditorThemeProperties getEditorThemeProperties(File filepath) {
 		if (editorThemeProperties == null) {
 			editorThemeProperties = new EditorThemeProperties();
 		}
-		if (filepath != null) {
+
+		if (filepath != null && !filepath.equals(selectedThemeFile)) {
 			FileInputStream in = null;
 			File file = null;
 			try {

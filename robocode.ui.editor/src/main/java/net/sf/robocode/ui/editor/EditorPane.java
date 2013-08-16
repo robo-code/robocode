@@ -65,6 +65,7 @@ public class EditorPane extends JTextPane {
 		document = new JavaDocument(this);
 
 		new LineNumberArea(this);
+		new HighlightLinePainter(this);
 
 		EditorKit editorKit = new StyledEditorKit() {
 			@Override
