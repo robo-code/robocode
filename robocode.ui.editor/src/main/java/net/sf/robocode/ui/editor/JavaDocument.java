@@ -117,7 +117,7 @@ public class JavaDocument extends StyledDocument {
 		this.textPane = textPane;
 
 		// Setup text colors and styles
-		setTextColorsAndStyles();
+		setTextColorsAndStyles(null);
 
 		// Setup document listener in order to update caret position and update syntax highlighting
 		addDocumentListener(new JavaDocumentListener());
@@ -126,7 +126,7 @@ public class JavaDocument extends StyledDocument {
 		EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
 			@Override
 			public void onChange(IEditorThemeProperties properties) {
-				setTextColorsAndStyles();
+				setTextColorsAndStyles(properties);
 				updateSyntaxHighlighting(true);
 			}
 		});
@@ -211,10 +211,12 @@ public class JavaDocument extends StyledDocument {
 		this.tabSize = tabSize;
 	}
 
-	private void setTextColorsAndStyles() {
+	private void setTextColorsAndStyles(IEditorThemeProperties themeProps) {
+		if (themeProps == null) {
+			themeProps = EditorThemePropertiesManager.getEditorThemeProperties();			
+		}
 		// Setup the styled attribute sets
-
-		EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties();
+		System.out.println(themeProps.getBackgroundColor());
 		
 		FontStyle normalTextStyle = themeProps.getNormalTextStyle();
 		StyleConstants.setForeground(normalAttrSet, themeProps.getNormalTextColor());

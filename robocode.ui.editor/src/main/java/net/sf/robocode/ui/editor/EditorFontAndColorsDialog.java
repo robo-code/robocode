@@ -90,7 +90,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 		initializeFontAndTheme();
 
 		getSaveButton().setEnabled(false);
-		
+
 		// ---- General font settings ----
 
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -654,6 +654,9 @@ public class EditorFontAndColorsDialog extends JDialog {
 		// Read the theme properties
 		IEditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties();
 
+		// Set selected theme
+		setSelected(getThemeComboBox(), themeProps.getThemeName());
+
 		// Set selected font name
 		setSelected(getFontNameComboBox(), themeProps.getFontName());
 
@@ -662,9 +665,6 @@ public class EditorFontAndColorsDialog extends JDialog {
 
 		// Set selected font size
 		setSelected(getFontSizeComboBox(), "" + themeProps.getFontSize());
-
-		// Set selected theme
-		setSelected(getThemeComboBox(), themeProps.getThemeName());
 	}
 
 	private class EventHandler implements ActionListener {
@@ -791,15 +791,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 		}
 	}
 
-	private void performThemeComboBoxAction() {
-		EditorThemeProperties currentThemeProps = EditorThemePropertiesManager.getEditorThemeProperties();
-		String currentThemeName = currentThemeProps.getThemeName();
-
-		final String themeName = (String) getThemeComboBox().getSelectedItem();
-		if (currentThemeName.equals(themeName)) {
-			return;
-		}
-
+	private void performUpdateComponentsTheme(final String themeName) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				File file = EditorThemePropertiesManager.getFilepath(themeName);
@@ -813,7 +805,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 				setSelected(getFontNameComboBox(), themeProps.getFontName());
 				setSelected(getFontSizeComboBox(), "" + themeProps.getFontSize());
 
-				// getBackgroundColorAndStyle().setSelectedColor(themeProps.getBackgroundColor());
+				getBackgroundColorAndStyle().setSelectedColor(themeProps.getBackgroundColor());
 
 				getNormalTextColorAndStyle().setSelectedColor(themeProps.getNormalTextColor());
 				getNormalTextColorAndStyle().setSelectedStyle(themeProps.getNormalTextStyle());
@@ -832,10 +824,17 @@ public class EditorFontAndColorsDialog extends JDialog {
 
 				getCommentTextColorAndStyle().setSelectedColor(themeProps.getCommentTextColor());
 				getCommentTextColorAndStyle().setSelectedStyle(themeProps.getCommentTextStyle());
-				
-				themeProps.notifyChange();
 			}
 		});
+	}
+
+	private void performThemeComboBoxAction() {
+		EditorThemeProperties currentThemeProps = EditorThemePropertiesManager.getEditorThemeProperties();
+		String currentThemeName = currentThemeProps.getThemeName();
+		final String themeName = (String) getThemeComboBox().getSelectedItem();
+		if (!currentThemeName.equals(themeName)) {
+			performUpdateComponentsTheme(themeName);
+		}
 	}
 	
 	private void performSaveButtonAction() {
@@ -958,9 +957,9 @@ public class EditorFontAndColorsDialog extends JDialog {
 //			listeners.remove(listener);
 //		}
 
-		public Color getSelectedColor() {
-			return (coloredButton == null) ? null : coloredButton.getBackground();
-		}
+//		public Color getSelectedColor() {
+//			return (coloredButton == null) ? null : coloredButton.getBackground();
+//		}
 
 		public void setSelectedColor(Color newColor) {
 			if (coloredButton != null) {
@@ -969,9 +968,9 @@ public class EditorFontAndColorsDialog extends JDialog {
 			notifyColorChanged(newColor);
 		}
 		
-		public FontStyle getSelectedStyle() {
-			return (fontStyleComboBox == null) ? null : EditorFontAndColorsDialog.getSelectedStyle(fontStyleComboBox);
-		}
+//		public FontStyle getSelectedStyle() {
+//			return (fontStyleComboBox == null) ? null : EditorFontAndColorsDialog.getSelectedStyle(fontStyleComboBox);
+//		}
 
 		public void setSelectedStyle(FontStyle newStyle) {
 			if (fontStyleComboBox != null) {
@@ -980,15 +979,25 @@ public class EditorFontAndColorsDialog extends JDialog {
 			notifyStyleChanged(newStyle);
 		}
 
+		Color oldColor;
+
 		private void notifyColorChanged(Color newColor) {
-			for (IColorAndStyleListener listener : listeners) {
-				listener.colorChanged(newColor);
+			if (newColor != null && !newColor.equals(oldColor)) {
+				for (IColorAndStyleListener listener : listeners) {
+					listener.colorChanged(newColor);
+				}
+				oldColor = newColor;
 			}
 		}
 
+		FontStyle oldStyle;
+
 		private void notifyStyleChanged(FontStyle newStyle) {
-			for (IColorAndStyleListener listener : listeners) {
-				listener.styleChanged(newStyle);
+			if (newStyle != null && !newStyle.equals(oldStyle)) {
+				for (IColorAndStyleListener listener : listeners) {
+					listener.styleChanged(newStyle);
+				}
+				oldStyle = newStyle;
 			}
 		}
 	}

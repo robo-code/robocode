@@ -109,8 +109,8 @@ public class EditWindow extends JInternalFrame {
 
 			EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
 				@Override
-				public void onChange(IEditorThemeProperties editorProperties) {
-					editorPanel.setFont(editorProperties.getFont());
+				public void onChange(IEditorThemeProperties properties) {
+					editorPanel.setFont(properties.getFont());
 				}
 			});
 

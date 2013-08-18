@@ -86,7 +86,7 @@ public class EditorThemePropertiesManager {
 			editorThemeProperties = new EditorThemeProperties();
 		}
 
-		if (filepath != null && !filepath.equals(selectedThemeFile)) {
+		if (filepath != null) {
 			FileInputStream in = null;
 			File file = null;
 			try {
