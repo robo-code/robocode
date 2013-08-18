@@ -24,6 +24,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.Utilities;
 
+import net.sf.robocode.ui.editor.theme.EditorThemeProperties;
+import net.sf.robocode.ui.editor.theme.EditorThemePropertiesManager;
+import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
+
 
 /**
  * Editor panel containing editor pane in a scroll pane, a line number area, and a statusTextField text field.

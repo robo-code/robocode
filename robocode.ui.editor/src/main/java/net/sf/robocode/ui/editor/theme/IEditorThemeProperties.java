@@ -5,11 +5,13 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  *******************************************************************************/
-package net.sf.robocode.ui.editor;
+package net.sf.robocode.ui.editor.theme;
 
 
 import java.awt.Color;
 import java.awt.Font;
+
+import net.sf.robocode.ui.editor.FontStyle;
 
 
 /**

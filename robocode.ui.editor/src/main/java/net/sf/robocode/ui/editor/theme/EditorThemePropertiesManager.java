@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  *******************************************************************************/
-package net.sf.robocode.ui.editor;
+package net.sf.robocode.ui.editor.theme;
 
 
 import static net.sf.robocode.io.Logger.logError;
@@ -20,6 +20,7 @@ import java.util.List;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.ui.editor.IEditorPropertyChangeListener;
 
 
 /**

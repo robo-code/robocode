@@ -5,12 +5,19 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  *******************************************************************************/
-package net.sf.robocode.ui.editor;
+package net.sf.robocode.ui.editor.theme;
 
-import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
+import java.awt.Color;
 
+import net.sf.robocode.ui.editor.FontStyle;
 
-public interface IEditorPropertyChangeListener {
-
-	public void onChange(IEditorThemeProperties properties);
+/**
+ * Listener interface for the {@link ColorAndStyle} class.
+ *
+ * @author Flemming N. Larsen (original)
+ * @since 1.8.3.0
+ */
+public interface IColorAndStyleListener {
+	void colorChanged(Color newColor);
+	void styleChanged(FontStyle newStyle);
 }

@@ -24,6 +24,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 
+import net.sf.robocode.ui.editor.theme.EditorThemePropertiesManager;
+import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
+
 
 // FIXME: Column in status bar does not take tab size into account
 
@@ -216,7 +219,6 @@ public class JavaDocument extends StyledDocument {
 			themeProps = EditorThemePropertiesManager.getEditorThemeProperties();			
 		}
 		// Setup the styled attribute sets
-		System.out.println(themeProps.getBackgroundColor());
 		
 		FontStyle normalTextStyle = themeProps.getNormalTextStyle();
 		StyleConstants.setForeground(normalAttrSet, themeProps.getNormalTextColor());

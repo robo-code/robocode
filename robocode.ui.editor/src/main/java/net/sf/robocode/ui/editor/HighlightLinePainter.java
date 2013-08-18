@@ -9,6 +9,9 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
+import net.sf.robocode.ui.editor.theme.EditorThemePropertiesManager;
+import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
+
 
 public class HighlightLinePainter implements Highlighter.HighlightPainter {
 

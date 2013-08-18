@@ -18,6 +18,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
+import net.sf.robocode.ui.editor.theme.EditorThemePropertiesManager;
+import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
+
 
 /**
  * A text area containing line numbers for the editor pane and editor panel.
