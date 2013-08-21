@@ -61,8 +61,10 @@ public class ColorAndStyle {
 			fontStyleComboBox.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (fontStyle != FontStyle.fromName((String) fontStyleComboBox.getSelectedItem())) {
-						notifyStyleChanged(ComboBoxUtil.getSelectedStyle(fontStyleComboBox));
+					FontStyle newStyle = ComboBoxUtil.getSelectedStyle(fontStyleComboBox);
+					if (oldStyle != newStyle) {
+						notifyStyleChanged(newStyle);
+						oldStyle = newStyle;
 					}
 				}
 			});
