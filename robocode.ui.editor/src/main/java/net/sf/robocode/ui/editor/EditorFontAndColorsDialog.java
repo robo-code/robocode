@@ -80,6 +80,10 @@ public class EditorFontAndColorsDialog extends JDialog {
 	
 	private final EventHandler eventHandler = new EventHandler();
 
+	private FontStyle oldFontStyle;
+	private int oldFontSize;
+
+
 	public EditorFontAndColorsDialog(JFrame owner) {
 		super(owner, true);
 		initialize();
@@ -246,17 +250,20 @@ public class EditorFontAndColorsDialog extends JDialog {
 			
 			fontNameComboBox = new JComboBox(fontNameList.toArray());
 			fontNameComboBox.setRenderer(new FontCellRenderer());
-			
+
 			fontNameComboBox.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// Enable the save button, if and only if the selected font name in the font combo-box has change,
 					// but no new theme was selected in the theme combo-box.
 					EditorThemeProperties currentThemeProps = EditorThemePropertiesManager.getEditorThemeProperties();
-					String currentFontName = currentThemeProps.getFontName();
-					if (!((String) fontNameComboBox.getSelectedItem()).equals(currentFontName)) {
-						String currentThemeName = currentThemeProps.getThemeName();
-						if (((String) getThemeComboBox().getSelectedItem()).equals(currentThemeName)) {
+
+					String oldFontName = currentThemeProps.getFontName();
+					String newFontName = ComboBoxUtil.getSelectedName(fontNameComboBox);
+					if (!newFontName.equals(oldFontName)) {
+						String oldThemeName = currentThemeProps.getThemeName();
+						String newThemeName = ComboBoxUtil.getSelectedName(getThemeComboBox());
+						if (newThemeName.equals(oldThemeName)) {
 							enableSaveAction();
 						}
 					}
@@ -270,32 +277,40 @@ public class EditorFontAndColorsDialog extends JDialog {
 		if (fontStyleComboBox == null) {
 			fontStyleComboBox = ComboBoxUtil.createFontStyleComboBox(FontStyle.PLAIN);
 
-			fontStyleComboBox.addActionListener(
-					new ActionListener() {
+			fontStyleComboBox.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					EditorThemeProperties currentThemeProps = EditorThemePropertiesManager.getEditorThemeProperties();
-					FontStyle currentFontStyle = currentThemeProps.getNormalTextStyle();
-					if (FontStyle.fromName((String) getFontStyleComboBox().getSelectedItem()) != currentFontStyle) {
+					FontStyle newFontStyle = ComboBoxUtil.getSelectedStyle(getFontStyleComboBox());
+					if (newFontStyle != oldFontStyle) {
 						ComboBoxUtil.setSelected(getNormalTextColorAndStyle().getFontStyleComboBox(),
 								(String) getFontStyleComboBox().getSelectedItem());
+						
 						enableSaveAction();
+
+						oldFontStyle = newFontStyle;
 					}
 				}				
 			});
 		}
 		return fontStyleComboBox;
 	}
-
+	
 	private JComboBox getFontSizeComboBox() {
 		if (fontSizeComboBox == null) {
 			fontSizeComboBox = new JComboBox(FONT_SIZES);
 			fontSizeComboBox.setSelectedIndex(5);
 
+			oldFontSize = Integer.parseInt((String)getFontSizeComboBox().getSelectedItem());
+
 			fontSizeComboBox.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					enableSaveAction();
+					int newFontSize = Integer.parseInt((String)getFontSizeComboBox().getSelectedItem());
+					if (newFontSize != oldFontSize) {
+						enableSaveAction();
+
+						oldFontSize = newFontSize;
+					}
 				}
 			});
 		}
