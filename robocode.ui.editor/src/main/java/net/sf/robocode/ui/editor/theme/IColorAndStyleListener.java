@@ -7,9 +7,11 @@
  *******************************************************************************/
 package net.sf.robocode.ui.editor.theme;
 
+
 import java.awt.Color;
 
 import net.sf.robocode.ui.editor.FontStyle;
+
 
 /**
  * Listener interface for the {@link ColorAndStyle} class.

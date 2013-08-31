@@ -7,6 +7,7 @@
  *******************************************************************************/
 package net.sf.robocode.ui.editor.theme;
 
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -26,12 +27,12 @@ import javax.swing.event.ChangeListener;
 import net.sf.robocode.ui.editor.FontStyle;
 
 
- /**
-  * Class that is used for maintaining a text color and font style for an editor.
-  *
-  * @author Flemming N. Larsen (original)
-  * @since 1.8.3.0
-  */
+/**
+ * Class that is used for maintaining a text color and font style for an editor.
+ *
+ * @author Flemming N. Larsen (original)
+ * @since 1.8.3.0
+ */
 public class ColorAndStyle {
 	private final JLabel label;
 	private final JButton coloredButton;

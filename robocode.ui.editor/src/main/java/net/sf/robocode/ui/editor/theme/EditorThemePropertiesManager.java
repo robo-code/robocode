@@ -37,8 +37,6 @@ public class EditorThemePropertiesManager {
 	private static final List<IEditorPropertyChangeListener> listeners = new ArrayList<IEditorPropertyChangeListener>();
 
 	private static EditorThemeProperties editorThemeProperties;
-	private static File selectedThemeFile;
-
 
 	public static void addListener(IEditorPropertyChangeListener listener) {
 		if (!listeners.contains(listener)) {
@@ -56,45 +54,27 @@ public class EditorThemePropertiesManager {
 		}
 	}
 
-	public static void setSelectedThemeFile(File file) {
-		EditorThemePropertiesManager.selectedThemeFile = file;
-	}
-	
-	/**
-	 * Returns the editor theme properties preferred by the end user (configuration).
-	 *
-	 * @return editor theme properties.
-	 */
-	public static EditorThemeProperties getEditorThemeProperties() {
-		if (selectedThemeFile == null) {
-			// Get the selected theme name
-			String themeName = EditorPropertiesManager.getEditorProperties().getThemeName();
-			// Read the theme properties
-			selectedThemeFile = EditorThemePropertiesManager.getFilepath(themeName);			
-		}
-		return EditorThemePropertiesManager.getEditorThemeProperties(selectedThemeFile);
-	}
-
-	/**
-	 * Returns the current editor theme properties.
-	 *
-	 * @param filepath the filepath of an existing editor theme properties file used for initializing the
-	 *                 theme properties or null if the current values must be used as is.
-	 * @return editor theme properties.
-	 */
-	private static EditorThemeProperties getEditorThemeProperties(File filepath) {
+	public static EditorThemeProperties getCurrentEditorThemeProperties() {
 		if (editorThemeProperties == null) {
 			editorThemeProperties = new EditorThemeProperties();
-		}
 
+			String themeName = EditorPropertiesManager.getEditorProperties().getThemeName();
+			File filepath = EditorThemePropertiesManager.getFilepath(themeName);
+
+			loadEditorThemeProperties(filepath);
+		}
+		return editorThemeProperties;
+	}
+
+	public static void loadEditorThemeProperties(File filepath) {
 		if (filepath != null) {
 			FileInputStream in = null;
 			File file = null;
 			try {
 				in = new FileInputStream(filepath);
-				editorThemeProperties.load(in);
+				getCurrentEditorThemeProperties().load(in);
 			} catch (FileNotFoundException e) {
-				return null;
+				logError("Could not find file: " + file, e);
 			} catch (IOException e) {
 				logError("Error while reading file: " + file, e);
 			} finally {
@@ -105,14 +85,13 @@ public class EditorThemePropertiesManager {
 				}
 			}
 		}
-		return editorThemeProperties;
 	}
-	
+
 	public static void saveEditorThemeProperties(File filepath) {
 		FileOutputStream out = null;
 		try {
 			out = new FileOutputStream(filepath);
-			getEditorThemeProperties(null).store(out, "Robocode Editor Theme Properties");
+			getCurrentEditorThemeProperties().store(out, "Robocode Editor Theme Properties");
 		} catch (IOException e) {
 			Logger.logError(e);
 		} finally {

@@ -38,7 +38,7 @@ public class LineNumberArea extends JTextArea {
 		setEditable(false);
 		setLineWrap(false);
 
-		setColors(EditorThemePropertiesManager.getEditorThemeProperties());
+		setColors(EditorThemePropertiesManager.getCurrentEditorThemeProperties());
 
 		textComponent.getDocument().addDocumentListener(documentListener);
 

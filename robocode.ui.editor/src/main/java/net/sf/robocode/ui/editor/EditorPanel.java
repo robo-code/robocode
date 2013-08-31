@@ -61,7 +61,7 @@ public class EditorPanel extends JPanel {
 
 		scrollPane.setViewportView(editorPane);
 
-		EditorThemeProperties themeProps = EditorThemePropertiesManager.getEditorThemeProperties();
+		EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 		setColors(themeProps);
 
 		lineNumberArea = new LineNumberArea(editorPane);

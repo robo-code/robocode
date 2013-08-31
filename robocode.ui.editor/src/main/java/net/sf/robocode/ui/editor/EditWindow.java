@@ -106,7 +106,7 @@ public class EditWindow extends JInternalFrame {
 			editorPanel = new EditorPanel();
 			setContentPane(editorPanel);
 
-			EditorThemeProperties currentThemeProps = EditorThemePropertiesManager.getEditorThemeProperties();
+			EditorThemeProperties currentThemeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 			Font font = currentThemeProps.getFont();
 			editorPanel.setFont(font);
 

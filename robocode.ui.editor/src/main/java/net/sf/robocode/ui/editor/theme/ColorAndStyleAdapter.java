@@ -7,9 +7,11 @@
  *******************************************************************************/
 package net.sf.robocode.ui.editor.theme;
 
+
 import java.awt.Color;
 
 import net.sf.robocode.ui.editor.FontStyle;
+
 
 /**
  * Adapter class for the {@link IColorAndStyleListener} interface.
@@ -20,6 +22,7 @@ import net.sf.robocode.ui.editor.FontStyle;
 public abstract class ColorAndStyleAdapter implements IColorAndStyleListener {
 	@Override
 	public void colorChanged(Color newColor) {}
+
 	@Override
 	public void styleChanged(FontStyle newStyle) {}
 }

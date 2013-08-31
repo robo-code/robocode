@@ -216,7 +216,7 @@ public class JavaDocument extends StyledDocument {
 
 	private void setTextColorsAndStyles(IEditorThemeProperties themeProps) {
 		if (themeProps == null) {
-			themeProps = EditorThemePropertiesManager.getEditorThemeProperties();			
+			themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();			
 		}
 		// Setup the styled attribute sets
 		

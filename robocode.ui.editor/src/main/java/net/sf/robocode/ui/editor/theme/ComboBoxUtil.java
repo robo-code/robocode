@@ -7,6 +7,7 @@
  *******************************************************************************/
 package net.sf.robocode.ui.editor.theme;
 
+
 import java.awt.Component;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 
 import net.sf.robocode.ui.editor.FontStyle;
+
 
 /**
  * Class for utilizing JComboBoxes.

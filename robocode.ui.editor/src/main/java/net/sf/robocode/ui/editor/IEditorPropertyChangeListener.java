@@ -7,6 +7,7 @@
  *******************************************************************************/
 package net.sf.robocode.ui.editor;
 
+
 import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
 
 
