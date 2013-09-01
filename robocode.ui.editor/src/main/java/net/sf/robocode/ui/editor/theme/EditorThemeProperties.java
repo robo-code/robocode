@@ -145,6 +145,8 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 	
 	private final Properties props = new Properties();
 
+	private boolean isChanged;
+
 	public String getThemeName() {
 		String themeName = this.themeName;
 		if (themeName == null) {
@@ -387,6 +389,9 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		for (IPropertyStrategy<?> propertyStrategy : colorAndStyleProps) {
 			propertyStrategy.load();
 		}
+
+		// Reset 'changed' flag
+		isChanged = false;
 	}
 
 	public void store(OutputStream os, String header) throws IOException {
@@ -402,7 +407,14 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 	}
 	
 	public void notifyChange() {
+		// Set 'changed' flag
+		isChanged = true;
+
 		EditorThemePropertiesManager.notifyChange(this);
+	}
+
+	public boolean isChanged() {
+		return isChanged;
 	}
 
 	interface IPropertyStrategy<V> {
@@ -432,6 +444,9 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 
 		@Override
 		public void set(Color color) {
+			if ((color == null && this.color == null) || (color != null && color.equals(this.color))) {
+				return;
+			}
 			this.color = color;
 			notifyChange();
 		}
@@ -480,6 +495,9 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		
 		@Override
 		public void set(FontStyle style) {
+			if ((style == null && this.style == null) || (style != null && style.equals(this.style))) {
+				return;
+			}
 			this.style = style;
 			notifyChange();
 		}

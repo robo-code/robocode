@@ -80,9 +80,6 @@ public class EditorFontAndColorsDialog extends JDialog {
 	
 	private final EventHandler eventHandler = new EventHandler();
 
-	private FontStyle oldFontStyle;
-	private int oldFontSize;
-
 	public EditorFontAndColorsDialog(JFrame owner) {
 		super(owner, true);
 		initialize();
@@ -250,21 +247,19 @@ public class EditorFontAndColorsDialog extends JDialog {
 			fontNameComboBox = new JComboBox(fontNameList.toArray());
 			fontNameComboBox.setRenderer(new FontCellRenderer());
 
-			fontNameComboBox.addActionListener(
-					new ActionListener() {
+			fontNameComboBox.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// Enable the save button, if and only if the selected font name in the font combo-box has change,
-					// but no new theme was selected in the theme combo-box.
-					EditorThemeProperties currentThemeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
+					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 
-					String oldFontName = currentThemeProps.getFontName();
+					String oldFontName = themeProps.getFontName();
 					String newFontName = ComboBoxUtil.getSelectedName(fontNameComboBox);
 					if (!newFontName.equals(oldFontName)) {
-						String oldThemeName = currentThemeProps.getThemeName();
+						String oldThemeName = themeProps.getThemeName();
 						String newThemeName = ComboBoxUtil.getSelectedName(getThemeComboBox());
 						if (newThemeName.equals(oldThemeName)) {
-							enableSaveAction();
+							themeProps.setFontName(newFontName);
+							updateSaveButton();
 						}
 					}
 				}
@@ -281,14 +276,17 @@ public class EditorFontAndColorsDialog extends JDialog {
 					new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
+
+					FontStyle oldFontStyle = themeProps.getNormalTextStyle();
 					FontStyle newFontStyle = ComboBoxUtil.getSelectedStyle(getFontStyleComboBox());
 					if (newFontStyle != oldFontStyle) {
+						themeProps.setNormalTextStyle(newFontStyle);
+
 						ComboBoxUtil.setSelected(getNormalTextColorAndStyle().getFontStyleComboBox(),
 								(String) getFontStyleComboBox().getSelectedItem());
-						
-						enableSaveAction();
 
-						oldFontStyle = newFontStyle;
+						updateSaveButton();
 					}
 				}				
 			});
@@ -301,16 +299,16 @@ public class EditorFontAndColorsDialog extends JDialog {
 			fontSizeComboBox = new JComboBox(FONT_SIZES);
 			fontSizeComboBox.setSelectedIndex(5);
 
-			oldFontSize = Integer.parseInt((String) getFontSizeComboBox().getSelectedItem());
-
 			fontSizeComboBox.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
+
+					int oldFontSize = themeProps.getFontSize();
 					int newFontSize = Integer.parseInt((String) getFontSizeComboBox().getSelectedItem());
 					if (newFontSize != oldFontSize) {
-						enableSaveAction();
-
-						oldFontSize = newFontSize;
+						themeProps.setFontSize(newFontSize);
+						updateSaveButton();
 					}
 				}
 			});
@@ -428,7 +426,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setBackgroundColor(newColor);
 					
-					enableSaveAction();
+					updateSaveButton();
 				}
 			});
 		}
@@ -446,7 +444,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setLineNumberBackgroundColor(newColor);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 			});
 		}
@@ -464,7 +462,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setLineNumberTextColor(newColor);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 			});
 		}
@@ -482,7 +480,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setHighlightedLineColor(newColor);
 					
-					enableSaveAction();
+					updateSaveButton();
 				}
 			});
 		}
@@ -499,7 +497,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setSelectionColor(newColor);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 			});
 		}
@@ -532,7 +530,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setNormalTextColor(newColor);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 
 				@Override
@@ -540,7 +538,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setNormalTextStyle(newStyle);
 
-					enableSaveAction();
+					updateSaveButton();
 
 					// Make sure to update the font style combo box
 					ComboBoxUtil.setSelected(getFontStyleComboBox(), newStyle);
@@ -561,7 +559,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setQuotedTextColor(newColor);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 
 				@Override
@@ -569,7 +567,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setQuotedTextStyle(newStyle);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 			});
 		}
@@ -587,7 +585,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setKeywordTextColor(newColor);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 
 				@Override
@@ -595,7 +593,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setKeywordTextStyle(newStyle);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 			});
 		}
@@ -613,7 +611,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setLiteralTextColor(newColor);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 
 				@Override
@@ -621,7 +619,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setLiteralTextStyle(newStyle);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 			});
 		}
@@ -639,7 +637,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setAnnotationTextColor(newColor);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 
 				@Override
@@ -647,7 +645,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setAnnotationTextStyle(newStyle);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 			});
 		}
@@ -665,7 +663,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setCommentTextColor(newColor);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 
 				@Override
@@ -673,7 +671,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setCommentTextStyle(newStyle);
 
-					enableSaveAction();
+					updateSaveButton();
 				}
 			});
 		}
@@ -835,12 +833,16 @@ public class EditorFontAndColorsDialog extends JDialog {
 
 				getAnnotationTextColorAndStyle().setSelectedColor(themeProps.getAnnotationTextColor());
 				getAnnotationTextColorAndStyle().setSelectedStyle(themeProps.getAnnotationTextStyle());
+
+				updateSaveButton();
 			}
 		});
 	}
 
-	private void enableSaveAction() {
-		getSaveButton().setEnabled(true);
+	private void updateSaveButton() {
+		EditorThemeProperties props = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
+		boolean enabled = props.isChanged();
+		getSaveButton().setEnabled(enabled);
 	}
 	
 	private void performThemeComboBoxAction() {
