@@ -438,7 +438,8 @@ public class EditorFontAndColorsDialog extends JDialog {
 	private ColorAndStyle getLineNumberBackgroundColorAndStyle() {
 		if (lineNumberBackgroundColorAndStyle == null) {
 			EditorThemeProperties props = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
-			lineNumberBackgroundColorAndStyle = new ColorAndStyle("Line Number Background Color", props.getLineNumberBackgroundColor(), null);
+			lineNumberBackgroundColorAndStyle = new ColorAndStyle("Line Number Background Color",
+					props.getLineNumberBackgroundColor(), null);
 			lineNumberBackgroundColorAndStyle.addListener(new ColorAndStyleAdapter() {
 				@Override
 				public void colorChanged(Color newColor) {
@@ -455,7 +456,8 @@ public class EditorFontAndColorsDialog extends JDialog {
 	private ColorAndStyle getLineNumberTextColorAndStyle() {
 		if (lineNumberTextColorAndStyle == null) {
 			EditorThemeProperties props = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
-			lineNumberTextColorAndStyle = new ColorAndStyle("Line Number Text Color", props.getLineNumberTextColor(), null);
+			lineNumberTextColorAndStyle = new ColorAndStyle("Line Number Text Color", props.getLineNumberTextColor(),
+					null);
 			lineNumberTextColorAndStyle.addListener(new ColorAndStyleAdapter() {
 				@Override
 				public void colorChanged(Color newColor) {
@@ -472,7 +474,8 @@ public class EditorFontAndColorsDialog extends JDialog {
 	private ColorAndStyle getHighlightedLineColorAndStyle() {
 		if (highlightedLineColorAndStyle == null) {
 			EditorThemeProperties props = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
-			highlightedLineColorAndStyle = new ColorAndStyle("Highlighted Line Color", props.getHighlightedLineColor(), null);
+			highlightedLineColorAndStyle = new ColorAndStyle("Highlighted Line Color", props.getHighlightedLineColor(),
+					null);
 			highlightedLineColorAndStyle.addListener(new ColorAndStyleAdapter() {
 				@Override
 				public void colorChanged(Color newColor) {
@@ -521,7 +524,8 @@ public class EditorFontAndColorsDialog extends JDialog {
 	private ColorAndStyle getNormalTextColorAndStyle() {
 		if (normalTextColorAndStyle == null) {
 			EditorThemeProperties props = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
-			normalTextColorAndStyle = new ColorAndStyle("Normal Text Color", props.getNormalTextColor(), props.getNormalTextStyle());
+			normalTextColorAndStyle = new ColorAndStyle("Normal Text Color", props.getNormalTextColor(),
+					props.getNormalTextStyle());
 			normalTextColorAndStyle.addListener(new ColorAndStyleAdapter() {
 				@Override
 				public void colorChanged(Color newColor) {
@@ -549,7 +553,8 @@ public class EditorFontAndColorsDialog extends JDialog {
 	private ColorAndStyle getQuotedTextColorAndStyle() {
 		if (quotedTextColorAndStyle == null) {
 			EditorThemeProperties props = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
-			quotedTextColorAndStyle = new ColorAndStyle("Quoted Text Color", props.getQuotedTextColor(), props.getQuotedTextStyle());
+			quotedTextColorAndStyle = new ColorAndStyle("Quoted Text Color", props.getQuotedTextColor(),
+					props.getQuotedTextStyle());
 			quotedTextColorAndStyle.addListener(new ColorAndStyleAdapter() {
 				@Override
 				public void colorChanged(Color newColor) {
@@ -574,7 +579,8 @@ public class EditorFontAndColorsDialog extends JDialog {
 	private ColorAndStyle getKeywordTextColorAndStyle() {
 		if (keywordTextColorAndStyle == null) {
 			EditorThemeProperties props = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
-			keywordTextColorAndStyle = new ColorAndStyle("Keyword Color", props.getKeywordTextColor(), props.getKeywordTextStyle());
+			keywordTextColorAndStyle = new ColorAndStyle("Keyword Color", props.getKeywordTextColor(),
+					props.getKeywordTextStyle());
 			keywordTextColorAndStyle.addListener(new ColorAndStyleAdapter() {
 				@Override
 				public void colorChanged(Color newColor) {
@@ -599,7 +605,8 @@ public class EditorFontAndColorsDialog extends JDialog {
 	private ColorAndStyle getLiteralTextColorAndStyle() {
 		if (literalTextColorAndStyle == null) {
 			EditorThemeProperties props = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
-			literalTextColorAndStyle = new ColorAndStyle("Literal Color", props.getLiteralTextColor(), props.getLiteralTextStyle());
+			literalTextColorAndStyle = new ColorAndStyle("Literal Color", props.getLiteralTextColor(),
+					props.getLiteralTextStyle());
 			literalTextColorAndStyle.addListener(new ColorAndStyleAdapter() {
 				@Override
 				public void colorChanged(Color newColor) {
@@ -624,7 +631,8 @@ public class EditorFontAndColorsDialog extends JDialog {
 	private ColorAndStyle getAnnotationTextColorAndStyle() {
 		if (annotationTextColorAndStyle == null) {
 			EditorThemeProperties props = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
-			annotationTextColorAndStyle = new ColorAndStyle("Annotation Color", props.getAnnotationTextColor(), props.getAnnotationTextStyle());
+			annotationTextColorAndStyle = new ColorAndStyle("Annotation Color", props.getAnnotationTextColor(),
+					props.getAnnotationTextStyle());
 			annotationTextColorAndStyle.addListener(new ColorAndStyleAdapter() {
 				@Override
 				public void colorChanged(Color newColor) {
@@ -649,7 +657,8 @@ public class EditorFontAndColorsDialog extends JDialog {
 	private ColorAndStyle getCommentTextColorAndStyle() {
 		if (commentTextColorAndStyle == null) {
 			EditorThemeProperties props = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
-			commentTextColorAndStyle = new ColorAndStyle("Comment Color", props.getCommentTextColor(), props.getCommentTextStyle());
+			commentTextColorAndStyle = new ColorAndStyle("Comment Color", props.getCommentTextColor(),
+					props.getCommentTextStyle());
 			commentTextColorAndStyle.addListener(new ColorAndStyleAdapter() {
 				@Override
 				public void colorChanged(Color newColor) {

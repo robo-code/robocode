@@ -115,7 +115,7 @@ public class ColorAndStyle {
 	}
 
 	private void notifyColorChanged(Color newColor) {
-		if (newColor != null && !newColor.equals(oldColor)) {
+		if (newColor == null || !newColor.equals(oldColor)) {
 			for (IColorAndStyleListener listener : listeners) {
 				listener.colorChanged(newColor);
 			}
@@ -124,7 +124,7 @@ public class ColorAndStyle {
 	}
 
 	private void notifyStyleChanged(FontStyle newStyle) {
-		if (newStyle != null && !newStyle.equals(oldStyle)) {
+		if (newStyle == null || !newStyle.equals(oldStyle)) {
 			for (IColorAndStyleListener listener : listeners) {
 				listener.styleChanged(newStyle);
 			}

@@ -368,12 +368,16 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 	}
 
 	public void load(InputStream is) throws IOException {
+		// Reset (clean) the property values before loading them
+		for (IPropertyStrategy<?> propertyStrategy : colorAndStyleProps) {
+			propertyStrategy.set(null); // clean value
+			propertyStrategy.save(); // store cleaned value in property
+		}
+
 		props.load(is);
 
 		themeName = props.getProperty(THEME_NAME, DEFAULT_THEME_NAME);
-
 		fontName = props.getProperty(FONT_NAME, DEFAULT_FONT_NAME);
-
 		try {
 			fontSize = Integer.parseInt(props.getProperty(FONT_SIZE, "" + DEFAULT_FONT_SIZE));
 		} catch (NumberFormatException e) {
@@ -423,7 +427,7 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 
 		@Override
 		public Color get() {
-			return color;
+			return color == null ? defaultColor : color;
 		}
 
 		@Override
@@ -434,13 +438,12 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 
 		@Override
 		public void load() {
-			Color color = fromPropertyToColor(propertyName);
-			this.color = (color == null) ? defaultColor : color;
+			color = fromPropertyToColor(propertyName);
 		}
 
 		@Override
 		public void save() {
-			props.setProperty(propertyName, toHexString(color));
+			props.setProperty(propertyName, toHexString(get()));
 		}
 
 		private Color fromPropertyToColor(String propertyName) {
@@ -472,7 +475,7 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 
 		@Override
 		public FontStyle get() {
-			return style;
+			return style == null ? defaultStyle : style;
 		}
 		
 		@Override
@@ -483,13 +486,12 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 
 		@Override
 		public void load() {
-			FontStyle style = fromPropertyToFontStyle(propertyName);
-			this.style = (style == null) ? defaultStyle : style;
+			style = fromPropertyToFontStyle(propertyName);
 		}
 
 		@Override
 		public void save() {
-			props.setProperty(propertyName, "" + style.getName());
+			props.setProperty(propertyName, "" + get().getName());
 		}
 
 		private FontStyle fromPropertyToFontStyle(String propertyName) {

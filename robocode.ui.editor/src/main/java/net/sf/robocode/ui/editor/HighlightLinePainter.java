@@ -30,7 +30,6 @@ public class HighlightLinePainter implements Highlighter.HighlightPainter {
 				Color highlightedLineColor = properties.getHighlightedLineColor();
 				if (!color.equals(highlightedLineColor)) {
 					setColor(highlightedLineColor);
-					System.out.println("change: " + highlightedLineColor);
 				}
 			}
 		});
