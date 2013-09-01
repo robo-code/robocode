@@ -15,8 +15,6 @@ import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
 
 public class HighlightLinePainter implements Highlighter.HighlightPainter {
 
-	private static final Color DEFAULT_COLOR = new Color(0xff, 0xff, 0x00, 0x7f); // transparent yellow
-	
 	private JTextComponent component;
 	private Color color;
 	private Rectangle lastView;
@@ -24,7 +22,7 @@ public class HighlightLinePainter implements Highlighter.HighlightPainter {
 	public HighlightLinePainter(JTextComponent component) {
 		this.component = component;
 
-		color = DEFAULT_COLOR;
+		color = EditorThemePropertiesManager.getCurrentEditorThemeProperties().getHighlightedLineColor();
 
 		EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
 			@Override
@@ -32,6 +30,7 @@ public class HighlightLinePainter implements Highlighter.HighlightPainter {
 				Color highlightedLineColor = properties.getHighlightedLineColor();
 				if (!color.equals(highlightedLineColor)) {
 					setColor(highlightedLineColor);
+					System.out.println("change: " + highlightedLineColor);
 				}
 			}
 		});
@@ -54,15 +53,7 @@ public class HighlightLinePainter implements Highlighter.HighlightPainter {
 		} catch (BadLocationException ignore) {}
 	}
 
-	public HighlightLinePainter(JTextComponent component, Color color) {
-		this(component);
-		setColor(color);
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
+	@Override
 	public void paint(Graphics g, int p0, int p1, Shape bounds, JTextComponent c) {
 		try {
 			Rectangle r = c.modelToView(c.getCaretPosition());
@@ -74,6 +65,10 @@ public class HighlightLinePainter implements Highlighter.HighlightPainter {
 				lastView = r;
 			}
 		} catch (BadLocationException ignore) {}
+	}
+
+	private void setColor(Color color) {
+		this.color = color;
 	}
 
 	private void resetHighlight() {
