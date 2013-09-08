@@ -404,6 +404,9 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		}
 
 		props.store(os, header);
+
+		// Reset 'changed' flag
+		isChanged = false;
 	}
 	
 	public void notifyChange() {

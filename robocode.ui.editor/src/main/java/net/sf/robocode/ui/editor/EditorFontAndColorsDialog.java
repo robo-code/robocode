@@ -847,10 +847,42 @@ public class EditorFontAndColorsDialog extends JDialog {
 	
 	private void performThemeComboBoxAction() {
 		EditorThemeProperties currentThemeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
-		String currentThemeName = currentThemeProps.getThemeName();
-		final String themeName = (String) getThemeComboBox().getSelectedItem();
-		if (!currentThemeName.equals(themeName)) {
-			udateComponentsTheme(themeName);
+
+		String oldThemeName = currentThemeProps.getThemeName();
+		String newThemeName = (String) getThemeComboBox().getSelectedItem();
+		if (!oldThemeName.equals(newThemeName)) {
+			if (currentThemeProps.isChanged()) {
+				Object[] options = { "Yes, save changes", "No, forget changes", "Cancel"};
+
+				int option = JOptionPane.showOptionDialog(null,
+						"Changes have been made to the theme:\n" + oldThemeName
+						+ "\nDo you want save the changes to this theme?",
+						"Warning",
+						JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null,
+						options,
+						options[2]);
+
+				if (option == JOptionPane.YES_OPTION) {
+					File filepath = EditorThemePropertiesManager.getFilepath(oldThemeName);
+					if (filepath != null && !filepath.exists()) {
+						try {
+							filepath.createNewFile();
+						} catch (IOException e) {
+							Logger.logError(e);
+							return;
+						}
+					}
+					EditorThemePropertiesManager.saveEditorThemeProperties(filepath);
+
+				} else if (option == JOptionPane.CANCEL_OPTION) {
+					ComboBoxUtil.setSelected(getThemeComboBox(), oldThemeName);
+					return;
+				}
+			}
+			// Current theme has not changed => switch to new theme
+			udateComponentsTheme(newThemeName);
 		}
 	}
 	
