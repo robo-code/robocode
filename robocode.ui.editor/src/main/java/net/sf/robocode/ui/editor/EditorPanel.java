@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -141,15 +142,19 @@ public class EditorPanel extends JPanel {
 		return -1;
 	}
 	
-	private void setColors(IEditorThemeProperties properties) {
-		Color backgroundColor = properties.getBackgroundColor();
-		scrollPane.getViewport().setBackground(backgroundColor);
-		editorPane.setBackground(backgroundColor);
+	private void setColors(final IEditorThemeProperties properties) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				Color backgroundColor = properties.getBackgroundColor();
+				scrollPane.getViewport().setBackground(backgroundColor);
+				editorPane.setBackground(backgroundColor);
 
-		Color selectionColor = properties.getSelectionColor();
-		editorPane.setSelectionColor(selectionColor);
+				Color selectionColor = properties.getSelectionColor();
+				editorPane.setSelectionColor(selectionColor);
 
-		Color selectedTextColor = properties.getSelectedTextColor();
-		editorPane.setSelectedTextColor(selectedTextColor);
+				Color selectedTextColor = properties.getSelectedTextColor();
+				editorPane.setSelectedTextColor(selectedTextColor);
+			}
+		});
 	}
 }
