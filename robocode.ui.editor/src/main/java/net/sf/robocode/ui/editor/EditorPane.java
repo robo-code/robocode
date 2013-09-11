@@ -24,6 +24,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
@@ -63,6 +64,9 @@ public class EditorPane extends JTextPane {
 		super();
 		this.viewport = viewport;
 		document = new JavaDocument(this);
+
+		DefaultCaret caret = (DefaultCaret)getCaret();
+		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 
 		new LineNumberArea(this);
 		new HighlightLinePainter(this);
@@ -113,6 +117,8 @@ public class EditorPane extends JTextPane {
 		super.setText(text);
 		javaDocument.setReplacingText(false);
 
+		resetCaretPosition();
+
 		undoManager.discardAllEdits();
 	}
 
@@ -126,6 +132,8 @@ public class EditorPane extends JTextPane {
 		javaDocument.setReplacingText(true);
 		super.read(in, desc);
 		javaDocument.setReplacingText(false);
+
+		resetCaretPosition();
 
 		undoManager.discardAllEdits();
 	}
@@ -181,6 +189,15 @@ public class EditorPane extends JTextPane {
 		getDocument().removeUndoableEditListener(undoManager); // Avoid this change to be undone
 		getStyledDocument().setParagraphAttributes(0, getDocument().getLength(), attributes, false);
 		getDocument().addUndoableEditListener(undoManager);
+	}
+
+	private void resetCaretPosition() {
+		// Make sure to put this request on the EDT or the caret position might not be reset after all.
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				setCaretPosition(0);
+			}
+		});	
 	}
 
 	private void onTabCharPressed(boolean isUnindent) {

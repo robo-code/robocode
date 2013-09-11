@@ -1,8 +1,9 @@
-## Version 1.8.3.0 Alpha 1 (10-Aug-2013)
+## Version 1.8.3.0 Alpha 1 (11-Sep-2013)
 
 ### Bug fixes
 * Fixed a NullPointerException occurring with a new source file that was not saved before being compiled.
-* The getWidth() and getHeight() methods on the Robot class have always returned 40, even though a robot is 36x36 pixels in size. Hence, getWidth() and getHeight() have been changed to return the correct width and height, which is 36
+* The getWidth() and getHeight() methods on the Robot class have always returned 40, even though a robot is 36x36 pixels in size. Hence, getWidth() and getHeight() have been changed to return the correct width and height, which is 36.
+* Fixed issue, where the caret position was set to the end of a source file when reading it into the editor.
 
 ### Changes
 * [Req-121][]: Issues with editor font.
