@@ -7,6 +7,7 @@
  *******************************************************************************/
 package net.sf.robocode.ui.editor.theme;
 
+
 import java.awt.Color;
 import java.awt.Font;
 

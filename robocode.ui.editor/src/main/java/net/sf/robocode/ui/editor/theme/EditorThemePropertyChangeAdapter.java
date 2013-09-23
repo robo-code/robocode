@@ -7,6 +7,7 @@
  *******************************************************************************/
 package net.sf.robocode.ui.editor.theme;
 
+
 import java.awt.Color;
 import java.awt.Font;
 
@@ -18,34 +19,44 @@ public class EditorThemePropertyChangeAdapter implements IEditorThemePropertyCha
 	public void onThemeNameChanged(String newThemeName) {}
 
 	public void onFontChanged(Font newFont) {}
+
 	public void onFontNameChanged(String newFontName) {}
+
 	public void onFontSizeChanged(int newFontSize) {}
 
 	public void onBackgroundColorChanged(Color newColor) {}
 
 	public void onLineNumberBackgroundColorChanged(Color newColor) {}
+
 	public void onLineNumberTextColorChanged(Color newColor) {}
 
 	public void onHighlightedLineColorChanged(Color newColor) {}
 
 	public void onSelectionColorChanged(Color newColor) {}
+
 	public void onSelectedTextColorChanged(Color newColor) {}
 
 	public void onNormalTextColorChanged(Color newColor) {}
+
 	public void onNormalTextStyleChanged(FontStyle newStyle) {}
 
 	public void onQuotedTextColorChanged(Color newColor) {}
+
 	public void onQuotedTextStyleChanged(FontStyle newStyle) {}
 
 	public void onKeywordTextColorChanged(Color newColor) {}
+
 	public void onKeywordTextStyleChanged(FontStyle newStyle) {}
 
 	public void onLiteralTextColorChanged(Color newColor) {}
+
 	public void onLiteralTextStyleChanged(FontStyle newStyle) {}
 
 	public void onAnnotationTextColorChanged(Color newColor) {}
+
 	public void onAnnotationTextStyleChanged(FontStyle newStyle) {}
 
 	public void onCommentTextColorChanged(Color newColor) {}
+
 	public void onCommentTextStyleChanged(FontStyle newStyle) {}
 }

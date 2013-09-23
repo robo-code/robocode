@@ -50,6 +50,7 @@ public class LineNumberArea extends JTextArea {
 			public void onLineNumberBackgroundColorChanged(Color newColor) {
 				setBackgroundColor(newColor);
 			}
+
 			@Override
 			public void onLineNumberTextColorChanged(Color newColor) {
 				setTextColor(newColor);

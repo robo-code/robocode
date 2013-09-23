@@ -80,10 +80,12 @@ public class EditorPanel extends JPanel {
 			public void onBackgroundColorChanged(Color newColor) {
 				setBackgroundColor(newColor);
 			}
+
 			@Override
 			public void onSelectionColorChanged(Color newColor) {
 				setSelectionColor(newColor);
 			}
+
 			@Override
 			public void onSelectedTextColorChanged(Color newColor) {
 				setSelectedTextColor(newColor);

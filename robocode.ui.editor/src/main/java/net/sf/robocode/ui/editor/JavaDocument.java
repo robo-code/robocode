@@ -134,56 +134,67 @@ public class JavaDocument extends StyledDocument {
 				setNormalTextColor(newColor);
 				updateSyntaxHighlighting(true);
 			}
+
 			@Override
 			public void onNormalTextStyleChanged(FontStyle newStyle) {
 				setNormalTextStyle(newStyle);
 				updateSyntaxHighlighting(true);
 			}
+
 			@Override
 			public void onQuotedTextColorChanged(Color newColor) {
 				setQuotedTextColor(newColor);
 				updateSyntaxHighlighting(true);
 			}
+
 			@Override
 			public void onQuotedTextStyleChanged(FontStyle newStyle) {
 				setQuotedTextStyle(newStyle);
 				updateSyntaxHighlighting(true);
 			}
+
 			@Override
 			public void onKeywordTextColorChanged(Color newColor) {
 				setKeywordTextColor(newColor);
 				updateSyntaxHighlighting(true);
 			}
+
 			@Override
 			public void onKeywordTextStyleChanged(FontStyle newStyle) {
 				setKeywordTextStyle(newStyle);
 				updateSyntaxHighlighting(true);
 			}
+
 			@Override
 			public void onLiteralTextColorChanged(Color newColor) {
 				setLiteralTextColor(newColor);
 				updateSyntaxHighlighting(true);
 			}
+
 			@Override
 			public void onLiteralTextStyleChanged(FontStyle newStyle) {
 				setLiteralTextStyle(newStyle);
 				updateSyntaxHighlighting(true);
 			}
+
 			@Override
 			public void onAnnotationTextColorChanged(Color newColor) {
 				setAnnotationTextColor(newColor);
 				updateSyntaxHighlighting(true);
 			}
+
 			@Override
 			public void onAnnotationTextStyleChanged(FontStyle newStyle) {
 				setAnnotationTextStyle(newStyle);
 				updateSyntaxHighlighting(true);
 			}
+
 			@Override
 			public void onCommentTextColorChanged(Color newColor) {
 				setCommentTextColor(newColor);
 				updateSyntaxHighlighting(true);
 			}
+
 			@Override
 			public void onCommentTextStyleChanged(FontStyle newStyle) {
 				setCommentTextStyle(newStyle);

@@ -65,7 +65,7 @@ public class EditorPane extends JTextPane {
 		this.viewport = viewport;
 		document = new JavaDocument(this);
 
-		DefaultCaret caret = (DefaultCaret)getCaret();
+		DefaultCaret caret = (DefaultCaret) getCaret();
 		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 
 		new LineNumberArea(this);
