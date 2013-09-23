@@ -32,10 +32,10 @@ import net.sf.robocode.ui.editor.theme.EditorThemePropertyChangeAdapter;
 public class LineNumberArea extends JTextArea {
 
 	private final DocumentListener documentListener = new TextDocumentListener();
-	
+
 	public LineNumberArea(JTextComponent textComponent) {
 		super("1");
- 
+
 		setEditable(false);
 		setLineWrap(false);
 
@@ -100,14 +100,23 @@ public class LineNumberArea extends JTextArea {
 			});
 		}
 
-		private String generateLinesText(int numLines) {
+		/**
+		 * Returns a string containing text lines for all line numbers.
+		 * Each line number is right-aligned and ended a space + a new-line character.
+		 *
+		 * @param numLines is the number of lines to create the line number text for.
+		 * @return a string containing line numbers.
+		 */
+		private String generateLinesText(int numLines) {			
+			String format = "%" + ("" + (numLines + 1)).length() + "s ";
+
 			StringBuilder lines = new StringBuilder();
 			int i = 1;
-
 			while (i <= numLines) {
-				lines.append(i++).append('\n');
+				String s = String.format(format, "" + i++);
+				lines.append(s).append('\n');
 			}
-			lines.append(i);
+			lines.append(String.format(format, "" + i));
 			return lines.toString();
 		}
 		

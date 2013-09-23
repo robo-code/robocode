@@ -46,7 +46,7 @@ import java.util.List;
  * @since 1.8.3.0
  */
 @SuppressWarnings("serial")
-public class EditorFontAndColorsDialog extends JDialog {
+public class EditorThemeConfigDialog extends JDialog {
 
 	private static final boolean ONLY_MONOSPACED = true;
 
@@ -80,13 +80,13 @@ public class EditorFontAndColorsDialog extends JDialog {
 	
 	private final EventHandler eventHandler = new EventHandler();
 
-	public EditorFontAndColorsDialog(JFrame owner) {
+	public EditorThemeConfigDialog(JFrame owner) {
 		super(owner, true);
 		initialize();
 	}
 
 	private void initialize() {
-		setTitle("Font & Color Chooser");
+		setTitle("Editor Theme Configurator");
 		setLayout(new GridBagLayout());
 		setResizable(false);
 

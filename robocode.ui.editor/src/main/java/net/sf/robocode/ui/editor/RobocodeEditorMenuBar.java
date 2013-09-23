@@ -86,8 +86,8 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 				windowCloseAllActionPerformed();
 			} else if (source == RobocodeEditorMenuBar.this.getWindowWindowsDialogMenuItem()) {
 				windowMoreWindowsActionPerformed();
-			} else if (source == RobocodeEditorMenuBar.this.getViewChangeFontAndColorsMenuItem()) {
-				viewChangeFontAndColorsActionPerformed();
+			} else if (source == RobocodeEditorMenuBar.this.getViewEditorThemeConfigDialogMenuItem()) {
+				viewEditorThemeConfigDialogActionPerformed();
 			}
 		}
 	}
@@ -126,7 +126,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 	// View menu
 	private JMenu viewMenu;
-	private JMenuItem viewChangeFontAndColorsMenuItem;
+	private JMenuItem viewEditorThemeConfigDialogMenuItem;
 	
 	// Window menu
 	private JMenu windowMenu;
@@ -304,8 +304,8 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 		getMoreWindowsDialog().setVisible(true);
 	}
 
-	private void viewChangeFontAndColorsActionPerformed() {
-		EditorFontAndColorsDialog dialog = new EditorFontAndColorsDialog(editor);
+	private void viewEditorThemeConfigDialogActionPerformed() {
+		EditorThemeConfigDialog dialog = new EditorThemeConfigDialog(editor);
 		WindowUtil.packCenterShow(dialog);
 	}
 
@@ -705,18 +705,18 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			viewMenu.setText("View");
 			viewMenu.setMnemonic('V');
 
-			viewMenu.add(getViewChangeFontAndColorsMenuItem());
+			viewMenu.add(getViewEditorThemeConfigDialogMenuItem());
 		}
 		return viewMenu;
 	}
 
-	private JMenuItem getViewChangeFontAndColorsMenuItem() {
-		if (viewChangeFontAndColorsMenuItem == null) {
-			viewChangeFontAndColorsMenuItem = new JMenuItem();
-			viewChangeFontAndColorsMenuItem.setText("Change Font and Colors");
-			viewChangeFontAndColorsMenuItem.setMnemonic('F');
-			viewChangeFontAndColorsMenuItem.addActionListener(eventHandler);
+	private JMenuItem getViewEditorThemeConfigDialogMenuItem() {
+		if (viewEditorThemeConfigDialogMenuItem == null) {
+			viewEditorThemeConfigDialogMenuItem = new JMenuItem();
+			viewEditorThemeConfigDialogMenuItem.setText("Change Editor Theme");
+			viewEditorThemeConfigDialogMenuItem.setMnemonic('T');
+			viewEditorThemeConfigDialogMenuItem.addActionListener(eventHandler);
 		}
-		return viewChangeFontAndColorsMenuItem;
+		return viewEditorThemeConfigDialogMenuItem;
 	}
 }

@@ -1,4 +1,4 @@
-## Version 1.8.3.0 Alpha 1 (11-Sep-2013)
+## Version 1.8.3.0 Alpha 1 (23-Sep-2013) The Editor Theme Release
 
 ### Bug fixes
 * Fixed a NullPointerException occurring with a new source file that was not saved before being compiled.
@@ -7,8 +7,17 @@
 
 ### Changes
 * [Req-121][]: Issues with editor font.
-	* It is now possible to change the editor font from the View -> Change Font menu in the Robot Editor.
-	* The selected font (font name, font style, font size) will be stored inside the new /config/editor.properties file.
+	* A new Editor Theme Configurator has been added the allows changing the font, text colors and styles for the Robocode Editor. 
+	* Two built-in themes have been provided for Robocode:
+		* Robocode White Theme
+		* Robocode Black Theme
+	* When selecting a theme, Robocode will automatically use this theme the next time Robocode is started.
+	* When changing a theme, a new custom theme can be created and saved. Note that it is possible to overwrite existing themes.
+	* Editor themes are stored within the /theme/editor directory as theme property files, which makes it possible to modify these in a normal text editor, but also share the themes.
+	* The Editor Theme Configurator is available from the Robot Editor menu under View -> Change Editor Theme.
+* The line numbers area in the Robocode Editor has been improved as well:
+	* The background and text colors for the line numbers can be changed.
+	* Line numbers are now right aligned + extra space has been added to the right.
 * The Find & Replace dialog has got a better layout.
 
 ## Version 1.8.2.0 (22-Jun-2013)
