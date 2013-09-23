@@ -159,18 +159,20 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return themeName;
 	}
 
-	public void setThemeName(String themeName) {
-		this.themeName = themeName;
-		notifyChange();
+	public void setThemeName(String newName) {
+		this.themeName = newName;
+		EditorThemePropertiesManager.notifyThemeNameChanged(newName);
+//		isChanged = true;
 	}
 
 	public Font getFont() {
 		return new Font(getFontName(), getNormalTextStyle().getFontStyleFlags(), getFontSize());
 	}
 	
-	public void setFontName(String fontName) {
-		this.fontName = fontName;
-		notifyChange();
+	public void setFontName(String newName) {
+		this.fontName = newName;
+		EditorThemePropertiesManager.notifyFontNameChanged(newName);
+		isChanged = true;
 	}
 
 	@Override
@@ -186,9 +188,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return fontName;
 	}
 
-	public void setFontSize(int fontSize) {
-		this.fontSize = fontSize;
-		notifyChange();
+	public void setFontSize(int newSize) {
+		this.fontSize = newSize;
+		EditorThemePropertiesManager.notifyFontSizeChanged(newSize);
+		isChanged = true;
 	}
 
 	@Override
@@ -207,8 +210,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return fontSize;
 	}
 
-	public void setBackgroundColor(Color color) {
-		backgroundColor.set(color);
+	public void setBackgroundColor(Color newColor) {
+		backgroundColor.set(newColor);
+		EditorThemePropertiesManager.notifyBackgroundColorChanged(newColor);
+//		isChanged = true;
 	}
 
 	@Override
@@ -216,8 +221,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return backgroundColor.get();
 	}
 
-	public void setLineNumberBackgroundColor(Color color) {
-		lineNumberBackgroundColor.set(color);
+	public void setLineNumberBackgroundColor(Color newColor) {
+		lineNumberBackgroundColor.set(newColor);
+		EditorThemePropertiesManager.notifyLineNumberBackgroundColorChanged(newColor);
+//		isChanged = true;
 	}
 
 	@Override
@@ -225,8 +232,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return lineNumberBackgroundColor.get();
 	}
 
-	public void setLineNumberTextColor(Color color) {
-		lineNumberTextColor.set(color);
+	public void setLineNumberTextColor(Color newColor) {
+		lineNumberTextColor.set(newColor);
+		EditorThemePropertiesManager.notifyLineNumberTextColorChanged(newColor);
+//		isChanged = true;
 	}
 
 	@Override
@@ -234,8 +243,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return lineNumberTextColor.get();
 	}
 
-	public void setHighlightedLineColor(Color color) {
-		highlightedLineColor.set(color);
+	public void setHighlightedLineColor(Color newColor) {
+		highlightedLineColor.set(newColor);
+		EditorThemePropertiesManager.notifyHighlightedLineColorChanged(newColor);
+//		isChanged = true;
 	}
 
 	@Override
@@ -243,8 +254,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return highlightedLineColor.get();
 	}
 	
-	public void setSelectionColor(Color color) {
-		selectionColor.set(color);
+	public void setSelectionColor(Color newColor) {
+		selectionColor.set(newColor);
+		EditorThemePropertiesManager.notifySelectionColorChanged(newColor);
+//		isChanged = true;
 	}
 
 	@Override
@@ -252,8 +265,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return selectionColor.get();
 	}
 
-	public void setSelectedTextColor(Color color) {
-		selectedTextColor.set(color);
+	public void setSelectedTextColor(Color newColor) {
+		selectedTextColor.set(newColor);
+		EditorThemePropertiesManager.notifySelectedTextColorChanged(newColor);
+//		isChanged = true;
 	}
 
 	@Override
@@ -261,8 +276,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return selectedTextColor.get();
 	}
 
-	public void setNormalTextColor(Color color) {
-		normalTextColor.set(color);
+	public void setNormalTextColor(Color newColor) {
+		normalTextColor.set(newColor);
+		EditorThemePropertiesManager.notifyNormalTextColorChanged(newColor);
+//		isChanged = true;
 	}
 
 	@Override
@@ -270,8 +287,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return normalTextColor.get();
 	}
 	
-	public void setNormalTextStyle(FontStyle fontStyle) {
-		normalTextStyle.set(fontStyle);
+	public void setNormalTextStyle(FontStyle newStyle) {
+		normalTextStyle.set(newStyle);
+		EditorThemePropertiesManager.notifyNormalTextStyleChanged(newStyle);
+//		isChanged = true;
 	}
 
 	@Override
@@ -279,8 +298,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return normalTextStyle.get();
 	}
 
-	public void setCommentTextColor(Color color) {
-		commentTextColor.set(color);
+	public void setCommentTextColor(Color newColor) {
+		commentTextColor.set(newColor);
+		EditorThemePropertiesManager.notifyCommentTextColorChanged(newColor);
+//		isChanged = true;
 	}
 
 	@Override
@@ -288,8 +309,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return commentTextColor.get();
 	}
 	
-	public void setCommentTextStyle(FontStyle fontStyle) {
-		commentTextStyle.set(fontStyle);
+	public void setCommentTextStyle(FontStyle newStyle) {
+		commentTextStyle.set(newStyle);
+		EditorThemePropertiesManager.notifyCommentTextStyleChanged(newStyle);
+//		isChanged = true;
 	}
 
 	@Override
@@ -297,8 +320,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return commentTextStyle.get();
 	}
 
-	public void setQuotedTextColor(Color color) {
-		quotedTextColor.set(color);
+	public void setQuotedTextColor(Color newColor) {
+		quotedTextColor.set(newColor);
+		EditorThemePropertiesManager.notifyQuotedTextColorChanged(newColor);
+//		isChanged = true;
 	}
 
 	@Override
@@ -306,8 +331,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return quotedTextColor.get();
 	}
 	
-	public void setQuotedTextStyle(FontStyle fontStyle) {
-		quotedTextStyle.set(fontStyle);
+	public void setQuotedTextStyle(FontStyle newStyle) {
+		quotedTextStyle.set(newStyle);
+		EditorThemePropertiesManager.notifyQuotedTextStyleChanged(newStyle);
+//		isChanged = true;
 	}
 
 	@Override
@@ -315,8 +342,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return quotedTextStyle.get();
 	}
 
-	public void setKeywordTextColor(Color color) {
-		keywordTextColor.set(color);
+	public void setKeywordTextColor(Color newColor) {
+		keywordTextColor.set(newColor);
+		EditorThemePropertiesManager.notifyKeywordTextColorChanged(newColor);
+//		isChanged = true;
 	}
 
 	@Override
@@ -324,8 +353,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return keywordTextColor.get();
 	}
 	
-	public void setKeywordTextStyle(FontStyle fontStyle) {
-		keywordTextStyle.set(fontStyle);
+	public void setKeywordTextStyle(FontStyle newStyle) {
+		keywordTextStyle.set(newStyle);
+		EditorThemePropertiesManager.notifyKeywordTextStyleChanged(newStyle);
+//		isChanged = true;
 	}
 
 	@Override
@@ -333,8 +364,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return keywordTextStyle.get();
 	}
 
-	public void setLiteralTextColor(Color color) {
-		literalTextColor.set(color);
+	public void setLiteralTextColor(Color newColor) {
+		literalTextColor.set(newColor);
+		EditorThemePropertiesManager.notifyLiteralTextColorChanged(newColor);
+//		isChanged = true;
 	}
 
 	@Override
@@ -342,8 +375,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return literalTextColor.get();
 	}
 	
-	public void setLiteralTextStyle(FontStyle fontStyle) {
-		literalTextStyle.set(fontStyle);
+	public void setLiteralTextStyle(FontStyle newStyle) {
+		literalTextStyle.set(newStyle);
+		EditorThemePropertiesManager.notifyLiteralTextStyleChanged(newStyle);
+//		isChanged = true;
 	}
 
 	@Override
@@ -351,8 +386,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return literalTextStyle.get();
 	}
 
-	public void setAnnotationTextColor(Color color) {
-		annotationTextColor.set(color);
+	public void setAnnotationTextColor(Color newColor) {
+		annotationTextColor.set(newColor);
+		EditorThemePropertiesManager.notifyAnnotationTextColorChanged(newColor);
+//		isChanged = true;
 	}
 
 	@Override
@@ -360,8 +397,10 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		return annotationTextColor.get();
 	}
 	
-	public void setAnnotationTextStyle(FontStyle fontStyle) {
-		annotationTextStyle.set(fontStyle);
+	public void setAnnotationTextStyle(FontStyle newStyle) {
+		annotationTextStyle.set(newStyle);
+		EditorThemePropertiesManager.notifyAnnotationTextStyleChanged(newStyle);
+//		isChanged = true;
 	}
 
 	@Override
@@ -408,13 +447,6 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 		// Reset 'changed' flag
 		isChanged = false;
 	}
-	
-	public void notifyChange() {
-		// Set 'changed' flag
-		isChanged = true;
-
-		EditorThemePropertiesManager.notifyChange(this);
-	}
 
 	public boolean isChanged() {
 		return isChanged;
@@ -451,7 +483,7 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 				return;
 			}
 			this.color = color;
-			notifyChange();
+			isChanged = true;
 		}
 
 		@Override
@@ -502,7 +534,7 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 				return;
 			}
 			this.style = style;
-			notifyChange();
+			isChanged = true;
 		}
 
 		@Override

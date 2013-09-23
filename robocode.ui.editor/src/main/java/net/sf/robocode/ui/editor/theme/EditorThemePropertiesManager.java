@@ -10,6 +10,8 @@ package net.sf.robocode.ui.editor.theme;
 
 import static net.sf.robocode.io.Logger.logError;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,7 +22,7 @@ import java.util.List;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
-import net.sf.robocode.ui.editor.IEditorPropertyChangeListener;
+import net.sf.robocode.ui.editor.FontStyle;
 
 
 /**
@@ -34,23 +36,149 @@ public class EditorThemePropertiesManager {
 
 	private static final String EDITOR_THEME_PROPERTIES_FILE_EXT = ".properties";
 
-	private static final List<IEditorPropertyChangeListener> listeners = new ArrayList<IEditorPropertyChangeListener>();
+	private static final List<IEditorThemePropertyChangeListener> listeners = new ArrayList<IEditorThemePropertyChangeListener>();
 
 	private static EditorThemeProperties editorThemeProperties;
 
-	public static void addListener(IEditorPropertyChangeListener listener) {
+	public static void addListener(IEditorThemePropertyChangeListener listener) {
 		if (!listeners.contains(listener)) {
 			listeners.add(listener);
 		}
 	}
 
-	public static void removeListener(IEditorPropertyChangeListener listener) {
+	public static void removeListener(IEditorThemePropertyChangeListener listener) {
 		listeners.remove(listener);
 	}
 
-	public static void notifyChange(IEditorThemeProperties properties) {
-		for (IEditorPropertyChangeListener listener : listeners) {
-			listener.onChange(properties);
+	public static void notifyThemeNameChanged(String newThemeName) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onThemeNameChanged(newThemeName);
+		}
+	}
+
+	public static void notifyFontChanged(Font newFont) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onFontChanged(newFont);
+		}
+	}
+
+	public static void notifyFontNameChanged(String newFontName) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onFontNameChanged(newFontName);
+		}
+	}
+
+	public static void notifyFontSizeChanged(int newFontSize) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onFontSizeChanged(newFontSize);
+		}
+	}
+
+	public static void notifyBackgroundColorChanged(Color newColor) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onBackgroundColorChanged(newColor);
+		}
+	}
+
+	public static void notifyLineNumberBackgroundColorChanged(Color newColor) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onLineNumberBackgroundColorChanged(newColor);
+		}
+	}
+
+	public static void notifyLineNumberTextColorChanged(Color newColor) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onLineNumberTextColorChanged(newColor);
+		}
+	}
+
+	public static void notifyHighlightedLineColorChanged(Color newColor) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onHighlightedLineColorChanged(newColor);
+		}
+	}
+
+	public static void notifySelectionColorChanged(Color newColor) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onSelectionColorChanged(newColor);
+		}
+	}
+
+	public static void notifySelectedTextColorChanged(Color newColor) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onSelectedTextColorChanged(newColor);
+		}
+	}
+
+	public static void notifyNormalTextColorChanged(Color newColor) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onNormalTextColorChanged(newColor);
+		}
+	}
+
+	public static void notifyNormalTextStyleChanged(FontStyle newStyle) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onNormalTextStyleChanged(newStyle);
+		}
+	}
+
+	public static void notifyQuotedTextColorChanged(Color newColor) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onQuotedTextColorChanged(newColor);
+		}
+	}
+
+	public static void notifyQuotedTextStyleChanged(FontStyle newStyle) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onQuotedTextStyleChanged(newStyle);
+		}
+	}
+
+	public static void notifyKeywordTextColorChanged(Color newColor) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onKeywordTextColorChanged(newColor);
+		}
+	}
+
+	public static void notifyKeywordTextStyleChanged(FontStyle newStyle) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onKeywordTextStyleChanged(newStyle);
+		}
+	}
+
+	public static void notifyLiteralTextColorChanged(Color newColor) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onLiteralTextColorChanged(newColor);
+		}
+	}
+
+	public static void notifyLiteralTextStyleChanged(FontStyle newStyle) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onLiteralTextStyleChanged(newStyle);
+		}
+	}
+
+	public static void notifyAnnotationTextColorChanged(Color newColor) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onAnnotationTextColorChanged(newColor);
+		}
+	}
+
+	public static void notifyAnnotationTextStyleChanged(FontStyle newStyle) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onAnnotationTextStyleChanged(newStyle);
+		}
+	}
+
+	public static void notifyCommentTextColorChanged(Color newColor) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onCommentTextColorChanged(newColor);
+		}
+	}
+
+	public static void notifyCommentTextStyleChanged(FontStyle newStyle) {
+		for (IEditorThemePropertyChangeListener listener : listeners) {
+			listener.onCommentTextStyleChanged(newStyle);
 		}
 	}
 

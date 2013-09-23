@@ -13,7 +13,7 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
 import net.sf.robocode.ui.editor.theme.EditorThemeProperties;
 import net.sf.robocode.ui.editor.theme.EditorThemePropertiesManager;
-import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
+import net.sf.robocode.ui.editor.theme.EditorThemePropertyChangeAdapter;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -61,7 +61,8 @@ public class EditWindow extends JInternalFrame {
 			editorPane = editorPanel.getEditorPane();
 			InputMap im = editorPane.getInputMap();
 
-			im.put(KeyStroke.getKeyStroke("ctrl H"), editor.getReplaceAction()); // FIXME: Replace hack with better solution?
+			// FIXME: Replace hack with better solution than using 'ctrl H'
+			im.put(KeyStroke.getKeyStroke("ctrl H"), editor.getReplaceAction());
 		}	
 		return editorPane;
 	}
@@ -110,10 +111,10 @@ public class EditWindow extends JInternalFrame {
 			Font font = currentThemeProps.getFont();
 			editorPanel.setFont(font);
 
-			EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
+			EditorThemePropertiesManager.addListener(new EditorThemePropertyChangeAdapter() {
 				@Override
-				public void onChange(IEditorThemeProperties properties) {
-					editorPanel.setFont(properties.getFont());
+				public void onFontChanged(Font newFont) {
+					editorPanel.setFont(newFont);
 				}
 			});
 

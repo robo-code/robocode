@@ -425,7 +425,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 				public void colorChanged(Color newColor) {
 					EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
 					themeProps.setBackgroundColor(newColor);
-					
+
 					updateSaveButton();
 				}
 			});
@@ -881,7 +881,7 @@ public class EditorFontAndColorsDialog extends JDialog {
 					return;
 				}
 			}
-			// Current theme has not changed => switch to new theme
+			// Switch to new theme
 			udateComponentsTheme(newThemeName);
 		}
 	}

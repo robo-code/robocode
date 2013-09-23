@@ -27,7 +27,7 @@ import javax.swing.text.Utilities;
 
 import net.sf.robocode.ui.editor.theme.EditorThemeProperties;
 import net.sf.robocode.ui.editor.theme.EditorThemePropertiesManager;
-import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
+import net.sf.robocode.ui.editor.theme.EditorThemePropertyChangeAdapter;
 
 
 /**
@@ -63,7 +63,9 @@ public class EditorPanel extends JPanel {
 		scrollPane.setViewportView(editorPane);
 
 		EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
-		setColors(themeProps);
+		setBackgroundColor(themeProps.getBackgroundColor());
+		setSelectionColor(themeProps.getSelectionColor());
+		setSelectedTextColor(themeProps.getSelectedTextColor());
 
 		lineNumberArea = new LineNumberArea(editorPane);
 		scrollPane.setRowHeaderView(lineNumberArea);
@@ -73,14 +75,22 @@ public class EditorPanel extends JPanel {
 
 		updateStatus(1, 1);
 
-		EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
+		EditorThemePropertiesManager.addListener(new EditorThemePropertyChangeAdapter() {
 			@Override
-			public void onChange(IEditorThemeProperties properties) {
-				setColors(properties);
+			public void onBackgroundColorChanged(Color newColor) {
+				setBackgroundColor(newColor);
+			}
+			@Override
+			public void onSelectionColorChanged(Color newColor) {
+				setSelectionColor(newColor);
+			}
+			@Override
+			public void onSelectedTextColorChanged(Color newColor) {
+				setSelectedTextColor(newColor);
 			}
 		});
 	}
-	
+
 	@Override
 	public void requestFocus() {
 		super.requestFocus();
@@ -141,18 +151,27 @@ public class EditorPanel extends JPanel {
 		}
 		return -1;
 	}
-	
-	private void setColors(final IEditorThemeProperties properties) {
+
+	private void setBackgroundColor(final Color backgroundColor) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Color backgroundColor = properties.getBackgroundColor();
 				scrollPane.getViewport().setBackground(backgroundColor);
 				editorPane.setBackground(backgroundColor);
+			}
+		});		
+	}
 
-				Color selectionColor = properties.getSelectionColor();
+	private void setSelectionColor(final Color selectionColor) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
 				editorPane.setSelectionColor(selectionColor);
+			}
+		});		
+	}
 
-				Color selectedTextColor = properties.getSelectedTextColor();
+	private void setSelectedTextColor(final Color selectedTextColor) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
 				editorPane.setSelectedTextColor(selectedTextColor);
 			}
 		});

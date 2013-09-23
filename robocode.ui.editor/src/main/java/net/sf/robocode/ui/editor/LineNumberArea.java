@@ -18,8 +18,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
+import net.sf.robocode.ui.editor.theme.EditorThemeProperties;
 import net.sf.robocode.ui.editor.theme.EditorThemePropertiesManager;
-import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
+import net.sf.robocode.ui.editor.theme.EditorThemePropertyChangeAdapter;
 
 
 /**
@@ -38,14 +39,20 @@ public class LineNumberArea extends JTextArea {
 		setEditable(false);
 		setLineWrap(false);
 
-		setColors(EditorThemePropertiesManager.getCurrentEditorThemeProperties());
-
+		EditorThemeProperties themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
+		setBackgroundColor(themeProps.getLineNumberBackgroundColor());
+		setTextColor(themeProps.getLineNumberTextColor());
+		
 		textComponent.getDocument().addDocumentListener(documentListener);
 
-		EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
+		EditorThemePropertiesManager.addListener(new EditorThemePropertyChangeAdapter() {
 			@Override
-			public void onChange(IEditorThemeProperties properties) {
-				setColors(properties);
+			public void onLineNumberBackgroundColorChanged(Color newColor) {
+				setBackgroundColor(newColor);
+			}
+			@Override
+			public void onLineNumberTextColorChanged(Color newColor) {
+				setTextColor(newColor);
 			}
 		});
 	}
@@ -108,13 +115,13 @@ public class LineNumberArea extends JTextArea {
 		}
 	}
 
-	private void setColors(IEditorThemeProperties properties) {
-		Color textColor = properties.getLineNumberTextColor();
-		setForeground(textColor);
-		setSelectedTextColor(textColor);
+	private void setBackgroundColor(Color newBackgroundColor) {
+		setBackground(newBackgroundColor);
+		setSelectionColor(newBackgroundColor);		
+	}
 
-		Color backgroundColor = properties.getLineNumberBackgroundColor();
-		setBackground(backgroundColor);
-		setSelectionColor(backgroundColor);
+	private void setTextColor(Color newTextColor) {
+		setForeground(newTextColor);
+		setSelectedTextColor(newTextColor);		
 	}
 }

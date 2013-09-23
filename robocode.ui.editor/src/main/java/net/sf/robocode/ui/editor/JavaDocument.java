@@ -8,6 +8,7 @@
 package net.sf.robocode.ui.editor;
 
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.FocusEvent;
@@ -25,6 +26,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 
 import net.sf.robocode.ui.editor.theme.EditorThemePropertiesManager;
+import net.sf.robocode.ui.editor.theme.EditorThemePropertyChangeAdapter;
 import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
 
 
@@ -126,10 +128,65 @@ public class JavaDocument extends StyledDocument {
 		addDocumentListener(new JavaDocumentListener());
 
 		// Setup editor properties change listener
-		EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
+		EditorThemePropertiesManager.addListener(new EditorThemePropertyChangeAdapter() {
 			@Override
-			public void onChange(IEditorThemeProperties properties) {
-				setTextColorsAndStyles(properties);
+			public void onNormalTextColorChanged(Color newColor) {
+				setNormalTextColor(newColor);
+				updateSyntaxHighlighting(true);
+			}
+			@Override
+			public void onNormalTextStyleChanged(FontStyle newStyle) {
+				setNormalTextStyle(newStyle);
+				updateSyntaxHighlighting(true);
+			}
+			@Override
+			public void onQuotedTextColorChanged(Color newColor) {
+				setQuotedTextColor(newColor);
+				updateSyntaxHighlighting(true);
+			}
+			@Override
+			public void onQuotedTextStyleChanged(FontStyle newStyle) {
+				setQuotedTextStyle(newStyle);
+				updateSyntaxHighlighting(true);
+			}
+			@Override
+			public void onKeywordTextColorChanged(Color newColor) {
+				setKeywordTextColor(newColor);
+				updateSyntaxHighlighting(true);
+			}
+			@Override
+			public void onKeywordTextStyleChanged(FontStyle newStyle) {
+				setKeywordTextStyle(newStyle);
+				updateSyntaxHighlighting(true);
+			}
+			@Override
+			public void onLiteralTextColorChanged(Color newColor) {
+				setLiteralTextColor(newColor);
+				updateSyntaxHighlighting(true);
+			}
+			@Override
+			public void onLiteralTextStyleChanged(FontStyle newStyle) {
+				setLiteralTextStyle(newStyle);
+				updateSyntaxHighlighting(true);
+			}
+			@Override
+			public void onAnnotationTextColorChanged(Color newColor) {
+				setAnnotationTextColor(newColor);
+				updateSyntaxHighlighting(true);
+			}
+			@Override
+			public void onAnnotationTextStyleChanged(FontStyle newStyle) {
+				setAnnotationTextStyle(newStyle);
+				updateSyntaxHighlighting(true);
+			}
+			@Override
+			public void onCommentTextColorChanged(Color newColor) {
+				setCommentTextColor(newColor);
+				updateSyntaxHighlighting(true);
+			}
+			@Override
+			public void onCommentTextStyleChanged(FontStyle newStyle) {
+				setCommentTextStyle(newStyle);
 				updateSyntaxHighlighting(true);
 			}
 		});
@@ -218,37 +275,72 @@ public class JavaDocument extends StyledDocument {
 		if (themeProps == null) {
 			themeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();			
 		}
-		// Setup the styled attribute sets
-		
-		FontStyle normalTextStyle = themeProps.getNormalTextStyle();
-		StyleConstants.setForeground(normalAttrSet, themeProps.getNormalTextColor());
-		StyleConstants.setBold(normalAttrSet, normalTextStyle.isBold());
-		StyleConstants.setItalic(normalAttrSet, normalTextStyle.isItalic());
+		setNormalTextColor(themeProps.getNormalTextColor());
+		setNormalTextStyle(themeProps.getNormalTextStyle());
+		setQuotedTextColor(themeProps.getQuotedTextColor());
+		setQuotedTextStyle(themeProps.getQuotedTextStyle());
+		setKeywordTextColor(themeProps.getKeywordTextColor());
+		setKeywordTextStyle(themeProps.getKeywordTextStyle());
+		setLiteralTextColor(themeProps.getLiteralTextColor());
+		setLiteralTextStyle(themeProps.getLiteralTextStyle());
+		setAnnotationTextColor(themeProps.getAnnotationTextColor());
+		setAnnotationTextStyle(themeProps.getAnnotationTextStyle());
+		setCommentTextColor(themeProps.getCommentTextColor());
+		setCommentTextStyle(themeProps.getCommentTextStyle());
+	}
 
-		FontStyle quoteTextStyle = themeProps.getQuotedTextStyle();
-		StyleConstants.setForeground(quoteAttrSet, themeProps.getQuotedTextColor());
-		StyleConstants.setBold(quoteAttrSet, quoteTextStyle.isBold());
-		StyleConstants.setItalic(quoteAttrSet, quoteTextStyle.isItalic());
+	private void setNormalTextColor(Color newColor) {
+		StyleConstants.setForeground(normalAttrSet, newColor);
+	}
 
-		FontStyle keywordTextStyle = themeProps.getKeywordTextStyle();
-		StyleConstants.setForeground(keywordAttrSet, themeProps.getKeywordTextColor());
-		StyleConstants.setBold(keywordAttrSet, keywordTextStyle.isBold());
-		StyleConstants.setItalic(keywordAttrSet, keywordTextStyle.isItalic());
+	private void setNormalTextStyle(FontStyle newStyle) {
+		StyleConstants.setBold(normalAttrSet, newStyle.isBold());
+		StyleConstants.setItalic(normalAttrSet, newStyle.isItalic());
+	}
+	
+	private void setQuotedTextColor(Color newColor) {
+		StyleConstants.setForeground(quoteAttrSet, newColor);
+	}
 
-		FontStyle literalTextStyle = themeProps.getLiteralTextStyle();
-		StyleConstants.setForeground(literalAttrSet, themeProps.getLiteralTextColor());
-		StyleConstants.setBold(literalAttrSet, literalTextStyle.isBold());
-		StyleConstants.setItalic(literalAttrSet, literalTextStyle.isItalic());
+	private void setQuotedTextStyle(FontStyle newStyle) {
+		StyleConstants.setBold(quoteAttrSet, newStyle.isBold());
+		StyleConstants.setItalic(quoteAttrSet, newStyle.isItalic());
+	}
 
-		FontStyle annotationTextStyle = themeProps.getAnnotationTextStyle();
-		StyleConstants.setForeground(annotationAttrSet, themeProps.getAnnotationTextColor());
-		StyleConstants.setBold(annotationAttrSet, annotationTextStyle.isBold());
-		StyleConstants.setItalic(annotationAttrSet, annotationTextStyle.isItalic());
+	private void setKeywordTextColor(Color newColor) {
+		StyleConstants.setForeground(keywordAttrSet, newColor);
+	}
 
-		FontStyle commentTextStyle = themeProps.getCommentTextStyle();
-		StyleConstants.setForeground(commentAttrSet, themeProps.getCommentTextColor());
-		StyleConstants.setBold(commentAttrSet, commentTextStyle.isBold());
-		StyleConstants.setItalic(commentAttrSet, commentTextStyle.isItalic());
+	private void setKeywordTextStyle(FontStyle newStyle) {
+		StyleConstants.setBold(keywordAttrSet, newStyle.isBold());
+		StyleConstants.setItalic(keywordAttrSet, newStyle.isItalic());
+	}
+
+	private void setLiteralTextColor(Color newColor) {
+		StyleConstants.setForeground(literalAttrSet, newColor);
+	}
+
+	private void setLiteralTextStyle(FontStyle newStyle) {
+		StyleConstants.setBold(literalAttrSet, newStyle.isBold());
+		StyleConstants.setItalic(literalAttrSet, newStyle.isItalic());
+	}
+
+	private void setAnnotationTextColor(Color newColor) {
+		StyleConstants.setForeground(annotationAttrSet, newColor);
+	}
+
+	private void setAnnotationTextStyle(FontStyle newStyle) {
+		StyleConstants.setBold(annotationAttrSet, newStyle.isBold());
+		StyleConstants.setItalic(annotationAttrSet, newStyle.isItalic());
+	}
+
+	private void setCommentTextColor(Color newColor) {
+		StyleConstants.setForeground(commentAttrSet, newColor);
+	}
+
+	private void setCommentTextStyle(FontStyle newStyle) {
+		StyleConstants.setBold(commentAttrSet, newStyle.isBold());
+		StyleConstants.setItalic(commentAttrSet, newStyle.isItalic());
 	}
 	
 	/**

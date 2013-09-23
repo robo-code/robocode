@@ -10,7 +10,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 import net.sf.robocode.ui.editor.theme.EditorThemePropertiesManager;
-import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
+import net.sf.robocode.ui.editor.theme.EditorThemePropertyChangeAdapter;
 
 
 public class HighlightLinePainter implements Highlighter.HighlightPainter {
@@ -24,12 +24,11 @@ public class HighlightLinePainter implements Highlighter.HighlightPainter {
 
 		color = EditorThemePropertiesManager.getCurrentEditorThemeProperties().getHighlightedLineColor();
 
-		EditorThemePropertiesManager.addListener(new IEditorPropertyChangeListener() {
+		EditorThemePropertiesManager.addListener(new EditorThemePropertyChangeAdapter() {
 			@Override
-			public void onChange(IEditorThemeProperties properties) {
-				Color highlightedLineColor = properties.getHighlightedLineColor();
-				if (!color.equals(highlightedLineColor)) {
-					setColor(highlightedLineColor);
+			public void onHighlightedLineColorChanged(Color newColor) {
+				if (!color.equals(newColor)) {
+					setColor(newColor);
 				}
 			}
 		});
