@@ -2,10 +2,10 @@
 
 ### Bug fixes
 * [Bug-363][]: No Last Survivor Bonus being given.
-* The getWidth() and getHeight() methods on the Robot class have always returned 40, even though a robot is 36x36 pixels in size.
-	* Hence, getWidth() and getHeight() have been changed to return the correct width and height, which is 36.
+* The ``getWidth()`` and ``getHeight()`` methods on the Robot class have always returned 40, even though a robot is 36x36 pixels in size.
+	* Hence, ``getWidth()`` and ``getHeight()`` have been changed to return the correct width and height, which is 36.
 * Fixed Robot Editor issues:
-	* NullPointerException occurring with a new source file that was not saved before being compiled.
+	* ``NullPointerException`` occurring with a new source file that was not saved before being compiled.
 	* Issue where the caret position was set to the end of a source file when reading it into the editor.
 
 ### Changes
@@ -48,7 +48,7 @@
 
 ### Bug fixes
 * [Bug-335][]/[Bug-336][]: Skipped turns ... issues.
-* [Bug-349][]: Instances of RobocodeEngine don't seem to be independant - memory leak and performance decrease.
+* [Bug-349][]: Instances of RobocodeEngine don't seem to be independent - memory leak and performance decrease.
 * [Bug-350][]: Bullet id from battle record XML file is sometimes -1 causing a NumberFormatException.
 * [Bug-351][]: Robot.onBattleEnded(BattleEndedEvent) provides wrong scores.
 * [Bug-352][]: Results from BattleCompletedEvent.getIndexedResults() are always sorted.
@@ -86,7 +86,7 @@
 
 ### Changes
 * Robocode sources are now put on [GitHub](https://github.com/robo-code/robocode).
-* Upgraded the .NET plugin to use Visual Studio Express 2010.
+* Upgraded the .NET plug-in to use Visual Studio Express 2010.
 * The versions.txt has been changed to versions.md:
 	* The versions.txt was converted into [Markdown][] syntax in order to make it easier to convert into e.g. HTML, and because GitHub will automatically translate it into HTML when viewing this file in a browser.
 		* Thus, this file has been renamed from 'versions.txt' into 'versions.md'.
@@ -2888,6 +2888,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-358]: http://sourceforge.net/p/robocode/bugs/358/  (Robot in default package cannot write to files. Should at least get a warning)
 [Bug-361]: http://sourceforge.net/p/robocode/bugs/361/  (Problem in the text editor related with the .java file modification)
 [Bug-362]: http://sourceforge.net/p/robocode/bugs/362/  (Rumble client does not remove participants in wrong codesize group)
+[Bug-363]: http://sourceforge.net/p/robocode/bugs/363/  (No Last Survivor Bonus being given)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
