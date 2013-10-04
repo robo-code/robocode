@@ -82,7 +82,7 @@ public class TestWin extends RobocodeTestBed {
 		Assert.assertThat(lines[31], is("Win!"));
 		Assert.assertThat(lines[32], is("BattleEnded!"));
 
-		Assert.assertThat("1st robot should get right score", results[0].getScore(), is(213));
-		Assert.assertThat("2nd robot should get right score", results[1].getScore(), is(186));
+		Assert.assertThat("1st robot should get right score", results[0].getScore(), is(233));
+		Assert.assertThat("2nd robot should get right score", results[1].getScore(), is(216));
 	}
 }

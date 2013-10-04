@@ -1,9 +1,12 @@
-## Version 1.8.3.0 Alpha 1 (23-Sep-2013) The Editor Theme Release
+## Version 1.8.3.0 (04-Oct-2013) The Editor Theme Release
 
 ### Bug fixes
-* Fixed a NullPointerException occurring with a new source file that was not saved before being compiled.
-* The getWidth() and getHeight() methods on the Robot class have always returned 40, even though a robot is 36x36 pixels in size. Hence, getWidth() and getHeight() have been changed to return the correct width and height, which is 36.
-* Fixed issue, where the caret position was set to the end of a source file when reading it into the editor.
+* [Bug-363][]: No Last Survivor Bonus being given.
+* The getWidth() and getHeight() methods on the Robot class have always returned 40, even though a robot is 36x36 pixels in size.
+	* Hence, getWidth() and getHeight() have been changed to return the correct width and height, which is 36.
+* Fixed Robot Editor issues:
+	* NullPointerException occurring with a new source file that was not saved before being compiled.
+	* Issue where the caret position was set to the end of a source file when reading it into the editor.
 
 ### Changes
 * [Req-121][]: Issues with editor font.
@@ -2957,6 +2960,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Req-114]: http://sourceforge.net/p/robocode/feature-requests/114/  (RateControlRobot vs. TeamRobot)
 [Req-115]: http://sourceforge.net/p/robocode/feature-requests/115/  (Installed package should contain readme file)
 [Req-118]: http://sourceforge.net/p/robocode/feature-requests/118/  (Enable/disable development paths)
+[Req-121]: http://sourceforge.net/p/robocode/feature-requests/121/  (Issues with editor font)
 [Req-124]: http://sourceforge.net/p/robocode/feature-requests/124/  (Ability to save the properties file for robots in dev. path)
 [Req-128]: http://sourceforge.net/p/robocode/feature-requests/128/  (In battle name hiding)
 [Req-129]: http://sourceforge.net/p/robocode/feature-requests/129/  (Rules.getBulletSpeed)

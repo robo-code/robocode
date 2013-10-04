@@ -25,7 +25,7 @@ public class RobotStatistics implements ContestantStatistics {
 
 	private final RobotPeer robotPeer;
 	private int rank;
-	private final int robots;
+	private final int numberOfRobots;
 	private boolean isActive;
 	private boolean isInRound;
 
@@ -50,10 +50,10 @@ public class RobotStatistics implements ContestantStatistics {
 	private int totalSeconds;
 	private int totalThirds;
 
-	public RobotStatistics(RobotPeer robotPeer, int robots) {
+	public RobotStatistics(RobotPeer robotPeer, int numberOfRobots) {
 		super();
 		this.robotPeer = robotPeer;
-		this.robots = robots;
+		this.numberOfRobots = numberOfRobots;
 	}
 
 	public void setRank(int rank) {
@@ -167,11 +167,12 @@ public class RobotStatistics implements ContestantStatistics {
 
 	public void scoreLastSurvivor() {
 		if (isActive) {
-			int enemyCount = robots - 1;
+			int enemyCount = numberOfRobots - 1;
 
 			if (robotPeer.getTeamPeer() != null) {
 				enemyCount -= (robotPeer.getTeamPeer().size() - 1);
 			}
+
 			lastSurvivorBonus += 10 * enemyCount;
 
 			if (robotPeer.getTeamPeer() == null || robotPeer.isTeamLeader()) {

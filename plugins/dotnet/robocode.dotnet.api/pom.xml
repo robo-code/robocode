@@ -36,9 +36,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                                 for this to run, one must have SHFBROOT environment variable set properly.
                                 it comes with installation of SHFB
                                 -->
-<!--								<exec dir="target" executable="cmd.exe" failonerror="false">
+								<exec dir="target" executable="cmd.exe" failonerror="false">
 									<arg line="/c %SystemRoot%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /p:Configuration=Release ../robotAPI.shfbproj" />
-								</exec>-->
+								</exec>
 							</tasks>
 						</configuration>
 						<goals>

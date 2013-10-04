@@ -439,8 +439,6 @@ public final class Battle extends BaseBattle {
 						totalTurns); 
 
 				for (RobotPeer robotPeer : getRobotsAtRandom()) {
-					robotPeer.getRobotStatistics().generateTotals(); // Generate totals when round is ended
-
 					robotPeer.addEvent(roundEndedEvent);
 					if (robotPeer.isAlive()) {
 						if (!robotPeer.isWinner()) {
@@ -457,6 +455,8 @@ public final class Battle extends BaseBattle {
 							}
 						}
 					}
+					// Generate totals as round has ended, but first when the last scores has been calculated
+					robotPeer.getRobotStatistics().generateTotals();
 				}
 				if (!leaderFirsts && winningTeam != null) {
 					winningTeam.getTeamLeader().getRobotStatistics().scoreFirsts();
