@@ -97,6 +97,9 @@ class __IRobotSnapshot extends system.Object implements robocode.control.snapsho
     public native boolean isDroid();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean isSentryRobot();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isPaintRobot();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")

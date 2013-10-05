@@ -54,6 +54,10 @@ public interface ISettingsManager {
 
 	void setOptionsViewExplosionDebris(boolean optionsViewExplosionDebris);
 
+	boolean getOptionsViewSentryBorder();
+
+	void setOptionsViewSentryBorder(boolean optionsViewSentryBorder);
+
 	boolean getOptionsViewPreventSpeedupWhenMinimized();
 
 	void setOptionsViewPreventSpeedupWhenMinimized(boolean preventSpeedupWhenMinimized);
@@ -216,6 +220,10 @@ public interface ISettingsManager {
 
 	void setBattleDefaultInactivityTime(long inactivityTime);
 
+	int getBattleDefaultSentryBorderSize();
+
+	void setBattleDefaultSentryBorderSize(int sentryBorderSize);
+
 	boolean getBattleDefaultHideEnemyNames();
 
 	void setBattleDefaultHideEnemyNames(boolean hideEnemyNames);
@@ -245,6 +253,7 @@ public interface ISettingsManager {
 			OPTIONS_VIEW_FPS = "robocode.options.view.FPS",
 			OPTIONS_VIEW_EXPLOSIONS = "robocode.options.view.explosions",
 			OPTIONS_VIEW_EXPLOSION_DEBRIS = "robocode.options.view.explosionDebris",
+			OPTIONS_VIEW_SENTRY_BORDER = "robocode.options.view.sentryBorder",
 
 			OPTIONS_BATTLE_DESIREDTPS = "robocode.options.battle.desiredTPS",
 
@@ -303,5 +312,6 @@ public interface ISettingsManager {
 			BATTLE_DEFAULT_NUMBER_OF_ROUNDS = "robocode.battle.default.numberOfBattles",
 			BATTLE_DEFAULT_GUN_COOLING_RATE = "robocode.battle.default.gunCoolingRate",
 			BATTLE_DEFAULT_INACTIVITY_TIME = "robocode.battle.default.inactivityTime",
+			BATTLE_DEFAULT_SENTRY_BORDER_SIZE = "robocode.battle.default.sentryBorderSize",
 			BATTLE_DEFAULT_HIDE_ENEMY_NAMES = "robocode.battle.default.hideEnemyNames";
 }

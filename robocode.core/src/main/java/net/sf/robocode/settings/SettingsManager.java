@@ -46,7 +46,8 @@ public class SettingsManager implements ISettingsManager {
 			optionsViewScanArcs = false,
 			optionsViewExplosions = true,
 			optionsViewGround = true,
-			optionsViewExplosionDebris = true;
+			optionsViewExplosionDebris = true,
+			optionsViewSentryBorder = false;
 
 	// View Options (Turns Per Second)
 	private boolean
@@ -129,6 +130,7 @@ public class SettingsManager implements ISettingsManager {
 	private int battleDefaultBattlefieldHeight = 600;
 	private double battleDefaultGunCoolingRate = 0.1;
 	private long battleDefaultInactivityTime = 450;
+	private int battleDefaultSentryBorderSize = 100;
 	private boolean battleDefaultHideEnemyNames = false;
 	private int battleDefaultNumberOfRounds = 10;
 
@@ -255,6 +257,15 @@ public class SettingsManager implements ISettingsManager {
 	public void setOptionsViewPreventSpeedupWhenMinimized(boolean preventSpeedupWhenMinimized) {
 		this.optionsViewPreventSpeedupWhenMinimized = preventSpeedupWhenMinimized;
 		props.setProperty(OPTIONS_VIEW_PREVENT_SPEEDUP_WHEN_MINIMIZED, "" + preventSpeedupWhenMinimized);
+	}
+
+	public boolean getOptionsViewSentryBorder() {
+		return optionsViewSentryBorder;
+	}
+
+	public void setOptionsViewSentryBorder(boolean optionsViewSentryBorder) {
+		this.optionsViewSentryBorder = optionsViewSentryBorder;
+		props.setProperty(OPTIONS_VIEW_SENTRY_BORDER, "" + optionsViewSentryBorder);
 	}
 
 	public int getOptionsRenderingAntialiasing() {
@@ -663,6 +674,15 @@ public class SettingsManager implements ISettingsManager {
 		props.setProperty(BATTLE_DEFAULT_INACTIVITY_TIME, "" + this.battleDefaultInactivityTime);
 	}
 
+	public int getBattleDefaultSentryBorderSize() {
+		return battleDefaultSentryBorderSize;
+	}
+
+	public void setBattleDefaultSentryBorderSize(int sentryBorderSize) {
+		this.battleDefaultSentryBorderSize = sentryBorderSize;
+		props.setProperty(BATTLE_DEFAULT_SENTRY_BORDER_SIZE, "" + this.battleDefaultSentryBorderSize);
+	}
+
 	public boolean getBattleDefaultHideEnemyNames() {
 		return battleDefaultHideEnemyNames;
 	}
@@ -696,7 +716,7 @@ public class SettingsManager implements ISettingsManager {
 		optionsViewFPS = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_FPS, "true"));
 		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true"));
 		optionsViewExplosionDebris = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSION_DEBRIS, "true"));
-
+		optionsViewSentryBorder = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_SENTRY_BORDER, "false"));
 		optionsViewPreventSpeedupWhenMinimized = Boolean.valueOf(
 				props.getProperty(OPTIONS_VIEW_PREVENT_SPEEDUP_WHEN_MINIMIZED, "false"));
 

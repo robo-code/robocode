@@ -26,7 +26,8 @@ public final class RobotType implements Serializable {
 			TEAM_FLAG = 8,
 			DROID_FLAG = 16,
 			INTERACTIVE_FLAG = 32,
-			PAINTING_FLAG = 64;
+			PAINTING_FLAG = 64,
+			SENTRY_FLAG = 128;
 
 	public static final transient RobotType INVALID = new RobotType(NONE_FLAG);
 
@@ -43,7 +44,8 @@ public final class RobotType implements Serializable {
 			boolean isPaintRobot,
 			boolean isAdvancedRobot,
 			boolean isTeamRobot,
-			boolean isDroid) {
+			boolean isDroid,
+			boolean isSentryRobot) {
 
 		typeFlags = NONE_FLAG;
 
@@ -67,6 +69,9 @@ public final class RobotType implements Serializable {
 		}
 		if (isDroid) {
 			typeFlags |= DROID_FLAG;
+		}
+		if (isSentryRobot) {
+			typeFlags |= SENTRY_FLAG;
 		}
 	}
 
@@ -104,6 +109,10 @@ public final class RobotType implements Serializable {
 
 	public boolean isDroid() {
 		return (typeFlags & DROID_FLAG) != 0;
+	}
+
+	public boolean isSentryRobot() {
+		return (typeFlags & SENTRY_FLAG) != 0;
 	}
 
 	@Override

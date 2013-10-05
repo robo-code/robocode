@@ -19,6 +19,7 @@ import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.Droid;
 import robocode.Robot;
+import robocode.BorderSentry;
 import robocode.control.RobotSpecification;
 import robocode.robotinterfaces.*;
 
@@ -110,17 +111,34 @@ public class JavaHost implements IHost {
 		boolean isAdvancedRobot = false;
 		boolean isTeamRobot = false;
 		boolean isDroid = false;
+		boolean isSentryRobot = false;
 
-		if (Droid.class.isAssignableFrom(robotClass)) {
-			isDroid = true;
+		if (IAdvancedRobot.class.isAssignableFrom(robotClass)) { // Note: must be checked first
+			isAdvancedRobot = true;
 		}
-
+		if (Robot.class.isAssignableFrom(robotClass) && !isAdvancedRobot) {
+			isStandardRobot = true;
+		}
+		if (IJuniorRobot.class.isAssignableFrom(robotClass)) { // Note: Must be checked before checking for standard robot
+			isJuniorRobot = true;
+			if (isAdvancedRobot) {
+				throw new AccessControlException(
+						robotItem.getFullClassName() + ": Junior robot should not implement IAdvancedRobot interface.");
+			}
+		}
+		if (IBasicRobot.class.isAssignableFrom(robotClass)) {
+			if (!(isAdvancedRobot || isJuniorRobot)) {
+				isStandardRobot = true;
+			}
+		}
 		if (ITeamRobot.class.isAssignableFrom(robotClass)) {
 			isTeamRobot = true;
 		}
-
-		if (IAdvancedRobot.class.isAssignableFrom(robotClass)) {
-			isAdvancedRobot = true;
+		if (Droid.class.isAssignableFrom(robotClass)) {
+			isDroid = true;
+		}
+		if (BorderSentry.class.isAssignableFrom(robotClass)) {
+			isSentryRobot = true;
 		}
 
 		if (IInteractiveRobot.class.isAssignableFrom(robotClass)) {
@@ -150,25 +168,8 @@ public class JavaHost implements IHost {
 			}
 		}
 
-		if (Robot.class.isAssignableFrom(robotClass) && !isAdvancedRobot) {
-			isStandardRobot = true;
-		}
-
-		if (IJuniorRobot.class.isAssignableFrom(robotClass)) {
-			isJuniorRobot = true;
-			if (isAdvancedRobot) {
-				throw new AccessControlException(
-						robotItem.getFullClassName() + ": Junior robot should not implement IAdvancedRobot interface.");
-			}
-		}
-
-		if (IBasicRobot.class.isAssignableFrom(robotClass)) {
-			if (!(isAdvancedRobot || isJuniorRobot)) {
-				isStandardRobot = true;
-			}
-		}
 		return new RobotType(isJuniorRobot, isStandardRobot, isInteractiveRobot, isPaintRobot, isAdvancedRobot,
-				isTeamRobot, isDroid);
+				isTeamRobot, isDroid, isSentryRobot);
 	}
 
 	private boolean checkMethodOverride(Class<?> robotClass, Class<?> knownBase, String name, Class<?>... parameterTypes) {

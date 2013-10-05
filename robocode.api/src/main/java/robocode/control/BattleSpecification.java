@@ -24,30 +24,29 @@ public class BattleSpecification implements java.io.Serializable {
 	private final double gunCoolingRate;
 	private final long inactivityTime;
 	private final boolean hideEnemyNames;
+	private final int sentryBorderSize;
 	private final RobotSpecification[] robots;
 
 	/**
-	 * Creates a new BattleSpecification with the given number of rounds,
-	 * battlefield size, and robots. Inactivity time for the robots defaults to
-	 * 450, and the gun cooling rate defaults to 0.1.
+	 * Creates a new BattleSpecification with the given number of rounds, battlefield size, and robots.
+	 * Inactivity time for the robots defaults to 450, and the gun cooling rate defaults to 0.1.
 	 *
-	 * @param numRounds	   the number of rounds in this battle
-	 * @param battlefieldSize the battlefield size
-	 * @param robots		  the robots participating in this battle
+	 * @param numRounds	is the number of rounds in this battle.
+	 * @param battlefieldSize is the battlefield size.
+	 * @param robots is the robots participating in this battle.
 	 */
 	public BattleSpecification(int numRounds, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots) {
-		this(numRounds, 450, .1, battlefieldSize, robots);
+		this(numRounds, 450, 0.1, battlefieldSize, robots);
 	}
 
 	/**
 	 * Creates a new BattleSpecification with the given settings.
 	 *
-	 * @param numRounds	   the number of rounds in this battle
-	 * @param inactivityTime  the inactivity time allowed for the robots before
-	 *                        they will loose energy
-	 * @param gunCoolingRate  the gun cooling rate for the robots
-	 * @param battlefieldSize the battlefield size
-	 * @param robots		  the robots participating in this battle
+	 * @param numRounds	is the number of rounds in this battle.
+	 * @param inactivityTime is the inactivity time allowed for the robots before they will loose energy.
+	 * @param gunCoolingRate is the gun cooling rate for the robots.
+	 * @param battlefieldSize is the battlefield size.
+	 * @param robots is the robots participating in this battle.
 	 */
 	public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots) {
 		this(numRounds, inactivityTime, gunCoolingRate, false, battlefieldSize, robots);
@@ -56,26 +55,43 @@ public class BattleSpecification implements java.io.Serializable {
 	/**
 	 * Creates a new BattleSpecification with the given settings.
 	 *
-	 * @param numRounds	   the number of rounds in this battle
-	 * @param inactivityTime  the inactivity time allowed for the robots before
-	 *                        they will loose energy
-	 * @param gunCoolingRate  the gun cooling rate for the robots
-	 * @param hideEnemyNames  flag specifying if enemy names are hidden from robots
-	 * @param battlefieldSize the battlefield size
-	 * @param robots		  the robots participating in this battle
+	 * @param numRounds	is the number of rounds in this battle.
+	 * @param inactivityTime is the inactivity time allowed for the robots before they will loose energy.
+	 * @param gunCoolingRate is the gun cooling rate for the robots.
+	 * @param hideEnemyNames  flag specifying if enemy names are hidden from robots.
+	 * @param battlefieldSize is the battlefield size.
+	 * @param robots is the robots participating in this battle.
 	 * 
 	 * @since 1.7.3
 	 */
 	public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, boolean hideEnemyNames, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots) {
+		this(battlefieldSize, numRounds, inactivityTime, gunCoolingRate, 100, hideEnemyNames, robots);
+	}
+
+	/**
+	 * Creates a new BattleSpecification with the given settings.
+	 *
+	 * @param battlefieldSize is the battlefield size.
+	 * @param numRounds	is the number of rounds in this battle.
+	 * @param inactivityTime is the inactivity time allowed for the robots before they will loose energy.
+	 * @param gunCoolingRate is the gun cooling rate for the robots.
+	 * @param sentryBorderSize is the sentry border size for a {@link robocode.BorderSentry BorderSentry}.
+	 * @param hideEnemyNames  flag specifying if enemy names are hidden from robots.
+	 * @param robots is the robots participating in this battle.
+	 * 
+	 * @since 1.9.0.0
+	 */
+	public BattleSpecification(BattlefieldSpecification battlefieldSize, int numRounds, long inactivityTime, double gunCoolingRate, int sentryBorderSize, boolean hideEnemyNames, RobotSpecification[] robots) {
+		this.battlefieldWidth = battlefieldSize.getWidth();
+		this.battlefieldHeight = battlefieldSize.getHeight();
 		this.numRounds = numRounds;
 		this.inactivityTime = inactivityTime;
 		this.gunCoolingRate = gunCoolingRate;
+		this.sentryBorderSize = sentryBorderSize;
 		this.hideEnemyNames = hideEnemyNames;
-		this.battlefieldWidth = battlefieldSize.getWidth();
-		this.battlefieldHeight = battlefieldSize.getHeight();
 		this.robots = robots;
 	}
-
+	
 	/**
 	 * Returns the allowed inactivity time for the robots in this battle.
 	 *
@@ -113,7 +129,7 @@ public class BattleSpecification implements java.io.Serializable {
 	}
 
 	/**
-	 * Flag specifying if the enemy names must be hidden from events sent to robots.
+	 * Returns the flag specifying if the enemy names must be hidden from events sent to robots.
 	 *
 	 * @return true if the enemy names must be hidden; false otherwise.
 	 * 
@@ -121,6 +137,22 @@ public class BattleSpecification implements java.io.Serializable {
 	 */
 	public boolean getHideEnemyNames() {
 		return hideEnemyNames;
+	}
+
+	/**
+	 * Returns the sentry border size for a {@link robocode.BorderSentry BorderSentry} that defines the how
+	 * far a BorderSentry is allowed to move from the border edges measured in units.<br>
+	 * Hence, the sentry border size defines the width/range of the border area surrounding the battlefield that
+	 * border sentry robots cannot leave (they must stay in the border area), but it also define the
+	 * distance from the border edges where border sentry robots are allowed/able to make damage to robots entering this
+	 * border area.
+	 *
+	 * @return the border size in units/pixels that border sentry robots are restricted to.
+	 * 
+	 * @since 1.9.0.0
+	 */
+	public int getSentryBorderSize() {
+		return sentryBorderSize;
 	}
 
 	/**

@@ -34,10 +34,10 @@ class __IRobotStatics extends system.Object implements net.sf.robocode.peer.IRob
     }
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isTeamRobot();
+    public native boolean isAdvancedRobot();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
-    public native boolean isAdvancedRobot();
+    public native boolean isTeamRobot();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isInteractiveRobot();

@@ -43,13 +43,14 @@ namespace Robocode
     ///  <br /><see href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
     ///    Building your first robot
     ///  </see>
-    ///  <seealso cref="JuniorRobot" />
-    ///  <seealso cref="AdvancedRobot" />
-    ///  <seealso cref="TeamRobot" />
-    ///  <seealso cref="IDroid" />
+    /// <seealso cref="JuniorRobot"/>
+    /// <seealso cref="AdvancedRobot"/>
+    /// <seealso cref="TeamRobot"/>
+    /// <seealso cref="RateControlRobot"/>
+    /// <seealso cref="IDroid"/>
+    /// <seealso cref="IBorderSentry"/>
     ///</summary>
-    public abstract class Robot : IInteractiveRobot, IPaintRobot, IBasicEvents3, IInteractiveEvents,
-                                  IPaintEvents, IRunnable
+    public abstract class Robot : IInteractiveRobot, IPaintRobot, IBasicEvents3, IInteractiveEvents, IPaintEvents, IRunnable
     {
         private const int
             WIDTH = 40,
@@ -698,6 +699,26 @@ namespace Robocode
             }
         }
 
+        ///<summary>
+        ///  Returns the sentry border size for a <see cref="Robocode.BorderSentry">BorderSentry</see> that defines the how
+        ///  far a BorderSentry is allowed to move from the border edges measured in units.<br/>
+        ///  Hence, the sentry border size defines the width/range of the border area surrounding the battlefield that
+        ///  BorderSentrys cannot leave (sentry robots robots must stay in the border area), but it also define the
+        ///  distance from the border edges where BorderSentrys are allowed/able to make damage to robots entering this
+        ///  border area.
+        ///</summary>
+        public int SentryBorderSize
+        {
+            get {
+                if (peer != null)
+                {
+                    return peer.GetSentryBorderSize();
+                }
+                UninitializedException();
+                return 0; // never called
+            }
+        }
+
         /// <summary>
         ///   Returns how many opponents that are left in the current round.
         /// </summary>
@@ -914,7 +935,7 @@ namespace Robocode
         ///   Assuming both the robot and gun start Out facing up (0 degrees):
         ///   <code>
         ///   // Set gun to turn with the robot's turn
-        ///   setAdjustGunForRobotTurn(false); // This is the default
+        ///   SetAdjustGunForRobotTurn(false); // This is the default
         ///   TurnRight(90);
         ///   // At this point, both the robot and gun are facing right (90 degrees)
         ///   TurnLeft(90);
@@ -923,7 +944,7 @@ namespace Robocode
         ///   -- or --
         ///   <code>
         ///   // Set gun to turn independent from the robot's turn
-        ///   setAdjustGunForRobotTurn(true);
+        ///   SetAdjustGunForRobotTurn(true);
         ///   TurnRight(90);
         ///   // At this point, the robot is facing right (90 degrees), but the gun is still facing up.
         ///   TurnLeft(90);
@@ -980,14 +1001,14 @@ namespace Robocode
         ///   degrees):
         ///   <code>
         ///   // Set radar to turn with the robots's turn
-        ///   setAdjustRadarForRobotTurn(false); // This is the default
+        ///   SetAdjustRadarForRobotTurn(false); // This is the default
         ///   TurnRight(90);
         ///   // At this point, the body, gun, and radar are all facing right (90 degrees);
         ///   </code>
         ///   -- or --
         ///   <code>
         ///   // Set radar to turn independent from the robot's turn
-        ///   setAdjustRadarForRobotTurn(true);
+        ///   SetAdjustRadarForRobotTurn(true);
         ///   TurnRight(90);
         ///   // At this point, the robot and gun are facing right (90 degrees), but the radar is still facing up.
         ///   </code>

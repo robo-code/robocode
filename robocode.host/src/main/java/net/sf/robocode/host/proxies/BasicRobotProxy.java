@@ -300,6 +300,11 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		return status.getRoundNum();
 	}
 
+	public int getSentryBorderSize() {
+		getCall();
+		return statics.getBattleRules().getSentryBorderSize();
+	}
+
 	public Graphics2D getGraphics() {
 		getCall();
 		commands.setTryingToPaint(true);

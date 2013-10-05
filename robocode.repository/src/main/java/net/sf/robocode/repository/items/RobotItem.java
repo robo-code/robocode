@@ -65,7 +65,7 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	private static final boolean ALWAYS_USE_CACHE_FOR_DATA = System.getProperty("ALWAYSUSECACHEFORDATA", "false").equals(
 			"true");
 
-	RobotType robotType;
+	private RobotType robotType;
 
 	private URL classPathURL;
 	private Set<URL> sourcePathURLs; // This is a Set in order to avoid duplicates
@@ -445,20 +445,28 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		populatePropertiesURLFromClassURL();
 	}
 
-	public boolean isDroid() {
-		return robotType.isDroid();
+	public boolean isJuniorRobot() {
+		return robotType.isJuniorRobot();
 	}
 
-	public boolean isTeamRobot() {
-		return robotType.isTeamRobot();
+	public boolean isStandardRobot() {
+		return robotType.isStandardRobot();
 	}
 
 	public boolean isAdvancedRobot() {
 		return robotType.isAdvancedRobot();
 	}
 
-	public boolean isStandardRobot() {
-		return robotType.isStandardRobot();
+	public boolean isTeamRobot() {
+		return robotType.isTeamRobot();
+	}
+
+	public boolean isDroid() {
+		return robotType.isDroid();
+	}
+
+	public boolean isSentryRobot() {
+		return robotType.isSentryRobot();
 	}
 
 	public boolean isInteractiveRobot() {
@@ -467,10 +475,6 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 
 	public boolean isPaintRobot() {
 		return robotType.isPaintRobot();
-	}
-
-	public boolean isJuniorRobot() {
-		return robotType.isJuniorRobot();
 	}
 
 	public URL getClassPathURL() {

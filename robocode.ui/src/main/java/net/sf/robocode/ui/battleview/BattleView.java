@@ -19,6 +19,7 @@ import net.sf.robocode.ui.IWindowManagerExt;
 import net.sf.robocode.ui.gfx.GraphicsState;
 import net.sf.robocode.ui.gfx.RenderImage;
 import net.sf.robocode.ui.gfx.RobocodeLogo;
+import robocode.BattleRules;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.BattleStartedEvent;
@@ -53,6 +54,8 @@ public class BattleView extends Canvas {
 
 	private final static int ROBOT_TEXT_Y_OFFSET = 24;
 
+	private BattleRules battleRules;
+	
 	// The battle and battlefield,
 	private BattleField battleField;
 
@@ -316,7 +319,7 @@ public class BattleView extends Canvas {
 		}
 
 		// Draw the border of the battlefield
-		drawBorder(g);
+		drawBorderEdge(g);
 
 		if (snapShot != null) {
 			// Draw all bullets
@@ -331,16 +334,11 @@ public class BattleView extends Canvas {
 	}
 
 	private void drawGround(Graphics2D g) {
-		if (!drawGround) {
-			// Ground should not be drawn
-			g.setColor(Color.BLACK);
-			g.fillRect(0, 0, battleField.getWidth(), battleField.getHeight());
-		} else {
+		if (drawGround) {
 			// Create pre-rendered ground image if it is not available
 			if (groundImage == null) {
 				createGroundImage();
 			}
-
 			// Draw the pre-rendered ground if it is available
 			if (groundImage != null) {
 				int groundWidth = (int) (battleField.getWidth() * scale) + 1;
@@ -356,10 +354,30 @@ public class BattleView extends Canvas {
 
 				g.setTransform(savedTx);
 			}
+		} else {
+			// Ground should not be drawn
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, battleField.getWidth(), battleField.getHeight());
+		}
+
+		// Draw Sentry Border if it is enabled visually
+		if (properties.getOptionsViewSentryBorder()) {
+			drawSentryBorder(g);
 		}
 	}
 
-	private void drawBorder(Graphics2D g) {
+	private void drawSentryBorder(Graphics2D g) {
+		int borderSentrySize = battleRules.getSentryBorderSize();
+		
+		g.setColor(new Color(0xff, 0x00, 0x00, 0x80));
+		g.fillRect(0, 0, borderSentrySize, battleField.getHeight());
+		g.fillRect(battleField.getWidth() - borderSentrySize, 0, borderSentrySize, battleField.getHeight());
+		g.fillRect(borderSentrySize, 0, battleField.getWidth() - 2 * borderSentrySize, borderSentrySize);
+		g.fillRect(borderSentrySize, battleField.getHeight() - borderSentrySize,
+				battleField.getWidth() - 2 * borderSentrySize, borderSentrySize);
+	}
+	
+	private void drawBorderEdge(Graphics2D g) {
 		final Shape savedClip = g.getClip();
 
 		g.setClip(null);
@@ -651,8 +669,9 @@ public class BattleView extends Canvas {
 
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
-			battleField = new BattleField(event.getBattleRules().getBattlefieldWidth(),
-					event.getBattleRules().getBattlefieldHeight());
+			battleRules = event.getBattleRules();
+			
+			battleField = new BattleField(battleRules.getBattlefieldWidth(), battleRules.getBattlefieldHeight());
 
 			initialized = false;
 			setVisible(true);

@@ -78,6 +78,7 @@
     <Compile Include="robocode\BulletHitEvent.cs" />
     <Compile Include="robocode\BulletMissedEvent.cs" />
     <Compile Include="robocode\Condition.cs" />
+    <Compile Include="robocode\IBorderSentry.cs" />
     <Compile Include="robocode\CustomEvent.cs" />
     <Compile Include="robocode\DeathEvent.cs" />
     <Compile Include="robocode\IDroid.cs" />
@@ -157,7 +158,7 @@
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)\robocode.dotnet.host\target"</PostBuildEvent>
     <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
-echo [assembly: System.Reflection.AssemblyVersion("1.8.1.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
+echo [assembly: System.Reflection.AssemblyVersion("1.9.0.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
 </PreBuildEvent>
   </PropertyGroup>
 </Project>

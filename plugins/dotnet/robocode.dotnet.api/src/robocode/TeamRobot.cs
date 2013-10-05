@@ -23,7 +23,9 @@ namespace Robocode
     /// <seealso cref="JuniorRobot"/>
     /// <seealso cref="Robot"/>
     /// <seealso cref="AdvancedRobot"/>
+    /// <seealso cref="RateControlRobot"/>
     /// <seealso cref="IDroid"/>
+    /// <seealso cref="IBorderSentry"/>
     /// </summary>
     public abstract class TeamRobot : AdvancedRobot, ITeamRobot, ITeamEvents
     {

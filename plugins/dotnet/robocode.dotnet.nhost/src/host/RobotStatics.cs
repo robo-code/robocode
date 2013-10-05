@@ -25,13 +25,14 @@ namespace net.sf.robocode.host
         private readonly int contestantIndex;
         private readonly string fullClassName;
         private readonly int index;
-        private readonly bool isAdvancedRobot;
-        private readonly bool isDroid;
-        private readonly bool isInteractiveRobot;
         private readonly bool isJuniorRobot;
+        private readonly bool isAdvancedRobot;
+        private readonly bool isTeamRobot;
+        private readonly bool isDroid;
+        private readonly bool isSentryRobot;
+        private readonly bool isInteractiveRobot;
         private readonly bool isPaintRobot;
         private readonly bool isTeamLeader;
-        private readonly bool isTeamRobot;
         private readonly string name;
         private readonly string shortClassName;
         private readonly string shortName;
@@ -40,17 +41,18 @@ namespace net.sf.robocode.host
         private readonly string veryShortName;
 
         public RobotStatics(bool isJuniorRobot, bool isInteractiveRobot, bool isPaintRobot, bool isAdvancedRobot,
-                            bool isTeamRobot, bool isTeamLeader, bool isDroid, string name, string shortName,
+                            bool isTeamRobot, bool isTeamLeader, bool isDroid, bool isSentryRobot, string name, string shortName,
                             string veryShortName, string fullClassName, string shortClassName, BattleRules battleRules,
                             string[] teammates, string teamName, int index, int contestantIndex)
         {
             this.isJuniorRobot = isJuniorRobot;
-            this.isInteractiveRobot = isInteractiveRobot;
-            this.isPaintRobot = isPaintRobot;
             this.isAdvancedRobot = isAdvancedRobot;
             this.isTeamRobot = isTeamRobot;
-            this.isTeamLeader = isTeamLeader;
             this.isDroid = isDroid;
+            this.isSentryRobot = isSentryRobot;
+            this.isInteractiveRobot = isInteractiveRobot;
+            this.isPaintRobot = isPaintRobot;
+            this.isTeamLeader = isTeamLeader;
             this.name = name;
             this.shortName = shortName;
             this.veryShortName = veryShortName;
@@ -92,14 +94,14 @@ namespace net.sf.robocode.host
             return isJuniorRobot;
         }
 
-        public bool IsTeamLeader()
-        {
-            return isTeamLeader;
-        }
-
         public bool IsDroid()
         {
             return isDroid;
+        }
+
+        public bool IsTeamLeader()
+        {
+            return isTeamLeader;
         }
 
         public string getName()
@@ -172,13 +174,14 @@ namespace net.sf.robocode.host
             public int sizeOf(RbSerializerN serializer, object obje)
             {
                 var obj = (RobotStatics) obje;
-                int size = RbSerializerN.SIZEOF_TYPEINFO + RbSerializerN.SIZEOF_BOOL*7
+                int size = RbSerializerN.SIZEOF_TYPEINFO
+                           + RbSerializerN.SIZEOF_BOOL*9
                            + serializer.sizeOf(obj.name)
                            + serializer.sizeOf(obj.shortName)
                            + serializer.sizeOf(obj.veryShortName)
                            + serializer.sizeOf(obj.fullClassName)
                            + serializer.sizeOf(obj.shortClassName)
-                           + RbSerializerN.SIZEOF_INT*5
+                           + RbSerializerN.SIZEOF_INT*6
                            + RbSerializerN.SIZEOF_DOUBLE
                            + RbSerializerN.SIZEOF_LONG;
                 if (obj.teammates != null)
@@ -205,6 +208,7 @@ namespace net.sf.robocode.host
                 serializer.serialize(buffer, obj.isTeamRobot);
                 serializer.serialize(buffer, obj.isTeamLeader);
                 serializer.serialize(buffer, obj.isDroid);
+                serializer.serialize(buffer, obj.isSentryRobot);
                 serializer.serialize(buffer, obj.name);
                 serializer.serialize(buffer, obj.shortName);
                 serializer.serialize(buffer, obj.veryShortName);
@@ -215,6 +219,8 @@ namespace net.sf.robocode.host
                 serializer.serialize(buffer, obj.battleRules.NumRounds);
                 serializer.serialize(buffer, obj.battleRules.GunCoolingRate);
                 serializer.serialize(buffer, obj.battleRules.InactivityTime);
+                serializer.serialize(buffer, obj.battleRules.HideEnemyNames);
+                serializer.serialize(buffer, obj.battleRules.SentryBorderSize);
                 if (obj.teammates != null)
                 {
                     foreach (string mate in obj.teammates)
@@ -237,17 +243,20 @@ namespace net.sf.robocode.host
                 bool isTeamRobot = serializer.deserializeBoolean(buffer);
                 bool isTeamLeader = serializer.deserializeBoolean(buffer);
                 bool isDroid = serializer.deserializeBoolean(buffer);
+                bool isSentryRobot = serializer.deserializeBoolean(buffer);
                 string name = serializer.deserializeString(buffer);
                 string shortName = serializer.deserializeString(buffer);
                 string veryShortName = serializer.deserializeString(buffer);
                 string fullClassName = serializer.deserializeString(buffer);
                 string shortClassName = serializer.deserializeString(buffer);
                 BattleRules battleRules = HiddenAccessN.createRules(
-                    serializer.deserializeInt(buffer),
-                    serializer.deserializeInt(buffer),
-                    serializer.deserializeInt(buffer),
-                    serializer.deserializeDouble(buffer),
-                    serializer.deserializeLong(buffer)
+                    serializer.deserializeInt(buffer), // BattlefieldWidth
+                    serializer.deserializeInt(buffer), // BattlefieldHeight
+                    serializer.deserializeInt(buffer), // NumRounds
+                    serializer.deserializeDouble(buffer), // GunCoolingRate
+                    serializer.deserializeLong(buffer), // InactivityTime
+                    serializer.deserializeBoolean(buffer), // HideEnemyNames
+                    serializer.deserializeInt(buffer) // SentryBorderSize
                     );
 
                 var teammates = new List<string>();
@@ -265,7 +274,6 @@ namespace net.sf.robocode.host
                 int index = serializer.deserializeInt(buffer);
                 int contestantIndex = serializer.deserializeInt(buffer);
 
-
                 return new RobotStatics(
                     isJuniorRobot,
                     isInteractiveRobot,
@@ -274,6 +282,7 @@ namespace net.sf.robocode.host
                     isTeamRobot,
                     isTeamLeader,
                     isDroid,
+                    isSentryRobot,
                     name,
                     shortName,
                     veryShortName,

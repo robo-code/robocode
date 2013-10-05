@@ -1,3 +1,30 @@
+## Version 1.9.0.0 Beta (13-Jun-2013) The BorderSentry Robot Release
+
+### New features
+* *BorderSentry interface*: Added a new robot type (the BorderSentry) that allows you to implement sentry robots.
+	* The Border Sentry robot is dedicated to Liam Noonan from Limerick Institute of Technology and Robocode Ireland
+	in general. :-)
+	* The inspiration for this type of robot comes from the TV series named [Robot Wars](http://www.ukgameshows.com/ukgs/Robot_Wars).
+	* Border sentry robots are used for guarding the borders of the battlefield and hence are useful against "wall
+	crawlers" that try to hide at the borders like e.g. ``sample.Corners`` and ``sample.Walls``.
+	* Border sentry robots...
+		* have 400 additional energy points meaning that a border sentry robot starts with 500 energy points!
+		* only appear at the borders of the battlefield, when a new round is started defined by the "border sentry size",
+		which is a game rules that can be adjusted similar to other game rules. The default border sentry size is 100 units.
+		* can only make damage to other robot types within the *sentry border*.
+		* can receive damage from other robots, but they will not gain additional energy points due to Mathew Nelson's
+		point regarding "Energy Batteries" ;-)
+		* does not receive scores in the Ranking Panel nor Battle Results, even though you can see its score, like
+		ramming damage, bullet damage etc.
+	* A new method names ``getSentryBorderSize()`` has been added to the Robot classes that returns the size / attack
+	range from the edge of the borders, where BorderSentry robots are able to hit other robot types.
+	* A new method named ``isSentryRobot()`` has been added to the ``ScannedRobotEvent`` event class.
+	* When there is only one regular robot left on the battle field with one or more border sentry robots, the round is
+	automatically ended.
+	* A new sample robot has been added named ``samplesentry.Guard``. Try it out againt your robot(s).
+	* An additional option has been added to the View Options in the Preferences to enable and disable the visual
+	appearance of the sentry border, which is painted in transparent red (danger zone).
+
 ## Version 1.8.3.0 (04-Oct-2013) The Editor Theme Release
 
 ### Bug fixes

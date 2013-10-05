@@ -41,6 +41,7 @@ import static java.lang.Math.toDegrees;
  * @see AdvancedRobot
  * @see TeamRobot
  * @see Droid
+ * @see BorderSentry
  *
  * @author Joshua Galecki (original)
  * @author Flemming N. Larsen (contributor)

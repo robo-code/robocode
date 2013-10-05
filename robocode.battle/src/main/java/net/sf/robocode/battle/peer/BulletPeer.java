@@ -135,8 +135,20 @@ public class BulletPeer {
 				victim = otherRobot;
 
 				double damage = Rules.getBulletDamage(power);
-				double score = damage;
 
+				if (owner.isSentryRobot()) {
+					if (victim.isSentryRobot()) {
+						damage = 0;
+					} else {					
+						int range = battleRules.getSentryBorderSize();
+						if (x > range && x < (battleRules.getBattlefieldWidth() - range) && y > range
+								&& y < (battleRules.getBattlefieldHeight() - range)) {
+							damage = 0;
+						}
+					}
+				}
+
+				double score = damage;
 				if (score > otherRobot.getEnergy()) {
 					score = otherRobot.getEnergy();
 				}
@@ -148,21 +160,21 @@ public class BulletPeer {
 					owner.getRobotStatistics().scoreBulletDamage(otherRobot.getName(), score);
 				}
 
-				if (otherRobot.getEnergy() <= 0) {
-					if (otherRobot.isAlive()) {
-						otherRobot.kill();
-						if (!teamFire) {
-							final double bonus = owner.getRobotStatistics().scoreBulletKill(otherRobot.getName());
-
-							if (bonus > 0) {
-								owner.println(
-										"SYSTEM: Bonus for killing "
-												+ (owner.getNameForEvent(otherRobot) + ": " + (int) (bonus + .5)));
-							}
+				if (otherRobot.getEnergy() <= 0 && otherRobot.isAlive()) {
+					otherRobot.kill();
+					if (!teamFire) {
+						double bonus = owner.getRobotStatistics().scoreBulletKill(otherRobot.getName());
+						if (bonus > 0) {
+							owner.println(
+									"SYSTEM: Bonus for killing "
+											+ (owner.getNameForEvent(otherRobot) + ": " + (int) (bonus + .5)));
 						}
 					}
 				}
-				owner.updateEnergy(Rules.getBulletHitBonus(power));
+
+				if (!victim.isSentryRobot()) {
+					owner.updateEnergy(Rules.getBulletHitBonus(power));
+				}
 
 				Bullet bullet = createBullet(false);
 

@@ -18,22 +18,17 @@ public interface IRobotItem extends IRobotSpecItem {
 	URL getClassPathURL();
 
 	String getWritableDirectory();
-
 	String getReadableDirectory();
 
 	String getPlatform();
 
-	boolean isDroid();
-
-	boolean isTeamRobot();
-
-	boolean isAdvancedRobot();
-
+	boolean isJuniorRobot();
 	boolean isStandardRobot();
+	boolean isAdvancedRobot();
+	boolean isTeamRobot();
+	boolean isDroid();
+	boolean isSentryRobot();
 
 	boolean isInteractiveRobot();
-
 	boolean isPaintRobot();
-
-	boolean isJuniorRobot();
 }

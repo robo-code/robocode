@@ -16,8 +16,8 @@ namespace net.sf.robocode.security
     /// <exclude/>
     public interface IHiddenRulesHelper
     {
-        BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate,
-                                long inactivityTime);
+        BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime,
+            bool hideEnemyNames, int borderSentryRobotAttackRange);
     }
 }
 

@@ -229,20 +229,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// statics 
 	// -------------------
 
-	public boolean isDroid() {
-		return statics.isDroid();
-	}
-
 	public boolean isJuniorRobot() {
 		return statics.isJuniorRobot();
-	}
-
-	public boolean isInteractiveRobot() {
-		return statics.isInteractiveRobot();
-	}
-
-	public boolean isPaintRobot() {
-		return statics.isPaintRobot();
 	}
 
 	public boolean isAdvancedRobot() {
@@ -251,6 +239,22 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public boolean isTeamRobot() {
 		return statics.isTeamRobot();
+	}
+
+	public boolean isDroid() {
+		return statics.isDroid();
+	}
+
+	public boolean isSentryRobot() {
+		return statics.isSentryRobot();
+	}
+
+	public boolean isInteractiveRobot() {
+		return statics.isInteractiveRobot();
+	}
+
+	public boolean isPaintRobot() {
+		return statics.isPaintRobot();
 	}
 
 	public String getName() {
@@ -679,9 +683,44 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		if (!valid) {
 			final Random random = RandomFactory.getRandom();
 
+			double maxWidth = battleRules.getBattlefieldWidth() - RobotPeer.WIDTH;
+			double maxHeight = battleRules.getBattlefieldHeight() - RobotPeer.HEIGHT;
+
+			double halfRobotWidth = RobotPeer.WIDTH / 2;
+			double halfRobotHeight = RobotPeer.HEIGHT / 2;
+
+			int minBorderWidth = Math.max(RobotPeer.WIDTH, (100 - RobotPeer.WIDTH)); // FIXME: Replace 100 with constant
+			int minBorderHeight = Math.max(RobotPeer.HEIGHT, (100 - RobotPeer.HEIGHT)); // FIXME: Replace 100 with constant
+
 			for (int j = 0; j < 1000; j++) {
-				x = RobotPeer.WIDTH + random.nextDouble() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
-				y = RobotPeer.HEIGHT + random.nextDouble() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+				double rndX = random.nextDouble();
+				double rndY = random.nextDouble();
+
+				x = halfRobotWidth;
+				y = halfRobotHeight;
+
+				if (isSentryRobot()) {
+					if (rndX / battleRules.getBattlefieldWidth() > rndY / battleRules.getBattlefieldHeight()) {
+						x = halfRobotWidth + rndX * maxWidth;
+						y = halfRobotHeight
+								+ ((rndY * 2 * minBorderHeight - minBorderHeight) + battleRules.getBattlefieldHeight())
+										% maxHeight;
+					} else {
+						x = halfRobotWidth
+								+ ((rndX * 2 * minBorderWidth - minBorderWidth) + battleRules.getBattlefieldWidth())
+										% maxWidth;
+						y = halfRobotHeight + rndY * maxHeight;
+					}
+					// Make sure that the border sentry robot is not placed outside the border sentry robot border
+					if (x > minBorderWidth && x < (battleRules.getBattlefieldWidth() - minBorderWidth)
+							&& y > minBorderWidth && y < (battleRules.getBattlefieldHeight() - minBorderWidth)) {
+						continue; // loop again to find better location
+					}
+				} else {
+					x = RobotPeer.WIDTH + rndX * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+					y = RobotPeer.HEIGHT + rndY * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+				}
+
 				bodyHeading = 2 * Math.PI * random.nextDouble();
 				gunHeading = radarHeading = bodyHeading;
 				updateBoundingBox();
@@ -697,15 +736,17 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		isWinner = false;
 		velocity = 0;
 
-		if (statics.isTeamLeader() && statics.isDroid()) {
-			energy = 220;
-		} else if (statics.isTeamLeader()) {
-			energy = 200;
-		} else if (statics.isDroid()) {
-			energy = 120;
-		} else {
-			energy = 100;
+		energy = 100;
+		if (statics.isSentryRobot()) {
+			energy += 400;
 		}
+		if (statics.isTeamLeader()) {
+			energy += 100;
+		}
+		if (statics.isDroid()) {
+			energy += 20;
+		}
+
 		gunHeat = 3;
 
 		setHalt(false);
@@ -753,7 +794,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public void startRound(long waitMillis, int waitNanos) {
 		Logger.logMessage(".", false);
 
-		statistics.initialize();
+		statistics.reset();
 
 		ExecCommands newExecCommands = new ExecCommands();
 
@@ -762,7 +803,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		newExecCommands.copyColors(commands.get());
 
 		currentCommands = newExecCommands;
-		int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
+		int others = battle.getActiveParticipants() - (isAlive() ? 1 : 0);
 		RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
 				currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),
 				currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others,
@@ -873,9 +914,14 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		// First and foremost, we can never go through a wall:
 		checkWallCollision();
 
+		// If this robot is a border sentry robot then check if it hits its "range border"
+		if (isSentryRobot()) {
+			checkSentryOutsideBorder();
+		}
+
 		// Now check for robot collision
 		checkRobotCollision(robots);
-
+		
 		// Scan false means robot did not call scan() manually.
 		// But if we're moving, scan
 		if (!scan) {
@@ -1023,32 +1069,34 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	private void checkWallCollision() {
+		int minX = 0 + HALF_WIDTH_OFFSET;
+		int minY = 0 + HALF_HEIGHT_OFFSET;
+		int maxX = (int) getBattleFieldWidth() - HALF_WIDTH_OFFSET;
+		int maxY = (int) getBattleFieldHeight() - HALF_HEIGHT_OFFSET;
+
 		boolean hitWall = false;
-		double fixx = 0, fixy = 0;
+		double adjustX = 0, adjustY = 0;
 		double angle = 0;
 
-		if (x > getBattleFieldWidth() - HALF_WIDTH_OFFSET) {
+		if (x < minX) {
 			hitWall = true;
-			fixx = getBattleFieldWidth() - HALF_WIDTH_OFFSET - x;
-			angle = normalRelativeAngle(PI / 2 - bodyHeading);
-		}
-
-		if (x < HALF_WIDTH_OFFSET) {
-			hitWall = true;
-			fixx = HALF_WIDTH_OFFSET - x;
+			adjustX = minX - x;
 			angle = normalRelativeAngle(3 * PI / 2 - bodyHeading);
-		}
 
-		if (y > getBattleFieldHeight() - HALF_HEIGHT_OFFSET) {
+		} else if (x > maxX) {
 			hitWall = true;
-			fixy = getBattleFieldHeight() - HALF_HEIGHT_OFFSET - y;
-			angle = normalRelativeAngle(-bodyHeading);
-		}
+			adjustX = maxX - x;
+			angle = normalRelativeAngle(PI / 2 - bodyHeading);
 
-		if (y < HALF_HEIGHT_OFFSET) {
+		} else if (y < minY) {
 			hitWall = true;
-			fixy = HALF_HEIGHT_OFFSET - y;
+			adjustY = minY - y;
 			angle = normalRelativeAngle(PI - bodyHeading);
+
+		} else if (y > maxY) {
+			hitWall = true;
+			adjustY = maxY - y;
+			angle = normalRelativeAngle(-bodyHeading);
 		}
 
 		if (hitWall) {
@@ -1059,27 +1107,31 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				double tanHeading = tan(bodyHeading);
 
 				// if it hits bottom or top wall
-				if (fixx == 0) {
-					fixx = fixy * tanHeading;
+				if (adjustX == 0) {
+					adjustX = adjustY * tanHeading;
 				} // if it hits a side wall
-				else if (fixy == 0) {
-					fixy = fixx / tanHeading;
+				else if (adjustY == 0) {
+					adjustY = adjustX / tanHeading;
 				} // if the robot hits 2 walls at the same time (rare, but just in case)
-				else if (abs(fixx / tanHeading) > abs(fixy)) {
-					fixy = fixx / tanHeading;
-				} else if (abs(fixy * tanHeading) > abs(fixx)) {
-					fixx = fixy * tanHeading;
+				else if (abs(adjustX / tanHeading) > abs(adjustY)) {
+					adjustY = adjustX / tanHeading;
+				} else if (abs(adjustY * tanHeading) > abs(adjustX)) {
+					adjustX = adjustY * tanHeading;
 				}
 			}
-			x += fixx;
-			y += fixy;
+			x += adjustX;
+			y += adjustY;
 
-			x = (HALF_WIDTH_OFFSET >= x)
-					? HALF_WIDTH_OFFSET
-					: ((getBattleFieldWidth() - HALF_WIDTH_OFFSET < x) ? getBattleFieldWidth() - HALF_WIDTH_OFFSET : x);
-			y = (HALF_HEIGHT_OFFSET >= y)
-					? HALF_HEIGHT_OFFSET
-					: ((getBattleFieldHeight() - HALF_HEIGHT_OFFSET < y) ? getBattleFieldHeight() - HALF_HEIGHT_OFFSET : y);
+			if (x < minX) {
+				x = minX;
+			} else if (x > maxX) {
+				x = maxX;
+			}
+			if (y < minY) {
+				y = minY;
+			} else if (y > maxY) {
+				y = maxY;
+			}
 
 			// Update energy, but do not reset inactiveTurnCount
 			if (statics.isAdvancedRobot()) {
@@ -1090,8 +1142,95 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 			currentCommands.setDistanceRemaining(0);
 			velocity = 0;
+
+			setState(RobotState.HIT_WALL);
 		}
+	}
+
+	private void checkSentryOutsideBorder() {
+		int range = battle.getBattleRules().getSentryBorderSize();
+
+		int minX = range - HALF_WIDTH_OFFSET;
+		int minY = range - HALF_HEIGHT_OFFSET;
+		int maxX = (int) getBattleFieldWidth() - range + HALF_WIDTH_OFFSET;
+		int maxY = (int) getBattleFieldHeight() - range + HALF_HEIGHT_OFFSET;
+
+		boolean hitWall = false;
+		double adjustX = 0, adjustY = 0;
+		double angle = 0;
+
+		boolean isOutsideBorder = x > minX && x < maxX && y > minY && y < maxY;
+		
+		if (isOutsideBorder) {
+			if ((x - minX) <= Rules.MAX_VELOCITY) {
+				hitWall = true;
+				adjustX = minX - x;
+				angle = normalRelativeAngle(PI / 2 - bodyHeading);
+
+			} else if ((maxX - x) <= Rules.MAX_VELOCITY) {
+				hitWall = true;
+				adjustX = maxX - x;
+				angle = normalRelativeAngle(3 * PI / 2 - bodyHeading);
+
+			} else if ((y - minY) <= Rules.MAX_VELOCITY) {
+				hitWall = true;
+				adjustY = minY - y;
+				angle = normalRelativeAngle(-bodyHeading);
+
+			} else if ((maxY - y) <= Rules.MAX_VELOCITY) {
+				hitWall = true;
+				adjustY = maxY - y;
+				angle = normalRelativeAngle(PI - bodyHeading);
+			}
+		}
+
 		if (hitWall) {
+			addEvent(new HitWallEvent(angle));
+
+			// only fix both x and y values if hitting wall at an angle
+			if ((bodyHeading % (Math.PI / 2)) != 0) {
+				double tanHeading = tan(bodyHeading);
+
+				// if it hits bottom or top wall
+				if (adjustX == 0) {
+					adjustX = adjustY * tanHeading;
+				} // if it hits a side wall
+				else if (adjustY == 0) {
+					adjustY = adjustX / tanHeading;
+				} // if the robot hits 2 walls at the same time (rare, but just in case)
+				else if (abs(adjustX / tanHeading) > abs(adjustY)) {
+					adjustY = adjustX / tanHeading;
+				} else if (abs(adjustY * tanHeading) > abs(adjustX)) {
+					adjustX = adjustY * tanHeading;
+				}
+			}
+
+			x += adjustX;
+			y += adjustY;
+
+			if (isOutsideBorder) {
+				if ((x - minX) <= Rules.MAX_VELOCITY) {
+					x = minX;
+				} else if ((maxX - x) <= Rules.MAX_VELOCITY) {
+					x = maxX;
+				}
+				if ((y - minY) <= Rules.MAX_VELOCITY) {
+					y = minY;
+				} else if ((maxY - y) <= Rules.MAX_VELOCITY) {
+					y = maxY;
+				}
+			}
+
+			// Update energy, but do not reset inactiveTurnCount
+			if (statics.isAdvancedRobot()) {
+				setEnergy(energy - Rules.getWallHitDamage(velocity), false);
+			}
+
+			updateBoundingBox();
+
+			currentCommands.setDistanceRemaining(0);
+			velocity = 0;
+
 			setState(RobotState.HIT_WALL);
 		}
 	}
@@ -1412,7 +1551,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 				final ScannedRobotEvent event = new ScannedRobotEvent(getNameForEvent(otherRobot), otherRobot.energy,
 						normalRelativeAngle(angle - getBodyHeading()), dist, otherRobot.getBodyHeading(),
-						otherRobot.getVelocity());
+						otherRobot.getVelocity(), otherRobot.isSentryRobot());
 
 				addEvent(event);
 			}
@@ -1588,7 +1727,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public void publishStatus(long currentTurn) {
 
 		final ExecCommands currentCommands = commands.get();
-		int others = battle.getActiveRobots() - (isAlive() ? 1 : 0);
+		int others = battle.getActiveParticipants() - (isAlive() ? 1 : 0);
 		RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
 				currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),
 				currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others,

@@ -68,7 +68,7 @@ public final class Battle extends BaseBattle {
 	private List<RobotPeer> robots = new ArrayList<RobotPeer>();
 	private List<ContestantPeer> contestants = new ArrayList<ContestantPeer>();
 	private final List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
-	private int activeRobots;
+	private int activeParticipants;
 
 	// Death events
 	private final List<RobotPeer> deathRobots = new CopyOnWriteArrayList<RobotPeer>();
@@ -86,13 +86,13 @@ public final class Battle extends BaseBattle {
 		this.cpuConstant = cpuManager.getCpuConstant();
 	}
 
-	public void setup(RobotSpecification[] battlingRobotsList, BattleProperties battleProperties, boolean paused) {
+	public void setup(RobotSpecification[] battlingRobotsList, BattleProperties battleProps, boolean paused) {
 		isPaused = paused;
-		battleRules = HiddenAccess.createRules(battleProperties.getBattlefieldWidth(),
-				battleProperties.getBattlefieldHeight(), battleProperties.getNumRounds(), battleProperties.getGunCoolingRate(),
-				battleProperties.getInactivityTime(), battleProperties.getHideEnemyNames());
+		battleRules = HiddenAccess.createRules(battleProps.getBattlefieldWidth(), battleProps.getBattlefieldHeight(),
+				battleProps.getNumRounds(), battleProps.getGunCoolingRate(), battleProps.getInactivityTime(),
+				battleProps.getHideEnemyNames(), battleProps.getSentryBorderSize());
 		robotsCount = battlingRobotsList.length;
-		computeInitialPositions(battleProperties.getInitialPositions());
+		computeInitialPositions(battleProps.getInitialPositions());
 		createPeers(battlingRobotsList);
 	}
 
@@ -251,8 +251,8 @@ public final class Battle extends BaseBattle {
 	 *
 	 * @return Returns a int
 	 */
-	public int getActiveRobots() {
-		return activeRobots;
+	public int getActiveParticipants() {
+		return activeParticipants;
 	}
 
 	@Override
@@ -340,7 +340,7 @@ public final class Battle extends BaseBattle {
 			}
 		}
 
-		computeActiveRobots();
+		computeActiveParticipants();
 
 		hostManager.resetThreadManager();
 	}
@@ -414,7 +414,7 @@ public final class Battle extends BaseBattle {
 
 		inactiveTurnCount++;
 
-		computeActiveRobots();
+		computeActiveParticipants();
 
 		publishStatuses();
 
@@ -440,18 +440,16 @@ public final class Battle extends BaseBattle {
 
 				for (RobotPeer robotPeer : getRobotsAtRandom()) {
 					robotPeer.addEvent(roundEndedEvent);
-					if (robotPeer.isAlive()) {
-						if (!robotPeer.isWinner()) {
-							robotPeer.getRobotStatistics().scoreLastSurvivor();
-							robotPeer.setWinner(true);
-							robotPeer.println("SYSTEM: " + robotPeer.getNameForEvent(robotPeer) + " wins the round.");
-							robotPeer.addEvent(new WinEvent());
-							if (robotPeer.getTeamPeer() != null) {
-								if (robotPeer.isTeamLeader()) {
-									leaderFirsts = true;
-								} else {
-									winningTeam = robotPeer.getTeamPeer();
-								}
+					if (robotPeer.isAlive() && !robotPeer.isWinner() && !robotPeer.isSentryRobot()) {
+						robotPeer.getRobotStatistics().scoreLastSurvivor();
+						robotPeer.setWinner(true);
+						robotPeer.println("SYSTEM: " + robotPeer.getNameForEvent(robotPeer) + " wins the round.");
+						robotPeer.addEvent(new WinEvent());
+						if (robotPeer.getTeamPeer() != null) {
+							if (robotPeer.isTeamLeader()) {
+								leaderFirsts = true;
+							} else {
+								winningTeam = robotPeer.getTeamPeer();
 							}
 						}
 					}
@@ -626,16 +624,16 @@ public final class Battle extends BaseBattle {
 		}
 	}
 
-	private void computeActiveRobots() {
-		int ar = 0;
+	private void computeActiveParticipants() {
+		int activeCount = 0;
 
 		// Compute active robots
 		for (RobotPeer robotPeer : robots) {
-			if (robotPeer.isAlive()) {
-				ar++;
+			if (robotPeer.isAlive() && !robotPeer.isSentryRobot()) {
+				activeCount++;
 			}
 		}
-		this.activeRobots = ar;
+		this.activeParticipants = activeCount;
 	}
 
 	private void wakeupRobots() {
@@ -692,11 +690,14 @@ public final class Battle extends BaseBattle {
 		int count = 0;
 
 		for (ContestantPeer c : contestants) {
-			if (c instanceof RobotPeer && ((RobotPeer) c).isAlive()) {
-				count++;
+			if (c instanceof RobotPeer) {
+				RobotPeer robot = (RobotPeer) c;
+				if (!robot.isSentryRobot() && robot.isAlive()) {
+					count++;
+				}
 			} else if (c instanceof TeamPeer && c != peer.getTeamPeer()) {
-				for (RobotPeer robotPeer : (TeamPeer) c) {
-					if (robotPeer.isAlive()) {
+				for (RobotPeer robot: (TeamPeer) c) {
+					if (!robot.isSentryRobot() && robot.isAlive()) {
 						count++;
 						break;
 					}
@@ -720,12 +721,10 @@ public final class Battle extends BaseBattle {
 
 		while (matcher.find()) {
 			String pos = matcher.group();
-
 			if (pos.length() > 0) {
 				positions.add(pos);
 			}
 		}
-
 		if (positions.size() == 0) {
 			return;
 		}
@@ -738,7 +737,7 @@ public final class Battle extends BaseBattle {
 		for (int i = 0; i < positions.size(); i++) {
 			coords = positions.get(i).split(",");
 
-			final Random random = RandomFactory.getRandom();
+			Random random = RandomFactory.getRandom();
 
 			x = RobotPeer.WIDTH + random.nextDouble() * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
 			y = RobotPeer.HEIGHT + random.nextDouble() * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
@@ -746,23 +745,21 @@ public final class Battle extends BaseBattle {
 
 			int len = coords.length;
 
-			if (len >= 1) {
-				// noinspection EmptyCatchBlock
+			if (len >= 1 && coords[0].trim().length() > 0) {
 				try {
 					x = Double.parseDouble(coords[0].replaceAll("[\\D]", ""));
-				} catch (NumberFormatException e) {}
-
-				if (len >= 2) {
-					// noinspection EmptyCatchBlock
+				} catch (NumberFormatException ignore) {// Could be the '?', which is fine
+				}
+				if (len >= 2 && coords[1].trim().length() > 0) {
 					try {
 						y = Double.parseDouble(coords[1].replaceAll("[\\D]", ""));
-					} catch (NumberFormatException e) {}
-
-					if (len >= 3) {
-						// noinspection EmptyCatchBlock
+					} catch (NumberFormatException ignore) {// Could be the '?', which is fine
+					}
+					if (len >= 3 && coords[2].trim().length() > 0) {
 						try {
 							heading = Math.toRadians(Double.parseDouble(coords[2].replaceAll("[\\D]", "")));
-						} catch (NumberFormatException e) {}
+						} catch (NumberFormatException ignore) {// Could be the '?', which is fine
+						}
 					}
 				}
 			}
@@ -773,7 +770,7 @@ public final class Battle extends BaseBattle {
 	}
 
 	private boolean oneTeamRemaining() {
-		if (getActiveRobots() <= 1) {
+		if (getActiveParticipants() <= 1) {
 			return true;
 		}
 

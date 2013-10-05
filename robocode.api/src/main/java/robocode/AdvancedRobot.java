@@ -26,10 +26,13 @@ import java.util.Vector;
  *      robocode.sourceforge.net</a>
  * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
  *      Building your first robot<a>
+ *
  * @see JuniorRobot
  * @see Robot
  * @see TeamRobot
+ * @see RateControlRobot
  * @see Droid
+ * @see BorderSentry
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)

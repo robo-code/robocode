@@ -99,6 +99,9 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	/** Flag specifying if this robot is a Droid */
 	private boolean isDroid;
 
+	/** Flag specifying if this robot is a SentryRobot */
+	private boolean isSentryRobot;
+	
 	/** Flag specifying if this robot is a IPaintRobot or is invoking getGraphics() */
 	private boolean isPaintRobot;
 
@@ -338,6 +341,13 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 */
 	public boolean isDroid() {
 		return isDroid;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isSentryRobot() {
+		return isSentryRobot;
 	}
 
 	/**
