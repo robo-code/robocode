@@ -22,13 +22,13 @@ import robocode.util.Utils;
 
 
 /**
- * Guard - a sample sentry robot that guards the borders of the battlefield.
+ * BorderGuard - a sample sentry robot that guards the borders of the battlefield.
  *
  * @author Flemming N. Larsen (original)
  * 
  * @since 1.9.0.0
  */
-public class Guard extends AdvancedRobot implements BorderSentry {
+public class BorderGuard extends AdvancedRobot implements BorderSentry {
 
 	// Map used retrieve the scanned data for a robot based on the robot name
 	Map<String/* robot name */, ScannedRobotData> scannedRobotData = new HashMap<String, ScannedRobotData>();

@@ -17,9 +17,9 @@ using Robocode.Util;
 namespace SampleCsSentry
 {
     /// <summary>
-    /// Guard - a sample sentry robot that guards the borders of the battlefield by Flemming N. Larsen
+    /// BorderGuard - a sample sentry robot that guards the borders of the battlefield by Flemming N. Larsen
     /// </summary>
-    public class Guard
+    public class BorderGuard
         : AdvancedRobot, IBorderSentry
     {
         // Dictionary used retrieve the scanned data for a robot based on the robot name
