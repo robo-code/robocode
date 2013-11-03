@@ -4,6 +4,7 @@ package net.sf.robocode.ui.editor;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Stack;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -17,7 +18,7 @@ public class HighlightLinePainter implements Highlighter.HighlightPainter {
 
 	private JTextComponent component;
 	private Color color;
-	private Rectangle lastView;
+	private Stack<Rectangle> repaintRects = new Stack<Rectangle>();
 
 	public HighlightLinePainter(JTextComponent component) {
 		this.component = component;
@@ -40,6 +41,7 @@ public class HighlightLinePainter implements Highlighter.HighlightPainter {
 		});
 
 		component.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mousePressed(MouseEvent e) {
 				resetHighlight();
 			}
@@ -50,18 +52,23 @@ public class HighlightLinePainter implements Highlighter.HighlightPainter {
 			component.getHighlighter().addHighlight(0, 0, this);
 		} catch (BadLocationException ignore) {}
 	}
-
+	
 	@Override
-	public void paint(Graphics g, int p0, int p1, Shape bounds, JTextComponent c) {
+	public void paint(Graphics g, int p0, int p1, Shape bounds, JTextComponent component) {
+
+		resetHighlight();
+
 		try {
-			Rectangle r = c.modelToView(c.getCaretPosition());
+			Rectangle viewRect = component.modelToView(component.getCaretPosition());
 
-			g.setColor(color);
-			g.fillRect(0, r.y, c.getWidth(), r.height);
+			Rectangle paintRect = new Rectangle(0, viewRect.y, component.getWidth(), viewRect.height);
 
-			if (lastView == null) {
-				lastView = r;
-			}
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(color);
+			g2.fill(paintRect);
+
+			repaintRects.push(paintRect);
+
 		} catch (BadLocationException ignore) {}
 	}
 
@@ -72,18 +79,10 @@ public class HighlightLinePainter implements Highlighter.HighlightPainter {
 	private void resetHighlight() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					int pos = component.getCaretPosition();
-					Rectangle currentView = component.modelToView(pos);
-
-					if (currentView != null && lastView != null) {
-						// Remove the highlighting from the previously highlighted line
-						if (lastView.y != currentView.y) {
-							component.repaint(0, lastView.y, component.getWidth(), lastView.height);
-							lastView = currentView;
-						}
-					}
-				} catch (BadLocationException ignore) {}
+				// Remove the highlighting from the previously highlighted lines
+				while (repaintRects.size() > 0) {
+					component.repaint(repaintRects.pop());
+				}
 			}
 		});
 	}
