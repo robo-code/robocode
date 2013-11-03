@@ -1,5 +1,8 @@
 ## Version 1.9.0.0 Beta (13-Jun-2013) The BorderSentry Robot Release
 
+### Bug fixes
+* Fixed various issues with the Robot Editor.
+
 ### New features
 * *BorderSentry interface*: Added a new robot type (the BorderSentry) that allows you to implement sentry robots.
 	* The Border Sentry robot is dedicated to Liam Noonan from Limerick Institute of Technology and Robocode Ireland

@@ -108,18 +108,23 @@ public class EditorPane extends JTextPane {
 
 	// Make sure to discard all undo/redo edits when text completely replaced
 	@Override
-	public void setText(String text) {
-		JavaDocument javaDocument = (JavaDocument) getDocument();
+	public void setText(final String text) {
+		// Adding this call to the EDT prevents problems with deleting text that eats text before the deletion
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JavaDocument javaDocument = (JavaDocument) getDocument();
 
-		// Bug-357: Tab characters are inserted in the last line of a robot source file when opening it.
-		// This bug was fixed by disabling auto-indentation while reading the file.
-		javaDocument.setReplacingText(true);
-		super.setText(text);
-		javaDocument.setReplacingText(false);
+				// Bug-357: Tab characters are inserted in the last line of a robot source file when opening it.
+				// This bug was fixed by disabling auto-indentation while reading the file.
+				javaDocument.setReplacingText(true);
+				EditorPane.super.setText(text);
+				javaDocument.setReplacingText(false);
 
-		resetCaretPosition();
+				resetCaretPosition();
 
-		undoManager.discardAllEdits();
+				undoManager.discardAllEdits();
+			}
+		});
 	}
 
 	// Make sure to discard all undo/redo edits when text is read as one block
