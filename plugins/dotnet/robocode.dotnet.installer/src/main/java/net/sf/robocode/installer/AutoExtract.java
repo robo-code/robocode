@@ -117,15 +117,12 @@ public class AutoExtract implements ActionListener {
 		JDialog statusDialog = new JDialog();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-		int height = 50;
-
-		if (File.separatorChar == '/') {
-			height = 100;
-		}
+		int width = 500;
+		int height = 100;
 
 		statusDialog.setTitle("Installing");
-		statusDialog.setLocation((screenSize.width - 500) / 2, (screenSize.height - height) / 2);
-		statusDialog.setSize(500, height);
+		statusDialog.setLocation((screenSize.width - width) / 2, (screenSize.height - height) / 2);
+		statusDialog.setSize(width, height);
 		JLabel status = new JLabel();
 
 		statusDialog.getContentPane().setLayout(new BorderLayout());
