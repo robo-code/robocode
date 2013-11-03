@@ -41,4 +41,21 @@ public final class StringUtil {
 		}
 		return out.toString();
 	}
+
+	/**
+	 * Returns the number of occurrences of a specific character.
+	 *
+	 * @param str is the string containing the character to look for.
+	 * @param chr is the character we look for.
+	 * @return the number of occurrences.
+	 */
+	public static int countChar(String str, char chr) {
+		int count = 0;
+		for (char c : str.toCharArray()) {
+			if (c == chr) {
+				count++;
+			}
+		}
+		return count;
+	}
 }

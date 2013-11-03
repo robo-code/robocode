@@ -28,6 +28,7 @@ import javax.swing.text.*;
 import net.sf.robocode.ui.editor.theme.EditorThemePropertiesManager;
 import net.sf.robocode.ui.editor.theme.EditorThemePropertyChangeAdapter;
 import net.sf.robocode.ui.editor.theme.IEditorThemeProperties;
+import net.sf.robocode.util.StringUtil;
 
 
 // FIXME: Column in status bar does not take tab size into account
@@ -502,6 +503,13 @@ public class JavaDocument extends StyledDocument {
 		throws BadLocationException {
 		// Check if the given line ends with a body start character, i.e. '{'
 		if (line.endsWith("{")) {
+			// We only start a new body indentation if the number of body start characters in the first part of the
+			// text up to specified offset lesser than the number of body end characters in the last part of the text
+			String textFirstHalf = getText(0, offset);
+			String textLastHalf = getText(offset, getLength() - offset);
+			if (StringUtil.countChar(textLastHalf, '}') >= StringUtil.countChar(textFirstHalf, '{')) {
+				return false;
+			}
 			// Calculated current start indentation length from the given offset
 			int startIndentLen = getIndentationLengthFromOffset(offset);
 			// Calculate the start indentation string
