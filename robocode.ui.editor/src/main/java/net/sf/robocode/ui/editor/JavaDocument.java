@@ -1121,21 +1121,9 @@ public class JavaDocument extends StyledDocument {
 		 */
 		private class CaretPositionUpdater {
 
-			// Flag specifying if the EDT for this updater is idle, meaning that a new EDT call must be initiated
-			private boolean isEDTidle = true;
 			// The recent updated caret position
 			private int updatedCaretPos;
 
-			// The caret updater, which is called by the EDT later to update the caret position
-			final Runnable caretUpdater = new Runnable() {
-				public void run() {
-					// Set the caret position, and take care that it is not out of range
-					textPane.setCaretPosition(Math.min(updatedCaretPos, getLength()));
-					// The EDT is finished so a new call must be initiated
-					isEDTidle = true;
-				}
-			};			
-			
 			/**
 			 * Updates the caret position via the EDT.
 			 *
@@ -1148,10 +1136,12 @@ public class JavaDocument extends StyledDocument {
 				// Update the caret position via the caret updater thru the EDT, if the EDT is idle.
 				// Otherwise, the EDT has already been initiated to update the caret position, which will use the most
 				// recent updated caret position.
-				if (isEDTidle) {
-					isEDTidle = false;
-					SwingUtilities.invokeLater(caretUpdater);
-				}
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						// Set the caret position, and take care that it is not out of range
+						textPane.setCaretPosition(Math.min(updatedCaretPos, getLength()));
+					}
+				});
 			}
 		}
 	}
