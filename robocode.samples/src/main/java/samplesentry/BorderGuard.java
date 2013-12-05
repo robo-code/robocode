@@ -122,20 +122,20 @@ public class BorderGuard extends AdvancedRobot implements BorderSentry {
 	 * This method is called by the game when your robot sees another robot, i.e. when the robot's
 	 * radar scan "hits" another robot.
 	 * 
-	 * @param event
+	 * @param scannedRobotEvent
 	 *            is a ScannedRobotEvent event.
 	 */
 	@Override
-	public void onScannedRobot(ScannedRobotEvent event) {
+	public void onScannedRobot(ScannedRobotEvent scannedRobotEvent) {
 		// Check that the scanned robot is not a sentry robot
-		if (!event.isSentryRobot()) {
+		if (!scannedRobotEvent.isSentryRobot()) {
 			// The scanned robot is not a sentry robot...
 
 			// Update the enemy map
-			updateEnemyMap(event);
+			updateEnemyMap(scannedRobotEvent);
 
 			// Update the scan direction
-			updateScanDirection(event);
+			updateScanDirection(scannedRobotEvent);
 
 			// Update enemy target positions
 			updateEnemyTargetPositions();
@@ -145,14 +145,14 @@ public class BorderGuard extends AdvancedRobot implements BorderSentry {
 	/**
 	 * This method is called by the game when another robot dies.
 	 * 
-	 * @param event
+	 * @param robotDeathEvent
 	 *            is the RobotDeathEvent that occurs, when another robot dies, which contains data
 	 *            for the robot that died.
 	 */
 	@Override
-	public void onRobotDeath(RobotDeathEvent event) {
+	public void onRobotDeath(RobotDeathEvent robotDeathEvent) {
 		// Gets the name of the robot that died
-		final String deadRobotName = event.getName();
+		final String deadRobotName = robotDeathEvent.getName();
 
 		// Remove the robot data for the robot that died from the enemy map
 		enemyMap.remove(deadRobotName);
@@ -161,7 +161,7 @@ public class BorderGuard extends AdvancedRobot implements BorderSentry {
 		if (oldestScanned != null && oldestScanned.name.equals(deadRobotName)) {
 			oldestScanned = null;
 		}
-		if (target != null && target.name.equals(event.getName())) {
+		if (target != null && target.name.equals(deadRobotName)) {
 			target = null;
 		}
 	}
@@ -188,8 +188,9 @@ public class BorderGuard extends AdvancedRobot implements BorderSentry {
 		// scanned the last time, and another circle where our robot must point the gun in order to
 		// hit it (target coordinate). In addition, a line is drawn between these circles.
 		for (RobotData robot : enemyMap.values()) {
-			paintCircle(g, robot.scannedX, robot.scannedY, color1); // scanned coordinate
-			paintCircle(g, robot.targetX, robot.targetY, color2); // target coordinate
+			// Paint the two circles and a line
+			fillCircle(g, robot.scannedX, robot.scannedY, color1); // scanned coordinate
+			fillCircle(g, robot.targetX, robot.targetY, color2); // target coordinate
 			g.setColor(color1);
 			g.drawLine((int) robot.scannedX, (int) robot.scannedY, (int) robot.targetX, (int) robot.targetY);
 		}
@@ -198,11 +199,13 @@ public class BorderGuard extends AdvancedRobot implements BorderSentry {
 		// scanned the last time, and another circle where our robot must point the gun in order to
 		// hit it (target coordinate). In addition, a line is drawn between these circles.
 		if (target != null) {
+			// Prepare colors for painting the scanned coordinate and target coordinate
 			color1 = new Color(0xFF, 0x7F, 0x00, 0x40); // Orange with 25% alpha blending
 			color2 = new Color(0xFF, 0x00, 0x00, 0x80); // Red with 50% alpha blending
 
-			paintCircle(g, target.scannedX, target.scannedY, color1); // scanned coordinate
-			paintCircle(g, target.targetX, target.targetY, color2); // target coordinate
+			// Paint the two circles and a line
+			fillCircle(g, target.scannedX, target.scannedY, color1); // scanned coordinate
+			fillCircle(g, target.targetX, target.targetY, color2); // target coordinate
 			g.setColor(color1);
 			g.drawLine((int) target.scannedX, (int) target.scannedY, (int) target.targetX, (int) target.targetY);
 		}
@@ -341,12 +344,12 @@ public class BorderGuard extends AdvancedRobot implements BorderSentry {
 	/**
 	 * Method the updates the enemy map based on new scan data for a scanned robot.
 	 * 
-	 * @param event
+	 * @param scannedRobotEvent
 	 *            is a ScannedRobotEvent event containing data about a scanned robot.
 	 */
-	private void updateEnemyMap(ScannedRobotEvent event) {
+	private void updateEnemyMap(ScannedRobotEvent scannedRobotEvent) {
 		// Gets the name of the scanned robot
-		final String scannedRobotName = event.getName();
+		final String scannedRobotName = scannedRobotEvent.getName();
 
 		// Get robot data for the scanned robot, if we have an entry in the enemy map
 		RobotData scannedRobot = enemyMap.get(scannedRobotName);
@@ -354,24 +357,24 @@ public class BorderGuard extends AdvancedRobot implements BorderSentry {
 		// Check if data entry exists for the scanned robot
 		if (scannedRobot == null) {
 			// No data entry exists => Create a new data entry for the scanned robot
-			scannedRobot = new RobotData(event);
+			scannedRobot = new RobotData(scannedRobotEvent);
 			// Put the new data entry into the enemy map
 			enemyMap.put(scannedRobotName, scannedRobot);
 		} else {
 			// Data entry exists => Update the current entry with new scanned data
-			scannedRobot.update(event);
+			scannedRobot.update(scannedRobotEvent);
 		}
 	}
 
 	/**
 	 * Method that updates the direction of the radar based on new scan data for a scanned robot.
 	 * 
-	 * @param event
+	 * @param scannedRobotEvent
 	 *            is a ScannedRobotEvent event containing data about a scanned robot.
 	 */
-	private void updateScanDirection(ScannedRobotEvent event) {
+	private void updateScanDirection(ScannedRobotEvent scannedRobotEvent) {
 		// Gets the name of the scanned robot
-		final String scannedRobotName = event.getName();
+		final String scannedRobotName = scannedRobotEvent.getName();
 
 		// Change the scanning direction if and only if we have no record for the oldest scanned
 		// robot or the scanned robot IS the oldest scanned robot (based on the name) AND the enemy
@@ -410,8 +413,7 @@ public class BorderGuard extends AdvancedRobot implements BorderSentry {
 	 */
 	private void updateEnemyTargetPositions() {
 		// Go thru all robots in the enemy map
-		Collection<RobotData> values = enemyMap.values();
-		for (RobotData enemy : values) {
+		for (RobotData enemy : enemyMap.values()) {
 
 			// Variables prefixed with e- refer to enemy and b- refer to bullet
 			double bV = Rules.getBulletSpeed(FIREPOWER);
@@ -569,7 +571,7 @@ public class BorderGuard extends AdvancedRobot implements BorderSentry {
 	 *            is the allowed minimum value.
 	 * @param max
 	 *            is the allowed maximum value.
-	 * @return is the limited input value that is guaranteed to be within the specified minimum and
+	 * @return the limited input value that is guaranteed to be within the specified minimum and
 	 *         maximum range.
 	 */
 	private double limit(double value, double min, double max) {
@@ -630,7 +632,7 @@ public class BorderGuard extends AdvancedRobot implements BorderSentry {
 	 * @param color
 	 *            is the color of the filled circle.
 	 */
-	private void paintCircle(Graphics2D gfx, double x, double y, Color color) {
+	private void fillCircle(Graphics2D gfx, double x, double y, Color color) {
 		// Set the pen color
 		gfx.setColor(color);
 		// Paint a filled circle (oval) that has a radius of 20 pixels with a center at the input

@@ -11,242 +11,276 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Robocode;
 using Robocode.Util;
 
 namespace SampleCsSentry
 {
     /// <summary>
-    /// BorderGuard - a sample sentry robot that guards the borders of the battlefield by Flemming N. Larsen
+    /// BorderGuard - is a sample robot that demonstrates how the BorderSentry interface can be used for
+    /// creating a robot that guards the border area of the battle field, and which is efficient against
+    /// robots trying to hide at corners and robots sneaking around near the borders.
+    /// <p>
+    /// This robot is somewhat advanced due to:<br>
+    /// 1) it uses linear targeting for predicting how to hit robots that moves in straight lines.<br>
+    /// 2) it will only fire at a robot, if it figures out that its bullets will do damage to that
+    /// particular robot, e.g. when the robots predicted future position will be within the sentry border
+    /// attack range.<br>
+    /// 3) it has an efficient scanner that keeps the scan angle as little as possible to get as new
+    /// scanned data for enemy robots as possible.<br>
+    /// 4) it picks a target robot to fire at, which is the nearest robot our robot will be able to
+    /// damage (by predicting its future position using linear targeting).<br>
+    /// 5) it only moves along the borders of the battle field and constantly changes its direction, so
+    /// it is not an easy target, and it will try to get as close to its target robot as possible.<br>
+    /// <p>
+    /// Lots of improvements can be made to this robot by copying it - making it even stronger. The
+    /// intention with of this sample robot is to serve as a more advanced example of how a AdvancedRobot
+    /// can be made, and how it can be structured as most sample robots are far simpler.
+    /// <p>
+    ///
+    /// Credits goes to the hard working Robocoders at the RoboWiki. :-)
+    /// <p>
+    ///
+    /// This robot makes use of the Oldest Scanned melee scanner from the RoboWiki:<br>
+    /// http://robowiki.net/wiki/Melee_Radar
+    /// <p>
+    ///
+    /// In addition, it makes use of the Exact Non-iterative Solution for Linear Targeting from the
+    /// RoboWiki:<br>
+    /// http://robowiki.net/wiki/Linear_Targeting
+    /// <p> 
+    ///
+    /// Author: Flemming N. Larsen
+    /// <p>
+    /// Version: 1.0
+    /// <p>
+    /// Since 1.9.0.0
     /// </summary>
     public class BorderGuard
         : AdvancedRobot, IBorderSentry
     {
-        // Dictionary used retrieve the scanned data for a robot based on the robot name
-        IDictionary<String /* robot name */, ScannedRobotData> scannedRobotData =
-            new Dictionary<String, ScannedRobotData>();
+        // Constants
+        const double FIREPOWER = 3; // Max. power => violent as this robot can afford it!
+        const double HALF_ROBOT_SIZE = 18; // Robot size is 36x36 units, so the half size is 18 units
 
-        // Current target robot, which we our robot should fire at
-        ScannedRobotData target;
+        // Dictionary containing data for all scanned robots.
+        // The key to the dictionary is a robot name and the value is an object containing robot data.
+        IDictionary<string, RobotData> enemyDictionary;
+        // List containing robot names where the order of names reflects the when these names was accessed the last time
+        // within the enemy dictionary. The first in the list is the name of the robot that was accessed the last time,
+        // and the last in the list is the oldest one.
+        IList<string> accessedEnemyList;
+
+        // Scanning direction, where the radar turns to the right with positive values, and turns
+        // to the left with negative values.
+        double scanDir = 1;
+
+        // Oldest scanned robot. Can be null.
+        RobotData oldestScanned;
+
+        // Target robot for the gun. Can be null meaning that there is currently no target robot.
+        RobotData target;
 
         // Last time when the robot shifted its direction
         long lastDirectionShift;
 
-        // Current direction, where 1 means ahead/forward, and -1 means back
+        // Current direction, where 1 means ahead (forward) and -1 means back
         int direction = 1;
 
-        // The main method of the robot, which is called when the robot started up.
+        /// <summary>
+        /// Constructs this robot.
+        /// </summary>
+        public BorderGuard()
+        {
+            // We initialize a Dictionary containing robot data for each scanned robot, and also a
+            // List keeping track of the access order for the enemy dictionary. The last accessed robot
+            // entry is listed first in the List.
+            // This robot always sweep the radar towards the oldest scanned robot.
+            enemyDictionary = new Dictionary<string, RobotData>();
+            accessedEnemyList = new List<string>();
+        }
+
+        /// <summary>
+        /// Main method that is called by the game when the robot engage in the next round of a battle.
+        /// </summary>
         public override void Run()
         {
-            // Do initialization stuff..
+            // Do initialization stuff here before the loop
+            Initialize();
 
-            // Let the radar turn be independent on the gun turn
-            IsAdjustRadarForGunTurn = true;
-            // Let the gun turn be independent on the robot (body) turn
-            IsAdjustGunForRobotTurn = true;
-
-            // Set the robot body and turret/gun to black, and the radar, bullets and scan arc to red
-            SetColors(Color.Black, Color.Black, Color.Red, Color.Red, Color.Red);
-
-            // Set the radar to turn left as fast as possible forever.
-            // Note, that it will take 8 turns to turn the radar 360 degrees in total (360 / 45 degrees)
-            SetTurnRadarLeft(double.PositiveInfinity);
-
-            // Loop forever (if the robot stops doing anything, the game will disable it)
+            // Loop forever. If the robot does not take action, the game will disable our robot!
             while (true)
             {
-                // Prepare next turn...
+                // Handle a single turn...
 
-                // Move the robot
-                Move();
+                // Handle the radar that scans enemy robots
+                HandleRadar();
+                // Handle the gun by turning it and fire at our target
+                HandleGun();
+                // Move the robot around on the battlefield
+                MoveRobot();
 
-                // Execute all pending robot commands, meaning that the robot will now take action!
-                // This means that commands like, SetFire(), SetTurnLeft(), SetTurnRadarRight() etc. will be executed.
-                Execute();
+                // Scan for other robots. Note that this method will execute all pending commands for
+                // the next turn. Hence, scan() ends the turn for our robot.
+                Scan();
             }
         }
 
         /// <summary>
-        /// This method is called by the game before each turn with the current status of our robot.
-        /// </summary>
-        /// <param name="statusEvent">The status event containing status data for our robot.</param>
-        public override void OnStatus(StatusEvent statusEvent)
-        {
-            // 'newTarget' is used for selecting our new target to fire at.
-            // Set this to null here, which means that we have no target... yet!
-            ScannedRobotData newTarget = null;
-
-            // Prepara a list for containing all scanned robot data.
-            List<ScannedRobotData> currentScanData = new List<ScannedRobotData>();
-
-            // Add scanned robot data that is not too old. When data is more than 360 / 45 degrees = 8 turns old,
-            // our radar should retrieve new information about a particular robot, unless it has died or is
-            // out of the scan radius (1200 units). Anyways, the robot will probably have moved far ways since then.
-
-            foreach (ScannedRobotData robotData in scannedRobotData.Values)
-            {
-                // Add entry if the the delta time (scanned event time - status event time) is less than or equal to 8 turns
-                if (statusEvent.Time - robotData.time <= 8)
-                {
-                    currentScanData.Add(robotData);
-                }
-            }
-
-            // Now, make a copy of current scan data that should contain target candidates
-            List<ScannedRobotData> targetCandidates = new List<ScannedRobotData>(currentScanData);
-
-            // Prepare a new list for containing scanned robot data, but only with robots
-            List<ScannedRobotData> newCurrentScanData = new List<ScannedRobotData>();
-
-            // Add all target candidates that are inside our sentry robot's attack range as we
-            // will not be able to harm robots outside this range with our gun fire (is a game rule).
-            foreach (ScannedRobotData robotData in currentScanData)
-            {
-                // Add robot data if its location is inside the sentry attack range
-                if (IsInsideSentryAttackRange(robotData.x, robotData.y))
-                {
-                    newCurrentScanData.Add(robotData);
-                }
-            }
-            // Save the new list containing robot scan data as the current robot scan data list
-            currentScanData = newCurrentScanData;
-
-            // If we don't have any target candidates, we have no candidates to fire at.
-            // However, we will then use the current scan data for moving out robot as close to the nearest robot
-            // outside the sentry robot's attack range, so we have a better chance to hit it when it moves too
-            // close to the border.
-            if (targetCandidates.Count == 0)
-            {
-                targetCandidates = new List<ScannedRobotData>(currentScanData);
-            }
-
-            // Now, pick the new target robot among the target candidates based on how far those are to our robot.
-            // Pick the robot closest to our robot.
-
-            double shortestDistance = double.MaxValue; // Initialize shortest distance seen, to maximum value
-
-            foreach (ScannedRobotData robotData in currentScanData)
-            {
-                // Calculate the distance to the robot based on the hypotenuse (Pythagoras)
-                double distance = DistanceTo(robotData.x, robotData.y);
-                // Check if the distance is shorter than shortest distance calculated so far
-                if (distance < shortestDistance)
-                {
-                    // If the distance is shorter then save the calculated distance as the new shortest distance
-                    shortestDistance = distance;
-                    // Save the robot data as our new target robot
-                    newTarget = robotData;
-                }
-            }
-
-            // Check if we got a new target robot
-            if (newTarget != null)
-            {
-                // We got a new target robot..
-
-                // Calculate the target angle of the robot
-                double targetAngle = Math.Atan2(newTarget.x - X, newTarget.y - Y);
-                // Normalize the target angle so that the angle is kept within the range [0, PI[
-                targetAngle = Utils.NormalAbsoluteAngle(targetAngle);
-
-                // Calculate the delta gun angle, i.e. how much of robot should be moved to the right.
-                double deltaGunAngle = Utils.NormalRelativeAngle(targetAngle - GunHeadingRadians);
-
-                // Set the gun to turn right the number of radians stored in the calculated delta gun angle.
-                // Note: The setTurnGunRightRadians() will first be executed, when the execute() method is called.
-                // If the delta gun angle is negative, it will automatically be moved in the opposite direction.
-                SetTurnGunRightRadians(deltaGunAngle);
-
-                // Check that the radar turn has almost completed (has less than 1 degrees left to turn) and
-                // that the target robot is inside the entry attack range.
-                if (RadarTurnRemaining < 1 && IsInsideSentryAttackRange(newTarget.x, newTarget.y))
-                {
-                    // Calculate the fire power we should use when firing at our target..
-
-                    // We want to use the maximum bullet power 3, when the target is within 100 units and
-                    // the bullet power should become lesser the longer the distance is to our target.
-                    // Hence, we calculate the fire power as 3 * 100 / distance to target.
-                    double firePower = 300 / DistanceTo(newTarget.x, newTarget.y);
-
-                    // Set our gun to fire with the calculated amount of fire power.
-                    // Note: If the fire power is less than the minimum fire power 0.1 the gun will not fire.
-                    // If the fire power is greater than the maximum fire power 3, then gun will use 3 as fire power.
-                    SetFire(firePower);
-                }
-
-                // Paint a circle on our current target (debugging graphics)
-                PaintCircle(newTarget.x, newTarget.y);
-            }
-
-            // Set our new target as our new "global" target, so that other methods can use it
-            this.target = newTarget;
-        }
-
-        /// <summary>
-        /// This method is called by the game whenever our robot has scanned another robot by turning the radar.
-        /// Note: Our radar is turning around forever at maximum speed, so this event is called as soon as the
-        /// radar "hits" another robot.
+        /// This method is called by the game when your robot sees another robot, i.e. when the robot's
+        /// radar scan "hits" another robot.
         /// </summary>
         /// <param name="scannedRobotEvent">The scanned robot event containing data about the scanned robot.</param>
         public override void OnScannedRobot(ScannedRobotEvent scannedRobotEvent)
         {
-            // Exit this method, if the scanned robot is another sentry robot
-            if (scannedRobotEvent.IsSentryRobot)
+            // Check that the scanned robot is not a sentry robot
+            if (!scannedRobotEvent.IsSentryRobot)
             {
-                return;
+                // The scanned robot is not a sentry robot...
+
+                // Update the enemy dictionary
+                UpdateEnemyDictionary(scannedRobotEvent);
+
+                // Update the scan direction
+                UpdateScanDirection(scannedRobotEvent);
+
+                // Update enemy target positions
+                UpdateEnemyTargetPositions();
             }
-
-            // Get the distance from our robot to the scanned robot
-            double distance = scannedRobotEvent.Distance;
-            // Calculate the angle in radians to the scanned robot.
-            // Angle = our robot's heading (angle) + the bearing (delta angle) to the scanned robot.
-            double angle = HeadingRadians + scannedRobotEvent.BearingRadians;
-
-            // Prepare an entry with scanned robot data that we can store in our scanned data map
-            ScannedRobotData robotData = new ScannedRobotData();
-            // Store the name of the scanned robot
-            robotData.name = scannedRobotEvent.Name;
-            // Store the time when the robot was scanned
-            robotData.time = scannedRobotEvent.Time;
-            // Calculate and store the x coordinate of the scanned robot (using the Robocode coordinate system)
-            robotData.x = X + Math.Sin(angle) * distance;
-            // Calculate and store the y coordinate of the scanned robot (using the Robocode coordinate system)
-            robotData.y = Y + Math.Cos(angle) * distance;
-
-            // Store the entry of scanned robot entry in our map over scanned robot data.
-            // We use the name of the robot as the key for accessing the scanned data for that particular robot later
-            scannedRobotData.Remove(robotData.name);
-            scannedRobotData.Add(robotData.name, robotData);
         }
 
         /// <summary>
-        /// This method is called by the game whenever another robot dies.
+        /// This method is called by the game when another robot dies.
         /// </summary> 
         /// <param name="robotDeathEvent">The robot death event containing data about the robot that died.</param>
         public override void OnRobotDeath(RobotDeathEvent robotDeathEvent)
         {
-            // Remove the scanned robot data for the robot that died.
-            // This data is useless now, and will only confuse our robot if it stays in our scanned robot data.
-            scannedRobotData.Remove(robotDeathEvent.Name);
+            // Gets the name of the robot that died
+            var deadRobotName = robotDeathEvent.Name;
 
-            // Remove our global target, if our target was the robot that died, but only if we have a current target
-            if (target != null && target.name.Equals(robotDeathEvent.Name))
+            // Remove the robot data for the robot that died from the enemy dictionary and access list
+            enemyDictionary.Remove(deadRobotName);
+            accessedEnemyList.Remove(deadRobotName);
+
+            // Remove the data entry for the oldest scanned robot, if we have such an entry
+            if (oldestScanned != null && oldestScanned.name.Equals(deadRobotName))
+            {
+                oldestScanned = null;
+            }
+            if (target != null && target.name.Equals(deadRobotName))
             {
                 target = null;
             }
         }
 
         /// <summary>
-        /// Method for moving our robot around on the battlefield.
+        /// This method is called by the every time the robot is painted.
         /// </summary>
-        private void Move()
+        /// <remarks>
+        /// In order to see the painting, make sure to enable the Paint button on the robot console for this robot.
+        /// </remarks>
+        /// <param name="g">
+        /// The graphics context used for painting various shapes like rectangles, circles, lines etc.
+        /// on top of the battlefield for debugging graphics.
+        /// </param>
+        public override void OnPaint(IGraphics g)
+        {
+            // Prepare colors for painting the scanned coordinate and target coordinate
+            var color1 = Color.FromArgb(0x40, 0x00, 0xFF, 0x00); // Green with 25% alpha blending
+            var color2 = Color.FromArgb(0x40, 0xFF, 0x00, 0x40); // Yellow with 25% alhpa blending
+
+            // Prepare pen with color 1 and a width of 2 pixels
+            var pen = new Pen(color1, 2);
+
+            // Paint a two circles for each robot in the enemy dictionary. One circle where the robot was
+            // scanned the last time, and another circle where our robot must point the gun in order to
+            // hit it (target coordinate). In addition, a line is drawn between these circles.
+            foreach (RobotData robot in enemyDictionary.Values)
+            {
+                // Paint the two circles and a line
+                FillCircle(g, robot.scannedX, robot.scannedY, color1); // scanned coordinate
+                FillCircle(g, robot.targetX, robot.targetY, color2); // target coordinate
+                g.DrawLine(pen, (float)robot.scannedX, (float)robot.scannedY,
+                    (float)robot.targetX, (float)robot.targetY);
+            }
+
+            // Paint a two circles for the target robot. One circle where the robot was
+            // scanned the last time, and another circle where our robot must point the gun in order to
+            // hit it (target coordinate). In addition, a line is drawn between these circles.
+            if (target != null)
+            {
+                // Prepare colors for painting the scanned coordinate and target coordinate
+                color1 = Color.FromArgb(0x40, 0xFF, 0x7F, 0x00); // Orange with 25% alpha blending
+                color2 = Color.FromArgb(0x80, 0xFF, 0x00, 0x00); // Red with 50% alpha blending
+
+                // Prepare pen with color 1 and a width of 2 pixels
+                pen = new Pen(color1, 2);
+
+                // Paint the two circles and a line
+                FillCircle(g, target.scannedX, target.scannedY, color1); // scanned coordinate
+                FillCircle(g, target.targetX, target.targetY, color2); // target coordinate
+                g.DrawLine(pen, (float)target.scannedX, (float)target.scannedY,
+                    (float)target.targetX, (float)target.targetY);
+            }
+        }
+
+        /// <summary>
+        /// Initializes this robot before a new round in a battle.
+        /// </summary> 
+        private void Initialize()
+        {
+            // Let the robot body, gun, and radar turn independently of each other
+            IsAdjustRadarForGunTurn = true;
+            IsAdjustGunForRobotTurn = true;
+
+            // Set robot colors
+            BodyColor = Color.FromArgb(0x5C, 0x33, 0x17); // Chocolate Brown
+            GunColor = Color.FromArgb(0x45, 0x8B, 0x74); // Aqua Marine
+            RadarColor = Color.FromArgb(0xD2, 0x69, 0x1E); // Orange Chocolate
+            BulletColor = Color.FromArgb(0xFF, 0xD3, 0x9B); // Burly wood
+            ScanColor = Color.FromArgb(0xCA, 0xFF, 0x70); // Olive Green
+        }
+
+        /// <summary>
+        /// This method handles the radar that scans for enemy robots.
+        /// </summary> 
+        private void HandleRadar()
+        {
+            // Set the radar to turn infinitely to the right if the scan direction is positive;
+            // otherwise the radar is moved to the left, if the scan direction is negative.
+            // Notice that onScannedRobot(ScannedRobotEvent) is responsible for determining the scan
+            // direction.
+            SetTurnRadarRightRadians(scanDir * Double.PositiveInfinity);
+        }
+
+        /// <summary>
+        /// Method that handles the gun be turning it and fire at a target.
+        /// </summary> 
+        private void HandleGun()
+        {
+            // Update our target robot to fire at
+            UpdateTarget();
+            // Update the gun direction
+            UpdateGunDirection();
+            // Fires the gun, when it is ready
+            FireGunWhenReady();
+        }
+
+        /// <summary>
+        /// Method that moves our robot around the battlefield.
+        /// </summary> 
+        private void MoveRobot()
         {
             // The movement strategy is to move as close to our target robot as possible.
-            // Our robot should move along the borders all the time vertically or horizontally.
-            // When we get close to our target or have no where to go, our robot should shift its direction
-            // from side to side, so it does not stand still at any time.
+            // Our robot should move along the borders all the time, vertically or horizontally.
+            // When we get close to our target, or have no where to go, our robot should shift its
+            // direction from side to side so it does not stand still at any time.
+            // If the robot stands still, it will be an easy target for enemy robots.
 
-            // Get close to our target if we have a target robot
+            int newDirection = direction;
+
+            // Get closer to our target if we have a target robot
             if (target != null)
             {
                 // Calculate the range from the walls/borders, our robot should keep within
@@ -257,11 +291,11 @@ namespace SampleCsSentry
                 bool horizontal = false;
                 bool vertical = false;
 
-                // Set the about of radians we should turn towards the left
-                double turnLeft = HeadingRadians;
+                // Initialize the new heading of the robot to the current heading of the robot
+                double newHeading = HeadingRadians;
 
                 // Check if our robot is at the upper or lower border and hence should move horizontally
-                if (Y < borderRange || Y > BattleFieldHeight - borderRange)
+                if (X < borderRange || Y > BattleFieldHeight - borderRange)
                 {
                     horizontal = true;
                 }
@@ -271,13 +305,14 @@ namespace SampleCsSentry
                     vertical = true;
                 }
 
-                // If we are in one of the corners of the battlefield, we could move both horizontally or vertically.
+                // If we are in one of the corners of the battlefield, we could move both horizontally
+                // or vertically.
                 // In this situation, we need to choose one of the two directions.
                 if (horizontal && vertical)
                 {
                     // If the horizontal distance to our target is lesser than the vertical distance,
                     // then we choose to move vertically, and hence we clear the horizontal flag.
-                    if (Math.Abs(target.x - X) <= Math.Abs(target.y - Y))
+                    if (Math.Abs(target.targetX - X) <= Math.Abs(target.targetY - Y))
                     {
                         horizontal = false; // Do not move horizontally => move vertically
                     }
@@ -286,91 +321,446 @@ namespace SampleCsSentry
                 // Otherwise the calculated heading is towards moving vertically.
                 if (horizontal)
                 {
-                    turnLeft -= Math.PI / 2;
+                    newHeading -= Math.PI / 2;
                 }
                 // Set the robot to turn left the amount of radians we have just calculated
-                SetTurnLeftRadians(Utils.NormalRelativeAngle(turnLeft));
+                SetTurnLeftRadians(Utils.NormalRelativeAngle(newHeading));
 
                 // Check if our robot has finished turning, i.e. has less than 1 degrees left to turn
-                if (TurnRemaining < 1)
+                if (Math.Abs(TurnRemaining) < 1 || Math.Abs(Velocity) < 0.01)
                 {
-                    // If we should move horizontally, the set the robot to move ahead with
-                    // the horizontal distance to the target robot. Otherwise, use the vertical distance.
+                    // If we should move horizontally, the set the robot to move ahead with the
+                    // horizontal distance to the target robot. Otherwise, use the vertical distance.
+                    double delta; // delta is the delta distance to move
                     if (horizontal)
                     {
-                        SetAhead(target.x - X);
+                        delta = target.targetX - X;
                     }
                     else
                     {
-                        SetAhead(target.y - Y);
+                        delta = target.targetY - Y;
+                    }
+                    SetAhead(delta);
+
+                    // Set the new direction of our robot to 1 (meaning move forward) if the delta
+                    // distance is positive; otherwise it is set to -1 (meaning move backward).
+                    newDirection = delta > 0 ? 1 : -1;
+
+                    // Check if more than 10 turns have past since we changed the direction the last
+                    // time
+                    if (Time - lastDirectionShift > 10)
+                    {
+                        // If so, set the new direction to be the reverse direction if the velocity < 1
+                        if (Math.Abs(Velocity) < 1)
+                        {
+                            newDirection = direction * -1;
+                        }
+                        // Check if the direction really changed
+                        if (newDirection != direction)
+                        {
+                            // If the new direction != current direction, then set the current direction
+                            // to be the new direction and save the current time so we know when we
+                            // changed the direction the last time.
+                            direction = newDirection;
+                            lastDirectionShift = Time;
+                        }
                     }
                 }
             }
+            // Set ahead 100 units forward or backward depending on the direction
+            SetAhead(100 * direction);
+        }
 
-            // Check if the absolute distance remaining of our current robot move is less than 40 and
-            // that at least 25 turns have passed since the last time our robot shifted its direction.
-            if (Math.Abs(DistanceRemaining) < 40 && (Time - lastDirectionShift > 25))
+        /// <summary>
+        /// Method the updates the enemy dictionary based on new scan data for a scanned robot.
+        /// </summary> 
+        /// <param name="scannedRobotEvent">The scanned robot event containing data about the scanned robot.</param>
+        private void UpdateEnemyDictionary(ScannedRobotEvent scannedRobotEvent)
+        {
+            var name = scannedRobotEvent.Name;
+
+            // Check if data entry exists for the scanned robot
+            if (enemyDictionary.ContainsKey(name))
             {
-                // Record the current time as the new 'last direction shift time'
-                lastDirectionShift = Time;
-                // Change the direction, which should shift between 1 and -1.
-                // Hence we simply multiply the direction variable with -1.
-                direction *= -1;
-                // Force the robot to move either 100 units forward or back depending on the current direction.
-                Ahead(100 * direction);
+                // Data entry exists => Update the current entry with new scanned data
+                RobotData scannedRobot = enemyDictionary[name];
+                scannedRobot.Update(scannedRobotEvent, this);
+            }
+            else
+            {
+                // No data entry exists => Create a new data entry for the scanned robot
+                RobotData scannedRobot = new RobotData(scannedRobotEvent, this);
+                // Put the new data entry into the enemy dictionary
+                enemyDictionary.Add(name, scannedRobot);
+            }
+            // Change the access order for the robot name, so the name is moved to, or added as the last entry
+            if (accessedEnemyList.Contains(name))
+            {
+                accessedEnemyList.Remove(name);
+            }
+            accessedEnemyList.Add(name);
+        }
+
+        /// <summary>
+        /// Method that updates the direction of the radar based on new scan data for a scanned robot.
+        /// </summary> 
+        /// <param name="scannedRobotEvent">The scanned robot event containing data about the scanned robot.</param>
+        private void UpdateScanDirection(ScannedRobotEvent scannedRobotEvent)
+        {
+            // Gets the name of the scanned robot
+            var scannedRobotName = scannedRobotEvent.Name;
+
+            // Change the scanning direction if and only if we have no record for the oldest scanned
+            // robot or the scanned robot IS the oldest scanned robot (based on the name) AND the enemy
+            // dictionary contains scanned data entries for ALL robots (the size of the enemy dictionary is equal to
+            // the number of opponent robots found by calling the getOthers() method).
+            if ((oldestScanned == null || scannedRobotName.Equals(oldestScanned.name)) && accessedEnemyList.Count == Others)
+            {
+                // Get the oldest scanned robot data from our LinkedHashMap, where the first value
+                // contains the oldest accessed entry, which is the robot we need to get.
+                string oldestScannedName = accessedEnemyList[0];
+                RobotData oldestScannedRobot = enemyDictionary[oldestScannedName];
+
+                // Get the recent scanned position (x,y) of the oldest scanned robot
+                double x = oldestScannedRobot.scannedX;
+                double y = oldestScannedRobot.scannedY;
+
+                // Get the heading of our robot
+                double ourHeading = RadarHeadingRadians;
+
+                // Calculate the bearing to the oldest scanned robot.
+                // The bearing is the delta angle between the heading of our robot and the other robot,
+                // which can be a positive or negative angle.
+                double bearing = BearingTo(ourHeading, x, y);
+
+                // Update the scan direction based on the bearing.
+                // If the bearing is positive, the radar will be moved to the right.
+                // If the bearing is negative, the radar will be moved to the left.
+                scanDir = bearing;
             }
         }
 
         /// <summary>
-        /// This method checks if a point (x, y) is inside of the attack range for a SentryRobot.
-        /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <returns><code>true<code> if the point is inside the attack range of sentry robots; <code>false</code> otherwise.</returns>
-        private bool IsInsideSentryAttackRange(double x, double y)
+        /// Updates the target positions for all enemies. The target position is the position our robot
+        /// must fire at in order to hit the target robot.
+        /// </summary> 
+        /// <remarks>
+        /// This robot uses Linear Targeting (Exact Non-iterative Solution) as described on the RoboWiki here:
+        /// http://robowiki.net/wiki/Linear_Targeting
+        /// </remarks> 
+        private void UpdateEnemyTargetPositions()
         {
-            return !(x > SentryBorderSize && // minimum border x
-                     y > SentryBorderSize && // minimum border y 
-                     x < ((int)BattleFieldWidth - SentryBorderSize) && // maximum border x
-                     y < ((int)BattleFieldHeight - SentryBorderSize)); // maximum border y
+            // Go thru all robots in the enemy dictionary
+            foreach (RobotData enemy in enemyDictionary.Values)
+            {
+                // Variables prefixed with e- refer to enemy and b- refer to bullet
+                double bV = Rules.GetBulletSpeed(FIREPOWER);
+                double eX = enemy.scannedX;
+                double eY = enemy.scannedY;
+                double eV = enemy.scannedVelocity;
+                double eH = enemy.scannedHeading;
+
+                // These constants make calculating the quadratic coefficients below easier
+                double A = (eX - X) / bV;
+                double B = (eY - Y) / bV;
+                double C = eV / bV * Math.Sin(eH);
+                double D = eV / bV * Math.Cos(eH);
+
+                // Quadratic coefficients: a*(1/t)^2 + b*(1/t) + c = 0
+                double a = A * A + B * B;
+                double b = 2 * (A * C + B * D);
+                double c = (C * C + D * D - 1);
+
+                // If the discriminant of the quadratic formula is >= 0, we have a solution meaning that
+                // at some time, t, the bullet will hit the enemy robot if we fire at it now.
+                double discrim = b * b - 4 * a * c;
+                if (discrim >= 0)
+                {
+                    // Reciprocal of quadratic formula. Calculate the two possible solution for the
+                    // time, t
+                    double t1 = 2 * a / (-b - Math.Sqrt(discrim));
+                    double t2 = 2 * a / (-b + Math.Sqrt(discrim));
+
+                    // Choose the minimum positive time or select the one closest to 0, if the time is
+                    // negative
+                    double t = Math.Min(t1, t2) >= 0 ? Math.Min(t1, t2) : Math.Max(t1, t2);
+
+                    // Calculate the target position (x,y) for the enemy. That is the point that our gun
+                    // should point at in order to hit the enemy at the time, t.
+                    double targetX = eX + eV * t * Math.Sin(eH);
+                    double targetY = eY + eV * t * Math.Cos(eH);
+
+                    // Assume enemy stops at walls. Hence, we limit that target position at the walls.
+                    double minX = HALF_ROBOT_SIZE;
+                    double minY = HALF_ROBOT_SIZE;
+                    double maxX = BattleFieldWidth - HALF_ROBOT_SIZE;
+                    double maxY = BattleFieldHeight - HALF_ROBOT_SIZE;
+
+                    enemy.targetX = Limit(targetX, minX, maxX);
+                    enemy.targetY = Limit(targetY, minY, maxY);
+                }
+            }
         }
 
         /// <summary>
-        /// Returns the distance to a point (x, y) from our robot.
-        /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <returns>The distance to the point from our robot.</returns>
+        /// Updates which enemy robot from the enemy dictionary that should be our current target.
+        /// </summary> 
+        private void UpdateTarget()
+        {
+            // Set target to null, meaning that we have no target robot yet
+            target = null;
+
+            // Create a list over possible target robots that is a copy of robot data from the enemy dictionary
+            List<RobotData> targets = new List<RobotData>(enemyDictionary.Values);
+
+            // Run thru all the possible target robots and remove those that are outside the attack
+            // range for this border sentry robot as our robot cannot do harm to robots outside its
+            // range.
+            for (int i = targets.Count - 1; i >= 0; i--) // avoids error "Collection was modified"
+            {
+                RobotData robot = targets[i];
+                if (IsOutsideAttackRange(robot.targetX, robot.targetY))
+                {
+                    targets.Remove(robot);
+                }
+            }
+
+            // Set the target robot to be the one among all possible target robots that is closest to
+            // our robot.
+            double minDist = Double.PositiveInfinity;
+            foreach (RobotData robot in targets)
+            {
+                double dist = DistanceTo(robot.targetX, robot.targetY);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    target = robot;
+                }
+            }
+
+            // If we still haven't got a target robot, then take the first one from our list of target
+            // robots if the list is not empty.
+            if (target == null && targets.Count > 0)
+            {
+                target = targets[0];
+            }
+        }
+
+        /// <summary>
+        /// Method that updates the gun direction to point at the current target.
+        /// </summary> 
+        private void UpdateGunDirection()
+        {
+            // Only update the gun direction, if we have a current target
+            if (target != null)
+            {
+                // Calculate the bearing between the gun and the target, which can be positive or
+                // negative
+                double targetBearing = BearingTo(GunHeadingRadians, target.targetX, target.targetY);
+                // Set the gun to turn right the amount of radians defined by the bearing to the target
+                SetTurnGunRightRadians(targetBearing); // positive => turn right, negative => turn left
+            }
+        }
+
+        /// <summary>
+        /// Method that fires a bullet when the gun is ready to fire.
+        /// </summary> 
+        private void FireGunWhenReady()
+        {
+            // We only fire the fun, when we have a target robot
+            if (target != null)
+            {
+                // Only fire when the angle of the gun is pointing at our (virtual) target robot
+
+                // Calculate the distance between between our robot and the target robot
+                double dist = DistanceTo(target.targetX, target.targetY);
+                // Angle that "covers" the the target robot from its center to its edge
+                double angle = Math.Atan(HALF_ROBOT_SIZE / dist);
+
+                // Check if the remaining angle (turn) to move the gun is less than our calculated cover
+                // angle
+                if (Math.Abs(GunTurnRemaining) < angle)
+                {
+                    // If so, our gun should be pointing at our target so we can hit it => fire!!
+                    SetFire(FIREPOWER);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Method that checks if a coordinate (x,y) is outside the Border Sentry's attack range.
+        /// </summary> 
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <return>true if the coordinate is outside the attack range; false otherwise.</return>
+        private bool IsOutsideAttackRange(double x, double y)
+        {
+            double minBorderX = SentryBorderSize;
+            double minBorderY = SentryBorderSize;
+            double maxBorderX = BattleFieldWidth - SentryBorderSize;
+            double maxBorderY = BattleFieldHeight - SentryBorderSize;
+
+            return (x > minBorderX) && (y > minBorderY) && (x < maxBorderX) && (y < maxBorderY);
+        }
+
+        /// <summary>
+        /// Method that returns a value that is guaranteed to be within a value range defined by a
+        /// minimum and maximum value based on an input value.<br>
+        /// If the input value is lesser than the minimum value, the returned value will be set to the
+        /// minimum value.<br>
+        /// If the input value is greater than the maximum value, the returned value will be set to the
+        /// maximum value.<br>
+        /// Otherwise the returned value will be equal to the input value.
+        /// </summary> 
+        /// <param name="value">Input value to limit.</param>
+        /// <param name="min">Allowed minimum value.</param>
+        /// <param name="max">Allowed maximum value.</param>
+        /// <return>
+        /// The limited input value that is guaranteed to be within the specified minimum and maximum range.
+        /// </return>
+        private double Limit(double value, double min, double max)
+        {
+            return Math.Min(max, Math.Max(min, value));
+        }
+
+        /// <summary>
+        /// Methods that returns the distance to a coordinate (x,y) from our robot.
+        /// </summary> 
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <return>
+        /// The distance to the coordinate (x,y).
+        /// </return>
         private double DistanceTo(double x, double y)
         {
-            // Calculate the distance to the robot based on the hypotenuse (Pythagoras)
-            return Math.Sqrt(Math.Pow(x - X, 2) + Math.Pow(y - Y, 2));
+            double dx = X - x;
+            double dy = Y - y;
+            return Math.Sqrt(dx * dx + dy * dy);
         }
 
         /// <summary>
-        /// Paints a yellow circle around a point (x, y).
-        /// </summary>
-        /// <param name="x">The x coordinate for the center of the circle.</param>
-        /// <param name="y">The y coordinate for the center of the circle.</param>
-        private void PaintCircle(double x, double y)
+        /// Method that returns the angle to a coordinate (x,y) from our robot.
+        /// </summary> 
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <return>
+        /// The angle to the coordinate (x,y).
+        /// </return>
+        private double AngleTo(double x, double y)
         {
-            // Set the pen color to the yellow color width of 2 pixels
-            Pen pen = new Pen(Color.Yellow, 2);
-            // Draw a circle (oval) that has a radius of 20 pixels with the center in the input coordinates.
-            Graphics.DrawEllipse(new Pen(Color.Yellow), new Rectangle((int)x - 20, (int)y - 20, 40, 40));
+            return Math.Atan2(x - X, y - Y);
         }
 
         /// <summary>
-        /// This class is used for storing data about a robot that has been scanned.
-        /// The data is a snapshot containing the name of the robot that was scanned at a specific time,
-        /// and the location (x, y) of the robot at that time.
-        /// </summary>
-        class ScannedRobotData
+        /// Method that returns the bearing to a coordinate (x,y) from the position and heading of our
+        /// robot. The bearing is the delta angle between the heading of our robot and the angle of the
+        /// specified coordinate.
+        /// </summary> 
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <return>
+        /// The angle to the coordinate (x,y).
+        /// </return>
+        private double BearingTo(double heading, double x, double y)
+        {
+            return Utils.NormalRelativeAngle(AngleTo(x, y) - heading);
+        }
+
+        /// <summary>
+        /// Method that paints a filled circle at the specified coordinate (x,y) and given color. The
+        /// circle will have a radius of 20 pixels (meaning that the diameter will be 40 pixels).
+        /// </summary> 
+        /// <param name="gfx">X coordinate.</param>
+        /// <param name="x">X coordinate for the center of the circle.</param>
+        /// <param name="y">Y coordinate for the center of the circle.</param>
+        /// <param name="color">Color of the filled circle.</param>
+        private void FillCircle(IGraphics gfx, double x, double y, Color color)
+        {
+            // Prepare brush
+            Brush brush = new SolidBrush(color);
+            // Paint a filled circle (oval) that has a radius of 20 pixels with a center at the input
+            // coordinates.
+            gfx.FillEllipse(brush, (float)x - 20, (float)y - 20, 40f, 40f);
+        }
+
+        /// <summary>
+        /// This class is used for storing data about a robot that has been scanned.<br>
+        /// The data is mainly a snapshot of specific scanned data like the scanned position (x,y),
+        /// velocity and heading, put also the calculated predicted target position of the robot when our
+        /// robot needs to fire at the scanned robot.<br>
+        /// Note that this class calculates the position (x,y) of the scanned robot as our robot moves,
+        /// and hence data like the angle and distance to the scanned robot will change over time. by
+        /// using the position, it is easy to calculate a new angle and distance to the robot.
+        /// </summary> 
+        internal class RobotData
         {
             internal string name; // name of the scanned robot
-            internal long time; // time when the robot was scanned
-            internal double x; // x coordinate of the robot position 
-            internal double y; // y coordinate of the robot position
+            internal double scannedX; // x coordinate of the scanned robot based on the last update
+            internal double scannedY; // y coordinate of the scanned robot based on the last update
+            internal double scannedVelocity; // velocity of the scanned robot from the last update
+            internal double scannedHeading; // heading of the scanned robot from the last update
+            internal double targetX; // predicated x coordinate to aim our gun at, when firing at the robot
+            internal double targetY; // predicated y coordinate to aim our gun at, when firing at the robot
+
+            /// <summary>
+            /// Creates a new robot data entry based on new scan data for a scanned robot.
+            /// </summary> 
+            /// <param name="scannedRobotEvent">
+            /// A ScannedRobotEvent event containing data about a scanned robot.
+            /// </param>
+            /// <param name="robot">Robot that creates this data entry.</param>
+            public RobotData(ScannedRobotEvent scannedRobotEvent, AdvancedRobot robot)
+            {
+                // Store the name of the scanned robot
+                name = scannedRobotEvent.Name;
+                // Updates all scanned facts like position, velocity, and heading
+                Update(scannedRobotEvent, robot);
+                // Initialize the coordinates (x,y) to fire at to the updated scanned position
+                targetX = scannedX;
+                targetY = scannedY;
+            }
+
+            /// <summary>
+            /// Updates the scanned data based on new scan data for a scanned robot.
+            /// </summary> 
+            /// <param name="scannedRobotEvent">
+            /// A ScannedRobotEvent event containing data about a scanned robot.
+            /// </param>
+            /// <param name="robot">Robot that calls this method.</param>
+            public void Update(ScannedRobotEvent scannedRobotEvent, AdvancedRobot robot)
+            {
+                // Get the position of the scanned robot based on the ScannedRobotEvent
+                PointF pos = GetPosition(scannedRobotEvent, robot);
+                // Store the scanned position (x,y)
+                scannedX = pos.X;
+                scannedY = pos.Y;
+                // Store the scanned velocity and heading
+                scannedVelocity = scannedRobotEvent.Velocity;
+                scannedHeading = scannedRobotEvent.HeadingRadians;
+            }
+
+            /// <summary>
+            /// Returns the position of the scanned robot based on new scan data for a scanned robot.
+            /// </summary> 
+            /// <param name="scannedRobotEvent">
+            /// A ScannedRobotEvent event containing data about a scanned robot.
+            /// </param>
+            /// <param name="robot">Robot that calls this method.</param>
+            /// <return>The position (x,y) of the scanned robot.</return>
+            private PointF GetPosition(ScannedRobotEvent scannedRobotEvent, AdvancedRobot robot)
+            {
+                // Gets the distance to the scanned robot
+                double distance = scannedRobotEvent.Distance;
+                // Calculate the angle to the scanned robot (our robot heading + bearing to scanned robot)
+                double angle = robot.HeadingRadians + scannedRobotEvent.BearingRadians;
+
+                // Calculate the coordinates (x,y) of the scanned robot
+                double x = robot.X + Math.Sin(angle) * distance;
+                double y = robot.Y + Math.Cos(angle) * distance;
+
+                // Return the position as a point (x,y)
+                return new PointF((float)x, (float)y);
+            }
         }
     }
 }
