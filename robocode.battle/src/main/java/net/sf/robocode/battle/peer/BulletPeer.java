@@ -156,13 +156,13 @@ public class BulletPeer {
 
 				boolean teamFire = (owner.getTeamPeer() != null && owner.getTeamPeer() == otherRobot.getTeamPeer());
 
-				if (!teamFire) {
+				if (!teamFire && !otherRobot.isSentryRobot()) {
 					owner.getRobotStatistics().scoreBulletDamage(otherRobot.getName(), score);
 				}
 
 				if (otherRobot.getEnergy() <= 0 && otherRobot.isAlive()) {
 					otherRobot.kill();
-					if (!teamFire) {
+					if (!teamFire && !otherRobot.isSentryRobot()) {
 						double bonus = owner.getRobotStatistics().scoreBulletKill(otherRobot.getName());
 						if (bonus > 0) {
 							owner.println(

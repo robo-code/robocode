@@ -1033,7 +1033,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 					boolean teamFire = (teamPeer != null && teamPeer == otherRobot.teamPeer);
 
-					if (!teamFire) {
+					if (!teamFire && !otherRobot.isSentryRobot()) {
 						statistics.scoreRammingDamage(otherRobot.getName());
 					}
 
@@ -1043,7 +1043,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					if (otherRobot.energy == 0) {
 						if (otherRobot.isAlive()) {
 							otherRobot.kill();
-							if (!teamFire) {
+							if (!teamFire && !otherRobot.isSentryRobot()) {
 								final double bonus = statistics.scoreRammingKill(otherRobot.getName());
 
 								if (bonus > 0) {
