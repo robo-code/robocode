@@ -1,4 +1,4 @@
-## Version 1.9.0.0 Beta (13-Jun-2013) The BorderSentry Robot Release
+## Version 1.9.0.0 Beta 2 (06-Dec-2013) The BorderSentry Robot Release
 
 ### Bug fixes
 * Fixed various issues with the Robot Editor.

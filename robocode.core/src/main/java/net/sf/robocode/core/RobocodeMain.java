@@ -178,23 +178,17 @@ public final class RobocodeMain extends RobocodeMainBase {
 	public void loadSetup(String[] args) {
 
 		final String nosecMessage = "Robocode is running without a security manager.\n"
-				+ "Robots have full access to your system.\n" + "You should only run robots which you trust!";
+				+ "Robots have full access to your system.\n"
+				+ "You should only run robots which you trust!";
 		final String exMessage = "Robocode is running in experimental mode.\n"
-				+ "Robots have access to their IRobotPeer interfaces.\n" + "You should only run robots which you trust!";
+				+ "Robots have access to their IRobotPeer interfaces.\n"
+				+ "You should only run robots which you trust!";
 
 		if (System.getProperty("NOSECURITY", "false").equals("true")) {
-			Logger.logMessage(nosecMessage);
+			Logger.logWarning(nosecMessage);
 		}
 		if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
-			Logger.logMessage(exMessage);
-		}
-		if (windowManager != null) {
-			if (System.getProperty("NOSECURITY", "false").equals("true")) {
-				windowManager.messageWarning(nosecMessage);
-			}
-			if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
-				windowManager.messageWarning(exMessage);
-			}
+			Logger.logWarning(exMessage);
 		}
 
 		setup.tps = properties.getOptionsBattleDesiredTPS();
