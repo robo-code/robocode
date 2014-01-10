@@ -1,6 +1,7 @@
-## Version 1.9.0.0 Beta 2 (16-Dec-2013) The Border Sentry Robot Release
+## Version 1.9.0.0 (10-Jan-2014) The Border Sentry Robot Release
 
 ### Bug fixes
+* [Bug-366][]: Receiving enemy's real name on HitByBulletEvent.
 * Fixed various issues with the Robot Editor, e.g. letters written in the wrong error when typing text fast.
 
 ### New features
@@ -2910,6 +2911,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-361]: http://sourceforge.net/p/robocode/bugs/361/  (Problem in the text editor related with the .java file modification)
 [Bug-362]: http://sourceforge.net/p/robocode/bugs/362/  (Rumble client does not remove participants in wrong codesize group)
 [Bug-363]: http://sourceforge.net/p/robocode/bugs/363/  (No Last Survivor Bonus being given)
+[Bug-366]: http://sourceforge.net/p/robocode/bugs/366/  (Receiving enemy's real name on HitByBulletEvent)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
