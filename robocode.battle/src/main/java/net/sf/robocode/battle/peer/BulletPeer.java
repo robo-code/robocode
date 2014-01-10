@@ -84,16 +84,16 @@ public class BulletPeer {
 				b.x = b.lastX;
 				b.y = b.lastY;
 
-				owner.addEvent(new BulletHitBulletEvent(createBullet(false), b.createBullet(true)));
-				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(false), createBullet(true)));
+				owner.addEvent(new BulletHitBulletEvent(createBullet(false, true), b.createBullet(true, false)));
+				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(false, true), createBullet(true, false)));
 				break;
 			}
 		}
 	}
 
-	private Bullet createBullet(boolean hideOwnerName) {
+	private Bullet createBullet(boolean hideOwnerName, boolean hideVictimName) {
 		String ownerName = (owner == null) ? null : (hideOwnerName ? getNameForEvent(owner) : owner.getName());
-		String victimName = (victim == null) ? null : (hideOwnerName ? victim.getName() : getNameForEvent(victim));
+		String victimName = (victim == null) ? null : (hideVictimName ? getNameForEvent(victim) : victim.getName());
 
 		return new Bullet(heading, x, y, power, ownerName, victimName, isActive(), bulletId);
 	}
@@ -176,13 +176,11 @@ public class BulletPeer {
 					owner.updateEnergy(Rules.getBulletHitBonus(power));
 				}
 
-				Bullet bullet = createBullet(false);
-
 				otherRobot.addEvent(
 						new HitByBulletEvent(
-								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()), bullet));
+								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()), createBullet(true, true)));
 
-				owner.addEvent(new BulletHitEvent(owner.getNameForEvent(otherRobot), otherRobot.getEnergy(), bullet));
+				owner.addEvent(new BulletHitEvent(owner.getNameForEvent(otherRobot), otherRobot.getEnergy(), createBullet(false, false)));
 
 				double newX, newY;
 
@@ -210,7 +208,7 @@ public class BulletPeer {
 				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
 			state = BulletState.HIT_WALL;
 			frame = 0;
-			owner.addEvent(new BulletMissedEvent(createBullet(false)));
+			owner.addEvent(new BulletMissedEvent(createBullet(false, true)));
 		}
 	}
 
