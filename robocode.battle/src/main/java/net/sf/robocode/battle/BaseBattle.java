@@ -274,7 +274,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 
 	protected void finalizeRound() {}
 
-	protected void cleanupRound() {
+	private void cleanupRound() {
 		logMessage("Round " + (roundNum + 1) + " cleaning up.");
 	}
 
@@ -399,7 +399,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		sendCommand(new StepCommand());
 	}
 
-	public void stepBack() {
+	protected void stepBack() {
 		sendCommand(new StepBackCommand());
 	}
 
@@ -435,7 +435,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	}
 
 
-	public class StepBackCommand extends Command {
+	private class StepBackCommand extends Command {
 		public void execute() {
 			runBackward = true;
 			if (isPaused) {
@@ -470,19 +470,6 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		} catch (InterruptedException e) {
 			// Immediately reasserts the exception by interrupting the caller thread itself
 			Thread.currentThread().interrupt();
-		}
-	}
-
-	public void printSystemThreads() {
-		Thread systemThreads[] = new Thread[256];
-
-		battleThread.getThreadGroup().enumerate(systemThreads, false);
-
-		logMessage("Threads: ------------------------");
-		for (Thread thread : systemThreads) {
-			if (thread != null) {
-				logError(thread.getName());
-			}
 		}
 	}
 }

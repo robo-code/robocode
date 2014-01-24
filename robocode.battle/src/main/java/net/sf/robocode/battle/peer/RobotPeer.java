@@ -182,22 +182,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public void print(Throwable ex) {
-		println(ex.toString());
-		StackTraceElement[] trace = ex.getStackTrace();
-
-		for (StackTraceElement aTrace : trace) {
-			println("\tat " + aTrace);
-		}
-
-		Throwable ourCause = ex.getCause();
-
-		if (ourCause != null) {
-			print(ourCause);
-		}
-	}
-
-	public void print(String s) {
+	private void print(String s) {
 		synchronized (proxyText) {
 			proxyText.append(s);
 		}
@@ -421,7 +406,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return statics.isTeamLeader();
 	}
 
-	public boolean isTeamMate(RobotPeer otherRobot) {
+	boolean isTeamMate(RobotPeer otherRobot) {
 		if (getTeamPeer() != null) {
 			for (RobotPeer mate : getTeamPeer()) {
 				if (otherRobot == mate) {
@@ -436,7 +421,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// execute
 	// -----------
 
-	ByteBuffer bidirectionalBuffer;
+	private ByteBuffer bidirectionalBuffer;
 
 	public void setupBuffer(ByteBuffer bidirectionalBuffer) {
 		this.bidirectionalBuffer = bidirectionalBuffer;
@@ -601,7 +586,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public void waitWakeupNoWait() {
+	private void waitWakeupNoWait() {
 		synchronized (isSleeping) {
 			if (isSleeping()) {
 				// Wake up the thread
@@ -1243,7 +1228,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return battleRules.getBattlefieldWidth();
 	}
 
-	public void updateBoundingBox() {
+	private void updateBoundingBox() {
 		boundingBox.setRect(x - HALF_WIDTH_OFFSET, y - HALF_HEIGHT_OFFSET, WIDTH, HEIGHT);
 	}
 
@@ -1488,7 +1473,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return Math.max(velocity - Rules.ACCELERATION, Math.min(goalVel, velocity + maxDecel(-velocity)));
 	}
 
-	final static double getMaxVelocity(double distance) {
+	private final static double getMaxVelocity(double distance) {
 		final double decelTime = Math.max(1, Math.ceil(// sum of 0... decelTime, solving for decelTime using quadratic formula
 				(Math.sqrt((4 * 2 / Rules.DECELERATION) * distance + 1) - 1) / 2));
 
@@ -1626,7 +1611,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		logMessage(message.toString());
 	}
 
-	public void updateEnergy(double delta) {
+	void updateEnergy(double delta) {
 		if ((!isExecFinishedAndDisabled && !isEnergyDrained) || delta < 0) {
 			setEnergy(energy + delta, true);
 		}
@@ -1736,7 +1721,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		status.set(stat);
 	}
 
-	public void addBulletStatus(BulletStatus bulletStatus) {
+	void addBulletStatus(BulletStatus bulletStatus) {
 		if (isAlive()) {
 			bulletUpdates.get().add(bulletStatus);
 		}

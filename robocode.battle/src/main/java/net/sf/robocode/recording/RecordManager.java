@@ -43,7 +43,7 @@ public class RecordManager implements IRecordManager {
 	private File tempFile;
 	private BattleRecorder recorder;
 
-	public BattleRecordInfo recordInfo;
+	BattleRecordInfo recordInfo;
 	private FileOutputStream fileWriteStream;
 	private BufferedOutputStream bufferedWriteStream;
 	private ObjectOutputStream objectWriteStream;
@@ -52,7 +52,7 @@ public class RecordManager implements IRecordManager {
 	private BufferedInputStream bufferedReadStream;
 	private ObjectInputStream objectReadStream;
 
-	public RecordManager(ISettingsManager properties) {
+	public RecordManager(ISettingsManager properties) { // NO_UCD (unused code)
 		this.properties = properties;
 		recorder = new BattleRecorder(this, properties);
 	}
@@ -76,7 +76,7 @@ public class RecordManager implements IRecordManager {
 		recordInfo = null;
 	}
 
-	public void cleanupStreams() {
+	void cleanupStreams() {
 		FileUtil.cleanupStream(objectWriteStream);
 		objectWriteStream = null;
 		FileUtil.cleanupStream(bufferedWriteStream);
@@ -119,7 +119,7 @@ public class RecordManager implements IRecordManager {
 		}
 	}
 
-	public void prepareInputStream() {
+	void prepareInputStream() {
 		try {
 			fileReadStream = new FileInputStream(tempFile);
 			bufferedReadStream = new BufferedInputStream(fileReadStream);
@@ -137,7 +137,7 @@ public class RecordManager implements IRecordManager {
 		}
 	}
 
-	public ITurnSnapshot readSnapshot(int currentTime) {
+	ITurnSnapshot readSnapshot(int currentTime) {
 		if (objectReadStream == null) {
 			return null;
 		}
@@ -406,7 +406,7 @@ public class RecordManager implements IRecordManager {
 		return recordInfo != null;
 	}
 
-	public void createRecordInfo(BattleRules rules, int numRobots) {
+	void createRecordInfo(BattleRules rules, int numRobots) {
 		try {
 			createTempFile();
 
@@ -426,11 +426,11 @@ public class RecordManager implements IRecordManager {
 		}
 	}
 
-	public void updateRecordInfoResults(List<BattleResults> results) {
+	void updateRecordInfoResults(List<BattleResults> results) {
 		recordInfo.results = results;
 	}
 
-	public void writeTurn(ITurnSnapshot turn, int round, int time) {
+	void writeTurn(ITurnSnapshot turn, int round, int time) {
 		try {
 			if (time != recordInfo.turnsInRounds[round]) {
 				throw new Error("Something rotten");

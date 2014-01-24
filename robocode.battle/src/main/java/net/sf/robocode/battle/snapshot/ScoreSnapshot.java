@@ -28,7 +28,7 @@ import java.io.Serializable;
  *
  * @since 1.6.1
  */
-public final class ScoreSnapshot implements Serializable, IXmlSerializable, IScoreSnapshot {
+final class ScoreSnapshot implements Serializable, IXmlSerializable, IScoreSnapshot {
 
 	private static final long serialVersionUID = 1L;
 
@@ -97,7 +97,7 @@ public final class ScoreSnapshot implements Serializable, IXmlSerializable, ISco
 	 * @param score the contestant's score to take a snapshot of.
 	 * @param contestantName the name of the contestant.
 	 */
-	public ScoreSnapshot(String contestantName, RobotStatistics score) {
+	ScoreSnapshot(String contestantName, RobotStatistics score) {
 		this.name = contestantName;
 		totalScore = score.getTotalScore();
 		totalSurvivalScore = score.getTotalSurvivalScore();
@@ -125,7 +125,7 @@ public final class ScoreSnapshot implements Serializable, IXmlSerializable, ISco
 	 * @param score1 the contestant's first set of scores to base this snapshot on.
 	 * @param score2 the contestant's second set of scores that must be added to the first set of scores.
 	 */
-	public ScoreSnapshot(String contestantName, IScoreSnapshot score1, IScoreSnapshot score2) {
+	ScoreSnapshot(String contestantName, IScoreSnapshot score1, IScoreSnapshot score2) {
 		this.name = contestantName;
 		totalScore = score1.getTotalScore() + score2.getTotalScore();
 		totalSurvivalScore = score1.getTotalSurvivalScore() + score2.getTotalSurvivalScore();

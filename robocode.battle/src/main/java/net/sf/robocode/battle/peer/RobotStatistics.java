@@ -50,7 +50,7 @@ public class RobotStatistics implements ContestantStatistics {
 	private int totalSeconds;
 	private int totalThirds;
 
-	public RobotStatistics(RobotPeer robotPeer, int numberOfRobots) {
+	RobotStatistics(RobotPeer robotPeer, int numberOfRobots) {
 		super();
 		this.robotPeer = robotPeer;
 		this.numberOfRobots = numberOfRobots;
@@ -60,14 +60,14 @@ public class RobotStatistics implements ContestantStatistics {
 		this.rank = rank;
 	}
 
-	public void reset() {
+	void reset() {
 		resetScores();
 
 		isActive = true;
 		isInRound = true;
 	}
 
-	public void resetScores() {
+	private void resetScores() {
 		robotDamageMap = null;
 		survivalScore = 0;
 		lastSurvivorBonus = 0;
@@ -186,14 +186,14 @@ public class RobotStatistics implements ContestantStatistics {
 		}
 	}
 
-	public void scoreBulletDamage(String robot, double damage) {
+	void scoreBulletDamage(String robot, double damage) {
 		if (isActive) {
 			incrementRobotDamage(robot, damage);
 			bulletDamageScore += damage;
 		}
 	}
 
-	public double scoreBulletKill(String robot) {
+	double scoreBulletKill(String robot) {
 		if (isActive) {
 			double bonus;
 
@@ -212,14 +212,14 @@ public class RobotStatistics implements ContestantStatistics {
 		return 0;
 	}
 
-	public void scoreRammingDamage(String robot) {
+	void scoreRammingDamage(String robot) {
 		if (isActive) {
 			incrementRobotDamage(robot, robocode.Rules.ROBOT_HIT_DAMAGE);
 			rammingDamageScore += robocode.Rules.ROBOT_HIT_BONUS;
 		}
 	}
 
-	public double scoreRammingKill(String robot) {
+	double scoreRammingKill(String robot) {
 		if (isActive) {
 			double bonus;
 
@@ -263,7 +263,7 @@ public class RobotStatistics implements ContestantStatistics {
 		}
 	}
 
-	public void setInactive() {
+	void setInactive() {
 		resetScores();
 		isActive = false;
 	}
@@ -289,7 +289,7 @@ public class RobotStatistics implements ContestantStatistics {
 		robotDamageMap.put(robot, newDamage);
 	}
 
-	public void cleanup() {// Do nothing, for now
+	void cleanup() {// Do nothing, for now
 	}
 
 	public boolean isInRound() {

@@ -17,7 +17,6 @@ public interface ContestantPeer extends Comparable<ContestantPeer> {
 
 	int getRobotIndex();
 	int getTeamIndex();
-	int getContestantIndex();
 
 	ContestantStatistics getStatistics();
 

@@ -79,14 +79,14 @@ public final class Battle extends BaseBattle {
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
-	public Battle(ISettingsManager properties, IBattleManager battleManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher eventDispatcher) {
+	public Battle(ISettingsManager properties, IBattleManager battleManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher eventDispatcher) { // NO_UCD (unused code)
 		super(properties, battleManager, eventDispatcher);
 		isDebugging = System.getProperty("debug", "false").equals("true");
 		this.hostManager = hostManager;
 		this.cpuConstant = cpuManager.getCpuConstant();
 	}
 
-	public void setup(RobotSpecification[] battlingRobotsList, BattleProperties battleProps, boolean paused) {
+	void setup(RobotSpecification[] battlingRobotsList, BattleProperties battleProps, boolean paused) {
 		isPaused = paused;
 		battleRules = HiddenAccess.createRules(battleProps.getBattlefieldWidth(), battleProps.getBattlefieldHeight(),
 				battleProps.getNumRounds(), battleProps.getGunCoolingRate(), battleProps.getInactivityTime(),
@@ -799,7 +799,7 @@ public final class Battle extends BaseBattle {
 	// Processing and maintaining robot and battle controls
 	// --------------------------------------------------------------------------
 
-	public void killRobot(int robotIndex) {
+	void killRobot(int robotIndex) {
 		sendCommand(new KillRobotCommand(robotIndex));
 	}
 
@@ -807,11 +807,11 @@ public final class Battle extends BaseBattle {
 		sendCommand(new EnableRobotPaintCommand(robotIndex, enable));
 	}
 
-	public void setSGPaintEnabled(int robotIndex, boolean enable) {
+	void setSGPaintEnabled(int robotIndex, boolean enable) {
 		sendCommand(new EnableRobotSGPaintCommand(robotIndex, enable));
 	}
 
-	public void sendInteractiveEvent(Event e) {
+	void sendInteractiveEvent(Event e) {
 		sendCommand(new SendInteractiveEventCommand(e));
 	}
 

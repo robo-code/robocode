@@ -24,7 +24,7 @@ public class ExplosionPeer extends BulletPeer {
 
 	private static final int EXPLOSION_LENGTH = 71;
 
-	public ExplosionPeer(RobotPeer owner, BattleRules battleRules) {
+	ExplosionPeer(RobotPeer owner, BattleRules battleRules) {
 		super(owner, battleRules, 0);
 		frame = 0;
 		x = owner.getX();

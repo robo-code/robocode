@@ -62,7 +62,7 @@ public class BulletPeer {
 
 	protected int explosionImageIndex; // Do not set to -1
 
-	public BulletPeer(RobotPeer owner, BattleRules battleRules, int bulletId) {
+	BulletPeer(RobotPeer owner, BattleRules battleRules, int bulletId) {
 		super();
 		this.owner = owner;
 		this.battleRules = battleRules;

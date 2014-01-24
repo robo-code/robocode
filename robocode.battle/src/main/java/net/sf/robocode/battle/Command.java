@@ -1,7 +1,7 @@
 package net.sf.robocode.battle;
 
 
-public abstract class Command {
+abstract class Command {
 
 	public void execute() {}
 }

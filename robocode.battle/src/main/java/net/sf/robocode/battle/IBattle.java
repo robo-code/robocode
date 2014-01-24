@@ -11,7 +11,7 @@ package net.sf.robocode.battle;
 /**
  * @author Pavel Savara (original)
  */
-public interface IBattle extends Runnable {
+interface IBattle extends Runnable {
 	void cleanup();
 
 	boolean isRunning();

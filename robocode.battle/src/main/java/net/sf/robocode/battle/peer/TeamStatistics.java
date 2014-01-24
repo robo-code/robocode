@@ -16,12 +16,12 @@ import robocode.BattleResults;
  * @author Luis Crespo (contributor)
  * @author Flemming N. Larsen (contributor)
  */
-public class TeamStatistics implements ContestantStatistics {
+class TeamStatistics implements ContestantStatistics {
 
 	private final TeamPeer teamPeer;
 	private int rank;
 
-	public TeamStatistics(TeamPeer teamPeer) {
+	TeamStatistics(TeamPeer teamPeer) {
 		this.teamPeer = teamPeer;
 	}
 

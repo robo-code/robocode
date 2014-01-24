@@ -140,7 +140,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 * @param readoutText {@code true} if the output text from the robot must be included in the snapshot;
 	 *                    {@code false} otherwise.
 	 */
-	public RobotSnapshot(RobotPeer robot, boolean readoutText) {
+	RobotSnapshot(RobotPeer robot, boolean readoutText) {
 		name = robot.getName();
 		shortName = robot.getShortName();
 		veryShortName = robot.getVeryShortName();

@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author Pavel Savara (original)
  */
-public interface IRobotPeerBattle extends ContestantPeer {
+interface IRobotPeerBattle extends ContestantPeer {
 	void setSGPaintEnabled(boolean enabled);
 
 	RobotStatistics getRobotStatistics();

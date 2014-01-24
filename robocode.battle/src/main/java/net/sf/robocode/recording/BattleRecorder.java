@@ -27,26 +27,26 @@ import java.util.Calendar;
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (original)
  */
-public class BattleRecorder {
+class BattleRecorder {
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
 
 	private final RecordManager recordmanager;
 	private final ISettingsManager properties;
 	private BattleObserver battleObserver;
 
-	public BattleRecorder(RecordManager recordmanager, ISettingsManager properties) {
+	BattleRecorder(RecordManager recordmanager, ISettingsManager properties) {
 		this.recordmanager = recordmanager;
 		this.properties = properties;
 	}
 
-	public void attachRecorder(BattleEventDispatcher battleEventDispatcher) {
+	void attachRecorder(BattleEventDispatcher battleEventDispatcher) {
 		if (battleObserver != null) {
 			battleObserver.dispose();
 		}
 		battleObserver = new BattleObserver(battleEventDispatcher);
 	}
 
-	public void detachRecorder() {
+	void detachRecorder() {
 		if (battleObserver != null) {
 			battleObserver.dispose();
 		}

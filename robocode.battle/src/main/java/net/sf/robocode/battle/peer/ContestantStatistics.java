@@ -16,7 +16,7 @@ import robocode.BattleResults;
  * @author Luis Crespo (contributor)
  * @author Flemming N. Larsen (contributor)
  */
-public interface ContestantStatistics {
+public interface ContestantStatistics { // NO_UCD (use default)
 	double getTotalScore();
 
 	double getTotalSurvivalScore();

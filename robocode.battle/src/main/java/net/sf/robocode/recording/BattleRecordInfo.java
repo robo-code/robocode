@@ -27,14 +27,14 @@ import java.util.List;
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (original)
  */
-public class BattleRecordInfo implements Serializable, IXmlSerializable {
+class BattleRecordInfo implements Serializable, IXmlSerializable {
 	private static final long serialVersionUID = 1L;
 
-	public int robotCount;
-	public int roundsCount;
-	public BattleRules battleRules;
-	public Integer[] turnsInRounds;
-	public List<BattleResults> results;
+	int robotCount;
+	int roundsCount;
+	BattleRules battleRules;
+	Integer[] turnsInRounds;
+	List<BattleResults> results;
 
 	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
 		writer.startElement("recordInfo"); {
@@ -130,12 +130,12 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 		});
 	}
 
-	public class IntValue implements IXmlSerializable {
-		IntValue(String name) {
+	private class IntValue implements IXmlSerializable {
+		private IntValue(String name) {
 			this.name = name;
 		}
 		private final String name;
-		public int intValue;
+		private int intValue;
 
 		public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {}
 
@@ -163,7 +163,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 	 *
 	 * @author Flemming N. Larsen (original)
 	 */
-	class BattleResultsWrapper extends BattleResults implements IXmlSerializable {
+	private class BattleResultsWrapper extends BattleResults implements IXmlSerializable {
 
 		private static final long serialVersionUID = BattleResults.serialVersionUID;
 
@@ -171,7 +171,7 @@ public class BattleRecordInfo implements Serializable, IXmlSerializable {
 			super(null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		}
 
-		public BattleResultsWrapper(BattleResults results) {
+		private BattleResultsWrapper(BattleResults results) {
 			super(results.getTeamLeaderName(), results.getRank(), results.getScore(), results.getSurvival(),
 					results.getLastSurvivorBonus(), results.getBulletDamage(), results.getBulletDamageBonus(),
 					results.getRamDamage(), results.getRamDamageBonus(), results.getFirsts(), results.getSeconds(),
