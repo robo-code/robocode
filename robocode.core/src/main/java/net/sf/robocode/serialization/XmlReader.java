@@ -27,17 +27,17 @@ import java.util.Stack;
  */
 public class XmlReader {
 
-	SAXParser parser;
+	private SAXParser parser;
 
-	final InputStream input;
-	final Stack<Element> elements = new Stack<Element>();
-	final Stack<IXmlSerializable> items = new Stack<IXmlSerializable>();
-	final Stack<Map<String, Element>> elementNames = new Stack<Map<String, Element>>();
-	final Stack<Map<String, Attribute>> attributeNames = new Stack<Map<String, Attribute>>();
-	IXmlSerializable result;
-	Map<String, Object> context = new HashMap<String, Object>();
+	private final InputStream input;
+	private final Stack<Element> elements = new Stack<Element>();
+	private final Stack<IXmlSerializable> items = new Stack<IXmlSerializable>();
+	private final Stack<Map<String, Element>> elementNames = new Stack<Map<String, Element>>();
+	private final Stack<Map<String, Attribute>> attributeNames = new Stack<Map<String, Attribute>>();
+	private IXmlSerializable result;
+	private Map<String, Object> context = new HashMap<String, Object>();
 
-	public XmlReader(InputStream input) throws SAXException, ParserConfigurationException {
+	private XmlReader(InputStream input) throws SAXException, ParserConfigurationException {
 		this.input = input;
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 

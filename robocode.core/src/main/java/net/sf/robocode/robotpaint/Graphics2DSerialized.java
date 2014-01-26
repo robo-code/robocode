@@ -2265,7 +2265,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	// Copy
 	// --------------------------------------------------------------------------
 
-	public static Color copyOf(Color c) {
+	private static Color copyOf(Color c) {
 		return (c != null) ? new Color(c.getRGB(), true) : null;
 	}
 

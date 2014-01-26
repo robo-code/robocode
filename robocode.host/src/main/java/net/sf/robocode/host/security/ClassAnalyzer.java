@@ -24,7 +24,7 @@ import java.util.Set;
  * @author Flemming N. Larsen (contributor)
  * @author Robert D. Maupin (contributor)
  */
-public class ClassAnalyzer {
+class ClassAnalyzer {
 	private final static byte CONSTANT_Class = 7;
 	private final static byte CONSTANT_Fieldref = 9;
 	private final static byte CONSTANT_Methodref = 10;
@@ -44,7 +44,7 @@ public class ClassAnalyzer {
 		super();
 	}
 
-	public static void getReferencedClasses(ByteBuffer classFile, Set<String> collection) {
+	static void getReferencedClasses(ByteBuffer classFile, Set<String> collection) {
 
 		/*
 		 http://java.sun.com/docs/books/vmspec/2nd-edition/html/ClassFile.doc.html

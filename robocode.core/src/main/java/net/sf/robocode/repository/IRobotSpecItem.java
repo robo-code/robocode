@@ -43,10 +43,6 @@ public interface IRobotSpecItem extends Comparable<Object> {
 
 	URL getItemURL();
 
-	URL getPropertiesURL();
-
-	long getLastModified();
-
 	boolean isDevelopmentVersion();
 
 	String getRobocodeVersion();

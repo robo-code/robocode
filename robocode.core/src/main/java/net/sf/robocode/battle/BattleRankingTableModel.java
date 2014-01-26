@@ -26,7 +26,7 @@ import javax.swing.table.AbstractTableModel;
 @SuppressWarnings("serial")
 public class BattleRankingTableModel extends AbstractTableModel {
 
-	IScoreSnapshot[] scoreSnapshotList;
+	private IScoreSnapshot[] scoreSnapshotList;
 
 	// The sum of the scores gathered by the robots in the actual round
 	private double currentSum;
@@ -180,7 +180,7 @@ public class BattleRankingTableModel extends AbstractTableModel {
 		}
 	}
 
-	public static String getPlacementString(int i) {
+	private static String getPlacementString(int i) {
 		String result = "" + i;
 
 		if (i > 3 && i < 20) {

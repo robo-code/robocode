@@ -19,7 +19,7 @@ import robocode.control.RobotSpecification;
 /**
  * @author Pavel Savara (original)
  */
-public interface IHost {
+public interface IHost { // NO_UCD (use default)
 	IHostingRobotProxy createRobotProxy(IHostManager hostManager, RobotSpecification robotSpecification, IRobotStatics statics, IRobotPeer peer);
 	String[] getReferencedClasses(IRobotItem robotItem);
 	RobotType getRobotType(IRobotItem robotItem, boolean resolve, boolean message);

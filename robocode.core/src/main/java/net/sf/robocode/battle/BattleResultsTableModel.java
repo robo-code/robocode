@@ -233,7 +233,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		}
 	}
 
-	public static String getPlacementString(int i) {
+	private static String getPlacementString(int i) {
 		String result = "" + i;
 
 		if (i > 3 && i < 20) {

@@ -43,15 +43,15 @@ import java.net.MalformedURLException;
  * @author Pavel Savara (original)
  */
 public final class Container extends ContainerBase {
-	public static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
+
 	private static final String classPath = System.getProperties().getProperty("robocode.class.path", null);
 
 	public static final MutablePicoContainer cache;
 	public static final MutablePicoContainer factory;
 	public static final ClassLoader systemLoader;
-	public static final ClassLoader engineLoader;
+	public static final ClassLoader engineLoader; // NO_UCD (use private - used by the .NET plug-in)
 	private static Set<String> known = new HashSet<String>();
-	public static final List<IModule> modules = new ArrayList<IModule>();
+	private static final List<IModule> modules = new ArrayList<IModule>();
 
 	static {
 		instance = new Container();
@@ -91,7 +91,7 @@ public final class Container extends ContainerBase {
 		}
 	}
 
-	public static void init() {}
+	static void init() {}
 
 	private static void loadFromPath(String path) {
 		try {
@@ -190,15 +190,7 @@ public final class Container extends ContainerBase {
 		return null;
 	}
 
-	public static void loadJars(String allowed) {
-		final URL[] jars = findJars(allowed);
-
-		for (URL jar : jars) {
-			((EngineClassLoader) engineLoader).addURL(jar);
-		}
-	}
-
-	public static URL[] findJars(String allowed) {
+	static URL[] findJars(String allowed) {
 		java.util.List<String> urls = new ArrayList<String>();
 		final String classPath = System.getProperty("robocode.class.path", null);
 
@@ -239,11 +231,6 @@ public final class Container extends ContainerBase {
 
 	public static <T> T getComponent(java.lang.Class<T> tClass) {
 		return cache.getComponent(tClass);
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> T getComponent(String name) {
-		return (T) cache.getComponent(name);
 	}
 
 	public static <T> T getComponent(java.lang.Class<T> tClass, String className) {

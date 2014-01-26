@@ -16,7 +16,9 @@ import java.io.IOException;
  * @author Pavel Savara (original)
  */
 public class RobotFileOutputStream extends FileOutputStream {
-	RobotFileSystemManager fileSystemManager;
+
+	private RobotFileSystemManager fileSystemManager;
+
 	public RobotFileOutputStream(String filename, boolean append, RobotFileSystemManager fileSystemManager) throws IOException {
 		super(filename, append);
 		this.fileSystemManager = fileSystemManager;

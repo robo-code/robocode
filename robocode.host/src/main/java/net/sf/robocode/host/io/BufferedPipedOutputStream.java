@@ -16,7 +16,7 @@ import java.io.OutputStream;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class BufferedPipedOutputStream extends OutputStream {
+class BufferedPipedOutputStream extends OutputStream {
 
 	private final Object monitor = new Object();
 	private final byte[] buf;
@@ -27,7 +27,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 	private BufferedPipedInputStream in;
 	private final boolean skipLines;
 
-	public BufferedPipedOutputStream(int bufferSize, boolean skipLines) {
+	BufferedPipedOutputStream(int bufferSize, boolean skipLines) {
 		this.buf = new byte[bufferSize];
 		this.skipLines = skipLines;
 	}
@@ -107,7 +107,7 @@ public class BufferedPipedOutputStream extends OutputStream {
 		}
 	}
 
-	public int read(byte b[], int off, int len) throws IOException {
+	int read(byte b[], int off, int len) throws IOException {
 		if (b == null) {
 			throw new NullPointerException();
 		} else if (off < 0 || len < 0 || off >= b.length || (off + len) > b.length) {

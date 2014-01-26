@@ -21,7 +21,8 @@ import java.security.AccessControlException;
  * @author Pavel Savara (contributor)
  */
 public class RobocodeSecurityManager extends SecurityManager {
-	public static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
+
+	private static final boolean IS_SECURITY_ENABLED = !System.getProperty("NOSECURITY", "false").equals("true");
 
 	private final IThreadManager threadManager;
 
@@ -37,14 +38,14 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 		// We need to exercise it in order to load all used classes on this thread
 		isSafeThread(Thread.currentThread());
-		if (isSecutityOn) {
+		if (IS_SECURITY_ENABLED) {
 			System.setSecurityManager(this);
 		}
 	}
 
 	@Override
 	public void checkAccess(Thread t) {
-		if (!isSecutityOn) {
+		if (!IS_SECURITY_ENABLED) {
 			return;
 		}
 
@@ -90,7 +91,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(ThreadGroup g) {
-		if (!isSecutityOn) {
+		if (!IS_SECURITY_ENABLED) {
 			return;
 		}
 		Thread c = Thread.currentThread();

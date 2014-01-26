@@ -44,16 +44,8 @@ public class EngineClassLoader extends URLClassLoader {
 		exclusions.add("net.sf.robocode.host.proxies.__IHostingRobotProxy");
 	}
 
-	public static void addExclusion(String classFullName) {
-		exclusions.add(classFullName);
-	}
-
 	public EngineClassLoader(ClassLoader parent) {
 		super(Container.findJars(File.separator + "robocode."), parent);
-	}
-
-	public EngineClassLoader(URL[] urls, ClassLoader parent) {
-		super(urls, parent);
 	}
 
 	public synchronized void addURL(URL url) {

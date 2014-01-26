@@ -15,7 +15,7 @@ import java.io.InputStream;
 /**
  * @author Mathew A. Nelson (original)
  */
-public class BufferedPipedInputStream extends InputStream {
+class BufferedPipedInputStream extends InputStream {
 
 	private final BufferedPipedOutputStream out;
 

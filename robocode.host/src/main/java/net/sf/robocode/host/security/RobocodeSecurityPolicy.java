@@ -286,7 +286,7 @@ public class RobocodeSecurityPolicy extends Policy {
 
 	private void initUrls() {
 		untrustedCodeUrls = new HashSet<String>();
-		untrustedCodeUrls.add(RobotClassLoader.untrustedURL);
+		untrustedCodeUrls.add(RobotClassLoader.UNTRUSTED_URL);
 
 		String classPath = System.getProperty("robocode.class.path");
 		StringTokenizer tokenizer = new StringTokenizer(classPath, File.pathSeparator);

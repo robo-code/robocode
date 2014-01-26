@@ -31,8 +31,6 @@ public interface IWindowManager extends IWindowManagerBase {
 
 	boolean isIconified();
 
-	void setEnableShowResults(boolean enable);
-
 	void setSlave(boolean slave);
 
 	void showRobocodeFrame(boolean visible, boolean iconified);
@@ -46,8 +44,6 @@ public interface IWindowManager extends IWindowManagerBase {
 	void setBusyPointer(boolean enabled);
 
 	void setStatus(String s);
-
-	void messageWarning(String s);
 
 	ITurnSnapshot getLastSnapshot();
 

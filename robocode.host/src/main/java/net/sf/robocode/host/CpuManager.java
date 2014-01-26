@@ -20,14 +20,14 @@ import net.sf.robocode.ui.IWindowManager;
  * @author Robert Maupin (contributor)
  * @author Pavel Savara (contributor)
  */
-public class CpuManager implements ICpuManager {
+public class CpuManager implements ICpuManager { // NO_UCD (use default)
 	private final static int APPROXIMATE_CYCLES_ALLOWED = 6250;
 	private final static int TEST_PERIOD_MILLIS = 5000;
 
 	private long cpuConstant = -1;
 	private final ISettingsManager properties;
 
-	public CpuManager(ISettingsManager properties) {
+	public CpuManager(ISettingsManager properties) { // NO_UCD (unused code)
 		this.properties = properties;
 	}
 

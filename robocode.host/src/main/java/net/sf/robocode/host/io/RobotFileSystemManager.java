@@ -54,7 +54,7 @@ public class RobotFileSystemManager {
 		updateDataFiles();
 	}
 
-	public void addStream(RobotFileOutputStream s) throws IOException {
+	void addStream(RobotFileOutputStream s) throws IOException {
 		if (s == null) {
 			throw new SecurityException("You may not add a null stream.");
 		}
@@ -76,7 +76,7 @@ public class RobotFileSystemManager {
 		checkQuota(0);
 	}
 
-	public void checkQuota(long numBytes) throws IOException {
+	void checkQuota(long numBytes) throws IOException {
 		if (numBytes < 0) {
 			throw new IllegalArgumentException("checkQuota on negative numBytes!");
 		}
@@ -227,7 +227,7 @@ public class RobotFileSystemManager {
 		return attemptedFile.equals(allowedDirectory) || attemptedFile.getParentFile().equals(allowedDirectory);
 	}
 
-	public void removeStream(RobotFileOutputStream s) {
+	void removeStream(RobotFileOutputStream s) {
 		if (s == null) {
 			throw new SecurityException("You may not remove a null stream.");
 		}

@@ -23,11 +23,11 @@ import java.util.Stack;
  */
 public class XmlWriter {
 	private static final DecimalFormat decimalFormat = new DecimalFormat("#.####", new DecimalFormatSymbols(Locale.US));
-	final Writer writer;
-	final Stack<String> elements = new Stack<String>();
-	boolean headClosed = true;
-	boolean innerElement = false;
-	boolean indent = true;
+	private final Writer writer;
+	private final Stack<String> elements = new Stack<String>();
+	private boolean headClosed = true;
+	private boolean innerElement = false;
+	private boolean indent = true;
 
 	public XmlWriter(Writer writer, boolean indent) {
 		this.writer = writer;
@@ -113,7 +113,7 @@ public class XmlWriter {
 		}
 	}
 
-	public static String encode(String text) {
+	private static String encode(String text) {
 		final StringBuilder result = new StringBuilder();
 		final StringCharacterIterator iterator = new StringCharacterIterator(text);
 		char character = iterator.current();

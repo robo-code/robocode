@@ -63,7 +63,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	private double firedEnergy;
 	private double firedHeat;
 
-	public BasicRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	BasicRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(specification, hostManager, peer, statics);
 
 		eventManager = new EventManager(this);
@@ -460,11 +460,11 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	protected void loadTeamMessages(java.util.List<TeamMessage> teamMessages) {}
 
-	protected final double getEnergyImpl() {
+	private final double getEnergyImpl() {
 		return status.getEnergy() - firedEnergy;
 	}
 
-	protected final double getGunHeatImpl() {
+	private final double getGunHeatImpl() {
 		return status.getGunHeat() + firedHeat;
 	}
 
@@ -476,7 +476,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		commands.setMoved(true);
 	}
 
-	protected final Bullet setFireImpl(double power) {
+	private final Bullet setFireImpl(double power) {
 		if (Double.isNaN(power)) {
 			println("SYSTEM: You cannot call fire(NaN)");
 			return null;

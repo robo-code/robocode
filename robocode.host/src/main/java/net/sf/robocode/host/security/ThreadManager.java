@@ -210,12 +210,4 @@ public class ThreadManager implements IThreadManager {
 
 		return (robotProxy != null) ? robotProxy.getOut() : null;
 	}
-
-	public void printlnToRobot(String s) {
-		final PrintStream stream = getRobotOutputStream();
-
-		if (stream != null) {
-			stream.println(s);
-		}
-	}
 }

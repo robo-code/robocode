@@ -19,8 +19,6 @@ import java.io.PrintStream;
 public interface IThreadManager extends IThreadManagerBase {
 	void addThreadGroup(ThreadGroup g, IHostedThread robotProxy);
 
-	IHostedThread getLoadingRobot();
-
 	IHostedThread getLoadingRobotProxy(Thread t);
 
 	IHostedThread getLoadedOrLoadingRobotProxy(Thread t);

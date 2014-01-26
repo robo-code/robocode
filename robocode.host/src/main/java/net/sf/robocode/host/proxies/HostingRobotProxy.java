@@ -38,17 +38,17 @@ import java.util.Set;
 /**
  * @author Pavel Savara (original)
  */
-public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
+abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
 
 	private final IRobotItem robotSpecification;
 
 	protected EventManager eventManager;
-	protected final IHostManager hostManager;
+	private final IHostManager hostManager;
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
 	private IThreadManager threadManager;
 
-	protected IBasicRobot robot;
+	private IBasicRobot robot;
 	protected final IRobotPeer peer;
 	protected IRobotClassLoader robotClassLoader;
 
@@ -112,7 +112,7 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		out.println(s);
 	}
 
-	public void println(Throwable ex) {
+	private void println(Throwable ex) {
 		ex.printStackTrace(out);
 	}
 

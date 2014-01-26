@@ -11,10 +11,9 @@ package net.sf.robocode.host.security;
 /**
  * @author Mathew A. Nelson (original)
  */
-@SuppressWarnings("serial")
-public class RobocodePermission extends java.security.Permission {
+@SuppressWarnings("serial") class RobocodePermission extends java.security.Permission {
 
-	public RobocodePermission(String name) {
+	RobocodePermission(String name) {
 		super(name);
 	}
 

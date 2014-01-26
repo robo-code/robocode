@@ -44,7 +44,6 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.net.*;
 
-
 // TODO: Update to new version from OpenJDK
 
 /**
@@ -52,12 +51,14 @@ import java.net.*;
  * @author Pavel Savara (contributor)
  */
 public class JarJarURLConnection extends URLConnection {
-	private URLConnection connection;
-	public final static char SEPARATOR_CHAR = JarJar.SEPARATOR_CHAR; // this is '^' now
-	public final static String SEPARATOR = SEPARATOR_CHAR + "/";
-	private static boolean registered = false;
 
-	public JarJarURLConnection(URL url)
+	private final static char SEPARATOR_CHAR = JarJar.SEPARATOR_CHAR; // this is '^' now
+	private final static String SEPARATOR = SEPARATOR_CHAR + "/";
+
+	private URLConnection connection;
+	private static boolean registered;
+
+	private JarJarURLConnection(URL url)
 		throws IOException {
 		super(url);
 		final String file = url.getFile();
@@ -89,7 +90,7 @@ public class JarJarURLConnection extends URLConnection {
 		}
 	}
 
-	public static class JarJarURLStreamHandlerFactory implements URLStreamHandlerFactory {
+	private static class JarJarURLStreamHandlerFactory implements URLStreamHandlerFactory {
 		public URLStreamHandler createURLStreamHandler(String protocol) {
 			if (protocol.equals("jarjar")) {
 				return new JarJarURLStreamHandler();
@@ -99,7 +100,7 @@ public class JarJarURLConnection extends URLConnection {
 	}
 
 
-	public static class JarJarURLStreamHandler extends URLStreamHandler {
+	private static class JarJarURLStreamHandler extends URLStreamHandler {
 
 		protected URLConnection openConnection(URL u) throws IOException {
 			return new JarJarURLConnection(u);

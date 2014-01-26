@@ -47,7 +47,7 @@ public class EventQueue extends ArrayList<Event> {
 		}
 	}
 
-	public void sort() {
+	void sort() {
 		Collections.sort(this);
 	}
 }

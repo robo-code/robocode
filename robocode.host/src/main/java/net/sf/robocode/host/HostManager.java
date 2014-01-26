@@ -31,7 +31,7 @@ public class HostManager implements IHostManager {
 	private final ISettingsManager properties;
 	private IThreadManager threadManager;
 
-	public HostManager(ISettingsManager properties, IThreadManager threadManager) {
+	public HostManager(ISettingsManager properties, IThreadManager threadManager) { // NO_UCD (unused code)
 		this.properties = properties;
 		this.threadManager = threadManager;
 	}

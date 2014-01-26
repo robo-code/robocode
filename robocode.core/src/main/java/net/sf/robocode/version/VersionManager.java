@@ -32,11 +32,10 @@ public final class VersionManager implements IVersionManager {
 	private static final String UNKNOWN_VERSION = "unknown";
 
 	private static Version version;
-	final ISettingsManager settingsManager;
-	final boolean versionChanged;
 
-	public VersionManager(ISettingsManager settingsManager) {
-		this.settingsManager = settingsManager;
+	private final boolean versionChanged;
+
+	public VersionManager(ISettingsManager settingsManager) { // NO_UCD (unused code)
 		if (settingsManager != null) {
 			versionChanged = !settingsManager.getLastRunVersion().equals(getVersion());
 			if (versionChanged) {

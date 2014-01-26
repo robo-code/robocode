@@ -18,7 +18,7 @@ import java.io.Serializable;
 public final class RobotType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	static final transient int
+	private static final transient int
 			NONE_FLAG = 0,
 			JUNIOR_FLAG = 1,
 			STANDARD_FLAG = 2,
@@ -33,7 +33,7 @@ public final class RobotType implements Serializable {
 
 	private int typeFlags;
 
-	public RobotType(int typeFlags) {
+	public RobotType(int typeFlags) { // NO_UCD (use private - used by .NET plug-in)
 		this.typeFlags = typeFlags;
 	}
 

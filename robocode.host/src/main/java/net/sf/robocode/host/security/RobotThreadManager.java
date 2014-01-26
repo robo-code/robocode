@@ -65,7 +65,7 @@ public class RobotThreadManager {
 		}
 	}
 
-	public boolean discardAWT() {
+	private boolean discardAWT() {
 		boolean res = false;
 
 		if (awtForThreadGroup != null && !(awtForThreadGroup instanceof Integer)) {
@@ -236,7 +236,7 @@ public class RobotThreadManager {
 		runThreadGroup.setMaxPriority(Thread.NORM_PRIORITY - 1);
 	}
 
-	public Object createNewAppContext() {
+	private Object createNewAppContext() {
 		// Add the current thread to our disposeAppContextThreadMap if it does not exit already
 		if (!disposeAppContextThreadMap.containsKey(Thread.currentThread())) {
 			disposeAppContextThreadMap.put(Thread.currentThread(), new Disposal());
@@ -281,7 +281,7 @@ public class RobotThreadManager {
 		// end: same as SunToolkit.createNewAppContext();
 	}
 
-	public boolean disposeAppContext(final Object appContext) {
+	private boolean disposeAppContext(final Object appContext) {
 		// This method should must not be used when the AWT is running in headless mode!
 		// Bugfix [2833271] IllegalThreadStateException with the AWT-Shutdown thread.
 		// Read more about headless mode here:

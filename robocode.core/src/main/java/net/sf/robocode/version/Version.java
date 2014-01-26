@@ -22,10 +22,10 @@ public class Version implements Comparable<Object> {
 	private final int build;
 
 	// <maturity> <maturity version>, e.g. in "Beta 3" the maturity is 2, and maturity version is 3 
-	public final int maturity; // Alpha is 1, Beta is 2, Final is 3
-	public final int maturity_version; // The number following e.g. "Alpha" or "Beta"
+	private final int maturity; // Alpha is 1, Beta is 2, Final is 3
+	private final int maturity_version; // The number following e.g. "Alpha" or "Beta"
 
-	public Version(String version) {
+	Version(String version) {
 		
 		// Validate version format
 		if (!version.matches("\\s*[0-9]+\\.[0-9]+(\\.[0-9]+)?(\\.[0-9]+)?(\\s?(([aA]lpha)|([bB]eta))(\\s?[0-9]+)?)?\\s*")) {
@@ -165,10 +165,6 @@ public class Version implements Comparable<Object> {
 
 	public static int compare(String oneVersion, String anotherVersion) {
 		return new Version(oneVersion).compareTo(new Version(anotherVersion));
-	}
-
-	public static boolean isAlpha(String version) {
-		return new Version(version).isAlpha();
 	}
 
 	public static boolean isBeta(String version) {

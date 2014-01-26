@@ -29,25 +29,18 @@ import java.io.IOException;
  * @author Flemming N. Larsen (contributor)
  */
 public class URLJarCollector {
-	static Object factory;
-	static HashMap<?, ?> fileCache;
-	static HashMap<?, ?> urlCache;
-	static Field jarFileURL;
-	static final boolean sunJVM;
-	static boolean enabled;
-	static Set<URL> urlsToClean = new HashSet<URL>();
+	
+	private static HashMap<?, ?> fileCache;
+	private static HashMap<?, ?> urlCache;
+	private static Field jarFileURL;
+	private static final boolean sunJVM;
+	private static boolean enabled;
+	private static Set<URL> urlsToClean = new HashSet<URL>();
 
 	static {
 		boolean localSunJVM = false;
 
 		try {
-			final Class<?> jarConn = ClassLoader.getSystemClassLoader().loadClass(
-					"sun.net.www.protocol.jar.JarURLConnection");
-			final Field factoryF = jarConn.getDeclaredField("factory");
-
-			factoryF.setAccessible(true);
-			factory = factoryF.get(null);
-
 			final Class<?> jarFactory = ClassLoader.getSystemClassLoader().loadClass(
 					"sun.net.www.protocol.jar.JarFileFactory");
 			final Field fileCacheF = jarFactory.getDeclaredField("fileCache");
@@ -178,31 +171,6 @@ public class URLJarCollector {
 					}
 				}
 			}
-		}
-	}
-
-	public static void dumpSunFileCache() {
-		if (sunJVM) {
-			Logger.logMessage("Dumping fileCache...");
-			for (Object url : fileCache.keySet()) {
-				final JarFile jarFile = (JarFile) fileCache.get(url);
-
-				Logger.logMessage("fileCache dump: url=" + url + ", jarFile.getName()=" + jarFile.getName());
-			}
-			Logger.logMessage("fileCache size: " + fileCache.size());
-		}
-	}
-
-	public static void dumpSunUrlCache() {
-		if (sunJVM) {
-			Logger.logMessage("Dumping urlCache...");
-			for (Object urlJarFile : urlCache.keySet()) {
-				final URL url = (URL) urlCache.get(urlJarFile);
-				final JarFile jarFile = (JarFile) urlJarFile;
-
-				Logger.logMessage("urlCache dump: url=" + url + ", jarFile.getName()=" + jarFile.getName());
-			}
-			Logger.logMessage("urlCache size: " + urlCache.size());
 		}
 	}
 }
