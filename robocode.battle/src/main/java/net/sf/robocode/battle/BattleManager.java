@@ -48,6 +48,7 @@ public class BattleManager implements IBattleManager {
 	private final IRepositoryManager repositoryManager;
 
 	private volatile IBattle battle;
+	private Thread battleThread;
 	private BattleProperties battleProperties = new BattleProperties();
 
 	private final BattleEventDispatcher battleEventDispatcher;
@@ -72,8 +73,8 @@ public class BattleManager implements IBattleManager {
 		if (battle != null) {
 			battle.waitTillOver();
 			battle.cleanup();
-			battle = null;
 		}
+		battle = null;
 	}
 
 	// Called when starting a new battle from GUI
@@ -131,7 +132,7 @@ public class BattleManager implements IBattleManager {
 
 		battle = realBattle;
 
-		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), realBattle);
+		battleThread = new Thread(Thread.currentThread().getThreadGroup(), realBattle);
 		battleThread.setPriority(Thread.NORM_PRIORITY);
 		battleThread.setName("Battle Thread");
 		realBattle.setBattleThread(battleThread);
@@ -281,6 +282,10 @@ public class BattleManager implements IBattleManager {
 		if (battle != null && battle.isRunning()) {
 			battle.stop(waitTillEnd);
 		}
+		if (hostManager != null && battleThread != null) {
+			hostManager.removeSafeThread(battleThread);
+		}
+		battleThread = null;
 	}
 
 	public synchronized void restart() {
