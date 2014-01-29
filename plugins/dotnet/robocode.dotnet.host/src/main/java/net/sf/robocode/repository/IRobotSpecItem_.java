@@ -39,9 +39,6 @@ class __IRobotSpecItem extends system.Object implements net.sf.robocode.reposito
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isValid();
     
-    @net.sf.jni4net.attributes.ClrMethod("()J")
-    public native long getLastModified();
-    
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getVersion();
     
@@ -74,9 +71,6 @@ class __IRobotSpecItem extends system.Object implements net.sf.robocode.reposito
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
     public native java.net.URL getItemURL();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
-    public native java.net.URL getPropertiesURL();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isDevelopmentVersion();
