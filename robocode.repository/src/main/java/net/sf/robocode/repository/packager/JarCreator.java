@@ -12,6 +12,7 @@ import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository.CodeSizeCalculator;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.TeamItem;
 import net.sf.robocode.version.IVersionManager;
@@ -36,7 +37,7 @@ import java.net.URLDecoder;
  */
 public class JarCreator {
 
-	public static String createPackage(File target, boolean includeSources, List<RobotItem> robots, List<TeamItem> teams, URL web, String desc, String author, String version) {
+	public static String createPackage(File jarFile, boolean includeSources, List<RobotItem> robots, List<TeamItem> teams, URL web, String desc, String author, String version) {
 		final IHostManager host = Container.getComponent(IHostManager.class);
 		final String rVersion = Container.getComponent(IVersionManager.class).getVersion();
 		JarOutputStream jarout = null;
@@ -44,12 +45,15 @@ public class JarCreator {
 		Set<String> entries = new HashSet<String>();
 
 		try {
-			fos = new FileOutputStream(target);
+			fos = new FileOutputStream(jarFile);
 			jarout = new JarOutputStream(fos, createManifest(robots));
 			jarout.setComment(rVersion + " - Robocode version");
 
 			for (TeamItem team : teams) {
 				final String teamEntry = team.getRelativePath() + '/' + team.getShortClassName() + ".team";
+
+				File dir = new File(FileUtil.getRobotsDir(), team.getRelativePath());
+				Integer codeSize = CodeSizeCalculator.getDirectoryCodeSize(dir);
 
 				if (!entries.contains(teamEntry)) {
 					JarEntry jt = new JarEntry(teamEntry);
@@ -57,7 +61,7 @@ public class JarCreator {
 					jarout.putNextEntry(jt);
 					entries.add(teamEntry); // called here, as an exception might occur before this line
 					try {
-						team.storeProperties(jarout, includeSources, version, desc, author, web);
+						team.storeProperties(jarout, includeSources, version, desc, author, web, codeSize);
 					} finally {
 						jarout.closeEntry();
 					}
@@ -67,13 +71,16 @@ public class JarCreator {
 			for (RobotItem robot : robots) {
 				final String propsEntry = robot.getRelativePath() + '/' + robot.getShortClassName() + ".properties";
 
+				File dir = new File(FileUtil.getRobotsDir(), robot.getRelativePath());
+				Integer codeSize = CodeSizeCalculator.getDirectoryCodeSize(dir);
+				
 				if (!entries.contains(propsEntry)) {
 					JarEntry jt = new JarEntry(propsEntry);
 
 					jarout.putNextEntry(jt);
 					entries.add(propsEntry); // called here, as an exception might occur before this line
 					try {
-						robot.storeProperties(jarout, includeSources, version, desc, author, web);
+						robot.storeProperties(jarout, includeSources, version, desc, author, web, codeSize);
 					} finally {
 						jarout.closeEntry();
 					}
@@ -94,35 +101,28 @@ public class JarCreator {
 			sb.append('\n');
 		}
 
-		appendCodeSize(target, sb);
+		appendCodeSize(jarFile, sb);
 
 		return sb.toString();
 	}
 
-	private static void appendCodeSize(File target, StringBuilder sb) {
-		int size = -1;
-
-		try {
-			// Call the codesize utility using reflection
-			Object item = Class.forName("codesize.Codesize").getMethod("processZipFile", new Class[] { File.class}).invoke(
-					null, target);
-
-			size = (Integer) item.getClass().getMethod("getCodeSize", (Class[]) null).invoke(item, (Object[]) null);
-		} catch (Exception ignore) {}
-		if (size >= 0) {
+	private static void appendCodeSize(File jarFile, StringBuilder sb) {
+		
+		Integer codesize = CodeSizeCalculator.getJarFileCodeSize(jarFile);
+		if (codesize != null) {
 			String weightClass = null;
 
-			if (size >= 1500) {
+			if (codesize >= 1500) {
 				weightClass = "MegaBot  (codesize >= 1500 bytes)";
-			} else if (size >= 750) {
+			} else if (codesize >= 750) {
 				weightClass = "MiniBot  (codesize < 1500 bytes)";
-			} else if (size >= 250) {
+			} else if (codesize >= 250) {
 				weightClass = "MicroBot (codesize < 750 bytes)";
 			} else {
 				weightClass = "NanoBot  (codesize < 250 bytes)";
 			}
 			sb.append("\n\n---- Codesize ----\n");
-			sb.append("Codesize: ").append(size).append(" bytes\n");
+			sb.append("Codesize: ").append(codesize).append(" bytes\n");
 			sb.append("Robot weight class: ").append(weightClass).append('\n');
 		}
 	}

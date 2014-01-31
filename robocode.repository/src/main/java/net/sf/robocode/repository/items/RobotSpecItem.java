@@ -50,11 +50,6 @@ public abstract class RobotSpecItem extends RepositoryItem implements IRobotSpec
 
 	public abstract URL getHtmlURL();
 
-	public void storeHtml(OutputStream os) throws IOException {
-		if (htmlURL != null) {// TODO ZAMO
-		}
-	}
-
 	public boolean isDevelopmentVersion() {
 		return root.isDevelopmentRoot()
 				&& !(getFullClassName().startsWith("sample") || getFullClassName().startsWith("tested.")); 

@@ -177,9 +177,9 @@ public class RobotPackager extends JDialog implements WizardListener {
 
 	public void finishButtonActionPerformed() {
 		String jarFilename = getFilenamePanel().getFilenameField().getText();
-		File f = new File(jarFilename);
+		File jarFile = new File(jarFilename);
 
-		if (f.exists()) {
+		if (jarFile.exists()) {
 			int ok = JOptionPane.showConfirmDialog(this,
 					jarFilename + " already exists.  Are you sure you want to replace it?", "Warning",
 					JOptionPane.YES_NO_CANCEL_OPTION);
@@ -210,7 +210,7 @@ public class RobotPackager extends JDialog implements WizardListener {
 		final boolean source = getPackagerOptionsPanel().getIncludeSource().isSelected();
 		final java.util.List<IRobotSpecItem> robots = getRobotSelectionPanel().getSelectedRobots();
 
-		final String res = repositoryManager.createPackage(f, web, desc, author, version, source, robots);
+		final String res = repositoryManager.createPackage(jarFile, web, desc, author, version, source, robots);
 		ConsoleDialog d = new ConsoleDialog(windowManager.getRobocodeFrame(), "Packaging results", false);
 
 		d.setText(res);

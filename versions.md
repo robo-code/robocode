@@ -1,4 +1,4 @@
-## Version 1.9.0.0 (28-Jan-2014) The Border Sentry Robot Release
+## Version 1.9.0.0 (31-Jan-2014) The Border Sentry Robot Release
 
 ### Bug fixes
 * [Bug-366][]: Receiving enemy's real name on HitByBulletEvent.
@@ -19,6 +19,8 @@
 	* When there is only one regular robot left on the battle field with one or more border sentry robots, the round is	automatically ended.
 	* A new sample robot has been added named ``samplesentry.BorderGuard``. Try it out against your robot(s) or e.g. ``sample.Corners`` and ``sample.Walls``.
 	* An additional option has been added to the View Options in the Preferences to enable and disable the visual appearance of the sentry border, which is painted in transparent red (danger zone).
+* [Req-156][]: Codesize added to properties file.
+	* The Robot Packager now adds a new property named ``robot.codesize`` which will be set to the value calculated by the built-in Codesize tool when compiling the robot and/or team. The Codesize value is the effective code size measured in bytes which is used by e.g. the RoboRumble to categorize robots into MicroBot, MiniBot and MegaBot etc.
 
 ## Version 1.8.3.0 (04-Oct-2013) The Editor Theme Release
 
@@ -2991,3 +2993,4 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Req-134]: http://sourceforge.net/p/robocode/feature-requests/134/  (Calculate codesize after compile in editor)
 [Req-135]: http://sourceforge.net/p/robocode/feature-requests/135/  (Twin Duel configuration files)
 [Req-144]: http://sourceforge.net/p/robocode/feature-requests/144/  (Mac ... start with icon and name)
+[Req-156]: http://sourceforge.net/p/robocode/feature-requests/156/  (Codesize added to properties file)

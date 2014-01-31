@@ -56,6 +56,7 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	protected final static String ROBOCODE_VERSION = "robocode.version";
 	protected final static String ROBOT_INCLUDE_SOURCE = "robot.include.source"; 
 	protected final static String ROBOT_PLATFORM = "robot.platform";
+	protected final static String ROBOT_CODESIZE = "robot.codesize";
 
 	// File extensions
 	private static final String CLASS_EXTENSION = ".class";
@@ -75,6 +76,7 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 
 	private String className;
 	protected boolean isPropertiesLoaded;
+
 
 	public RobotItem(URL itemURL, IRepositoryRoot root) {
 		super(itemURL, root);
@@ -401,7 +403,7 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		return true;
 	}
 
-	public void storeProperties(OutputStream os, boolean includeSource, String version, String desc, String author, URL web) throws IOException {
+	public void storeProperties(OutputStream os, boolean includeSource, String version, String desc, String author, URL web, Integer codeSize) throws IOException {
 		if (className != null) {
 			properties.setProperty(ROBOT_CLASSNAME, className);
 		}
@@ -416,6 +418,9 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		}
 		if (web != null) {
 			properties.setProperty(ROBOT_WEBPAGE, web.toString());
+		}
+		if (codeSize != null) {
+			properties.setProperty(ROBOT_CODESIZE, "" + codeSize);
 		}
 		properties.setProperty(ROBOCODE_VERSION, Container.getComponent(IVersionManager.class).getVersion());
 
@@ -521,6 +526,18 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		}
 	}
 
+	public Integer getCodeSize() {
+		String value = properties.getProperty(ROBOT_CODESIZE);
+		if (value == null) {
+			return null;
+		}
+		try {
+			return Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return null;
+		}
+	}
+	
 	public boolean getIncludeSource() {
 		return properties.getProperty(ROBOT_INCLUDE_SOURCE, "true").equalsIgnoreCase("true");
 	}

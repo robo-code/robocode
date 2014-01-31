@@ -7,14 +7,13 @@
  *******************************************************************************/
 package net.sf.robocode.roborumble.battlesengine;
 
-
-import codesize.Codesize;
-import codesize.Codesize.Item;
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 import static net.sf.robocode.roborumble.util.PropertiesUtil.storeProperties;
 
 import java.io.File;
 import java.util.Properties;
+
+import net.sf.robocode.repository.CodeSizeCalculator;
 
 
 /**
@@ -44,33 +43,30 @@ public class CompetitionsSelector {
 		String name = botName.replace(' ', '_');
 
 		// Read sizes
-		long codeSize = Long.parseLong(sizes.getProperty(name, "0"));
+		long propertyCodeSize = Long.parseLong(sizes.getProperty(name, "0"));
 
 		// Find out the size if not in the file
 		boolean fileNeedsUpdate = false;
 
-		if (codeSize == 0) {
+		if (propertyCodeSize == 0) {
 			File f = new File(repository + name + ".jar");
 			if (f.exists()) {
 				fileNeedsUpdate = true; // Bug-362
 
-				Item item = Codesize.processZipFile(f);
-				if (item != null) {
-					codeSize = item.getCodeSize();
-				}
-				if (codeSize != 0) {
-					sizes.setProperty(name, Long.toString(codeSize));
+				Integer codesize = CodeSizeCalculator.getJarFileCodeSize(f);
+				if (codesize != null) {
+					sizes.setProperty(name, Long.toString(codesize));
 				}
 			}
 		}
 
 		// If the file needs update, then save the file
-		if (fileNeedsUpdate && codeSize > 0) {
+		if (fileNeedsUpdate && propertyCodeSize > 0) {
 			storeProperties(sizes, sizesfile, "Bots code size");
 		}
 
 		// Check the code size
-		return (codeSize < maxSize); // Bug-362
+		return (propertyCodeSize < maxSize); // Bug-362
 	}
 
 	public boolean checkCompetitorsForSize(String bot1, String bot2, long maxsize) {

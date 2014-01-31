@@ -69,5 +69,5 @@ public interface IRobotSpecItem extends Comparable<Object> {
 
 	RobotSpecification createRobotSpecification();
 
-	void storeProperties(OutputStream os, boolean includeSources, String version, String desc, String author, URL web) throws IOException;
+	void storeProperties(OutputStream os, boolean includeSources, String version, String desc, String author, URL web, Integer codeSize) throws IOException;
 }

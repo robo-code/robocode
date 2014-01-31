@@ -34,7 +34,7 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 	private final static String TEAM_DESCRIPTION = "team.description";
 	private final static String TEAM_AUTHOR_NAME = "team.author.name";
 	// private final static String TEAM_AUTHOR_EMAIL = "team.author.email";
-	private final static String TEAM_AUTHOR_WEBSITE = "team.author.website";
+	// private final static String TEAM_AUTHOR_WEBSITE = "team.author.website";
 	private final static String TEAM_VERSION = "team.version";
 	private final static String TEAM_WEBPAGE = "team.webpage";
 	private final static String TEAM_MEMBERS = "team.members";
@@ -165,7 +165,7 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 
 	public URL getWebpage() {
 		try {
-			return new URL(properties.getProperty(TEAM_AUTHOR_WEBSITE, null));
+			return new URL(properties.getProperty(TEAM_WEBPAGE, null));
 		} catch (MalformedURLException e) {
 			return null;
 		}
@@ -187,7 +187,7 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 		return itemUrl.toString();
 	}
 
-	public void storeProperties(OutputStream os, boolean includeSources, String version, String desc, String author, URL web) throws IOException {
+	public void storeProperties(OutputStream os, boolean includeSources, String version, String desc, String author, URL web, Integer codeSize) throws IOException {
 		if (version != null) {
 			properties.setProperty(TEAM_VERSION, version);
 		}

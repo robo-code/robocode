@@ -10,6 +10,7 @@ package net.sf.robocode.ui.editor;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository.CodeSizeCalculator;
 import net.sf.robocode.ui.dialog.ConsoleDialog;
 import net.sf.robocode.ui.dialog.WindowUtil;
 
@@ -85,19 +86,9 @@ public class RobocodeCompiler {
 			console.append("Compile interrupted.\n");
 			console.setTitle("Compile interrupted.");
 		}
-		
-		int codesize = -1;
 
-		try {
-			File fileDir = new File(directory);
-			
-			// Call the Codesize utility using reflection
-			Object item = Class.forName("codesize.Codesize").getMethod("processDirectory", new Class[] { File.class}).invoke(
-					null, fileDir);
-
-			codesize = (Integer) item.getClass().getMethod("getCodeSize", (Class[]) null).invoke(item, (Object[]) null);
-		} catch (Exception ignore) {}
-		if (codesize >= 0) {
+		Integer codesize = CodeSizeCalculator.getDirectoryCodeSize(new File(directory));
+		if (codesize != null) {
 			String weightClass = null;
 
 			if (codesize >= 1500) {
