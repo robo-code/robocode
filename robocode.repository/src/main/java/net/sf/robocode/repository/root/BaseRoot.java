@@ -29,7 +29,7 @@ public abstract class BaseRoot implements Serializable, IRepositoryRoot {
 	protected final File rootPath;
 	protected final URL rootURL;
 
-	public BaseRoot(IRepository repository, File rootPath) {
+	BaseRoot(IRepository repository, File rootPath) {
 		this.repository = repository;
 		this.rootPath = rootPath;
 

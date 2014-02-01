@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
  */
-public class Repository implements IRepository {
+class Repository implements IRepository {
 
 	private Map<String, IRepositoryRoot> roots = new ConcurrentHashMap<String, IRepositoryRoot>();
 	private Map<String, IRepositoryItem> repositoryItems = new ConcurrentHashMap<String, IRepositoryItem>();

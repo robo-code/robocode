@@ -14,8 +14,6 @@ import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.util.AlphanumericComparator;
 import robocode.control.RobotSpecification;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URL;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -24,13 +22,13 @@ import java.util.StringTokenizer;
 /**
  * @author Pavel Savara (original)
  */
-public abstract class RobotSpecItem extends RepositoryItem implements IRobotSpecItem {
+abstract class RobotSpecItem extends RepositoryItem implements IRobotSpecItem {
 	private static final long serialVersionUID = 1L;
 
 	protected Properties properties = new Properties();
 	protected URL htmlURL;
 
-	public RobotSpecItem(URL itemURL, IRepositoryRoot root) {
+	RobotSpecItem(URL itemURL, IRepositoryRoot root) {
 		super(itemURL, root);
 	}
 

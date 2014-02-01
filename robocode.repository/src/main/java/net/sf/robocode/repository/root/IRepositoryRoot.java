@@ -31,7 +31,7 @@ public interface IRepositoryRoot {
 	void updateItems(boolean force);
 
 	void updateItem(IRepositoryItem repositoryItem, boolean force);
-	boolean isChanged(IRepositoryItem repositoryItem);
+
 	boolean isJAR();
 	boolean isDevelopmentRoot();
 	void extractJAR();

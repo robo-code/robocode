@@ -91,8 +91,8 @@ namespace net.sf.robocode.repository {
         global::java.lang.Object createRobotSpecification();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(Ljava/io/OutputStream;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lja" +
-            "va/net/URL;)V")]
-        void storeProperties(global::java.io.OutputStream par0, bool par1, global::java.lang.String par2, global::java.lang.String par3, global::java.lang.String par4, global::java.net.URL par5);
+            "va/net/URL;Ljava/lang/Integer;)V")]
+        void storeProperties(global::java.io.OutputStream par0, bool par1, global::java.lang.String par2, global::java.lang.String par3, global::java.lang.String par4, global::java.net.URL par5, global::java.lang.Integer par6);
     }
     #endregion
     
@@ -201,7 +201,7 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.@__IRobotSpecItem.j4n_getShortClassName24 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotSpecItem.staticClass, "getShortClassName", "()Ljava/lang/String;");
             global::net.sf.robocode.repository.@__IRobotSpecItem.j4n_createRobotSpecification25 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotSpecItem.staticClass, "createRobotSpecification", "()Lrobocode/control/RobotSpecification;");
             global::net.sf.robocode.repository.@__IRobotSpecItem.j4n_storeProperties26 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotSpecItem.staticClass, "storeProperties", "(Ljava/io/OutputStream;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lja" +
-                    "va/net/URL;)V");
+                    "va/net/URL;Ljava/lang/Integer;)V");
         }
         
         public int compareTo(global::java.lang.Object par0) {
@@ -386,10 +386,10 @@ namespace net.sf.robocode.repository {
             }
         }
         
-        public void storeProperties(global::java.io.OutputStream par0, bool par1, global::java.lang.String par2, global::java.lang.String par3, global::java.lang.String par4, global::java.net.URL par5) {
+        public void storeProperties(global::java.io.OutputStream par0, bool par1, global::java.lang.String par2, global::java.lang.String par3, global::java.lang.String par4, global::java.net.URL par5, global::java.lang.Integer par6) {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 22)){
-            @__env.CallVoidMethod(this, global::net.sf.robocode.repository.@__IRobotSpecItem.j4n_storeProperties26, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par2), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par3), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par4), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par5));
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 24)){
+            @__env.CallVoidMethod(this, global::net.sf.robocode.repository.@__IRobotSpecItem.j4n_storeProperties26, global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par2), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par3), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par4), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par5), global::net.sf.jni4net.utils.Convertor.ParStrongCp2J(par6));
             }
         }
         
@@ -423,7 +423,7 @@ namespace net.sf.robocode.repository {
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getShortClassName", "getShortClassName24", "()Ljava/lang/String;"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "createRobotSpecification", "createRobotSpecification25", "()Lrobocode/control/RobotSpecification;"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "storeProperties", "storeProperties26", "(Ljava/io/OutputStream;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lja" +
-                        "va/net/URL;)V"));
+                        "va/net/URL;Ljava/lang/Integer;)V"));
             return methods;
         }
         
@@ -737,13 +737,13 @@ namespace net.sf.robocode.repository {
             return @__return;
         }
         
-        private static void storeProperties26(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0, bool par1, global::net.sf.jni4net.utils.JniLocalHandle par2, global::net.sf.jni4net.utils.JniLocalHandle par3, global::net.sf.jni4net.utils.JniLocalHandle par4, global::net.sf.jni4net.utils.JniLocalHandle par5) {
-            // (Ljava/io/OutputStream;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/net/URL;)V
-            // (Ljava/io/OutputStream;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/net/URL;)V
+        private static void storeProperties26(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj, global::net.sf.jni4net.utils.JniLocalHandle par0, bool par1, global::net.sf.jni4net.utils.JniLocalHandle par2, global::net.sf.jni4net.utils.JniLocalHandle par3, global::net.sf.jni4net.utils.JniLocalHandle par4, global::net.sf.jni4net.utils.JniLocalHandle par5, global::net.sf.jni4net.utils.JniLocalHandle par6) {
+            // (Ljava/io/OutputStream;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/net/URL;Ljava/lang/Integer;)V
+            // (Ljava/io/OutputStream;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/net/URL;Ljava/lang/Integer;)V
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
             try {
             global::net.sf.robocode.repository.IRobotSpecItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotSpecItem>(@__env, @__obj);
-            @__real.storeProperties(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.io.OutputStream>(@__env, par0), par1, global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, par2), global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, par3), global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, par4), global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.net.URL>(@__env, par5));
+            @__real.storeProperties(global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.io.OutputStream>(@__env, par0), par1, global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, par2), global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, par3), global::net.sf.jni4net.utils.Convertor.StrongJ2CpString(@__env, par4), global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.net.URL>(@__env, par5), global::net.sf.jni4net.utils.Convertor.StrongJ2Cp<global::java.lang.Integer>(@__env, par6));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
         }
         

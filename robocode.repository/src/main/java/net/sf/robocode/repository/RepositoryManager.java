@@ -43,14 +43,14 @@ import java.util.StringTokenizer;
 /**
  * @author Pavel Savara (original)
  */
-public class RepositoryManager implements IRepositoryManager {
+public class RepositoryManager implements IRepositoryManager { // NO_UCD (use default)
 
 	private static final String DATABASE_FILENAME = "robot.database";
 	
 	private final ISettingsManager properties;
 	private Repository repository;
 
-	public RepositoryManager(ISettingsManager properties) {
+	public RepositoryManager(ISettingsManager properties) { // NO_UCD (unused code)
 		this.properties = properties;
 		properties.addPropertyListener(new SettingsListener());
 	}
@@ -269,21 +269,6 @@ public class RepositoryManager implements IRepositoryManager {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * @param selectedRobots, names of robots and teams, comma separated
-	 * @return robots and teams
-	 */
-	public RobotSpecification[] getSelectedRobots(String selectedRobots) {
-		checkDbExists();
-		Collection<RobotSpecification> battlingRobotsList = new ArrayList<RobotSpecification>();
-		final Collection<IRobotSpecItem> list = getValidItems(selectedRobots);
-
-		for (IRobotSpecItem item: list) {
-			battlingRobotsList.add(item.createRobotSpecification());
-		}
-		return battlingRobotsList.toArray(new RobotSpecification[battlingRobotsList.size()]);
 	}
 
 	public List<IRobotSpecItem> getSelectedSpecifications(String selectedRobots) {

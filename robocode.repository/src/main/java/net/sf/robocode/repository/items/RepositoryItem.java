@@ -25,7 +25,7 @@ public abstract class RepositoryItem implements IRepositoryItem, Serializable {
 	protected long lastModified;
 	protected boolean isValid;
 
-	public RepositoryItem(URL itemURL, IRepositoryRoot root) {
+	RepositoryItem(URL itemURL, IRepositoryRoot root) {
 		this.itemUrl = itemURL;
 		this.root = root;
 		this.lastModified = 0;
