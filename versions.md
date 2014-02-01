@@ -21,6 +21,7 @@
 	* An additional option has been added to the View Options in the Preferences to enable and disable the visual appearance of the sentry border, which is painted in transparent red (danger zone).
 * [Req-156][]: Codesize added to properties file.
 	* The Robot Packager now adds a new property named ``robot.codesize`` which will be set to the value calculated by the built-in Codesize tool when compiling the robot and/or team. The Codesize value is the effective code size measured in bytes which is used by e.g. the RoboRumble to categorize robots into MicroBot, MiniBot and MegaBot etc.
+* Improved the names of the menu items on the Robot menu.
 
 ## Version 1.8.3.0 (04-Oct-2013) The Editor Theme Release
 

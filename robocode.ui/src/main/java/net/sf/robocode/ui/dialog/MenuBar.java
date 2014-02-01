@@ -768,7 +768,7 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem getRobotEditorMenuItem() {
 		if (robotEditorMenuItem == null) {
 			robotEditorMenuItem = new JMenuItem();
-			robotEditorMenuItem.setText("Editor");
+			robotEditorMenuItem.setText("Source Editor");
 			robotEditorMenuItem.setMnemonic('E');
 			robotEditorMenuItem.setVisible(net.sf.robocode.core.Container.getComponent(IRobocodeEditor.class) != null);
 			robotEditorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, MENU_SHORTCUT_KEY_MASK, false));
@@ -780,7 +780,7 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem getRobotImportMenuItem() {
 		if (robotImportMenuItem == null) {
 			robotImportMenuItem = new JMenuItem();
-			robotImportMenuItem.setText("Import downloaded robot");
+			robotImportMenuItem.setText("Import robot or team");
 			robotImportMenuItem.setMnemonic('I');
 			robotImportMenuItem.addActionListener(eventHandler);
 		}
@@ -806,7 +806,7 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem getRobotPackagerMenuItem() {
 		if (robotPackagerMenuItem == null) {
 			robotPackagerMenuItem = new JMenuItem();
-			robotPackagerMenuItem.setText("Package robot for upload");
+			robotPackagerMenuItem.setText("Package robot or team");
 			robotPackagerMenuItem.setMnemonic('P');
 			robotPackagerMenuItem.addActionListener(eventHandler);
 		}
