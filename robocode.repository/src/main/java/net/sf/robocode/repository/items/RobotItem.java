@@ -77,7 +77,6 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	private String className;
 	protected boolean isPropertiesLoaded;
 
-
 	public RobotItem(URL itemURL, IRepositoryRoot root) {
 		super(itemURL, root);
 

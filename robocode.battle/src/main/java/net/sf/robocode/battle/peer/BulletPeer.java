@@ -178,9 +178,12 @@ public class BulletPeer {
 
 				otherRobot.addEvent(
 						new HitByBulletEvent(
-								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()), createBullet(true, true)));
+								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()),
+								createBullet(true, true)));
 
-				owner.addEvent(new BulletHitEvent(owner.getNameForEvent(otherRobot), otherRobot.getEnergy(), createBullet(false, false)));
+				owner.addEvent(
+						new BulletHitEvent(owner.getNameForEvent(otherRobot), otherRobot.getEnergy(),
+						createBullet(false, false)));
 
 				double newX, newY;
 

@@ -13,6 +13,7 @@ import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.CodeSizeCalculator;
+import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.TeamItem;
 import net.sf.robocode.version.IVersionManager;
@@ -37,60 +38,26 @@ import java.net.URLDecoder;
  */
 public class JarCreator {
 
-	public static String createPackage(File jarFile, boolean includeSources, List<RobotItem> robots, List<TeamItem> teams, URL web, String desc, String author, String version) {
-		final IHostManager host = Container.getComponent(IHostManager.class);
+	public static String createPackage(File jarFile, List<RobotItem> robots, List<TeamItem> teams, boolean includeSources, URL web, String desc, String author, String version) {
 		final String rVersion = Container.getComponent(IVersionManager.class).getVersion();
-		JarOutputStream jarout = null;
+		JarOutputStream jarOut = null;
 		FileOutputStream fos = null;
 		Set<String> entries = new HashSet<String>();
 
 		try {
 			fos = new FileOutputStream(jarFile);
-			jarout = new JarOutputStream(fos, createManifest(robots));
-			jarout.setComment(rVersion + " - Robocode version");
+			jarOut = new JarOutputStream(fos, createManifest(robots));
+			jarOut.setComment(rVersion + " - Robocode version");
 
-			for (TeamItem team : teams) {
-				final String teamEntry = team.getRelativePath() + '/' + team.getShortClassName() + ".team";
+			// Add team robot specification
+			addRobotSpecEntryToJar(entries, jarOut, jarFile, robots, includeSources, web, desc, author, version);
 
-				File dir = new File(FileUtil.getRobotsDir(), team.getRelativePath());
-				Integer codeSize = CodeSizeCalculator.getDirectoryCodeSize(dir);
-
-				if (!entries.contains(teamEntry)) {
-					JarEntry jt = new JarEntry(teamEntry);
-
-					jarout.putNextEntry(jt);
-					entries.add(teamEntry); // called here, as an exception might occur before this line
-					try {
-						team.storeProperties(jarout, includeSources, version, desc, author, web, codeSize);
-					} finally {
-						jarout.closeEntry();
-					}
-				}
-			}
-
-			for (RobotItem robot : robots) {
-				final String propsEntry = robot.getRelativePath() + '/' + robot.getShortClassName() + ".properties";
-
-				File dir = new File(FileUtil.getRobotsDir(), robot.getRelativePath());
-				Integer codeSize = CodeSizeCalculator.getDirectoryCodeSize(dir);
-				
-				if (!entries.contains(propsEntry)) {
-					JarEntry jt = new JarEntry(propsEntry);
-
-					jarout.putNextEntry(jt);
-					entries.add(propsEntry); // called here, as an exception might occur before this line
-					try {
-						robot.storeProperties(jarout, includeSources, version, desc, author, web, codeSize);
-					} finally {
-						jarout.closeEntry();
-					}
-					packageSourceAndClasses(includeSources, host, jarout, robot, entries);
-				}
-			}
+			// Add team item specification
+			addRobotSpecEntryToJar(entries, jarOut, jarFile, teams, includeSources, web, desc, author, version);
 		} catch (IOException e) {
 			Logger.logError(e);
 		} finally {
-			FileUtil.cleanupStream(jarout);
+			FileUtil.cleanupStream(jarOut);
 			FileUtil.cleanupStream(fos);
 		}
 
@@ -104,6 +71,29 @@ public class JarCreator {
 		appendCodeSize(jarFile, sb);
 
 		return sb.toString();
+	}
+	
+	private static void addRobotSpecEntryToJar(Set<String> entries, JarOutputStream jarOut, File jarFile, List<? extends IRobotSpecItem> robotSpecItems, boolean includeSources, URL web, String desc, String author, String version) throws IOException {
+		for (IRobotSpecItem robotSpecItem : robotSpecItems) {
+			String fileExt = (robotSpecItem instanceof TeamItem) ? ".team" : ".properties";
+			String entry = robotSpecItem.getRelativePath() + '/' + robotSpecItem.getShortClassName() + fileExt;
+
+			File dir = new File(FileUtil.getRobotsDir(), robotSpecItem.getRelativePath());
+			Integer codeSize = CodeSizeCalculator.getDirectoryCodeSize(dir);
+
+			if (!entries.contains(entry)) {
+				jarOut.putNextEntry(new JarEntry(entry));
+				entries.add(entry); // called here, as an exception might occur before this line
+				try {
+					robotSpecItem.storeProperties(jarOut, includeSources, version, desc, author, web, codeSize);
+				} finally {
+					jarOut.closeEntry();
+				}
+				if (robotSpecItem instanceof RobotItem) {
+					packageSourceAndClasses(includeSources, jarOut, (RobotItem) robotSpecItem, entries);
+				}
+			}
+		}
 	}
 
 	private static void appendCodeSize(File jarFile, StringBuilder sb) {
@@ -144,61 +134,56 @@ public class JarCreator {
 		return manifest;
 	}
 
-	private static void packageSourceAndClasses(boolean includeSources, IHostManager host, JarOutputStream jarout, RobotItem robot, Set<String> entries) throws IOException {
+	private static void packageSourceAndClasses(boolean includeSources, JarOutputStream jarOut, RobotItem robot, Set<String> entries) throws IOException {
+		IHostManager host = Container.getComponent(IHostManager.class);
 		for (String className : host.getReferencedClasses(robot)) {
 			if (!className.startsWith("java") && !className.startsWith("robocode")) {
 				String name = className.replace('.', '/');
-
-				packageSourceAndClass(includeSources, jarout, robot, name, entries);
+				packageSourceAndClass(includeSources, jarOut, robot, name, entries);
 			}
 		}
 	}
 
-	private static void packageSourceAndClass(boolean includeSource, JarOutputStream jarout, RobotItem robot, String name, Set<String> entries) throws IOException {
+	private static void packageSourceAndClass(boolean includeSource, JarOutputStream jarOut, RobotItem robot, String name, Set<String> entries) throws IOException {
 		final String javaFileName = name + ".java";
 		final String classFileName = name + ".class";
 
 		if (includeSource && !entries.contains(javaFileName) && !name.contains("$")) {
 			for (URL sourcePathURL : robot.getSourcePathURLs()) {
 				String sourcePath = sourcePathURL.getPath();
-
 				sourcePath = URLDecoder.decode(sourcePath, "UTF-8");
+
 				File javaFile = new File(sourcePath, javaFileName);
-
 				if (javaFile.exists()) {
-					JarEntry je = new JarEntry(javaFileName);
-
-					jarout.putNextEntry(je);
+					jarOut.putNextEntry(new JarEntry(javaFileName));
 					entries.add(javaFileName); // called here, as an exception might occur before this line
 					try {
-						copy(javaFile, jarout);
+						copy(javaFile, jarOut);
 					} finally {
-						jarout.closeEntry();
+						jarOut.closeEntry();
 					}
 				}
 			}
 		}
 		String classPath = robot.getClassPathURL().getPath();
-
 		classPath = URLDecoder.decode(classPath, "UTF-8");
-		File classFile = new File(classPath, classFileName);
 
+		File classFile = new File(classPath, classFileName);
 		if (classFile.exists() && !entries.contains(classFileName)) {
 			JarEntry je = new JarEntry(classFileName);
 
-			jarout.putNextEntry(je);
+			jarOut.putNextEntry(je);
 			entries.add(classFileName); // called here, as an exception might occur before this line
 			try {
-				copy(classFile, jarout);
+				copy(classFile, jarOut);
 			} finally {
-				jarout.closeEntry();
+				jarOut.closeEntry();
 			}
 		}
 	}
 
 	private static void copy(File inFile, JarOutputStream out) throws IOException {
 		FileInputStream in = null;
-
 		try {
 			in = new FileInputStream(inFile);
 			final byte[] buf = new byte[4096];

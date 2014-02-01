@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 /**
  * @author Pavel Savara (original)
  */
-abstract class RobotSpecItem extends RepositoryItem implements IRobotSpecItem {
+public abstract class RobotSpecItem extends RepositoryItem implements IRobotSpecItem {
 	private static final long serialVersionUID = 1L;
 
 	protected Properties properties = new Properties();

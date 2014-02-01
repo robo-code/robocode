@@ -31,7 +31,8 @@ public final class BattlePlayer extends BaseBattle {
 	private boolean[] paint;
 
 	public BattlePlayer(ISettingsManager properties, IBattleManager battleManager, RecordManager recordManager, BattleEventDispatcher eventDispatcher) { // NO_UCD (unused code)
-		super(properties, battleManager, eventDispatcher);
+		super(
+				properties, battleManager, eventDispatcher);
 		this.recordManager = recordManager;
 	}
 

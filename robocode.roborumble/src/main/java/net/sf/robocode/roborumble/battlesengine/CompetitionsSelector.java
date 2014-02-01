@@ -7,6 +7,7 @@
  *******************************************************************************/
 package net.sf.robocode.roborumble.battlesengine;
 
+
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 import static net.sf.robocode.roborumble.util.PropertiesUtil.storeProperties;
 

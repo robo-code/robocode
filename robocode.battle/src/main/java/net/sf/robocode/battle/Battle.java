@@ -80,7 +80,8 @@ public final class Battle extends BaseBattle {
 	private double[][] initialRobotPositions;
 
 	public Battle(ISettingsManager properties, IBattleManager battleManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher eventDispatcher) { // NO_UCD (unused code)
-		super(properties, battleManager, eventDispatcher);
+		super(
+				properties, battleManager, eventDispatcher);
 		isDebugging = System.getProperty("debug", "false").equals("true");
 		this.hostManager = hostManager;
 		this.cpuConstant = cpuManager.getCpuConstant();

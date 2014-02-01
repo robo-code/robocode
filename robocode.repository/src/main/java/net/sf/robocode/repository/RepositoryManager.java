@@ -367,12 +367,12 @@ public class RepositoryManager implements IRepositoryManager { // NO_UCD (use de
 		refresh(target.toURI().toString());
 	}
 
-	public String createPackage(File target, URL web, String desc, String author, String version, boolean source, List<IRobotSpecItem> selectedRobots) {
+	public String createPackage(File target, URL web, String desc, String author, String version, boolean includeSource, List<IRobotSpecItem> selectedRobots) {
 		checkDbExists();
 		final List<RobotItem> robots = getAllRobotItems(selectedRobots);
 		final List<TeamItem> teams = getTeamItemsOnly(selectedRobots);
 
-		final String res = JarCreator.createPackage(target, source, robots, teams, web, desc, author, version);
+		final String res = JarCreator.createPackage(target, robots, teams, includeSource, web, desc, author, version);
 
 		refresh(target.toURI().toString());
 		return res;

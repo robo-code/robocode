@@ -7,6 +7,7 @@
  *******************************************************************************/
 package net.sf.robocode.repository;
 
+
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -34,7 +35,7 @@ public final class CodeSizeCalculator {
 			Class<?> classType = Class.forName("codesize.Codesize");
 
 			Method method = classType.getMethod(invokeMethod, new Class[] { File.class });
-			Object item = method.invoke(null /* static method */, jarFile);
+			Object item = method.invoke(null/* static method */, jarFile);
 
 			// Calls Codesize.Item.getCodeSize()
 			method = item.getClass().getMethod("getCodeSize", (Class[]) null);
