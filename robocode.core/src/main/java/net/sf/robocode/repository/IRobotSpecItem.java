@@ -17,6 +17,7 @@ import java.net.URL;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public interface IRobotSpecItem extends Comparable<Object> {
 	boolean isValid();
@@ -69,5 +70,5 @@ public interface IRobotSpecItem extends Comparable<Object> {
 
 	RobotSpecification createRobotSpecification();
 
-	void storeProperties(OutputStream os, boolean includeSources, String version, String desc, String author, URL web, Integer codeSize) throws IOException;
+	void storeProperties(OutputStream os, RobotProperties robotProperties) throws IOException;
 }

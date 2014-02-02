@@ -111,8 +111,8 @@ class __IRobotItem extends system.Object implements net.sf.robocode.repository.I
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/Object;")
     public native robocode.control.RobotSpecification createRobotSpecification();
     
-    @net.sf.jni4net.attributes.ClrMethod("(Ljava/io/OutputStream;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/net/URL;Ljava/lang/Integer;)V")
-    public native void storeProperties(java.io.OutputStream par0, boolean par1, java.lang.String par2, java.lang.String par3, java.lang.String par4, java.net.URL par5, java.lang.Integer par6);
+    @net.sf.jni4net.attributes.ClrMethod("(Ljava/io/OutputStream;Ljava/lang/Object;)V")
+    public native void storeProperties(java.io.OutputStream par0, net.sf.robocode.repository.RobotProperties par1);
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
     public native java.net.URL getClassPathURL();

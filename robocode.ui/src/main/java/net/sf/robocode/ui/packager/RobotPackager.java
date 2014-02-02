@@ -11,18 +11,21 @@ package net.sf.robocode.ui.packager;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.repository.RobotProperties;
 import net.sf.robocode.ui.IWindowManager;
 import net.sf.robocode.ui.dialog.*;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
-import java.awt.*;
+
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 
 /**
@@ -191,31 +194,38 @@ public class RobotPackager extends JDialog implements WizardListener {
 			Logger.logMessage("Overwriting " + jarFilename);
 		}
 
-		String w = getPackagerOptionsPanel().getWebpageField().getText();
-		URL web = null;
+		String webPageFieldString = getPackagerOptionsPanel().getWebpageField().getText();
+		URL webPage = null;
 
-		if (w.length() > 0) {
+		if (webPageFieldString.length() > 0) {
 			try {
-				web = new URL(w);
+				webPage = new URL(webPageFieldString);
 			} catch (MalformedURLException e) {
 				try {
-					web = new URL("http://" + w);
-					getPackagerOptionsPanel().getWebpageField().setText(web.toString());
+					webPage = new URL("http://" + webPageFieldString);
+					getPackagerOptionsPanel().getWebpageField().setText(webPage.toString());
 				} catch (MalformedURLException ignored) {}
 			}
 		}
-		final String desc = getPackagerOptionsPanel().getDescriptionArea().getText();
-		final String author = getPackagerOptionsPanel().getAuthorField().getText();
-		final String version = getPackagerOptionsPanel().getVersionField().getText();
-		final boolean source = getPackagerOptionsPanel().getIncludeSource().isSelected();
-		final java.util.List<IRobotSpecItem> robots = getRobotSelectionPanel().getSelectedRobots();
+		boolean includeSources = getPackagerOptionsPanel().getIncludeSource().isSelected();
+		String version = getPackagerOptionsPanel().getVersionField().getText();
+		String author = getPackagerOptionsPanel().getAuthorField().getText();
+		String desc = getPackagerOptionsPanel().getDescriptionArea().getText();
+		List<IRobotSpecItem> robots = getRobotSelectionPanel().getSelectedRobots();
 
-		final String res = repositoryManager.createPackage(jarFile, web, desc, author, version, source, robots);
-		ConsoleDialog d = new ConsoleDialog(windowManager.getRobocodeFrame(), "Packaging results", false);
+		RobotProperties props = new RobotProperties();
+		props.setIncludeSources(includeSources);
+		props.setVersion(version);
+		props.setAuthor(author);
+		props.setDescription(desc);
+		props.setWebPage(webPage);
 
-		d.setText(res);
-		d.pack();
-		WindowUtil.packCenterShow(this, d);
+		String outputText = repositoryManager.createPackage(jarFile, robots, props);
+
+		ConsoleDialog dialog = new ConsoleDialog(windowManager.getRobocodeFrame(), "Packaging results", false);
+		dialog.setText(outputText);
+		dialog.pack();
+		WindowUtil.packCenterShow(this, dialog);
 		dispose();
 	}
 }

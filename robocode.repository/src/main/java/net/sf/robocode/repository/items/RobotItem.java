@@ -13,6 +13,7 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.repository.IRobotItem;
+import net.sf.robocode.repository.RobotProperties;
 import net.sf.robocode.repository.RobotType;
 import net.sf.robocode.repository.root.ClasspathRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
@@ -402,28 +403,29 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		return true;
 	}
 
-	public void storeProperties(OutputStream os, boolean includeSource, String version, String desc, String author, URL web, Integer codeSize) throws IOException {
+	public void storeProperties(OutputStream os, RobotProperties robotProps) throws IOException {
 		if (className != null) {
 			properties.setProperty(ROBOT_CLASSNAME, className);
 		}
-		if (version != null) {
-			properties.setProperty(ROBOT_VERSION, version);
+		if (robotProps.getVersion() != null) {
+			properties.setProperty(ROBOT_VERSION, robotProps.getVersion());
 		}
-		if (desc != null) {
-			properties.setProperty(ROBOT_DESCRIPTION, desc);
+		if (robotProps.getDescription() != null) {
+			properties.setProperty(ROBOT_DESCRIPTION, robotProps.getDescription());
 		}
-		if (author != null) {
-			properties.setProperty(ROBOT_AUTHOR_NAME, author);
+		if (robotProps.getAuthor() != null) {
+			properties.setProperty(ROBOT_AUTHOR_NAME, robotProps.getAuthor());
 		}
-		if (web != null) {
-			properties.setProperty(ROBOT_WEBPAGE, web.toString());
+		if (robotProps.getWebPage() != null) {
+			properties.setProperty(ROBOT_WEBPAGE, robotProps.getWebPage().toExternalForm());
 		}
-		if (codeSize != null) {
-			properties.setProperty(ROBOT_CODESIZE, "" + codeSize);
+		if (robotProps.getCodeSize() != null) {
+			properties.setProperty(ROBOT_CODESIZE, "" + robotProps.getCodeSize());
 		}
-		properties.setProperty(ROBOCODE_VERSION, Container.getComponent(IVersionManager.class).getVersion());
+		properties.setProperty(ROBOT_INCLUDE_SOURCE, "" + robotProps.isIncludeSources());
 
-		properties.setProperty(ROBOT_INCLUDE_SOURCE, "" + includeSource);
+		String version = Container.getComponent(IVersionManager.class).getVersion();
+		properties.setProperty(ROBOCODE_VERSION, version);
 
 		saveProperties(os);
 

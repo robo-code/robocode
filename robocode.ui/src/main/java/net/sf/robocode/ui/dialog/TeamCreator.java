@@ -10,10 +10,12 @@ package net.sf.robocode.ui.dialog;
 
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.repository.TeamProperties;
 import net.sf.robocode.ui.IWindowManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -137,40 +139,51 @@ public class TeamCreator extends JDialog implements WizardListener {
 	}
 
 	public int createTeam() throws IOException {
-		File f = new File(repositoryManager.getRobotsDirectory(),
+		File file = new File(repositoryManager.getRobotsDirectory(),
 				teamCreatorOptionsPanel.getTeamPackage().replace('.', File.separatorChar)
 				+ teamCreatorOptionsPanel.getTeamNameField().getText() + ".team");
 
-		if (f.exists()) {
-			int ok = JOptionPane.showConfirmDialog(this, f + " already exists.  Are you sure you want to replace it?",
+		if (file.exists()) {
+			int ok = JOptionPane.showConfirmDialog(this, file + " already exists.  Are you sure you want to replace it?",
 					"Warning", JOptionPane.YES_NO_CANCEL_OPTION);
 
 			if (ok == JOptionPane.NO_OPTION || ok == JOptionPane.CANCEL_OPTION) {
 				return -1;
 			}
 		}
-		if (!f.getParentFile().exists()) {
-			if (!f.getParentFile().mkdirs()) {
-				Logger.logError("Can't create " + f.getParentFile().toString());
+		if (!file.getParentFile().exists()) {
+			if (!file.getParentFile().mkdirs()) {
+				Logger.logError("Can't create " + file.getParentFile().toString());
 			}
 		}
 
-		URL u = null;
-		String w = teamCreatorOptionsPanel.getWebpageField().getText();
+		URL webPageUrl = null;
+		String webPageFieldString = teamCreatorOptionsPanel.getWebpageField().getText();
 
-		if (w != null && w.length() > 0) {
+		if (webPageFieldString != null && webPageFieldString.length() > 0) {
 			try {
-				u = new URL(w);
+				webPageUrl = new URL(webPageFieldString);
 			} catch (MalformedURLException e) {
 				try {
-					u = new URL("http://" + w);
-					teamCreatorOptionsPanel.getWebpageField().setText(u.toString());
+					webPageUrl = new URL("http://" + webPageFieldString);
+					teamCreatorOptionsPanel.getWebpageField().setText(webPageUrl.toString());
 				} catch (MalformedURLException ignored) {}
 			}
 		}
 
-		repositoryManager.createTeam(f, u, teamCreatorOptionsPanel.getDescriptionArea().getText(),
-				teamCreatorOptionsPanel.getAuthorField().getText(), robotSelectionPanel.getSelectedRobotsAsString(), null);
+		String members = robotSelectionPanel.getSelectedRobotsAsString();
+		String version = teamCreatorOptionsPanel.getVersionField().getText();
+		String author = teamCreatorOptionsPanel.getAuthorField().getText();
+		String desc = teamCreatorOptionsPanel.getDescriptionArea().getText();
+		
+		TeamProperties props = new TeamProperties();
+		props.setMembers(members);
+		props.setVersion(version);
+		props.setAuthor(author);
+		props.setDescription(desc);
+		props.setWebPage(webPageUrl);
+
+		repositoryManager.createTeam(file, props);
 		return 0;
 	}
 }

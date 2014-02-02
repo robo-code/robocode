@@ -43,21 +43,21 @@ namespace net.sf.robocode.repository {
         
         internal static global::net.sf.jni4net.jni.MethodId j4n__ctorRobotType12;
         
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(I)V")]
-        public RobotType(int par0) : 
-                base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
-            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 12)){
-            @__env.NewObject(global::net.sf.robocode.repository.RobotType.staticClass, global::net.sf.robocode.repository.RobotType.j4n__ctorRobotType11, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
-            }
-        }
-        
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("(ZZZZZZZZ)V")]
         public RobotType(bool par0, bool par1, bool par2, bool par3, bool par4, bool par5, bool par6, bool par7) : 
                 base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 26)){
-            @__env.NewObject(global::net.sf.robocode.repository.RobotType.staticClass, global::net.sf.robocode.repository.RobotType.j4n__ctorRobotType12, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par3), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par4), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par5), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par6), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par7));
+            @__env.NewObject(global::net.sf.robocode.repository.RobotType.staticClass, global::net.sf.robocode.repository.RobotType.j4n__ctorRobotType11, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par1), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par2), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par3), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par4), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par5), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par6), global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par7));
+            }
+        }
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("(I)V")]
+        public RobotType(int par0) : 
+                base(((global::net.sf.jni4net.jni.JNIEnv)(null))) {
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.ThreadEnv;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 12)){
+            @__env.NewObject(global::net.sf.robocode.repository.RobotType.staticClass, global::net.sf.robocode.repository.RobotType.j4n__ctorRobotType12, this, global::net.sf.jni4net.utils.Convertor.ParPrimC2J(par0));
             }
         }
         
@@ -94,8 +94,8 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.RobotType.j4n_isPaintRobot8 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "isPaintRobot", "()Z");
             global::net.sf.robocode.repository.RobotType.j4n_getTypeFlags9 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "getTypeFlags", "()I");
             global::net.sf.robocode.repository.RobotType.j4n_INVALID10 = @__env.GetStaticFieldID(global::net.sf.robocode.repository.RobotType.staticClass, "INVALID", "Lnet/sf/robocode/repository/RobotType;");
-            global::net.sf.robocode.repository.RobotType.j4n__ctorRobotType11 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "<init>", "(I)V");
-            global::net.sf.robocode.repository.RobotType.j4n__ctorRobotType12 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "<init>", "(ZZZZZZZZ)V");
+            global::net.sf.robocode.repository.RobotType.j4n__ctorRobotType11 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "<init>", "(ZZZZZZZZ)V");
+            global::net.sf.robocode.repository.RobotType.j4n__ctorRobotType12 = @__env.GetMethodID(global::net.sf.robocode.repository.RobotType.staticClass, "<init>", "(I)V");
         }
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]

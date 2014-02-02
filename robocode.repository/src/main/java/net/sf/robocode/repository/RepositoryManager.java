@@ -23,14 +23,12 @@ import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsListener;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
-import net.sf.robocode.version.IVersionManager;
 import robocode.control.RobotSpecification;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -359,22 +357,21 @@ public class RepositoryManager implements IRepositoryManager { // NO_UCD (use de
 		return 0; 
 	}
 
-	public void createTeam(File target, URL web, String desc, String author, String members, String teamVersion) throws IOException {
+	public void createTeam(File target, TeamProperties teamProps) throws IOException {
 		checkDbExists();
-		final String ver = Container.getComponent(IVersionManager.class).getVersion();
 
-		TeamItem.createOrUpdateTeam(target, web, desc, author, members, teamVersion, ver);
+		TeamItem.createOrUpdateTeam(target, teamProps);
 		refresh(target.toURI().toString());
 	}
 
-	public String createPackage(File target, URL web, String desc, String author, String version, boolean includeSource, List<IRobotSpecItem> selectedRobots) {
+	public String createPackage(File target, List<IRobotSpecItem> selectedRobots, RobotProperties robotProps) {
 		checkDbExists();
-		final List<RobotItem> robots = getAllRobotItems(selectedRobots);
-		final List<TeamItem> teams = getTeamItemsOnly(selectedRobots);
+		List<RobotItem> robots = getAllRobotItems(selectedRobots);
+		List<TeamItem> teams = getTeamItemsOnly(selectedRobots);
 
-		final String res = JarCreator.createPackage(target, robots, teams, includeSource, web, desc, author, version);
-
+		String res = JarCreator.createPackage(target, robots, teams, robotProps);
 		refresh(target.toURI().toString());
+
 		return res;
 	}
 

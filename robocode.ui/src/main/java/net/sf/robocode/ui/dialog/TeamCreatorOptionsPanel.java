@@ -9,12 +9,14 @@ package net.sf.robocode.ui.dialog;
 
 
 import net.sf.robocode.repository.IRobotSpecItem;
+import net.sf.robocode.ui.packager.RobotPackager;
 import net.sf.robocode.ui.util.LimitedClassnameDocument;
 import net.sf.robocode.ui.util.LimitedDocument;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -29,25 +31,27 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class TeamCreatorOptionsPanel extends WizardPanel {
-	TeamCreator teamCreator;
-	net.sf.robocode.ui.packager.RobotPackager teamPackager;
-	final EventHandler eventHandler = new EventHandler();
+	private TeamCreator teamCreator;
+	private RobotPackager teamPackager;
+	private final EventHandler eventHandler = new EventHandler();
 
-	JLabel authorLabel;
-	JTextField authorField;
-	JLabel descriptionLabel;
-	JTextArea descriptionArea;
-	JLabel webpageLabel;
-	JTextField webpageField;
-	JLabel webpageHelpLabel;
+	private JLabel authorLabel;
+	private JTextField authorField;
+	private JLabel descriptionLabel;
+	private JTextArea descriptionArea;
+	private JLabel versionLabel;
+	private JTextField versionField;
+	private JLabel webpageLabel;
+	private JTextField webpageField;
+	private JLabel webpageHelpLabel;
 
-	JLabel teamNameLabel;
-	JLabel teamPackageLabel;
-	JTextField teamNameField;
+	private JLabel teamNameLabel;
+	private JLabel teamPackageLabel;
+	private JTextField teamNameField;
 
 	private String teamPackage;
 
-	class EventHandler implements ComponentListener, DocumentListener {
+	private class EventHandler implements ComponentListener, DocumentListener {
 		public void insertUpdate(DocumentEvent e) {
 			fireStateChanged();
 		}
@@ -104,6 +108,8 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 					getWebpageField().setText(u.toString());
 				}
 
+				getVersionLabel().setVisible(true);
+				getVersionField().setVisible(true);
 				getAuthorLabel().setVisible(true);
 				getAuthorField().setVisible(true);
 				getWebpageLabel().setVisible(true);
@@ -125,7 +131,7 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		initialize();
 	}
 
-	public TeamCreatorOptionsPanel(net.sf.robocode.ui.packager.RobotPackager teamPackager) {
+	public TeamCreatorOptionsPanel(RobotPackager teamPackager) {
 		super();
 		this.teamPackager = teamPackager;
 		initialize();
@@ -136,22 +142,32 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		getTeamNameLabel().setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(getTeamNameLabel());
-		JPanel p = new JPanel();
 
-		p.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		p.setAlignmentX(Component.LEFT_ALIGNMENT);
+		JPanel teamNamePanel = new JPanel();
+		teamNamePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		teamNamePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		getTeamNameField().setAlignmentX(Component.LEFT_ALIGNMENT);
 		getTeamNameField().setMaximumSize(getTeamNameField().getPreferredSize());
 		// getVersionField().setMaximumSize(getVersionField().getPreferredSize());
-		p.setMaximumSize(new Dimension(Integer.MAX_VALUE, getTeamNameField().getPreferredSize().height));
-		p.add(getTeamPackageLabel());
-		p.add(getTeamNameField());
-		add(p);
-
+		teamNamePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, getTeamNameField().getPreferredSize().height));
+		teamNamePanel.add(getTeamPackageLabel());
+		teamNamePanel.add(getTeamNameField());
+		add(teamNamePanel);
 		JLabel label = new JLabel(" ");
-
 		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
+
+		add(getVersionLabel());
+
+		JPanel versionPanel = new JPanel();
+		versionPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		versionPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		getVersionField().setAlignmentX(Component.LEFT_ALIGNMENT);
+		getVersionField().setMaximumSize(getVersionField().getPreferredSize());
+		versionPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, getVersionField().getPreferredSize().height));
+		versionPanel.add(getVersionField());
+		add(versionPanel);
+
 		label = new JLabel(" ");
 		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
@@ -165,22 +181,30 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 		scrollPane.setMinimumSize(new Dimension(100, scrollPane.getPreferredSize().height));
 		scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(scrollPane);
+
 		label = new JLabel(" ");
 		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
+
 		add(getAuthorLabel());
+
 		getAuthorField().setAlignmentX(Component.LEFT_ALIGNMENT);
 		getAuthorField().setMaximumSize(getAuthorField().getPreferredSize());
 		add(getAuthorField());
+
 		label = new JLabel(" ");
 		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
+
 		add(getWebpageLabel());
+
 		getWebpageField().setAlignmentX(Component.LEFT_ALIGNMENT);
 		getWebpageField().setMaximumSize(getWebpageField().getPreferredSize());
 		add(getWebpageField());
+
 		getWebpageHelpLabel().setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(getWebpageHelpLabel());
+
 		JPanel panel = new JPanel();
 
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -222,11 +246,27 @@ public class TeamCreatorOptionsPanel extends WizardPanel {
 
 			descriptionArea = new JTextArea(doc, null, 3, 72);
 			doc.addDocumentListener(eventHandler);
-			// descriptionArea.setMaximumSize(descriptionArea.getPreferredScrollableViewportSize());
-			// descriptionArea.setLineWrap(true);
-			// descriptionArea.setWrapStyleWord(true);
 		}
 		return descriptionArea;
+	}
+
+	private JLabel getVersionLabel() {
+		if (versionLabel == null) {
+			versionLabel = new JLabel(
+					"Please enter a version number for this robot (up to 10 word chars: letters, digits, dots, but no spaces).");
+			versionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		}
+		return versionLabel;
+	}
+
+	public JTextField getVersionField() {
+		if (versionField == null) {
+			LimitedDocument doc = new LimitedDocument(1, 10);
+
+			versionField = new JTextField(doc, null, 10);
+			doc.addDocumentListener(eventHandler);
+		}
+		return versionField;
 	}
 
 	public JLabel getWebpageLabel() {

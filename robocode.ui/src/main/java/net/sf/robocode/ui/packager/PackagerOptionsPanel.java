@@ -190,16 +190,15 @@ public class PackagerOptionsPanel extends WizardPanel {
 
 		add(getVersionLabel());
 
-		JPanel p = new JPanel();
-
-		p.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		p.setAlignmentX(Component.LEFT_ALIGNMENT);
+		JPanel versionPanel = new JPanel();
+		versionPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		versionPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		getVersionField().setAlignmentX(Component.LEFT_ALIGNMENT);
 		getVersionField().setMaximumSize(getVersionField().getPreferredSize());
-		p.setMaximumSize(new Dimension(Integer.MAX_VALUE, getVersionField().getPreferredSize().height));
-		p.add(getVersionField());
-		p.add(getVersionHelpLabel());
-		add(p);
+		versionPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, getVersionField().getPreferredSize().height));
+		versionPanel.add(getVersionField());
+		versionPanel.add(getVersionHelpLabel());
+		add(versionPanel);
 
 		label = new JLabel(" ");
 		label.setAlignmentX(Component.LEFT_ALIGNMENT);

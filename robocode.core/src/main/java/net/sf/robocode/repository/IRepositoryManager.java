@@ -12,7 +12,6 @@ import robocode.control.RobotSpecification;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 
@@ -51,8 +50,7 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	int extractJar(IRobotSpecItem item);
 
-	void createTeam(File target, URL web, String desc, String author, String members, String teamVersion) throws IOException;
+	void createTeam(File target, TeamProperties teamProperties) throws IOException;
 
-	String createPackage(File target, URL web, String desc, String author, String version, boolean includeSources, List<IRobotSpecItem> selectedRobots);
-
+	String createPackage(File target, List<IRobotSpecItem> selectedRobots, RobotProperties robotProperties);
 }

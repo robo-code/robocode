@@ -12,6 +12,8 @@ import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 import net.sf.robocode.repository.IRobotSpecItem;
+import net.sf.robocode.repository.RobotProperties;
+import net.sf.robocode.repository.TeamProperties;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.version.IVersionManager;
@@ -187,48 +189,44 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 		return itemUrl.toString();
 	}
 
-	public void storeProperties(OutputStream os, boolean includeSources, String version, String desc, String author, URL web, Integer codeSize) throws IOException {
-		if (version != null) {
-			properties.setProperty(TEAM_VERSION, version);
+	public void storeProperties(OutputStream os, RobotProperties props) throws IOException {
+		if (props.getVersion() != null) {
+			properties.setProperty(TEAM_VERSION, props.getVersion());
 		}
-		if (desc != null) {
-			properties.setProperty(TEAM_DESCRIPTION, desc);
+		if (props.getDescription() != null) {
+			properties.setProperty(TEAM_DESCRIPTION, props.getDescription());
 		}
-		if (author != null) {
-			properties.setProperty(TEAM_AUTHOR_NAME, author);
+		if (props.getAuthor() != null) {
+			properties.setProperty(TEAM_AUTHOR_NAME, props.getAuthor());
 		}
-		if (web != null) {
-			properties.setProperty(TEAM_WEBPAGE, web.toString());
+		if (props.getWebPage() != null) {
+			properties.setProperty(TEAM_WEBPAGE, props.getWebPage().toExternalForm());
 		}
 		properties.setProperty(ROBOCODE_VERSION, Container.getComponent(IVersionManager.class).getVersion());
 
 		properties.store(os, "Robocode Robot Team");
 	}
 
-	public static void createOrUpdateTeam(File target, URL web, String desc, String author, String members, String teamVersion, String robocodeVersion) throws IOException {
+	public static void createOrUpdateTeam(File target, TeamProperties props) throws IOException {
 		FileOutputStream os = null;
 
 		try {
 			Properties team = loadTeamProperties(target);
 
-			if (robocodeVersion != null) {
-				team.setProperty(ROBOCODE_VERSION, robocodeVersion);
+			if (props.getMembers() != null) {
+				team.setProperty(TEAM_MEMBERS, props.getMembers());
 			}
-			if (web != null) {
-				team.setProperty(TEAM_WEBPAGE, web.toString());
+			if (props.getAuthor() != null) {
+				team.setProperty(TEAM_AUTHOR_NAME, props.getAuthor());
 			}
-			if (desc != null) {
-				team.setProperty(TEAM_DESCRIPTION, desc);
+			if (props.getDescription() != null) {
+				team.setProperty(TEAM_DESCRIPTION, props.getDescription());
 			}
-			if (author != null) {
-				team.setProperty(TEAM_AUTHOR_NAME, author);
+			if (props.getWebPage() != null) {
+				team.setProperty(TEAM_WEBPAGE, props.getWebPage().toExternalForm());
 			}
-			if (members != null) {
-				team.setProperty(TEAM_MEMBERS, members);
-			}
-			if (teamVersion != null) {
-				team.setProperty(TEAM_VERSION, teamVersion);
-			}
+			String version = Container.getComponent(IVersionManager.class).getVersion();
+			team.setProperty(ROBOCODE_VERSION, version);
 
 			os = new FileOutputStream(target);
 			team.store(os, "Robocode robot team");
