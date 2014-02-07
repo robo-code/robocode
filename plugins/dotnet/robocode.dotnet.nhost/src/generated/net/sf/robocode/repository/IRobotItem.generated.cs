@@ -50,6 +50,9 @@ namespace net.sf.robocode.repository {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()Z")]
         bool isPaintRobot();
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()[Ljava/net/URL;")]
+        java.net.URL[] getSourcePathURLs();
     }
     #endregion
     
@@ -149,6 +152,8 @@ namespace net.sf.robocode.repository {
         
         internal static global::net.sf.jni4net.jni.MethodId j4n_isPaintRobot38;
         
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getSourcePathURLs39;
+        
         private @__IRobotItem(global::net.sf.jni4net.jni.JNIEnv @__env) : 
                 base(@__env) {
         }
@@ -194,6 +199,7 @@ namespace net.sf.robocode.repository {
             global::net.sf.robocode.repository.@__IRobotItem.j4n_isSentryRobot36 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotItem.staticClass, "isSentryRobot", "()Z");
             global::net.sf.robocode.repository.@__IRobotItem.j4n_isInteractiveRobot37 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotItem.staticClass, "isInteractiveRobot", "()Z");
             global::net.sf.robocode.repository.@__IRobotItem.j4n_isPaintRobot38 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotItem.staticClass, "isPaintRobot", "()Z");
+            global::net.sf.robocode.repository.@__IRobotItem.j4n_getSourcePathURLs39 = @__env.GetMethodID(global::net.sf.robocode.repository.@__IRobotItem.staticClass, "getSourcePathURLs", "()[Ljava/net/URL;");
         }
         
         public int compareTo(global::java.lang.Object par0) {
@@ -469,6 +475,13 @@ namespace net.sf.robocode.repository {
             }
         }
         
+        public java.net.URL[] getSourcePathURLs() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
+            return global::net.sf.jni4net.utils.Convertor.ArrayStrongJ2Cp<java.net.URL[], global::java.net.URL>(@__env, @__env.CallObjectMethodPtr(this, global::net.sf.robocode.repository.@__IRobotItem.j4n_getSourcePathURLs39));
+            }
+        }
+        
         private static global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> @__Init(global::net.sf.jni4net.jni.JNIEnv @__env, global::java.lang.Class @__class) {
             global::System.Type @__type = typeof(__IRobotItem);
             global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> methods = new global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod>();
@@ -511,6 +524,7 @@ namespace net.sf.robocode.repository {
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isSentryRobot", "isSentryRobot36", "()Z"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isInteractiveRobot", "isInteractiveRobot37", "()Z"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isPaintRobot", "isPaintRobot38", "()Z"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getSourcePathURLs", "getSourcePathURLs39", "()[Ljava/net/URL;"));
             return methods;
         }
         
@@ -974,6 +988,18 @@ namespace net.sf.robocode.repository {
             try {
             global::net.sf.robocode.repository.IRobotItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotItem>(@__env, @__obj);
             @__return = ((bool)(@__real.isPaintRobot()));
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
+            return @__return;
+        }
+        
+        private static global::net.sf.jni4net.utils.JniHandle getSourcePathURLs39(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+            // ()[Ljava/net/URL;
+            // ()[Ljava/net/URL;
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            global::net.sf.jni4net.utils.JniHandle @__return = default(global::net.sf.jni4net.utils.JniHandle);
+            try {
+            global::net.sf.robocode.repository.IRobotItem @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::net.sf.robocode.repository.IRobotItem>(@__env, @__obj);
+            @__return = global::net.sf.jni4net.utils.Convertor.ArrayStrongCp2J(@__env, @__real.getSourcePathURLs());
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
             return @__return;
         }

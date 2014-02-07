@@ -149,5 +149,8 @@ class __IRobotItem extends system.Object implements net.sf.robocode.repository.I
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isPaintRobot();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()[Ljava/net/URL;")
+    public native java.net.URL[] getSourcePathURLs();
 }
 //</generated-proxy>

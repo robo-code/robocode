@@ -52,5 +52,5 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 
 	void createTeam(File target, TeamProperties teamProperties) throws IOException;
 
-	String createPackage(File target, List<IRobotSpecItem> selectedRobots, RobotProperties robotProperties);
+	String createPackage(File jarFile, List<IRobotSpecItem> selectedRobots, RobotProperties robotProperties);
 }

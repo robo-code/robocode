@@ -364,13 +364,13 @@ public class RepositoryManager implements IRepositoryManager { // NO_UCD (use de
 		refresh(target.toURI().toString());
 	}
 
-	public String createPackage(File target, List<IRobotSpecItem> selectedRobots, RobotProperties robotProps) {
+	public String createPackage(File jarFile, List<IRobotSpecItem> selectedRobots, RobotProperties robotProps) {
 		checkDbExists();
-		List<RobotItem> robots = getAllRobotItems(selectedRobots);
-		List<TeamItem> teams = getTeamItemsOnly(selectedRobots);
+		List<RobotItem> robotItems = getAllRobotItems(selectedRobots);
+		TeamItem teamItem = getTeamItem(selectedRobots);
 
-		String res = JarCreator.createPackage(target, robots, teams, robotProps);
-		refresh(target.toURI().toString());
+		String res = JarCreator.createPackage(jarFile, robotItems, teamItem, robotProps);
+		refresh(jarFile.toURI().toString());
 
 		return res;
 	}
@@ -421,15 +421,13 @@ public class RepositoryManager implements IRepositoryManager { // NO_UCD (use de
 		return result;
 	}
 
-	private static List<TeamItem> getTeamItemsOnly(Collection<IRobotSpecItem> items) {
-		List<TeamItem> result = new ArrayList<TeamItem>();
-
+	private static TeamItem getTeamItem(Collection<IRobotSpecItem> items) {
 		for (IRobotSpecItem item : items) {
 			if (item.isTeam()) {
-				result.add((TeamItem) item);
+				return (TeamItem) item;
 			}
 		}
-		return result;
+		return null;
 	}
 
 	private IRobotSpecItem getRobot(String fullClassNameWithVersion) {

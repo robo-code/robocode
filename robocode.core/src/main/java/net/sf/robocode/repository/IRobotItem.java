@@ -31,4 +31,6 @@ public interface IRobotItem extends IRobotSpecItem {
 
 	boolean isInteractiveRobot();
 	boolean isPaintRobot();
+
+	URL[] getSourcePathURLs();
 }
