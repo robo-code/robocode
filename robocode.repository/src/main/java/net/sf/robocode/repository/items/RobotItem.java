@@ -565,7 +565,6 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 			if (jarFile.length() > 0) {
 				dir += File.separator + jarFile + '_';
 			}
-			dir += File.separator;
 		} else {
 			dir = getClassPathURL().getFile();
 		}
@@ -586,7 +585,6 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 			if (jarFile.length() > 0) {
 				dir += File.separator + jarFile + '_';
 			}
-			dir += File.separator;
 		} else {
 			dir = ALWAYS_USE_CACHE_FOR_DATA
 					? FileUtil.getRobotsDataDir().getAbsolutePath()
