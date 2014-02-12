@@ -1,8 +1,9 @@
-## Version 1.9.0.0 (31-Jan-2014) The Border Sentry Robot Release
+## Version 1.9.0.0 (12-Feb-2014) The Border Sentry Robot Release
 
 ### Bug fixes
 * [Bug-366][]: Receiving enemy's real name on HitByBulletEvent.
 * Fixed various issues with the Robot Editor, e.g. letters written in the wrong error when typing text fast.
+* Fixed issue when loading a robot jar file with no package (default package), which was found by Daniel Yeung, who also had a fix for it. :-)
 
 ### New features
 * *BorderSentry interface*: Added a new robot type (the BorderSentry) that allows you to implement border sentry robots, which are robots that guards the walls of the battlefield against "wall-crawlers" and "corner" robots.

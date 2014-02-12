@@ -553,7 +553,7 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 
 	public String getReadableDirectory() {
 		if (getRootPackage() == null) {
-			return null;
+			return FileUtil.getRobotsDataDir().getPath();
 		}
 		String dir;
 
@@ -574,7 +574,7 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 
 	public String getWritableDirectory() {
 		if (getRootPackage() == null) {
-			return null;
+			return FileUtil.getRobotsDataDir().getPath();
 		}
 		String dir;
 
