@@ -111,6 +111,14 @@ public class EditWindow extends JInternalFrame {
 			Font font = currentThemeProps.getFont();
 			editorPanel.setFont(font);
 
+			// Make sure the source editor window gets focus with a blinking cursor
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					editorPanel.getEditorPane().requestFocus();
+				}
+			});
+
 			EditorThemePropertiesManager.addListener(new EditorThemePropertyChangeAdapter() {
 				@Override
 				public void onFontChanged(Font newFont) {
@@ -122,19 +130,20 @@ public class EditWindow extends JInternalFrame {
 
 			document.addDocumentListener(new DocumentListener() {
 				public void removeUpdate(DocumentEvent e) {
-					updateMofificationState();
+					updateModificationState();
 				}
 
 				public void insertUpdate(DocumentEvent e) {
-					updateMofificationState();
+					updateModificationState();
 				}
 
 				public void changedUpdate(DocumentEvent e) {
-					updateMofificationState();
+					// Fixes problem, where document is not initialized as being unsaved
+					setModified(true);
 				}
 
 				// Bug-361 Problem in the text editor related with the .java file modification
-				private void updateMofificationState() {
+				private void updateModificationState() {
 					setModified(editorPanel.getEditorPane().isModified());
 				}
 			});
