@@ -33,14 +33,12 @@ import java.util.Set;
 public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 	private static final long serialVersionUID = 1L;
 
-	private final static String TEAM_DESCRIPTION = "team.description";
-	private final static String TEAM_AUTHOR_NAME = "team.author.name";
-	// private final static String TEAM_AUTHOR_EMAIL = "team.author.email";
-	// private final static String TEAM_AUTHOR_WEBSITE = "team.author.website";
-	private final static String TEAM_VERSION = "team.version";
-	private final static String TEAM_WEBPAGE = "team.webpage";
-	private final static String TEAM_MEMBERS = "team.members";
-	private final static String ROBOCODE_VERSION = "robocode.version";
+	private static final String TEAM_DESCRIPTION = "team.description";
+	private static final String TEAM_AUTHOR_NAME = "team.author.name";
+	private static final String TEAM_VERSION = "team.version";
+	private static final String TEAM_WEBPAGE = "team.webpage";
+	private static final String TEAM_MEMBERS = "team.members";
+	private static final String ROBOCODE_VERSION = "robocode.version";
 
 	private final String fullTeamName;
 
@@ -174,6 +172,10 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 	}
 
 	public boolean getIncludeSource() {
+		return false;
+	}
+
+	public boolean getIncludeData() {
 		return false;
 	}
 

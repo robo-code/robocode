@@ -11,7 +11,6 @@ package net.sf.robocode.test.robotscs;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;
 import robocode.control.events.RoundStartedEvent;
 import robocode.control.events.TurnEndedEvent;

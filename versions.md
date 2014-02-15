@@ -1,6 +1,7 @@
-## Version 1.9.0.0 (12-Feb-2014) The Border Sentry Robot Release
+## Version 1.9.0.0 (16-Feb-2014) The Border Sentry Robot Release
 
 ### Bug fixes
+* [Bug-364][]: Robot Packager does not include the robot data dir in the .jar file.
 * [Bug-366][]: Receiving enemy's real name on HitByBulletEvent.
 * Fixed various issues with the Robot Editor, e.g. letters written in the wrong error when typing text fast.
 * Fixed issue when loading a robot jar file with no package (default package), which was found by Daniel Yeung, who also had a fix for it. :-)
@@ -2915,6 +2916,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-361]: http://sourceforge.net/p/robocode/bugs/361/  (Problem in the text editor related with the .java file modification)
 [Bug-362]: http://sourceforge.net/p/robocode/bugs/362/  (Rumble client does not remove participants in wrong codesize group)
 [Bug-363]: http://sourceforge.net/p/robocode/bugs/363/  (No Last Survivor Bonus being given)
+[Bug-364]: http://sourceforge.net/p/robocode/bugs/364/  (Robot Packager does not include the robot data dir in the .jar file)
 [Bug-366]: http://sourceforge.net/p/robocode/bugs/366/  (Receiving enemy's real name on HitByBulletEvent)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)

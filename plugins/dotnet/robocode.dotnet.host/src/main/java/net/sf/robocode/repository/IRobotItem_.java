@@ -64,6 +64,9 @@ class __IRobotItem extends system.Object implements net.sf.robocode.repository.I
     public native boolean getIncludeSource();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean getIncludeData();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isSourceIncluded();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
@@ -114,15 +117,6 @@ class __IRobotItem extends system.Object implements net.sf.robocode.repository.I
     @net.sf.jni4net.attributes.ClrMethod("(Ljava/io/OutputStream;Ljava/lang/Object;)V")
     public native void storeProperties(java.io.OutputStream par0, net.sf.robocode.repository.RobotProperties par1);
     
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
-    public native java.net.URL getClassPathURL();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getWritableDirectory();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
-    public native java.lang.String getReadableDirectory();
-    
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
     public native java.lang.String getPlatform();
     
@@ -150,7 +144,16 @@ class __IRobotItem extends system.Object implements net.sf.robocode.repository.I
     @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isPaintRobot();
     
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/net/URL;")
+    public native java.net.URL getClassPathURL();
+    
     @net.sf.jni4net.attributes.ClrMethod("()[Ljava/net/URL;")
     public native java.net.URL[] getSourcePathURLs();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getWritableDirectory();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")
+    public native java.lang.String getReadableDirectory();
 }
 //</generated-proxy>

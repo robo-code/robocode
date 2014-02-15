@@ -38,6 +38,8 @@ public interface IRobotSpecItem extends Comparable<Object> {
 
 	boolean getIncludeSource();
 
+	boolean getIncludeData();
+
 	boolean isSourceIncluded();
 
 	String getRootPath();

@@ -147,27 +147,38 @@ public class JarCreator {
 	}
 
 	private static void addRobotFilesToJar(JarOutputStream target, Set<String> jarEntries, String robotPathWithoutFileExt, IRobotItem robotItem, RobotProperties props) throws IOException {
+		addClassFileToJar(target, jarEntries, robotPathWithoutFileExt, robotItem);
+		addPropertiesFileToJar(target, jarEntries, robotPathWithoutFileExt, robotItem);
 		addJavaFileToJar(target, jarEntries, robotPathWithoutFileExt, robotItem, props);
-		addClassFileToJar(target, jarEntries, robotPathWithoutFileExt, robotItem, props);
-		addPropertiesFileToJar(target, jarEntries, robotPathWithoutFileExt, robotItem, props);
+		addDataDirToJar(target, jarEntries, robotPathWithoutFileExt, robotItem, props);
+	}
+
+	private static void addClassFileToJar(JarOutputStream target, Set<String> jarEntries, String robotPathWithoutFileExt, IRobotItem robotItem) throws IOException {
+		String classRootPath = robotItem.getClassPathURL().getPath();
+		addToJar(target, jarEntries, classRootPath, robotPathWithoutFileExt, ".class");
+	}
+
+	private static void addPropertiesFileToJar(JarOutputStream target, Set<String> jarEntries, String robotPathWithoutFileExt, IRobotItem robotItem) throws IOException {
+		String classRootPath = robotItem.getClassPathURL().getPath();
+		addToJar(target, jarEntries, classRootPath, robotPathWithoutFileExt, ".properties");
 	}
 
 	private static void addJavaFileToJar(JarOutputStream target, Set<String> jarEntries, String robotFilePath, IRobotItem robotItem, RobotProperties props) throws IOException {
-		if (props.isIncludeSources() && !robotFilePath.contains("$")) {
+		if (props.isIncludeSource() && !robotFilePath.contains("$")) {
 			for (URL sourcePathURL : robotItem.getSourcePathURLs()) {
 				addToJar(target, jarEntries, sourcePathURL.getPath(), robotFilePath, ".java");
 			}
 		}		
 	}
 
-	private static void addClassFileToJar(JarOutputStream target, Set<String> jarEntries, String robotPathWithoutFileExt, IRobotItem robotItem, RobotProperties props) throws IOException {
-		String classRootPath = robotItem.getClassPathURL().getPath();
-		addToJar(target, jarEntries, classRootPath, robotPathWithoutFileExt, ".class");
-	}
-
-	private static void addPropertiesFileToJar(JarOutputStream target, Set<String> jarEntries, String robotPathWithoutFileExt, IRobotItem robotItem, RobotProperties props) throws IOException {
-		String classRootPath = robotItem.getClassPathURL().getPath();
-		addToJar(target, jarEntries, classRootPath, robotPathWithoutFileExt, ".properties");
+	private static void addDataDirToJar(JarOutputStream target, Set<String> jarEntries, String robotPathWithoutFileExt, IRobotItem robotItem, RobotProperties props) throws IOException {
+		if (props.isIncludeData()) {
+			String rootPath = robotItem.getRootPath().replace('\\', '/');
+			if (rootPath.startsWith("file:/")) {
+				rootPath = rootPath.substring("file:/".length());
+			}
+			addToJar(target, jarEntries, rootPath, robotPathWithoutFileExt, ".data");
+		}
 	}
 
 	private static void addToJar(JarOutputStream target, Set<String> jarEntries, String rootPath, String robotPathWithoutFileExt, String fileExt) throws IOException {
@@ -180,7 +191,7 @@ public class JarCreator {
 		File file = new File(rootPath, filePath);
 		if (file.exists() && !jarEntries.contains(filePath)) {
 			addFileToJar(file, filePath, target);
-			jarEntries.add(filePath); // FIXME
+			jarEntries.add(filePath);
 		}
 	}
 
@@ -193,10 +204,6 @@ public class JarCreator {
 			path = path.substring(1);
 		}
 
-		JarEntry entry = new JarEntry(path);
-		entry.setTime(source.lastModified());
-		target.putNextEntry(entry);
-
 		if (source.isDirectory()) {
 			// Directory entries must end with an '/'
 			if (!path.isEmpty() && !path.endsWith("/")) {
@@ -208,6 +215,10 @@ public class JarCreator {
 				addFileToJar(nestedFile, newEntryPath, target);
 			}
 		} else {
+			JarEntry entry = new JarEntry(path);
+			entry.setTime(source.lastModified());
+			target.putNextEntry(entry);
+
 			// Source is a file
 			
 			FileInputStream fis = null;

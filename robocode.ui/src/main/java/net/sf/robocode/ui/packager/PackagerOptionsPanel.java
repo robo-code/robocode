@@ -30,9 +30,11 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class PackagerOptionsPanel extends WizardPanel {
 	private final RobotPackager robotPackager;
-	private JCheckBox includeSource;
+
 	private final EventHandler eventHandler = new EventHandler();
 
+	private JCheckBox includeSource;
+	private JCheckBox includeData;
 	private JLabel authorLabel;
 	private JTextField authorField;
 	private JLabel descriptionLabel;
@@ -73,48 +75,48 @@ public class PackagerOptionsPanel extends WizardPanel {
 			currentSelectedRobots = selectedRobots; // Bug fix [3026856]
 
 			if (selectedRobots.size() == 1) {
-				IRobotSpecItem fileSpecification = selectedRobots.get(0);
+				IRobotSpecItem robotSpecItem = selectedRobots.get(0);
 
-				getIncludeSource().setSelected(fileSpecification.getIncludeSource());
+				getIncludeSource().setSelected(robotSpecItem.getIncludeSource());
+				
+				getIncludeData().setSelected(robotSpecItem.getIncludeData());
 
-				String v = fileSpecification.getVersion();
-
-				if (v == null || v.length() == 0) {
+				String ver = robotSpecItem.getVersion();
+				if (ver == null || ver.length() == 0) {
 					getVersionHelpLabel().setVisible(false);
-					v = "1.0";
+					ver = "1.0";
 				} else {
-					if (v.length() == 10) {
-						v = v.substring(0, 9);
+					if (ver.length() == 10) {
+						ver = ver.substring(0, 9);
 					}
-					v += "*";
+					ver += "*";
 					getVersionHelpLabel().setVisible(true);
 				}
-				getVersionField().setText(v);
-				String d = fileSpecification.getDescription();
+				getVersionField().setText(ver);
 
-				if (d == null) {
-					d = "";
+				String desc = robotSpecItem.getDescription();
+				if (desc == null) {
+					desc = "";
 				}
-				getDescriptionArea().setText(d);
-				String a = fileSpecification.getAuthorName();
+				getDescriptionArea().setText(desc);
 
-				if (a == null) {
-					a = "";
+				String author = robotSpecItem.getAuthorName();
+				if (author == null) {
+					author = "";
 				}
-				getAuthorField().setText(a);
-				URL u = fileSpecification.getWebpage();
-				String wp = (u != null) ? u.toString() : "";		
+				getAuthorField().setText(author);
 
-				getWebpageField().setText(wp);
+				URL url = robotSpecItem.getWebpage();
+				String webPage = (url != null) ? url.toString() : "";		
+				getWebpageField().setText(webPage);
 
-				String fullPackage = fileSpecification.getFullPackage();
+				String fullPackage = robotSpecItem.getFullPackage();
 
 				String text = "";
-
 				if (fullPackage != null && fullPackage.indexOf(".") != -1) {
-					String htmlfn = fullPackage.substring(0, fullPackage.lastIndexOf(".")) + ".html";
+					String htmlFileName = fullPackage.substring(0, fullPackage.lastIndexOf(".")) + ".html";
 
-					text = "(You may also leave this blank, and simply create the file: " + htmlfn + ")";
+					text = "(You may also leave this blank, and simply create the file: " + htmlFileName + ")";
 				}
 				getWebpageHelpLabel().setText(text);
 
@@ -161,28 +163,33 @@ public class PackagerOptionsPanel extends WizardPanel {
 		initialize();
 	}
 
-	public JCheckBox getIncludeSource() {
-		if (includeSource == null) {
-			includeSource = new JCheckBox("Include source", true);
-		}
-		return includeSource;
-	}
-
 	private void initialize() {
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		JLabel label = new JLabel("It is up to you whether or not to include the source when you distribute your robot.");
 
+		JLabel label = new JLabel(
+				"It is up to you whether or not to include the source files when you distribute your robot.");
 		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
 
 		label = new JLabel(
-				"If you include the source, other people will be able to look at your code and learn from it.");
+				"If you include the source files, other people will be able to look at your code and learn from it.");
 		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(label);
 
 		getIncludeSource().setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(getIncludeSource());
+
+		label = new JLabel(" ");
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
+		add(label);
+
+		label = new JLabel("You may include the source files too if they are available?");
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
+		add(label);
+
+		getIncludeData().setAlignmentX(Component.LEFT_ALIGNMENT);
+		add(getIncludeData());
 
 		label = new JLabel(" ");
 		label.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -284,6 +291,20 @@ public class PackagerOptionsPanel extends WizardPanel {
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public JCheckBox getIncludeSource() {
+		if (includeSource == null) {
+			includeSource = new JCheckBox("Include source files", true);
+		}
+		return includeSource;
+	}
+
+	public JCheckBox getIncludeData() {
+		if (includeData == null) {
+			includeData = new JCheckBox("Include data files", true);
+		}
+		return includeData;
 	}
 
 	private JLabel getAuthorLabel() {

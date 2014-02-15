@@ -41,14 +41,12 @@ public class ConfirmPanel extends WizardPanel {
 		}
 
 		public void componentShown(ComponentEvent e) {
-			if (robotPackager == null) {
-				return;
+			if (robotPackager != null) {
+				visible = true;
+				updateFields();
+				fireStateChanged();
+				repaint();
 			}
-
-			visible = true;
-			updateFields();
-			fireStateChanged();
-			repaint();
 		}
 	}
 
@@ -86,11 +84,9 @@ public class ConfirmPanel extends WizardPanel {
 			getRobotListPanel().add(new JLabel("You have not yet selected any robots."));
 		} else if (selectedRobots.size() == 1) {
 			String robotName = (selectedRobots.get(0)).getFullClassName();
-
 			getRobotListPanel().add(new JLabel("You have selected " + robotName + " for packaging."));
 		} else {
 			getRobotListPanel().add(new JLabel("You have selected the following robots for packaging:"));
-
 			for (IRobotSpecItem selected : selectedRobots) {
 				getRobotListPanel().add(new JLabel(selected.getFullClassName()));
 			}
@@ -109,10 +105,15 @@ public class ConfirmPanel extends WizardPanel {
 		if (robotPackager.getPackagerOptionsPanel().getIncludeSource().isSelected()) {
 			add(new JLabel("Java source files will be included."));
 		} else {
-			add(new JLabel("Only .class files will be included."));
+			add(new JLabel("Java source files will NOT be included."));
+		}
+		if (robotPackager.getPackagerOptionsPanel().getIncludeData().isSelected()) {
+			add(new JLabel("Data files will be included, if they exists."));
+		} else {
+			add(new JLabel("Data source files will NOT be included."));
 		}
 		add(Box.createVerticalStrut(20));
-		add(new JLabel("The package will be saved in " + robotPackager.getFilenamePanel().getFilenameField().getText()));
+		add(new JLabel("The package will be saved in: " + robotPackager.getFilenamePanel().getFilenameField().getText()));
 		add(Box.createVerticalStrut(20));
 		add(new JLabel("If all of the above is correct, click the Package button to start packaging."));
 		add(new JPanel());

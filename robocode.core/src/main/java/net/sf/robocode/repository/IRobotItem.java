@@ -15,11 +15,6 @@ import java.net.URL;
  * @author Pavel Savara (original)
  */
 public interface IRobotItem extends IRobotSpecItem {
-	URL getClassPathURL();
-
-	String getWritableDirectory();
-	String getReadableDirectory();
-
 	String getPlatform();
 
 	boolean isJuniorRobot();
@@ -32,5 +27,9 @@ public interface IRobotItem extends IRobotSpecItem {
 	boolean isInteractiveRobot();
 	boolean isPaintRobot();
 
+	URL getClassPathURL();
 	URL[] getSourcePathURLs();
+
+	String getWritableDirectory();
+	String getReadableDirectory();
 }

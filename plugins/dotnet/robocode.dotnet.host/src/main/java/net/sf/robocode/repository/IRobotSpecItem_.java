@@ -64,6 +64,9 @@ class __IRobotSpecItem extends system.Object implements net.sf.robocode.reposito
     public native boolean getIncludeSource();
     
     @net.sf.jni4net.attributes.ClrMethod("()Z")
+    public native boolean getIncludeData();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()Z")
     public native boolean isSourceIncluded();
     
     @net.sf.jni4net.attributes.ClrMethod("()Ljava/lang/String;")

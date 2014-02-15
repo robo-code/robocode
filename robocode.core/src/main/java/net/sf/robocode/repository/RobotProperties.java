@@ -12,25 +12,34 @@ import java.net.URL;
 
 
 /**
- * Container for Robot properties used in Robot packages.
+ * Container for the robot properties used in robot packages.
  *
  * @author Flemming N. Larsen (original)
  */
 public class RobotProperties {
 
-	private boolean includeSources;
+	private boolean includeSource;
+	private boolean includeData;
 	private String version;
 	private String author;
 	private String description;
 	private URL webPage;
 	private Integer codeSize;
 
-	public boolean isIncludeSources() {
-		return includeSources;
+	public boolean isIncludeSource() {
+		return includeSource;
 	}
 
-	public void setIncludeSources(boolean includeSources) {
-		this.includeSources = includeSources;
+	public void setIncludeSource(boolean includeSource) {
+		this.includeSource = includeSource;
+	}
+
+	public boolean isIncludeData() {
+		return includeData;
+	}
+
+	public void setIncludeData(boolean includeData) {
+		this.includeData = includeData;
 	}
 
 	public String getVersion() {

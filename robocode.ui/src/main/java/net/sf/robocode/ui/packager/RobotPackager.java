@@ -207,14 +207,16 @@ public class RobotPackager extends JDialog implements WizardListener {
 				} catch (MalformedURLException ignored) {}
 			}
 		}
-		boolean includeSources = getPackagerOptionsPanel().getIncludeSource().isSelected();
+		boolean includeSource = getPackagerOptionsPanel().getIncludeSource().isSelected();
+		boolean includeData = getPackagerOptionsPanel().getIncludeData().isSelected();
 		String version = getPackagerOptionsPanel().getVersionField().getText();
 		String author = getPackagerOptionsPanel().getAuthorField().getText();
 		String desc = getPackagerOptionsPanel().getDescriptionArea().getText();
 		List<IRobotSpecItem> robots = getRobotSelectionPanel().getSelectedRobots();
 
 		RobotProperties props = new RobotProperties();
-		props.setIncludeSources(includeSources);
+		props.setIncludeSource(includeSource);
+		props.setIncludeData(includeData);
 		props.setVersion(version);
 		props.setAuthor(author);
 		props.setDescription(desc);

@@ -43,21 +43,20 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	private static final long serialVersionUID = 1L;
 
 	// Allowed maximum length for a robot's full package name
-	private final static int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
+	private static final int MAX_FULL_PACKAGE_NAME_LENGTH = 32;
 	// Allowed maximum length for a robot's short class name
-	private final static int MAX_SHORT_CLASS_NAME_LENGTH = 32;
+	private static final int MAX_SHORT_CLASS_NAME_LENGTH = 32;
 
-	protected final static String ROBOT_CLASSNAME = "robot.classname";
-	protected final static String ROBOT_VERSION = "robot.version";
-	protected final static String ROBOT_DESCRIPTION = "robot.description";
-	protected final static String ROBOT_AUTHOR_NAME = "robot.author.name";
-	protected final static String ROBOT_WEBPAGE = "robot.webpage";
-	// private final static String ROBOT_AUTHOR_EMAIL = "robot.author.email";
-	// private final static String ROBOT_AUTHOR_WEBSITE = "robot.author.website";
-	protected final static String ROBOCODE_VERSION = "robocode.version";
-	protected final static String ROBOT_INCLUDE_SOURCE = "robot.include.source"; 
-	protected final static String ROBOT_PLATFORM = "robot.platform";
-	protected final static String ROBOT_CODESIZE = "robot.codesize";
+	protected static final String ROBOT_PLATFORM = "robot.platform";
+	private static final String ROBOT_CLASSNAME = "robot.classname";
+	private static final String ROBOT_VERSION = "robot.version";
+	private static final String ROBOT_DESCRIPTION = "robot.description";
+	private static final String ROBOT_AUTHOR_NAME = "robot.author.name";
+	private static final String ROBOT_WEBPAGE = "robot.webpage";
+	private static final String ROBOCODE_VERSION = "robocode.version";
+	private static final String ROBOT_INCLUDE_SOURCE = "robot.include.source"; 
+	private static final String ROBOT_INCLUDE_DATA = "robot.include.data"; 
+	private static final String ROBOT_CODESIZE = "robot.codesize";
 
 	// File extensions
 	private static final String CLASS_EXTENSION = ".class";
@@ -204,10 +203,8 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	private boolean isInvalidURL(URL url) {
 		if (url != null) {
 			InputStream is = null;
-
 			try {
 				URLConnection conn = URLJarCollector.openConnection(url);
-
 				is = conn.getInputStream();
 				return false;
 			} catch (IOException e) {
@@ -335,7 +332,6 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	private boolean loadProperties() {
 		if (!isPropertiesLoaded && propertiesURL != null) {
 			InputStream ios = null;
-
 			try {
 				URLConnection con = URLJarCollector.openConnection(propertiesURL);
 
@@ -370,7 +366,6 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		}
 
 		int lIndex = fullClassName.indexOf(".");
-
 		if (lIndex > 0) {
 			String rootPackage = fullClassName.substring(0, lIndex);
 
@@ -380,7 +375,6 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 				}
 				return false;
 			}
-
 			if (rootPackage.length() > MAX_FULL_PACKAGE_NAME_LENGTH) {
 				if (!silent) {
 					logError(
@@ -390,7 +384,6 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 				return false;
 			}
 		}
-
 		if (shortClassName != null && shortClassName.length() > MAX_SHORT_CLASS_NAME_LENGTH) {
 			if (!silent) {
 				logError(
@@ -399,7 +392,6 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 			}
 			return false;
 		}
-
 		return true;
 	}
 
@@ -422,7 +414,7 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		if (robotProps.getCodeSize() != null) {
 			properties.setProperty(ROBOT_CODESIZE, "" + robotProps.getCodeSize());
 		}
-		properties.setProperty(ROBOT_INCLUDE_SOURCE, "" + robotProps.isIncludeSources());
+		properties.setProperty(ROBOT_INCLUDE_SOURCE, "" + robotProps.isIncludeSource());
 
 		String version = Container.getComponent(IVersionManager.class).getVersion();
 		properties.setProperty(ROBOCODE_VERSION, version);
@@ -543,6 +535,10 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 		return properties.getProperty(ROBOT_INCLUDE_SOURCE, "true").equalsIgnoreCase("true");
 	}
 
+	public boolean getIncludeData() {
+		return properties.getProperty(ROBOT_INCLUDE_DATA, "true").equalsIgnoreCase("true");
+	}
+
 	public boolean isSourceIncluded() {
 		return sourcePathURLs.size() > 0;
 	}
@@ -552,45 +548,39 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	}
 
 	public String getReadableDirectory() {
-		if (getRootPackage() == null) {
-			return FileUtil.getRobotsDataDir().getPath();
-		}
-		String dir;
-
+		String path;
 		if (root.isJAR()) {
 			String jarFile = getClassPathURL().getFile();
-
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
-			dir = FileUtil.getRobotsDataDir().getPath();
+			path = FileUtil.getRobotsDataDir().getPath();
 			if (jarFile.length() > 0) {
-				dir += File.separator + jarFile + '_';
+				path += File.separator + jarFile + '_';
 			}
 		} else {
-			dir = getClassPathURL().getFile();
+			path = getClassPathURL().getFile();
 		}
-		return dir + File.separator + getFullPackage().replace('.', File.separatorChar);
+		if (getFullPackage() != null) {
+			path += File.separator + getFullPackage().replace('.', File.separatorChar);
+		}
+		return path;
 	}
 
 	public String getWritableDirectory() {
-		if (getRootPackage() == null) {
-			return FileUtil.getRobotsDataDir().getPath();
-		}
-		String dir;
-
+		String path;
 		if (root.isJAR()) {
-			String jarFile = getClassPathURL().getFile();
-
+			String jarFile = getClassPathURL().getFile();	
 			jarFile = jarFile.substring(jarFile.lastIndexOf('/') + 1, jarFile.length());
-			dir = FileUtil.getRobotsDataDir().getPath();
+			path = FileUtil.getRobotsDataDir().getPath();
 			if (jarFile.length() > 0) {
-				dir += File.separator + jarFile + '_';
+				path += File.separator + jarFile + '_';
 			}
 		} else {
-			dir = ALWAYS_USE_CACHE_FOR_DATA
-					? FileUtil.getRobotsDataDir().getAbsolutePath()
-					: getClassPathURL().getFile();
+			path = ALWAYS_USE_CACHE_FOR_DATA ? FileUtil.getRobotsDataDir().getPath() : getClassPathURL().getFile();
 		}
-		return dir + File.separator + getFullPackage().replace('.', File.separatorChar);
+		if (getFullPackage() != null) {
+			path += File.separator + getFullPackage().replace('.', File.separatorChar);
+		}
+		return path;
 	}
 
 	public RobotSpecification createRobotSpecification(RobotSpecification battleRobotSpec, String teamId) {
