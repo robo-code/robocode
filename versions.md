@@ -2,6 +2,7 @@
 
 ### Bug fixes
 * [Bug-364][]: Robot Packager does not include the robot data dir in the .jar file.
+	* The Robot packager has now been extended with an option to include data files too when packaging a robot.
 * [Bug-366][]: Receiving enemy's real name on HitByBulletEvent.
 * Fixed various issues with the Robot Editor, e.g. letters written in the wrong error when typing text fast.
 * Fixed issue when loading a robot jar file with no package (default package), which was found by Daniel Yeung, who also had a fix for it. :-)
