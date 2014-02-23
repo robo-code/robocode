@@ -84,16 +84,17 @@ public class BulletPeer {
 				b.x = b.lastX;
 				b.y = b.lastY;
 
-				owner.addEvent(new BulletHitBulletEvent(createBullet(false, true), b.createBullet(true, false)));
-				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(false, true), createBullet(true, false)));
+				// Bugfix #366
+				owner.addEvent(new BulletHitBulletEvent(createBullet(false), b.createBullet(true)));
+				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(false), createBullet(true)));
 				break;
 			}
 		}
 	}
 
-	private Bullet createBullet(boolean hideOwnerName, boolean hideVictimName) {
+	private Bullet createBullet(boolean hideOwnerName) {
 		String ownerName = (owner == null) ? null : (hideOwnerName ? getNameForEvent(owner) : owner.getName());
-		String victimName = (victim == null) ? null : (hideVictimName ? getNameForEvent(victim) : victim.getName());
+		String victimName = (victim == null) ? null : (hideOwnerName ? victim.getName() : getNameForEvent(victim));
 
 		return new Bullet(heading, x, y, power, ownerName, victimName, isActive(), bulletId);
 	}
@@ -179,11 +180,11 @@ public class BulletPeer {
 				otherRobot.addEvent(
 						new HitByBulletEvent(
 								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()),
-								createBullet(true, true)));
+								createBullet(true))); // Bugfix #366
 
 				owner.addEvent(
 						new BulletHitEvent(owner.getNameForEvent(otherRobot), otherRobot.getEnergy(),
-						createBullet(false, false)));
+						createBullet(false))); // Bugfix #366
 
 				double newX, newY;
 
@@ -211,7 +212,7 @@ public class BulletPeer {
 				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
 			state = BulletState.HIT_WALL;
 			frame = 0;
-			owner.addEvent(new BulletMissedEvent(createBullet(false, true)));
+			owner.addEvent(new BulletMissedEvent(createBullet(false))); // Bugfix #366
 		}
 	}
 

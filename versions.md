@@ -1,3 +1,9 @@
+## Version 1.9.0.1 Alpha (23-Feb-2014)
+
+### Bug fix
+* [Bug-366][]: Receiving enemy's real name on HitByBulletEvent.
+	* The previous fix was not correct for the owner and victim for the HitByBulletEvent and HitBulletEvent.
+
 ## Version 1.9.0.0 (16-Feb-2014) The Border Sentry Robot Release
 
 ### Bug fixes
