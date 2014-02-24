@@ -36,6 +36,7 @@ namespace Robocode
         private readonly double distanceRemaining;
         private readonly double gunHeat;
         private readonly int others;
+        private readonly int numSentries;
         private readonly int roundNum;
         private readonly int numRounds;
         private readonly long time;
@@ -266,6 +267,14 @@ namespace Robocode
         }
 
         /// <summary>
+        /// Returns how many sentry robots that are left in the current round.
+        /// </summary>
+        public int NumSentries
+        {
+            get { return numSentries; }
+        }
+
+        /// <summary>
         /// Returns the number of rounds in the current battle.
         /// </summary>
         /// <seealso cref="RoundNum"/>
@@ -296,7 +305,9 @@ namespace Robocode
                             double radarHeading,
                             double velocity, double bodyTurnRemaining, double radarTurnRemaining,
                             double gunTurnRemaining,
-                            double distanceRemaining, double gunHeat, int others, int roundNum, int numRounds, long time)
+                            double distanceRemaining, double gunHeat,
+                            int others, int numSentries,
+                            int roundNum, int numRounds, long time)
         {
             this.energy = energy;
             this.x = x;
@@ -311,6 +322,7 @@ namespace Robocode
             this.distanceRemaining = distanceRemaining;
             this.gunHeat = gunHeat;
             this.others = others;
+            this.numSentries = numSentries;
             this.roundNum = roundNum;
             this.numRounds = numRounds;
             this.time = time;
@@ -325,7 +337,7 @@ namespace Robocode
         {
             public int sizeOf(RbSerializerN serializer, object objec)
             {
-                return RbSerializerN.SIZEOF_TYPEINFO + 12*RbSerializerN.SIZEOF_DOUBLE + 3*RbSerializerN.SIZEOF_INT
+                return RbSerializerN.SIZEOF_TYPEINFO + 12*RbSerializerN.SIZEOF_DOUBLE + 4*RbSerializerN.SIZEOF_INT
                        + RbSerializerN.SIZEOF_LONG;
             }
 
@@ -346,6 +358,7 @@ namespace Robocode
                 serializer.serialize(buffer, obj.distanceRemaining);
                 serializer.serialize(buffer, obj.gunHeat);
                 serializer.serialize(buffer, obj.others);
+                serializer.serialize(buffer, obj.numSentries);
                 serializer.serialize(buffer, obj.roundNum);
                 serializer.serialize(buffer, obj.numRounds);
                 serializer.serialize(buffer, obj.time);
@@ -366,22 +379,23 @@ namespace Robocode
                 double distanceRemaining = buffer.getDouble();
                 double gunHeat = buffer.getDouble();
                 int others = buffer.getInt();
+                int numSentries = buffer.getInt();
                 int roundNum = buffer.getInt();
                 int numRounds = buffer.getInt();
                 long time = buffer.getLong();
 
                 return new RobotStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity, bodyTurnRemaining,
-                                       radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others,
+                                       radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others, numSentries,
                                        roundNum, numRounds, time);
             }
 
             public RobotStatus createStatus(double energy, double x, double y, double bodyHeading, double gunHeading,
                                             double radarHeading, double velocity, double bodyTurnRemaining,
                                             double radarTurnRemaining, double gunTurnRemaining, double distanceRemaining,
-                                            double gunHeat, int others, int roundNum, int numRounds, long time)
+                                            double gunHeat, int others, int numSentries, int roundNum, int numRounds, long time)
             {
                 return new RobotStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity, bodyTurnRemaining,
-                                       radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others,
+                                       radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others, numSentries,
                                        roundNum, numRounds, time);
             }
         }

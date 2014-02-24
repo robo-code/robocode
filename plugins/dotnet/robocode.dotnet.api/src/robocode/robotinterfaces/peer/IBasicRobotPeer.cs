@@ -134,6 +134,11 @@ namespace Robocode.RobotInterfaces.Peer
         int GetOthers();
 
         /// <summary>
+        /// Returns how many sentry robots that are left in the current round.
+        /// </summary>
+        int GetNumSentries();
+
+        /// <summary>
         /// Returns the number of rounds in the current battle.
         /// <seealso cref="GetRoundNum"/>
         /// </summary>

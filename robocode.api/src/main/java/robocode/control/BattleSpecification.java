@@ -90,8 +90,21 @@ public class BattleSpecification implements java.io.Serializable {
 		this.sentryBorderSize = sentryBorderSize;
 		this.hideEnemyNames = hideEnemyNames;
 		this.robots = robots;
+
+		if (numRounds < 1) {
+			throw new IllegalArgumentException("numRounds must be >= 1");
+		}
+		if (inactivityTime < 1) {
+			throw new IllegalArgumentException("inactivityTime must be >= 1");
+		}
+		if (gunCoolingRate < 0.1) {
+			throw new IllegalArgumentException("inactivityTime must be >= 0.1");
+		}
+		if (sentryBorderSize < 50) {
+			throw new IllegalArgumentException("sentryBorderSize must be >= 50");
+		}
 	}
-	
+
 	/**
 	 * Returns the allowed inactivity time for the robots in this battle.
 	 *

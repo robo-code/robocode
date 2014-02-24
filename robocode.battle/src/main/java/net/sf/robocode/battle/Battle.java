@@ -68,7 +68,10 @@ public final class Battle extends BaseBattle {
 	private List<RobotPeer> robots = new ArrayList<RobotPeer>();
 	private List<ContestantPeer> contestants = new ArrayList<ContestantPeer>();
 	private final List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
+
+	// Robot counters
 	private int activeParticipants;
+	private int activeSentries;
 
 	// Death events
 	private final List<RobotPeer> deathRobots = new CopyOnWriteArrayList<RobotPeer>();
@@ -248,12 +251,21 @@ public final class Battle extends BaseBattle {
 	}
 
 	/**
-	 * Gets the activeRobots.
+	 * Returns the number of active participants.
 	 *
-	 * @return Returns a int
+	 * @return the number of active participants.
 	 */
-	public int getActiveParticipants() {
+	public int countActiveParticipants() {
 		return activeParticipants;
+	}
+
+	/**
+	 * Returns the number of active sentry robots.
+	 *
+	 * @return the number of active sentry robots.
+	 */
+	public int countActiveSentries() {
+		return activeSentries;
 	}
 
 	@Override
@@ -325,6 +337,8 @@ public final class Battle extends BaseBattle {
 	protected void preloadRound() {
 		super.preloadRound();
 
+		computeActiveRobots(); // Used for robotPeer.initializeRound()
+
 		// At this point the unsafe loader thread will now set itself to wait for a notify
 
 		for (RobotPeer robotPeer : robots) {
@@ -341,9 +355,7 @@ public final class Battle extends BaseBattle {
 			}
 		}
 
-		computeActiveParticipants();
-
-		hostManager.resetThreadManager();
+		computeActiveRobots(); // Used for RoundEnded check		hostManager.resetThreadManager();
 	}
 
 	@Override
@@ -415,7 +427,7 @@ public final class Battle extends BaseBattle {
 
 		inactiveTurnCount++;
 
-		computeActiveParticipants();
+		computeActiveRobots();
 
 		publishStatuses();
 
@@ -625,16 +637,21 @@ public final class Battle extends BaseBattle {
 		}
 	}
 
-	private void computeActiveParticipants() {
-		int activeCount = 0;
+	private void computeActiveRobots() {
+		int countActiveParticipants = 0;
+		int countActiveSentries = 0;
 
-		// Compute active robots
-		for (RobotPeer robotPeer : robots) {
-			if (robotPeer.isAlive() && !robotPeer.isSentryRobot()) {
-				activeCount++;
+		for (RobotPeer robot : robots) {
+			if (robot.isAlive()) { // robot must be alive in order to be active
+				if (robot.isSentryRobot()) {
+					countActiveSentries++;
+				} else {
+					countActiveParticipants++;
+				}
 			}
 		}
-		this.activeParticipants = activeCount;
+		this.activeParticipants = countActiveParticipants;
+		this.activeSentries = countActiveSentries;
 	}
 
 	private void wakeupRobots() {
@@ -771,7 +788,7 @@ public final class Battle extends BaseBattle {
 	}
 
 	private boolean oneTeamRemaining() {
-		if (getActiveParticipants() <= 1) {
+		if (countActiveParticipants() <= 1) {
 			return true;
 		}
 

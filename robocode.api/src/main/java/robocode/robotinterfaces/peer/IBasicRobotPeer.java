@@ -165,8 +165,18 @@ public interface IBasicRobotPeer {
 	 * Returns how many opponents that are left in the current round.
 	 *
 	 * @return how many opponents that are left in the current round.
+	 * @see #getNumSentries()
 	 */
 	int getOthers();
+
+	/**
+	 * Returns how many sentry robots that are left in the current round.
+	 *
+	 * @return how many sentry robots that are left in the current round.
+	 * @see #getOthers()
+	 * @since 1.9.1.0
+	 */
+	int getNumSentries();
 
 	/**
 	 * Returns the number of rounds in the current battle.

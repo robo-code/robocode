@@ -39,6 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Pavel Savara (original)
+ * @author Flemming N. Larsen (contributor)
  */
 public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPeer {
 	private static final long
@@ -278,6 +279,11 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	public int getOthers() {
 		getCall();
 		return status.getOthers();
+	}
+
+	public int getNumSentries() {
+		getCall();
+		return status.getNumSentries();
 	}
 
 	public double getBattleFieldHeight() {

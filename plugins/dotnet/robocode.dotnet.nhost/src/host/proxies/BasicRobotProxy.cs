@@ -318,6 +318,12 @@ namespace net.sf.robocode.dotnet.host.proxies
             return status.Others;
         }
 
+        public int GetNumSentries()
+        {
+            GetCall();
+            return status.NumSentries;
+        }
+
         public double GetBattleFieldHeight()
         {
             GetCall();

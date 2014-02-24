@@ -57,6 +57,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Patrick Cupka (contributor)
  * @author Julian Kent (contributor)
  * @author "Positive" (contributor)
+ * @author "BD123" (contributor)
  */
 public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
@@ -674,36 +675,37 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			double halfRobotWidth = RobotPeer.WIDTH / 2;
 			double halfRobotHeight = RobotPeer.HEIGHT / 2;
 
-			int minBorderWidth = Math.max(RobotPeer.WIDTH, (100 - RobotPeer.WIDTH)); // FIXME: Replace 100 with constant
-			int minBorderHeight = Math.max(RobotPeer.HEIGHT, (100 - RobotPeer.HEIGHT)); // FIXME: Replace 100 with constant
+			int sentryBorderSize = battle.getBattleRules().getSentryBorderSize();
+			int sentryBorderMoveWidth = sentryBorderSize - RobotPeer.WIDTH;
+			int sentryBorderMoveHeight = sentryBorderSize - RobotPeer.HEIGHT;
 
 			for (int j = 0; j < 1000; j++) {
 				double rndX = random.nextDouble();
 				double rndY = random.nextDouble();
 
-				x = halfRobotWidth;
-				y = halfRobotHeight;
-
 				if (isSentryRobot()) {
-					if (rndX / battleRules.getBattlefieldWidth() > rndY / battleRules.getBattlefieldHeight()) {
+					boolean placeOnHorizontalBar = random.nextDouble()
+							<= ((double) battleRules.getBattlefieldWidth()
+									/ (battleRules.getBattlefieldWidth() + battleRules.getBattlefieldHeight()));
+
+					if (placeOnHorizontalBar) {
 						x = halfRobotWidth + rndX * maxWidth;
-						y = halfRobotHeight
-								+ ((rndY * 2 * minBorderHeight - minBorderHeight) + battleRules.getBattlefieldHeight())
-										% maxHeight;
+						y = halfRobotHeight + (sentryBorderMoveHeight * (rndY * 2.0 - 1.0) + maxHeight) % maxHeight;
 					} else {
-						x = halfRobotWidth
-								+ ((rndX * 2 * minBorderWidth - minBorderWidth) + battleRules.getBattlefieldWidth())
-										% maxWidth;
 						y = halfRobotHeight + rndY * maxHeight;
-					}
-					// Make sure that the border sentry robot is not placed outside the border sentry robot border
-					if (x > minBorderWidth && x < (battleRules.getBattlefieldWidth() - minBorderWidth)
-							&& y > minBorderWidth && y < (battleRules.getBattlefieldHeight() - minBorderWidth)) {
-						continue; // loop again to find better location
+						x = halfRobotWidth + (sentryBorderMoveWidth * (rndX * 2.0 - 1.0) + maxWidth) % maxWidth;
 					}
 				} else {
-					x = RobotPeer.WIDTH + rndX * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
-					y = RobotPeer.HEIGHT + rndY * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+					if (battle.countActiveSentries() > 0) {
+						int safeZoneWidth = battleRules.getBattlefieldWidth() - 2 * sentryBorderSize;
+						int safeZoneHeight = battleRules.getBattlefieldHeight() - 2 * sentryBorderSize;
+
+						x = sentryBorderSize + RobotPeer.WIDTH + rndX * (safeZoneWidth - 2 * RobotPeer.WIDTH);
+						y = sentryBorderSize + RobotPeer.HEIGHT + rndY * (safeZoneHeight - 2 * RobotPeer.HEIGHT);
+					} else {				
+						x = RobotPeer.WIDTH + rndX * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+						y = RobotPeer.HEIGHT + rndY * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+					}
 				}
 
 				bodyHeading = 2 * Math.PI * random.nextDouble();
@@ -788,10 +790,13 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		newExecCommands.copyColors(commands.get());
 
 		currentCommands = newExecCommands;
-		int others = battle.getActiveParticipants() - (isAlive() ? 1 : 0);
+
+		int others = battle.countActiveParticipants() - (isAlive() ? 1 : 0);
+		int numSentries = battle.countActiveSentries();
+
 		RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
 				currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),
-				currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others,
+				currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others, numSentries,
 				battle.getRoundNum(), battle.getNumRounds(), battle.getTime());
 
 		status.set(stat);
@@ -1242,7 +1247,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				println(
 						"Not adding to " + statics.getShortName() + "'s queue, exceeded " + EventManager.MAX_QUEUE_SIZE
 						+ " events in queue.");
-				// clean up old stuff                
+				// clean up old stuff
 				queue.clear(battle.getTime() - EventManager.MAX_EVENT_STACK);
 			} else {
 				queue.add(event);
@@ -1712,10 +1717,13 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public void publishStatus(long currentTurn) {
 
 		final ExecCommands currentCommands = commands.get();
-		int others = battle.getActiveParticipants() - (isDead() || isSentryRobot() ? 0 : 1);
+
+		int others = battle.countActiveParticipants() - (isDead() || isSentryRobot() ? 0 : 1);
+		int numSentries = battle.countActiveSentries();
+
 		RobotStatus stat = HiddenAccess.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
 				currentCommands.getBodyTurnRemaining(), currentCommands.getRadarTurnRemaining(),
-				currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others,
+				currentCommands.getGunTurnRemaining(), currentCommands.getDistanceRemaining(), gunHeat, others, numSentries,
 				battle.getRoundNum(), battle.getNumRounds(), battle.getTime());
 
 		status.set(stat);

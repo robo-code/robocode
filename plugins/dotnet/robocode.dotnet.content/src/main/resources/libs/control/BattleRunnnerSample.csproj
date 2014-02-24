@@ -40,11 +40,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\robocode\libs\jni4net.n-0.8.6.0.dll</HintPath>
     </Reference>
-    <Reference Include="robocode, Version=1.9.0.0, Culture=neutral, PublicKeyToken=43c1c8ae0e25a953, processorArchitecture=MSIL">
+    <Reference Include="robocode, Version=1.9.1.0, Culture=neutral, PublicKeyToken=43c1c8ae0e25a953, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\robocode\libs\robocode.dll</HintPath>
     </Reference>
-    <Reference Include="robocode.control, Version=1.9.0.0, Culture=neutral, PublicKeyToken=43c1c8ae0e25a953, processorArchitecture=MSIL">
+    <Reference Include="robocode.control, Version=1.9.1.0, Culture=neutral, PublicKeyToken=43c1c8ae0e25a953, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\robocode\libs\robocode.control.dll</HintPath>
     </Reference>

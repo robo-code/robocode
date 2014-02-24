@@ -74,6 +74,16 @@ public class BulletPeer {
 	private void checkBulletCollision(List<BulletPeer> bullets) {
 		for (BulletPeer b : bullets) {
 			if (b != null && b != this && b.isActive() && intersect(b.boundingLine)) {
+				// Check if one of the bullets belongs to a sentry robot and is within the safe zone
+				if (owner.isSentryRobot() || b.getOwner().isSentryRobot()) {
+					int sentryBorderSize = battleRules.getSentryBorderSize();
+					if (x > sentryBorderSize && x < (battleRules.getBattlefieldWidth() - sentryBorderSize)
+							&& y > sentryBorderSize && y < (battleRules.getBattlefieldHeight() - sentryBorderSize)) {
+
+						continue; // Continue, as the sentry should not interfere with bullets in the safe zone 
+					}
+				}
+
 				state = BulletState.HIT_BULLET;
 				frame = 0;
 				x = lastX;
@@ -183,8 +193,7 @@ public class BulletPeer {
 								createBullet(true))); // Bugfix #366
 
 				owner.addEvent(
-						new BulletHitEvent(owner.getNameForEvent(otherRobot), otherRobot.getEnergy(),
-						createBullet(false))); // Bugfix #366
+						new BulletHitEvent(owner.getNameForEvent(otherRobot), otherRobot.getEnergy(), createBullet(false))); // Bugfix #366
 
 				double newX, newY;
 

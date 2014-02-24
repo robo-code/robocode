@@ -332,7 +332,7 @@ public class NewBattleRulesTab extends JPanel {
 					if (!isValid) {
 						WindowUtil.messageError(
 								"'Sentry Border Size' must be an integer value >= 50.\n" + "Default value is 100.");
-						sentryBorderSizeTextField.setText("" + battleProperties.getInactivityTime());
+						sentryBorderSizeTextField.setText("" + battleProperties.getSentryBorderSize());
 					}
 					return isValid;
 				}

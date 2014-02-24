@@ -40,6 +40,7 @@ public final class RobotStatus implements Serializable {
 	private final double distanceRemaining;
 	private final double gunHeat;
 	private final int others;
+	private final int numSentries;
 	private final int roundNum;
 	private final int numRounds;
 	private final long time;
@@ -284,10 +285,22 @@ public final class RobotStatus implements Serializable {
 	 * Returns how many opponents that are left in the current round.
 	 *
 	 * @return how many opponents that are left in the current round.
+	 * @see #getNumSentries()
 	 * @since 1.6.2
 	 */
 	public int getOthers() {
 		return others;
+	}
+
+	/**
+	 * Returns how many sentry robots that are left in the current round.
+	 *
+	 * @return how many sentry robots that are left in the current round.
+	 * @see #getOthers()
+	 * @since 1.9.1.0
+	 */
+	public int getNumSentries() {
+		return numSentries;
 	}
 
 	/**
@@ -325,7 +338,7 @@ public final class RobotStatus implements Serializable {
 
 	private RobotStatus(double energy, double x, double y, double bodyHeading, double gunHeading, double radarHeading,
 			double velocity, double bodyTurnRemaining, double radarTurnRemaining, double gunTurnRemaining,
-			double distanceRemaining, double gunHeat, int others, int roundNum, int numRounds, long time) {
+			double distanceRemaining, double gunHeat, int others, int numSentries, int roundNum, int numRounds, long time) {
 		this.energy = energy;
 		this.x = x;
 		this.y = y;
@@ -339,6 +352,7 @@ public final class RobotStatus implements Serializable {
 		this.distanceRemaining = distanceRemaining;
 		this.gunHeat = gunHeat;
 		this.others = others;
+		this.numSentries = numSentries;
 		this.roundNum = roundNum;
 		this.numRounds = numRounds;
 		this.time = time;
@@ -350,7 +364,7 @@ public final class RobotStatus implements Serializable {
 
 	private static class SerializableHelper implements ISerializableHelper, IHiddenStatusHelper {
 		public int sizeOf(RbSerializer serializer, Object object) {
-			return RbSerializer.SIZEOF_TYPEINFO + 12 * RbSerializer.SIZEOF_DOUBLE + 3 * RbSerializer.SIZEOF_INT
+			return RbSerializer.SIZEOF_TYPEINFO + 12 * RbSerializer.SIZEOF_DOUBLE + 4 * RbSerializer.SIZEOF_INT
 					+ RbSerializer.SIZEOF_LONG;
 		}
 
@@ -370,6 +384,7 @@ public final class RobotStatus implements Serializable {
 			serializer.serialize(buffer, obj.distanceRemaining);
 			serializer.serialize(buffer, obj.gunHeat);
 			serializer.serialize(buffer, obj.others);
+			serializer.serialize(buffer, obj.numSentries);
 			serializer.serialize(buffer, obj.roundNum);
 			serializer.serialize(buffer, obj.numRounds);
 			serializer.serialize(buffer, obj.time);
@@ -389,17 +404,22 @@ public final class RobotStatus implements Serializable {
 			double distanceRemaining = buffer.getDouble();
 			double gunHeat = buffer.getDouble();
 			int others = buffer.getInt();
+			int numSentries = buffer.getInt();
 			int roundNum = buffer.getInt();
 			int numRounds = buffer.getInt();
 			long time = buffer.getLong();
 
 			return new RobotStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity, bodyTurnRemaining,
-					radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others, roundNum, numRounds, time);
+					radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others, numSentries, roundNum, numRounds,
+					time);
 		}
 
-		public RobotStatus createStatus(double energy, double x, double y, double bodyHeading, double gunHeading, double radarHeading, double velocity, double bodyTurnRemaining, double radarTurnRemaining, double gunTurnRemaining, double distanceRemaining, double gunHeat, int others, int roundNum, int numRounds, long time) {
+		public RobotStatus createStatus(double energy, double x, double y, double bodyHeading, double gunHeading, double radarHeading, double velocity,
+				double bodyTurnRemaining, double radarTurnRemaining, double gunTurnRemaining, double distanceRemaining, double gunHeat, int others,
+				int numSentries, int roundNum, int numRounds, long time) {
 			return new RobotStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity, bodyTurnRemaining,
-					radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others, roundNum, numRounds, time);
+					radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others, numSentries, roundNum, numRounds,
+					time);
 		}
 	}
 

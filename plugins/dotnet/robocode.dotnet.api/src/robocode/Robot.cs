@@ -736,6 +736,22 @@ namespace Robocode
         }
 
         /// <summary>
+        ///   Returns how many sentry robots that are left in the current round.
+        /// </summary>
+        public int NumSentries
+        {
+            get
+            {
+                if (peer != null)
+                {
+                    return peer.GetNumSentries();
+                }
+                UninitializedException();
+                return 0; // never called
+            }
+        }
+
+        /// <summary>
         ///   Returns the direction that the robot's radar is facing, in degrees.
         ///   The value returned will be between 0 and 360 (is excluded).
         ///   <p />

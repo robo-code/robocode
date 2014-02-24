@@ -606,6 +606,21 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	}
 
 	/**
+	 * Returns how many sentry robots that are left in the current round.
+	 *
+	 * @return how many sentry robots that are left in the current round.
+	 * 
+	 * @since 1.9.1.0
+	 */
+	public int getNumSentries() {
+		if (peer != null) {
+			return peer.getNumSentries();
+		}
+		uninitializedException();
+		return 0; // never called
+	}
+
+	/**
 	 * Returns the direction that the robot's radar is facing, in degrees.
 	 * The value returned will be between 0 and 360 (is excluded).
 	 * <p/>

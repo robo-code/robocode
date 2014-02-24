@@ -94,6 +94,7 @@ public class BattleManager implements IBattleManager {
 		battleProperties.setInactivityTime(spec.getInactivityTime());
 		battleProperties.setNumRounds(spec.getNumRounds());
 		battleProperties.setHideEnemyNames(spec.getHideEnemyNames());
+		battleProperties.setSentryBorderSize(spec.getSentryBorderSize());
 		battleProperties.setSelectedRobots(spec.getRobots());
 		battleProperties.setInitialPositions(initialPositions);
 

@@ -1,11 +1,16 @@
-## Version 1.9.0.1 Alpha (24-Feb-2014)
+## Version 1.9.1.0 Alpha 1 (26-Feb-2014)
 
 ### Bug fix
 * [Bug-366][]: Receiving enemy's real name on HitByBulletEvent.
 	* The previous fix was not correct for the owner and victim for the HitByBulletEvent and HitBulletEvent.
+* [Bug-368][]: Issues with sentries
+	* All listed issues have been fixed.
+	* A bullet from a sentry robot will not be able to hit another bullet within the "safe zone" any more, but will still be able to hit another bullet within the sentry border area.
+	* When sentry robots are present on the battle field, the initial random positions will be located within the safe zone. This avoids robots from being punished by sentry robots from the start of the battle, as the robot did not enter the sentry border by itself.
+* The missing property ``robocode.battle.sentryBorderSize`` has now been added to the .battle file format.
 
 ### New features
-* The property 'robocode.battle.sentryBorderSize' has now been added to the .battle file format. 
+* Due to one of the ideas in [Bug-368][], a new method ``getNumSentries()`` for Java and a ``NumSentries`` read-only property for .NET was added to the ``Robot`` and ``RobotStatus`` classes, and to the ``IBasicRobotPeer`` interface as well.
 
 ## Version 1.9.0.0 (16-Feb-2014) The Border Sentry Robot Release
 
@@ -2928,6 +2933,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-363]: http://sourceforge.net/p/robocode/bugs/363/  (No Last Survivor Bonus being given)
 [Bug-364]: http://sourceforge.net/p/robocode/bugs/364/  (Robot Packager does not include the robot data dir in the .jar file)
 [Bug-366]: http://sourceforge.net/p/robocode/bugs/366/  (Receiving enemy's real name on HitByBulletEvent)
+[Bug-368]: http://sourceforge.net/p/robocode/bugs/368/  (Issues with sentries)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)

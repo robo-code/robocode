@@ -20,8 +20,8 @@ namespace net.sf.robocode.security
                                  double radarHeading,
                                  double velocity, double bodyTurnRemaining, double radarTurnRemaining,
                                  double gunTurnRemaining,
-                                 double distanceRemaining, double gunHeat, int others, int roundNum, int numRounds,
-                                 long time);
+                                 double distanceRemaining, double gunHeat, int others, int numSentries,
+                                 int roundNum, int numRounds, long time);
     }
 }
 
