@@ -36,7 +36,7 @@ public class BattleProperties implements Serializable {
 			BATTLE_HIDE_ENEMY_NAMES = "robocode.battle.hideEnemyNames",
 			BATTLE_SELECTEDROBOTS = "robocode.battle.selectedRobots",
 			BATTLE_INITIAL_POSITIONS = "robocode.battle.initialPositions",
-			SENTRY_BORDER_SIZE = "robocode.sentryBorderSize";
+			BATTLE_SENTRY_BORDER_SIZE = "robocode.battle.sentryBorderSize";
 
 	private int battlefieldWidth = 800;
 	private int battlefieldHeight = 600;
@@ -281,6 +281,7 @@ public class BattleProperties implements Serializable {
 	 */
 	public void setSentryBorderSize(int borderSize) {
 		sentryBorderSize = borderSize;
+		props.setProperty(BATTLE_SENTRY_BORDER_SIZE, "" + sentryBorderSize);
 	}
 
 	void store(FileOutputStream out, String desc) throws IOException {
@@ -297,6 +298,6 @@ public class BattleProperties implements Serializable {
 		numRounds = Integer.parseInt(props.getProperty(BATTLE_NUMROUNDS, "10"));
 		selectedRobots = props.getProperty(BATTLE_SELECTEDROBOTS, "");
 		initialPositions = props.getProperty(BATTLE_INITIAL_POSITIONS, "");
-		sentryBorderSize = Integer.parseInt(props.getProperty(SENTRY_BORDER_SIZE, "100"));
+		sentryBorderSize = Integer.parseInt(props.getProperty(BATTLE_SENTRY_BORDER_SIZE, "100"));
 	}
 }

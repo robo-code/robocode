@@ -450,7 +450,8 @@ public class NewBattleRulesTab extends JPanel {
 				battleProperties.setGunCoolingRate(0.1);
 				battleProperties.setInactivityTime(450);
 				battleProperties.setHideEnemyNames(false);
-				
+				battleProperties.setSentryBorderSize(100);
+
 				pushBattlePropertiesToUIComponents();
 			}
 		}
