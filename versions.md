@@ -12,6 +12,9 @@
 ### New features
 * Due to one of the ideas in [Bug-368][], a new method ``getNumSentries()`` for Java and a ``NumSentries`` read-only property for .NET was added to the ``Robot`` and ``RobotStatus`` classes, and to the ``IBasicRobotPeer`` interface as well.
 
+### Changes
+* Upgraded Eclipse Compiler for Java (ECJ) to version 4.3.1.
+
 ## Version 1.9.0.0 (16-Feb-2014) The Border Sentry Robot Release
 
 ### Bug fixes
