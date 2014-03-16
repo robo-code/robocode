@@ -1,4 +1,4 @@
-## Version 1.9.1.0 Alpha 1 (26-Feb-2014)
+## Version 1.9.1.0 Alpha 1 (16-Mar-2014)
 
 ### Bug fix
 * [Bug-366][]: Receiving enemy's real name on HitByBulletEvent.
@@ -8,6 +8,7 @@
 	* A bullet from a sentry robot will not be able to hit another bullet within the "safe zone" any more, but will still be able to hit another bullet within the sentry border area.
 	* When sentry robots are present on the battle field, the initial random positions will be located within the safe zone. This avoids robots from being punished by sentry robots from the start of the battle, as the robot did not enter the sentry border by itself.
 * The missing property ``robocode.battle.sentryBorderSize`` has now been added to the .battle file format.
+* Fixed the twinduel.sh file which was using a invalid file name for the configuration file.
 
 ### New features
 * Due to one of the ideas in [Bug-368][], a new method ``getNumSentries()`` for Java and a ``NumSentries`` read-only property for .NET was added to the ``Robot`` and ``RobotStatus`` classes, and to the ``IBasicRobotPeer`` interface as well.
