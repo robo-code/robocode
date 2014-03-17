@@ -1,4 +1,4 @@
-## Version 1.9.1.0 Alpha 1 (16-Mar-2014)
+## Version 1.9.1.0 Alpha 2 (17-Mar-2014)
 
 ### Bug fix
 * [Bug-366][]: Receiving enemy's real name on HitByBulletEvent.
@@ -7,6 +7,7 @@
 	* All listed issues have been fixed.
 	* A bullet from a sentry robot will not be able to hit another bullet within the "safe zone" any more, but will still be able to hit another bullet within the sentry border area.
 	* When sentry robots are present on the battle field, the initial random positions will be located within the safe zone. This avoids robots from being punished by sentry robots from the start of the battle, as the robot did not enter the sentry border by itself.
+* [Bug-369][]: RoboRumble: NoClassDefFoundError for CodeSizeCalculator.
 * The missing property ``robocode.battle.sentryBorderSize`` has now been added to the .battle file format.
 * Fixed the twinduel.sh file which was using a invalid file name for the configuration file.
 
@@ -2938,6 +2939,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-364]: http://sourceforge.net/p/robocode/bugs/364/  (Robot Packager does not include the robot data dir in the .jar file)
 [Bug-366]: http://sourceforge.net/p/robocode/bugs/366/  (Receiving enemy's real name on HitByBulletEvent)
 [Bug-368]: http://sourceforge.net/p/robocode/bugs/368/  (Issues with sentries)
+[Bug-369]: http://sourceforge.net/p/robocode/bugs/369/  (RoboRumble: NoClassDefFoundError for CodeSizeCalculator)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
