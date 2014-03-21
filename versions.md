@@ -1,4 +1,4 @@
-## Version 1.9.1.0 Alpha 2 (17-Mar-2014)
+## Version 1.9.1.0 Alpha 3 (21-Mar-2014)
 
 ### Bug fix
 * [Bug-366][]: Receiving enemy's real name on HitByBulletEvent.
@@ -10,6 +10,7 @@
 * [Bug-369][]: RoboRumble: NoClassDefFoundError for CodeSizeCalculator.
 * The missing property ``robocode.battle.sentryBorderSize`` has now been added to the .battle file format.
 * Fixed the twinduel.sh file which was using a invalid file name for the configuration file.
+* Added desktop files for FreeBSD.
 
 ### New features
 * Due to one of the ideas in [Bug-368][], a new method ``getNumSentries()`` for Java and a ``NumSentries`` read-only property for .NET was added to the ``Robot`` and ``RobotStatus`` classes, and to the ``IBasicRobotPeer`` interface as well.

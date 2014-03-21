@@ -29,7 +29,7 @@ import java.util.jar.JarInputStream;
 public class AutoExtract implements ActionListener {
 	private JDialog licenseDialog;
 	private boolean accepted;
-	private final String[] spinner = { "-", "\\", "|", "/"};
+	private static final String[] SPINNER = { "-", "\\", "|", "/"};
 	private String message = "";
 	private static File installDir;
 	private static final String osName = System.getProperty("os.name");
@@ -158,7 +158,7 @@ public class AutoExtract implements ActionListener {
 		licenseDialog = null;
 	}
 
-	private boolean extract(File dest) {
+	private boolean extract(File installDir) {
 		JDialog statusDialog = new JDialog();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -204,9 +204,8 @@ public class AutoExtract implements ActionListener {
 
 				entryName = entry.getName();
 				if (entry.isDirectory()) {
-					if (!entryName.startsWith("net")) {
-						File dir = new File(dest, entry.getName());
-
+					if (!entryName.startsWith("net") && !(entryName.equals("desktop") && isFreeBSD())) {
+						File dir = new File(installDir, entry.getName());
 						if (!dir.exists() && !dir.mkdirs()) {
 							System.err.println("Can't create dir: " + dir);
 						}
@@ -223,24 +222,25 @@ public class AutoExtract implements ActionListener {
 					final boolean isShFile = entryNameLC.length() > ".sh".length() && entryNameLC.endsWith(".sh");
 					final boolean isCommandFile = entryNameLC.length() > ".command".length()
 							&& entryNameLC.endsWith(".command");
+					final boolean isDesktopFile = entryNameLC.startsWith("desktop/");
 
 					// Unix systems and Mac OS X
 					if (File.separatorChar == '/') {
 						// Skip .bat files under Unix and Mac OS X
 						// Skip .command files under Unix
-						skipEntry = isBatFile || (isCommandFile && !isMacOSX());
+						skipEntry = isBatFile || (isCommandFile && !isMacOSX()) || (isDesktopFile && !isFreeBSD());
 					} else {
 						// Under Windows the .sh and .command files are skipped
-						skipEntry = isShFile || isCommandFile;
+						skipEntry = isShFile || isCommandFile || isDesktopFile;
 					}
 
 					// If we are not skipping the entry, then copy from our .jar into the installation dir
 					if (!skipEntry) {
-						status.setText(entryName + " " + spinner[spin++]);
+						status.setText(entryName + " " + SPINNER[spin++]);
 	
-						File out = new File(dest, entry.getName());
-						File parentDirectory = new File(out.getParent());
+						File out = new File(installDir, entryName);
 
+						File parentDirectory = new File(out.getParent());
 						if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
 							System.err.println("Can't create dir: " + parentDirectory);
 						}
@@ -255,7 +255,7 @@ public class AutoExtract implements ActionListener {
 							index += num;
 							count++;
 							if (count > 80) {
-								status.setText(entryName + " " + spinner[spin++] + " (" + index + " bytes)");
+								status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
 								if (spin > 3) {
 									spin = 0;
 								}
@@ -272,14 +272,14 @@ public class AutoExtract implements ActionListener {
 							}
 						}
 
-						status.setText(entryName + " " + spinner[spin] + " (" + index + " bytes)");
+						status.setText(entryName + " " + SPINNER[spin] + " (" + index + " bytes)");
 					}
 				}
 			}
 			statusDialog.dispose();
 			return true;
 		} catch (IOException e) {
-			message = "Installation failed" + e;
+			message = "Installation failed: " + e;
 			JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		} finally {
@@ -665,6 +665,10 @@ public class AutoExtract implements ActionListener {
 
 	private static boolean isMacOSX() {
 		return osName.startsWith("Mac OS X");
+	}
+
+	private static boolean isFreeBSD() {
+		return osName.equals("FreeBSD");
 	}
 
 	private static String getWindowsCmd() {

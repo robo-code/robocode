@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Robocode MeleeRumble
+GenericName=Ranking system of Robocode bots
+Comment=Run MeleeRumble battles for the LiteRumble
+Icon=roborumble
+Exec=robocode-MeleeRumble
+Categories=Game;StrategyGame;
