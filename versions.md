@@ -1,4 +1,4 @@
-## Version 1.9.1.0 Alpha 3 (21-Mar-2014)
+## Version 1.9.1.0 (22-Mar-2014)
 
 ### Bug fix
 * [Bug-366][]: Receiving enemy's real name on HitByBulletEvent.
