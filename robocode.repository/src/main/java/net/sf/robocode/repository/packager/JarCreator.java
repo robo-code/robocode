@@ -99,7 +99,8 @@ public class JarCreator {
 			String path = robotItem.getRelativePath() + '/' + robotItem.getShortClassName() + ".properties";
 
 			// Add the code size to the robot properties before storing them
-			File dir = new File(FileUtil.getRobotsDir(), robotItem.getRelativePath());
+			String classPath = robotItem.getClassPathURL().getPath(); // Takes the dev.path into account!
+			File dir = new File(classPath, robotItem.getRelativePath());
 			Integer codeSize = CodeSizeCalculator.getDirectoryCodeSize(dir);
 			props.setCodeSize(codeSize);
 
@@ -107,7 +108,7 @@ public class JarCreator {
 				// Store local .properties file
 				FileOutputStream fis = null;
 				try {
-					File file = new File(FileUtil.getRobotsDir(), path);
+					File file = new File(classPath, path);
 					fis = new FileOutputStream(file);
 					robotItem.storeProperties(fis, props);
 				} finally {

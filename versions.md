@@ -1,6 +1,11 @@
-## Version 1.9.1.0 (22-Mar-2014)
+## Version 1.9.1.1 Alpha 1 (26-Mar-2014)
 
 ### Bug fix
+* [Bug-370][]: Robot Packager cannot find robot .properties file in development path.
+
+## Version 1.9.1.0 (22-Mar-2014)
+
+### Bug fixes
 * [Bug-366][]: Receiving enemy's real name on HitByBulletEvent.
 	* The previous fix was not correct for the owner and victim for the HitByBulletEvent and HitBulletEvent.
 * [Bug-368][]: Issues with sentries
@@ -2941,6 +2946,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-366]: http://sourceforge.net/p/robocode/bugs/366/  (Receiving enemy's real name on HitByBulletEvent)
 [Bug-368]: http://sourceforge.net/p/robocode/bugs/368/  (Issues with sentries)
 [Bug-369]: http://sourceforge.net/p/robocode/bugs/369/  (RoboRumble: NoClassDefFoundError for CodeSizeCalculator)
+[Bug-370]: http://sourceforge.net/p/robocode/bugs/370/  (Robot Packager cannot find robot .properties file in development path)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
