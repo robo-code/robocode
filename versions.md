@@ -1,7 +1,8 @@
-## Version 1.9.1.1 Alpha 1 (26-Mar-2014)
+## Version 1.9.1.1 Alpha 2 (29-Mar-2014)
 
-### Bug fix
+### Bug fixes
 * [Bug-370][]: Robot Packager cannot find robot .properties file in development path.
+* Fixed issue with the Robot Editor, where the caret position was not updated fast enough when typing very fast.
 
 ## Version 1.9.1.0 (22-Mar-2014)
 

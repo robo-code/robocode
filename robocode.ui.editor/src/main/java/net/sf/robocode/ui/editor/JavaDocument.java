@@ -1121,16 +1121,7 @@ public class JavaDocument extends StyledDocument {
 		
 		public void changedUpdate(DocumentEvent e) {}
 
-		/**
-		 * This class is used for updating the caret position using the EDT.
-		 * Only one EDT call at maximum will be pending. So if several caret updates are made before the EDT call is
-		 * running, the newest updated caret position will be used. This saves lots of calls pending to update the
-		 * caret position. 
-		 */
-		private class CaretPositionUpdater {
-
-			// The recent updated caret position
-			private int updatedCaretPos;
+		private final class CaretPositionUpdater {
 
 			/**
 			 * Updates the caret position via the EDT.
@@ -1138,19 +1129,8 @@ public class JavaDocument extends StyledDocument {
 			 * @param newCaretPosition is the new caret position.
 			 */
 			public void updateCaretPosition(int newCaretPosition) {
-				// Store the updated caret position, which will be used by the caret updater called by the EDT
-				this.updatedCaretPos = newCaretPosition;
-				final int len = getLength();  
-
-				// Update the caret position via the caret updater thru the EDT, if the EDT is idle.
-				// Otherwise, the EDT has already been initiated to update the caret position, which will use the most
-				// recent updated caret position.
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						// Set the caret position, and take care that it is not out of range
-						textPane.setCaretPosition(Math.min(updatedCaretPos, len));
-					}
-				});
+				// Set the caret position, and take care that it is not out of range
+				textPane.setCaretPosition(Math.min(newCaretPosition, getLength()));
 			}
 		}
 	}
