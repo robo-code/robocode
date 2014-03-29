@@ -366,18 +366,9 @@ public class AutoExtract implements ActionListener {
 					return false;
 				}
 			}
-			if (!installDir.exists()) {
-				int rc = JOptionPane.showConfirmDialog(null,
-						installDir.getPath() + "\ndoes not exist.  Would you like to create it?", "Installing Robocode",
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-				if (rc == JOptionPane.YES_OPTION) {
-					if (!installDir.exists() && !installDir.mkdirs()) {
-						System.err.println("Can't create dir: " + installDir);
-					}
-				} else {
-					return false;
-				}
+			if (!installDir.exists() && !installDir.mkdirs()) {
+				System.err.println("Can't create dir: " + installDir);
+				return false;
 			}
 			deleteOldLibs(installDir);
 
