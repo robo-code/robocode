@@ -9,6 +9,7 @@ package net.sf.robocode.host.security;
 
 
 import net.sf.robocode.core.Container;
+import net.sf.robocode.core.RobocodeProperties;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
 import net.sf.robocode.host.io.RobotFileSystemManager;
@@ -30,7 +31,6 @@ import java.util.*;
  * @author Pavel Savara (contributor)
  */
 public class RobocodeSecurityPolicy extends Policy {
-	private static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
 	private static final boolean isFileReadSecutityOff = System.getProperty("OVERRIDEFILEREADSECURITY", "false").equals(
 			"true");
 	private static final boolean isExperimental = System.getProperty("EXPERIMENTAL", "false").equals("true");
@@ -58,7 +58,7 @@ public class RobocodeSecurityPolicy extends Policy {
 
 		initUrls();
 
-		if (isSecutityOn) {
+		if (RobocodeProperties.isSecurityOn()) {
 			Policy.setPolicy(this);			
 		}
 	}
@@ -70,7 +70,7 @@ public class RobocodeSecurityPolicy extends Policy {
 
 	@Override
 	public PermissionCollection getPermissions(final CodeSource codeSource) {
-		if (!isSecutityOn) {
+		if (RobocodeProperties.isSecurityOff()) {
 			return allPermissions;
 		}
 
@@ -89,7 +89,7 @@ public class RobocodeSecurityPolicy extends Policy {
 
 	@Override
 	public boolean implies(ProtectionDomain domain, final Permission permission) {
-		if (!isSecutityOn) {
+		if (RobocodeProperties.isSecurityOff()) {
 			return true;
 		}
 		final String source = domain.getCodeSource().getLocation().toString();

@@ -8,6 +8,7 @@
 package net.sf.robocode.host.security;
 
 
+import net.sf.robocode.core.RobocodeProperties;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
 
@@ -21,8 +22,6 @@ import java.security.AccessControlException;
  * @author Pavel Savara (contributor)
  */
 public class RobocodeSecurityManager extends SecurityManager {
-
-	private static final boolean IS_SECURITY_ENABLED = !System.getProperty("NOSECURITY", "false").equals("true");
 
 	private final IThreadManager threadManager;
 
@@ -38,14 +37,14 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 		// We need to exercise it in order to load all used classes on this thread
 		isSafeThread(Thread.currentThread());
-		if (IS_SECURITY_ENABLED) {
+		if (RobocodeProperties.isSecurityOn()) {
 			System.setSecurityManager(this);
 		}
 	}
 
 	@Override
 	public void checkAccess(Thread t) {
-		if (!IS_SECURITY_ENABLED) {
+		if (RobocodeProperties.isSecurityOff()) {
 			return;
 		}
 
@@ -91,7 +90,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(ThreadGroup g) {
-		if (!IS_SECURITY_ENABLED) {
+		if (RobocodeProperties.isSecurityOff()) {
 			return;
 		}
 		Thread c = Thread.currentThread();

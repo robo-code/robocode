@@ -8,6 +8,7 @@
 package net.sf.robocode.host.security;
 
 
+import net.sf.robocode.core.RobocodeProperties;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
 import net.sf.robocode.io.Logger;
@@ -120,7 +121,7 @@ public class RobotThreadManager {
 		}
 
 		if (isAlive) {
-			if (!System.getProperty("NOSECURITY", "false").equals("true")) {
+			if (RobocodeProperties.isSecurityOn()) {
 				logError("Robot " + robotProxy.getStatics().getName() + " is not stopping.  Forcing a stop.");
 
 				// Force the robot to stop

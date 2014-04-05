@@ -1,4 +1,4 @@
-## Version 1.9.1.1 Alpha 2 (29-Mar-2014)
+## Version 1.9.1.1 Alpha 3 (05-Apr-2014)
 
 ### Bug fixes
 * [Bug-370][]: Robot Packager cannot find robot .properties file in development path.

@@ -10,6 +10,7 @@ package net.sf.robocode.battle;
 
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.core.Container;
+import net.sf.robocode.core.RobocodeProperties;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
@@ -138,7 +139,7 @@ public class BattleManager implements IBattleManager {
 		battleThread.setName("Battle Thread");
 		realBattle.setBattleThread(battleThread);
 
-		if (!System.getProperty("NOSECURITY", "false").equals("true")) {
+		if (RobocodeProperties.isSecurityOn()) {
 			hostManager.addSafeThread(battleThread);
 		}
 

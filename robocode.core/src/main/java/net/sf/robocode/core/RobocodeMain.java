@@ -182,7 +182,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 		final String exMessage = "Robocode is running in experimental mode.\n"
 				+ "Robots have access to their IRobotPeer interfaces.\n" + "You should only run robots which you trust!";
 
-		if (System.getProperty("NOSECURITY", "false").equals("true")) {
+		if (RobocodeProperties.isSecurityOff()) {
 			Logger.logWarning(nosecMessage);
 		}
 		if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {

@@ -21,7 +21,7 @@ import java.io.File;
  * @author Pavel Savara (original)
  */
 public class EngineClassLoader extends URLClassLoader {
-	private static final boolean isSecutityOn = !System.getProperty("NOSECURITY", "false").equals("true");
+
 	private static Set<String> exclusions = new HashSet<String>();
 	static {
 		// this will be loaded on system classloader
@@ -58,7 +58,7 @@ public class EngineClassLoader extends URLClassLoader {
 			// we always delegate java.lang stuff to parent loader
 			return super.loadClass(name, resolve);
 		}
-		if (isSecutityOn && isEngineClass(name)) {
+		if (RobocodeProperties.isSecurityOn() && isEngineClass(name)) {
 			// yes, it is in engine's classpath
 			// we load it localy
 			return loadEngineClass(name, resolve);

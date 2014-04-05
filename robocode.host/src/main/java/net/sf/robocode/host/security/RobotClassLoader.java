@@ -9,6 +9,7 @@ package net.sf.robocode.host.security;
 
 
 import net.sf.robocode.core.Container;
+import net.sf.robocode.core.RobocodeProperties;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IRobotClassLoader;
 import net.sf.robocode.io.FileUtil;
@@ -49,8 +50,6 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 
 	static final String UNTRUSTED_URL = "http://robocode.sf.net/untrusted";
 
-	private static final boolean IS_SECURITY_ON = !System.getProperty("NOSECURITY", "false").equals("true");
-
 	private static final PermissionCollection EMPTY_PERMISSIONS = new Permissions();
 
 	private final String fullClassName;
@@ -88,7 +87,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			// we always delegate java.lang stuff to parent loader
 			return super.loadClass(name, resolve);
 		}
-		if (IS_SECURITY_ON) {
+		if (RobocodeProperties.isSecurityOn()) {
 			testPackages(name);
 		}
 		if (!name.startsWith("robocode")) {
@@ -121,7 +120,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			punishSecurityViolation(message);
 			throw new ClassNotFoundException(message);
 		}
-		if (IS_SECURITY_ON && name.startsWith("javax.swing")) {
+		if (RobocodeProperties.isSecurityOn() && name.startsWith("javax.swing")) {
 			final String message = "Robots are not allowed to reference Robocode engine in package: javax.swing";
 
 			punishSecurityViolation(message);
@@ -206,7 +205,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	}
 
 	protected PermissionCollection getPermissions(CodeSource codesource) {
-		if (IS_SECURITY_ON) {
+		if (RobocodeProperties.isSecurityOn()) {
 			return EMPTY_PERMISSIONS;
 		}
 		return super.getPermissions(codesource);
