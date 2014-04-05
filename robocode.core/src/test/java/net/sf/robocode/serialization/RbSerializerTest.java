@@ -14,12 +14,16 @@ import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.TeamMessage;
 import net.sf.robocode.robotpaint.Graphics2DSerialized;
 import net.sf.robocode.security.HiddenAccess;
+
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import robocode.util.Utils;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.geom.*;
 import java.io.ByteArrayInputStream;
@@ -41,6 +45,11 @@ public class RbSerializerTest {
 		System.setProperty("WORKINGDIRECTORY", "target//test-classes");
 		System.setProperty("TESTING", "true");
 		HiddenAccess.initContainer();
+	}
+
+	@AfterClass
+	public static void cleanup() {
+		System.setProperty("NOSECURITY", "false");
 	}
 
 	@Test
