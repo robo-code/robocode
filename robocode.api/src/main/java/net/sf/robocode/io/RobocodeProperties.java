@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  *******************************************************************************/
-package net.sf.robocode.core;
+package net.sf.robocode.io;
 
 
 /**
@@ -16,7 +16,7 @@ package net.sf.robocode.core;
 public final class RobocodeProperties {
 
 	private static final boolean NO_SECURITY = System.getProperty("NOSECURITY", "false").equals("true");
-	
+
 	private RobocodeProperties() {}
 
 	/**

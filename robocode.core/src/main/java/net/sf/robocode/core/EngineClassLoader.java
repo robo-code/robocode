@@ -16,6 +16,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.io.File;
 
+import net.sf.robocode.io.RobocodeProperties;
+
 
 /**
  * @author Pavel Savara (original)

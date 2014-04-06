@@ -9,11 +9,11 @@ package net.sf.robocode.host.security;
 
 
 import net.sf.robocode.core.Container;
-import net.sf.robocode.core.RobocodeProperties;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
 import net.sf.robocode.host.io.RobotFileSystemManager;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.RobocodeProperties;
 import net.sf.robocode.repository.IRepositoryManager;
 
 import java.io.File;
