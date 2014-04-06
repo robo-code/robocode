@@ -11,6 +11,8 @@ package net.sf.robocode.host.io;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import net.sf.robocode.io.RobocodeProperties;
+
 
 /**
  * @author Mathew A. Nelson (original)
@@ -24,7 +26,6 @@ public class RobotOutputStream extends java.io.PrintStream {
 	private boolean messaged = false;
 	private final StringBuilder text;
 	private final Object syncRoot = new Object();
-	private boolean isDebugging = System.getProperty("debug", "false").equals("true");
 	
 	public RobotOutputStream() {
 		super(new BufferedPipedOutputStream(128, true));
@@ -52,7 +53,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 
 	private boolean isOkToPrint() {
 		synchronized (syncRoot) {
-			if (isDebugging) { // It is always allowed to print when debugging is enabled.
+			if (RobocodeProperties.isDebuggingOn()) { // It is always allowed to print when debugging is enabled.
 				return true;
 			}
 			if (count > MAX_CHARS) {

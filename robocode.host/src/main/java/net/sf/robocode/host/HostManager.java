@@ -12,6 +12,7 @@ import net.sf.robocode.host.proxies.*;
 import net.sf.robocode.host.security.*;
 import net.sf.robocode.host.jarjar.JarJarURLConnection;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.RobocodeProperties;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.repository.RobotType;
@@ -46,7 +47,7 @@ public class HostManager implements IHostManager {
 		InputStream sysin = new SecureInputStream(System.in);
 
 		System.setOut(sysout);
-		if (!System.getProperty("debug", "false").equals("true")) {
+		if (RobocodeProperties.isDebuggingOff()) {
 			System.setErr(syserr);
 		}
 		System.setIn(sysin);

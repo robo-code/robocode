@@ -17,6 +17,7 @@ import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.RobocodeProperties;
 import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
@@ -76,16 +77,11 @@ public final class Battle extends BaseBattle {
 	// Death events
 	private final List<RobotPeer> deathRobots = new CopyOnWriteArrayList<RobotPeer>();
 
-	// Flag specifying if debugging is enabled thru the debug command line option
-	private final boolean isDebugging;
-
 	// Initial robot start positions (if any)
 	private double[][] initialRobotPositions;
 
 	public Battle(ISettingsManager properties, IBattleManager battleManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher eventDispatcher) { // NO_UCD (unused code)
-		super(
-				properties, battleManager, eventDispatcher);
-		isDebugging = System.getProperty("debug", "false").equals("true");
+		super(properties, battleManager, eventDispatcher);
 		this.hostManager = hostManager;
 		this.cpuConstant = cpuManager.getCpuConstant();
 	}
@@ -232,7 +228,7 @@ public final class Battle extends BaseBattle {
 	}
 
 	public boolean isDebugging() {
-		return isDebugging;
+		return RobocodeProperties.isDebuggingOn();
 	}
 
 	public void addBullet(BulletPeer bullet) {
@@ -369,7 +365,7 @@ public final class Battle extends BaseBattle {
 		long waitMillis;
 		int waitNanos;
 
-		if (isDebugging) {
+		if (isDebugging()) {
 			waitMillis = DEBUG_TURN_WAIT_MILLIS;
 			waitNanos = 0;
 		} else {
@@ -672,7 +668,7 @@ public final class Battle extends BaseBattle {
 				robotPeer.waitWakeup();
 
 				if (robotPeer.isAlive()) {
-					if (isDebugging || robotPeer.isPaintEnabled()) {
+					if (isDebugging() || robotPeer.isPaintEnabled()) {
 						robotPeer.waitSleeping(DEBUG_TURN_WAIT_MILLIS, 1);
 					} else if (currentTime == 1) {
 						robotPeer.waitSleeping(millisWait * 10, 1);
@@ -693,7 +689,7 @@ public final class Battle extends BaseBattle {
 		}
 		for (RobotPeer robotPeer : robotsAtRandom) {
 			if (robotPeer.isRunning() && robotPeer.isAlive()) {
-				if (isDebugging || robotPeer.isPaintEnabled()) {
+				if (isDebugging() || robotPeer.isPaintEnabled()) {
 					robotPeer.waitSleeping(DEBUG_TURN_WAIT_MILLIS, 1);
 				} else if (currentTime == 1) {
 					robotPeer.waitSleeping(millisWait * 10, 1);

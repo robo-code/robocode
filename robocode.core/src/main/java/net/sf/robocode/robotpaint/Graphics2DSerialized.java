@@ -9,6 +9,7 @@ package net.sf.robocode.robotpaint;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.RobocodeProperties;
 import net.sf.robocode.serialization.RbSerializer;
 
 import java.awt.*;
@@ -135,9 +136,6 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 	// Flag indicating if painting is enabled
 	private transient boolean isPaintingEnabled;
 
-	// Flag indicating if Robocode is in debugging mode. If so, an unlimited buffer is allowed
-	private final boolean isDebugging;
-
 	// Byte buffer that works as a stack of method calls to this proxy
 	private ByteBuffer calls;
 
@@ -150,8 +148,6 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 
 	// The one and only constructor
 	public Graphics2DSerialized() {
-		isDebugging = System.getProperty("debug", "false").equals("true");
-
 		// Create a default RenderingHints object
 		renderingHints = new RenderingHints(null);
 		renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);
@@ -1898,7 +1894,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		}
 
 		// Check if the max. buffer size has been reached
-		if (!isDebugging && bufferSize > MAX_BUFFER_SIZE) {			
+		if (RobocodeProperties.isDebuggingOff() && bufferSize > MAX_BUFFER_SIZE) {			
 			return false; // not reallocated!
 		}
 
