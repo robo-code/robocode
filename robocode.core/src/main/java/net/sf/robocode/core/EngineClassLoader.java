@@ -54,21 +54,14 @@ public class EngineClassLoader extends URLClassLoader {
 		super.addURL(url);
 	}
 
-	public synchronized Class<?> loadClass(String name, boolean resolve)
-		throws ClassNotFoundException {
-		if (name.startsWith("java.lang")) {
-			// we always delegate java.lang stuff to parent loader
+	public synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+
+		if (RobocodeProperties.isSecurityOff() || name.startsWith("java.lang")) {
 			return super.loadClass(name, resolve);
 		}
-		if (RobocodeProperties.isSecurityOn() && isEngineClass(name)) {
-			// yes, it is in engine's classpath
-			// we load it localy
+		if (isEngineClass(name)) {
 			return loadEngineClass(name, resolve);
 		}
-		// it is robot API
-		// or java class
-		// or security is off
-		// so we delegate to parent classloader
 		return super.loadClass(name, resolve);
 	}
 

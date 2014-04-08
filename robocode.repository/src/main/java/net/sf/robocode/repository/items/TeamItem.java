@@ -10,6 +10,7 @@ package net.sf.robocode.repository.items;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.RobocodeProperties;
 import net.sf.robocode.io.URLJarCollector;
 import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.repository.RobotProperties;
@@ -87,7 +88,7 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 			urls.add(urlNoType);
 			urls.add(pathNoType);
 		}
-		if (System.getProperty("TESTING", "false").equals("true")) {
+		if (RobocodeProperties.isTestingOn()) {
 			urls.add(getFullClassName());
 		} else {
 			urls.add(getUniqueFullClassName());

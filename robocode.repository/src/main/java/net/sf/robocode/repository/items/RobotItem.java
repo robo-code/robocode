@@ -10,6 +10,7 @@ package net.sf.robocode.repository.items;
 
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.RobocodeProperties;
 import net.sf.robocode.io.URLJarCollector;
 import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.repository.IRobotItem;
@@ -261,7 +262,7 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 			urls.add(pathNoType);
 		}
 		if (getFullClassName() != null) {
-			if (System.getProperty("TESTING", "false").equals("true")) {
+			if (RobocodeProperties.isTestingOn()) {
 				urls.add(getFullClassName());
 			} else {
 				urls.add(getUniqueFullClassName());

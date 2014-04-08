@@ -9,6 +9,7 @@ package net.sf.robocode.version;
 
 
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.RobocodeProperties;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import static net.sf.robocode.io.Logger.logWarning;
@@ -175,7 +176,7 @@ public final class VersionManager implements IVersionManager {
 		try {
 			File dir = FileUtil.getCwd();
 
-			if (System.getProperty("TESTING", "false").equals("true")) {
+			if (RobocodeProperties.isTestingOn()) {
 				dir = dir.getParentFile().getParentFile().getParentFile();
 			}
 			fileReader = new FileReader(new File(dir, VERSIONS_TXT));

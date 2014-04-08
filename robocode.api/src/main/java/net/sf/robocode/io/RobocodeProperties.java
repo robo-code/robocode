@@ -15,6 +15,7 @@ package net.sf.robocode.io;
  */
 public final class RobocodeProperties {
 
+	// These properties can only be set at startup
 	private static final boolean NO_SECURITY = System.getProperty("NOSECURITY", "false").equals("true");
 	private static final boolean DEBUG = System.getProperty("debug", "false").equals("true");
 
@@ -50,5 +51,29 @@ public final class RobocodeProperties {
 	 */
 	public static boolean isDebuggingOn() {
 		return DEBUG;
+	}
+
+	/**
+	 * Sets the testing flag.
+	 * @param enabled true if testing is being enabled; false if testing is being disabled.
+	 */
+	public static void setTesting(boolean enabled) {
+		System.setProperty("TESTING", "" + enabled);
+	}
+	
+	/**
+	 * Checks if testing is disabled.
+	 * @return true if testing is disabled; false is testing is enabled.
+	 */
+	public static boolean isTestingOff() {
+		return !isTestingOn();
+	}
+
+	/**
+	 * Checks if testing is enabled.
+	 * @return true if testing is enabled; false is testing is disabled.
+	 */
+	public static boolean isTestingOn() {
+		return System.getProperty("TESTING", "false").equals("true");
 	}
 }
