@@ -158,7 +158,7 @@
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)\robocode.dotnet.host\target"</PostBuildEvent>
     <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
-echo [assembly: System.Reflection.AssemblyVersion("1.9.1.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
+echo [assembly: System.Reflection.AssemblyVersion("1.9.2.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
 </PreBuildEvent>
   </PropertyGroup>
 </Project>

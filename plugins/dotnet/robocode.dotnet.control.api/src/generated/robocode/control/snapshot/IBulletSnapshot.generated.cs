@@ -19,13 +19,16 @@ namespace robocode.control.snapshot {
         global::robocode.control.snapshot.BulletState getState();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()D")]
-        double getPower();
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()D")]
         double getX();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()D")]
         double getY();
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()D")]
+        double getHeading();
+        
+        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()D")]
+        double getPower();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()D")]
         double getPaintX();
@@ -47,9 +50,6 @@ namespace robocode.control.snapshot {
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
         int getBulletId();
-        
-        [global::net.sf.jni4net.attributes.JavaMethodAttribute("()D")]
-        double getHeading();
         
         [global::net.sf.jni4net.attributes.JavaMethodAttribute("()I")]
         int getVictimIndex();
@@ -79,27 +79,27 @@ namespace robocode.control.snapshot {
         
         internal static global::net.sf.jni4net.jni.MethodId j4n_getState0;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getPower1;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getX1;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getX2;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getY2;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getY3;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getHeading3;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getPaintX4;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getPower4;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getPaintY5;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getPaintX5;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getColor6;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getPaintY6;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getFrame7;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getColor7;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_isExplosion8;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getFrame8;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getExplosionImageIndex9;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_isExplosion9;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getBulletId10;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getExplosionImageIndex10;
         
-        internal static global::net.sf.jni4net.jni.MethodId j4n_getHeading11;
+        internal static global::net.sf.jni4net.jni.MethodId j4n_getBulletId11;
         
         internal static global::net.sf.jni4net.jni.MethodId j4n_getVictimIndex12;
         
@@ -112,17 +112,17 @@ namespace robocode.control.snapshot {
         private static void InitJNI(global::net.sf.jni4net.jni.JNIEnv @__env, java.lang.Class @__class) {
             global::robocode.control.snapshot.@__IBulletSnapshot.staticClass = @__class;
             global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getState0 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getState", "()Lrobocode/control/snapshot/BulletState;");
-            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getPower1 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getPower", "()D");
-            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getX2 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getX", "()D");
-            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getY3 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getY", "()D");
-            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getPaintX4 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getPaintX", "()D");
-            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getPaintY5 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getPaintY", "()D");
-            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getColor6 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getColor", "()I");
-            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getFrame7 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getFrame", "()I");
-            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_isExplosion8 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "isExplosion", "()Z");
-            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getExplosionImageIndex9 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getExplosionImageIndex", "()I");
-            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getBulletId10 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getBulletId", "()I");
-            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getHeading11 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getHeading", "()D");
+            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getX1 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getX", "()D");
+            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getY2 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getY", "()D");
+            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getHeading3 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getHeading", "()D");
+            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getPower4 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getPower", "()D");
+            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getPaintX5 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getPaintX", "()D");
+            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getPaintY6 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getPaintY", "()D");
+            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getColor7 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getColor", "()I");
+            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getFrame8 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getFrame", "()I");
+            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_isExplosion9 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "isExplosion", "()Z");
+            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getExplosionImageIndex10 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getExplosionImageIndex", "()I");
+            global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getBulletId11 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getBulletId", "()I");
             global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getVictimIndex12 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getVictimIndex", "()I");
             global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getOwnerIndex13 = @__env.GetMethodID(global::robocode.control.snapshot.@__IBulletSnapshot.staticClass, "getOwnerIndex", "()I");
         }
@@ -134,80 +134,80 @@ namespace robocode.control.snapshot {
             }
         }
         
-        public double getPower() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((double)(@__env.CallDoubleMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getPower1)));
-            }
-        }
-        
         public double getX() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((double)(@__env.CallDoubleMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getX2)));
+            return ((double)(@__env.CallDoubleMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getX1)));
             }
         }
         
         public double getY() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((double)(@__env.CallDoubleMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getY3)));
-            }
-        }
-        
-        public double getPaintX() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((double)(@__env.CallDoubleMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getPaintX4)));
-            }
-        }
-        
-        public double getPaintY() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((double)(@__env.CallDoubleMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getPaintY5)));
-            }
-        }
-        
-        public int getColor() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((int)(@__env.CallIntMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getColor6)));
-            }
-        }
-        
-        public int getFrame() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((int)(@__env.CallIntMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getFrame7)));
-            }
-        }
-        
-        public bool isExplosion() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((bool)(@__env.CallBooleanMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_isExplosion8)));
-            }
-        }
-        
-        public int getExplosionImageIndex() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((int)(@__env.CallIntMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getExplosionImageIndex9)));
-            }
-        }
-        
-        public int getBulletId() {
-            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
-            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((int)(@__env.CallIntMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getBulletId10)));
+            return ((double)(@__env.CallDoubleMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getY2)));
             }
         }
         
         public double getHeading() {
             global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
             using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
-            return ((double)(@__env.CallDoubleMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getHeading11)));
+            return ((double)(@__env.CallDoubleMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getHeading3)));
+            }
+        }
+        
+        public double getPower() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
+            return ((double)(@__env.CallDoubleMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getPower4)));
+            }
+        }
+        
+        public double getPaintX() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
+            return ((double)(@__env.CallDoubleMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getPaintX5)));
+            }
+        }
+        
+        public double getPaintY() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
+            return ((double)(@__env.CallDoubleMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getPaintY6)));
+            }
+        }
+        
+        public int getColor() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
+            return ((int)(@__env.CallIntMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getColor7)));
+            }
+        }
+        
+        public int getFrame() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
+            return ((int)(@__env.CallIntMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getFrame8)));
+            }
+        }
+        
+        public bool isExplosion() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
+            return ((bool)(@__env.CallBooleanMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_isExplosion9)));
+            }
+        }
+        
+        public int getExplosionImageIndex() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
+            return ((int)(@__env.CallIntMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getExplosionImageIndex10)));
+            }
+        }
+        
+        public int getBulletId() {
+            global::net.sf.jni4net.jni.JNIEnv @__env = this.Env;
+            using(new global::net.sf.jni4net.jni.LocalFrame(@__env, 10)){
+            return ((int)(@__env.CallIntMethod(this, global::robocode.control.snapshot.@__IBulletSnapshot.j4n_getBulletId11)));
             }
         }
         
@@ -229,17 +229,17 @@ namespace robocode.control.snapshot {
             global::System.Type @__type = typeof(__IBulletSnapshot);
             global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod> methods = new global::System.Collections.Generic.List<global::net.sf.jni4net.jni.JNINativeMethod>();
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getState", "getState0", "()Lrobocode/control/snapshot/BulletState;"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getPower", "getPower1", "()D"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getX", "getX2", "()D"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getY", "getY3", "()D"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getPaintX", "getPaintX4", "()D"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getPaintY", "getPaintY5", "()D"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getColor", "getColor6", "()I"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getFrame", "getFrame7", "()I"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isExplosion", "isExplosion8", "()Z"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getExplosionImageIndex", "getExplosionImageIndex9", "()I"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getBulletId", "getBulletId10", "()I"));
-            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getHeading", "getHeading11", "()D"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getX", "getX1", "()D"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getY", "getY2", "()D"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getHeading", "getHeading3", "()D"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getPower", "getPower4", "()D"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getPaintX", "getPaintX5", "()D"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getPaintY", "getPaintY6", "()D"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getColor", "getColor7", "()I"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getFrame", "getFrame8", "()I"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "isExplosion", "isExplosion9", "()Z"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getExplosionImageIndex", "getExplosionImageIndex10", "()I"));
+            methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getBulletId", "getBulletId11", "()I"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getVictimIndex", "getVictimIndex12", "()I"));
             methods.Add(global::net.sf.jni4net.jni.JNINativeMethod.Create(@__type, "getOwnerIndex", "getOwnerIndex13", "()I"));
             return methods;
@@ -257,19 +257,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static double getPower1(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
-            // ()D
-            // ()D
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
-            double @__return = default(double);
-            try {
-            global::robocode.control.snapshot.IBulletSnapshot @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::robocode.control.snapshot.IBulletSnapshot>(@__env, @__obj);
-            @__return = ((double)(@__real.getPower()));
-            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return @__return;
-        }
-        
-        private static double getX2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static double getX1(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()D
             // ()D
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -281,7 +269,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static double getY3(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static double getY2(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()D
             // ()D
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -293,7 +281,31 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static double getPaintX4(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static double getHeading3(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+            // ()D
+            // ()D
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            double @__return = default(double);
+            try {
+            global::robocode.control.snapshot.IBulletSnapshot @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::robocode.control.snapshot.IBulletSnapshot>(@__env, @__obj);
+            @__return = ((double)(@__real.getHeading()));
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
+            return @__return;
+        }
+        
+        private static double getPower4(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+            // ()D
+            // ()D
+            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
+            double @__return = default(double);
+            try {
+            global::robocode.control.snapshot.IBulletSnapshot @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::robocode.control.snapshot.IBulletSnapshot>(@__env, @__obj);
+            @__return = ((double)(@__real.getPower()));
+            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
+            return @__return;
+        }
+        
+        private static double getPaintX5(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()D
             // ()D
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -305,7 +317,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static double getPaintY5(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static double getPaintY6(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()D
             // ()D
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -317,7 +329,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static int getColor6(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static int getColor7(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()I
             // ()I
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -329,7 +341,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static int getFrame7(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static int getFrame8(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()I
             // ()I
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -341,7 +353,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static bool isExplosion8(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static bool isExplosion9(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()Z
             // ()Z
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -353,7 +365,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static int getExplosionImageIndex9(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static int getExplosionImageIndex10(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()I
             // ()I
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -365,7 +377,7 @@ namespace robocode.control.snapshot {
             return @__return;
         }
         
-        private static int getBulletId10(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
+        private static int getBulletId11(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
             // ()I
             // ()I
             global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
@@ -373,18 +385,6 @@ namespace robocode.control.snapshot {
             try {
             global::robocode.control.snapshot.IBulletSnapshot @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::robocode.control.snapshot.IBulletSnapshot>(@__env, @__obj);
             @__return = ((int)(@__real.getBulletId()));
-            }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
-            return @__return;
-        }
-        
-        private static double getHeading11(global::System.IntPtr @__envp, global::net.sf.jni4net.utils.JniLocalHandle @__obj) {
-            // ()D
-            // ()D
-            global::net.sf.jni4net.jni.JNIEnv @__env = global::net.sf.jni4net.jni.JNIEnv.Wrap(@__envp);
-            double @__return = default(double);
-            try {
-            global::robocode.control.snapshot.IBulletSnapshot @__real = global::net.sf.jni4net.utils.Convertor.FullJ2C<global::robocode.control.snapshot.IBulletSnapshot>(@__env, @__obj);
-            @__return = ((double)(@__real.getHeading()));
             }catch (global::System.Exception __ex){@__env.ThrowExisting(__ex);}
             return @__return;
         }

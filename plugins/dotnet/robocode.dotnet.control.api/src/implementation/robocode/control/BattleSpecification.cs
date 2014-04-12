@@ -28,6 +28,7 @@ namespace Robocode.Control
         private readonly bool hideEnemyNames;
         private readonly int sentryBorderSize;
         private readonly RobotSpecification[] robots;
+        private readonly RobotSetup[] initialSetups;
 
         /// <summary>
         /// Creates a new BattleSpecification with the given number of rounds,
@@ -66,38 +67,82 @@ namespace Robocode.Control
         /// <param name="hideEnemyNames">Flag specifying if enemy names are hidden from robots.</param>
         /// <param name="battlefieldSize">The battlefield size.</param>
         /// <param name="robots">The robots participating in this battle.</param>
-        public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, bool hideEnemyNames, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots)
+        public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, bool hideEnemyNames, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots) :
+            this(battlefieldSize, numRounds, inactivityTime, gunCoolingRate, 100, hideEnemyNames, robots)
         {
-            this.numRounds = numRounds;
-            this.inactivityTime = inactivityTime;
-            this.gunCoolingRate = gunCoolingRate;
-            this.hideEnemyNames = hideEnemyNames;
-            this.battlefieldWidth = battlefieldSize.Width;
-            this.battlefieldHeight = battlefieldSize.Height;
-            this.robots = robots;
         }
 
         /// <summary>
         /// Creates a new BattleSpecification with the given settings.
         /// </summary>
+        /// <param name="battlefieldSize">The battlefield size.</param>
         /// <param name="numRounds">The number of rounds in this battle.</param>
         /// <param name="inactivityTime">The inactivity time allowed for the robots before
         /// they will loose energy.</param>
         /// <param name="gunCoolingRate">The gun cooling rate for the robots.</param>
         /// <param name="sentryBorderSize">The sentry border size for a <see cref="Robocode.IBorderSentry">BorderSentry</see>.</param>
         /// <param name="hideEnemyNames">Flag specifying if enemy names are hidden from robots.</param>
-        /// <param name="battlefieldSize">The battlefield size.</param>
         /// <param name="robots">The robots participating in this battle.</param>
-        public BattleSpecification(int numRounds, long inactivityTime, double gunCoolingRate, int sentryBorderSize, bool hideEnemyNames, BattlefieldSpecification battlefieldSize, RobotSpecification[] robots)
+        public BattleSpecification(BattlefieldSpecification battlefieldSize, int numRounds, long inactivityTime, double gunCoolingRate, int sentryBorderSize, bool hideEnemyNames, RobotSpecification[] robots) :
+            this(battlefieldSize, numRounds, inactivityTime, gunCoolingRate, 100, hideEnemyNames, robots, null)
         {
+        }
+
+        /// <summary>
+        /// Creates a new BattleSpecification with the given settings.
+        /// </summary>
+        /// <param name="battlefieldSize">The battlefield size.</param>
+        /// <param name="numRounds">The number of rounds in this battle.</param>
+        /// <param name="inactivityTime">The inactivity time allowed for the robots before
+        /// they will loose energy.</param>
+        /// <param name="gunCoolingRate">The gun cooling rate for the robots.</param>
+        /// <param name="sentryBorderSize">The sentry border size for a <see cref="Robocode.IBorderSentry">BorderSentry</see>.</param>
+        /// <param name="hideEnemyNames">Flag specifying if enemy names are hidden from robots.</param>
+        /// <param name="robots">The robots participating in this battle.</param>
+        /// <param name="initialSetups">The initial position and heading of the robots, where the indices matches the indices from the <paramref name="robots"/>.</param>
+        public BattleSpecification(BattlefieldSpecification battlefieldSize, int numRounds, long inactivityTime, double gunCoolingRate, int sentryBorderSize, bool hideEnemyNames, RobotSpecification[] robots, RobotSetup[] initialSetups)
+        {
+            if (battlefieldSize == null)
+            {
+                throw new ArgumentException("battlefieldSize cannot be null");
+            }
+            if (robots == null)
+            {
+                throw new ArgumentException("robots cannot be null");
+            }
+            if (robots.Length < 1)
+            {
+                throw new ArgumentException("robots.Length must be > 0");
+            }
+            if (initialSetups != null && initialSetups.Length != robots.Length)
+            {
+                throw new ArgumentException("initialSetups.Length must be == robots.Length");
+            }
+            if (numRounds < 1)
+            {
+                throw new ArgumentException("numRounds must be >= 1");
+            }
+            if (inactivityTime < 1)
+            {
+                throw new ArgumentException("inactivityTime must be >= 1");
+            }
+            if (gunCoolingRate < 0.1)
+            {
+                throw new ArgumentException("inactivityTime must be >= 0.1");
+            }
+            if (sentryBorderSize < 50)
+            {
+                throw new ArgumentException("sentryBorderSize must be >= 50");
+            }
+            this.battlefieldWidth = battlefieldSize.Width;
+            this.battlefieldHeight = battlefieldSize.Height;
             this.numRounds = numRounds;
             this.inactivityTime = inactivityTime;
             this.gunCoolingRate = gunCoolingRate;
             this.sentryBorderSize = sentryBorderSize;
             this.hideEnemyNames = hideEnemyNames;
-            this.battlefieldWidth = battlefieldSize.Width;
-            this.battlefieldHeight = battlefieldSize.Height;
             this.robots = robots;
+            this.initialSetups = initialSetups;
         }
 
         /// <summary>
@@ -148,7 +193,7 @@ namespace Robocode.Control
         /// Flag specifying if the enemy names must be hidden from events sent to robots.
         /// </summary>
         /// <value>
-        /// true if the enemy names must be hidden; false otherwise.
+        /// <code>true</code> if the enemy names must be hidden; <code>false</code> otherwise.
         /// </value>
         public bool HideEnemyNames
         {
@@ -173,8 +218,9 @@ namespace Robocode.Control
         /// Contains the specifications of the robots participating in this battle.
         /// </summary>
         /// <value>
-        /// The specifications of the robots participating in this battle.
+        /// An array of <see cref="T:Robocode.Control.RobotSpecification"/> instances - one entry for each robot.
         /// </value>
+        /// <seealso cref="P:Robocode.Control.RobotSpecification.InitialSetups"/>
         public RobotSpecification[] Robots
         {
             get
@@ -187,5 +233,26 @@ namespace Robocode.Control
                 return copy;
             }
         }
-    }
+
+        /// <summary>
+        /// Contains the initial position and heading of each robot participating in this battle.
+        /// </summary>
+        /// <value>
+        /// An array of <see cref="T:Robocode.Control.RobotSetup"/> instances - one entry for each robot.
+        /// The the indices of this array matches the array indices from the robot specifications (see <see cref="P:Robocode.Control.RobotSpecification.Robots"/>).
+        /// </value>
+        /// <seealso cref="P:Robocode.Control.RobotSpecification.Robots"/>
+        public RobotSetup[] InitialSetups
+        {
+            get
+            {
+                if (initialSetups == null)
+                    return null;
+
+                RobotSetup[] copy = new RobotSetup[initialSetups.Length];
+                initialSetups.CopyTo(copy, 0);
+                return copy;
+            }
+        }
+	}
 }

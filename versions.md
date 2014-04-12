@@ -1,4 +1,9 @@
-## Version 1.9.1.1 Alpha 3 (05-Apr-2014)
+## Version 1.9.2.0 Alpha 1 (11-Apr-2014)
+
+### New feature
+* Initial positions and headings added to the Control API.
+	* A new constructor has been added to the ``BattleSpecification`` for the ``RobocodeEngine`` so that it is possible to set the initial position and heading of each participant robot. This new constructor takes an additional parameter named ``initialSetups`` that is an array of ``RobotSetup`` instances.
+	* The ``RobotSetup`` is a new class introduced with this version that contains the initial position and heading for an individual robot.
 
 ### Bug fixes
 * [Bug-370][]: Robot Packager cannot find robot .properties file in development path.

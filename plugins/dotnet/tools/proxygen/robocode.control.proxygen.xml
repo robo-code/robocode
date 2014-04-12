@@ -17,6 +17,7 @@
 	<JavaClass TypeName="robocode.control.RobotSpecification"/>
 	<JavaClass TypeName="robocode.control.RobotResults"/>
 	<JavaClass TypeName="robocode.control.RandomFactory"/>
+	<JavaClass TypeName="robocode.control.RobotSetup"/>
 	<JavaClass TypeName="java.util.Random"/>
 
 	<JavaClass TypeName="robocode.control.snapshot.BulletState"/>

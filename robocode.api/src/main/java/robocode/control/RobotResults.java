@@ -24,21 +24,21 @@ public class RobotResults extends BattleResults {
 	private final RobotSpecification robot;
 
 	/**
-	 * Constructs new RobotResults.
+	 * Constructs a new RobotResults.
 	 *
-	 * @param robot			 the robot these results are for
-	 * @param teamLeaderName	team name
-	 * @param rank			  the rank of the robot in the battle
-	 * @param score			 the total score for the robot in the battle
-	 * @param survival		  the survival score for the robot in the battle
-	 * @param lastSurvivorBonus the last survivor bonus for the robot in the battle
-	 * @param bulletDamage	  the bullet damage score for the robot in the battle
-	 * @param bulletDamageBonus the bullet damage bonus for the robot in the battle
-	 * @param ramDamage		 the ramming damage for the robot in the battle
-	 * @param ramDamageBonus	the ramming damage bonus for the robot in the battle
-	 * @param firsts			the number of rounds this robot placed first
-	 * @param seconds		   the number of rounds this robot placed second
-	 * @param thirds			the number of rounds this robot placed third
+	 * @param robot is the robot these results are for
+	 * @param teamLeaderName is the team name
+	 * @param rank is the rank of the robot in the battle
+	 * @param score is the total score for the robot in the battle
+	 * @param survival is the survival score for the robot in the battle
+	 * @param lastSurvivorBonus is the last survivor bonus for the robot in the battle
+	 * @param bulletDamage is the bullet damage score for the robot in the battle
+	 * @param bulletDamageBonus is the bullet damage bonus for the robot in the battle
+	 * @param ramDamage is the ramming damage for the robot in the battle
+	 * @param ramDamageBonus is the ramming damage bonus for the robot in the battle
+	 * @param firsts is the number of rounds this robot placed first
+	 * @param seconds is the number of rounds this robot placed second
+	 * @param thirds is the number of rounds this robot placed third
 	 */
 	public RobotResults(
 			RobotSpecification robot,

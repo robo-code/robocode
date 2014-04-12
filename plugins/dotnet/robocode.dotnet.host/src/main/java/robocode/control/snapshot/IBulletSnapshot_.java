@@ -37,13 +37,16 @@ class __IBulletSnapshot extends system.Object implements robocode.control.snapsh
     public native robocode.control.snapshot.BulletState getState();
     
     @net.sf.jni4net.attributes.ClrMethod("()D")
-    public native double getPower();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()D")
     public native double getX();
     
     @net.sf.jni4net.attributes.ClrMethod("()D")
     public native double getY();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()D")
+    public native double getHeading();
+    
+    @net.sf.jni4net.attributes.ClrMethod("()D")
+    public native double getPower();
     
     @net.sf.jni4net.attributes.ClrMethod("()D")
     public native double getPaintX();
@@ -65,9 +68,6 @@ class __IBulletSnapshot extends system.Object implements robocode.control.snapsh
     
     @net.sf.jni4net.attributes.ClrMethod("()I")
     public native int getBulletId();
-    
-    @net.sf.jni4net.attributes.ClrMethod("()D")
-    public native double getHeading();
     
     @net.sf.jni4net.attributes.ClrMethod("()I")
     public native int getVictimIndex();

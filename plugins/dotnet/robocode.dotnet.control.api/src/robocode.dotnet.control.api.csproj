@@ -114,6 +114,7 @@
     <Compile Include="generated\robocode\control\RobotResults.generated.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="generated\robocode\control\RobotSetup.generated.cs" />
     <Compile Include="generated\robocode\control\RobotSpecification.generated.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -144,6 +145,7 @@
     <Compile Include="glue\robocode\control\RobocodeEngine.cs" />
     <Compile Include="implementation\robocode\control\BattlefieldSpecification.cs" />
     <Compile Include="implementation\robocode\control\BattleSpecification.cs" />
+    <Compile Include="implementation\robocode\control\RobotSetup.cs" />
     <Compile Include="implementation\robocode\control\events\BattleCompletedEvent.cs" />
     <Compile Include="implementation\robocode\control\events\BattleErrorEvent.cs" />
     <Compile Include="implementation\robocode\control\events\BattleEvent.cs" />
@@ -188,7 +190,7 @@
   -->
   <PropertyGroup>
     <PreBuildEvent>if not exist $(OutDir)\build-sources\generated-sources\META-INF mkdir $(OutDir)\build-sources\generated-sources\META-INF\
-echo [assembly: System.Reflection.AssemblyVersion("1.9.1.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
+echo [assembly: System.Reflection.AssemblyVersion("1.9.2.0")] &gt; $(OutDir)\build-sources\generated-sources\META-INF\AssemblyInfo.cs
 </PreBuildEvent>
     <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)\robocode.dotnet.host\target"
 copy "$(SolutionDir)\tools\lib\*.dll" "$(TargetDir)"

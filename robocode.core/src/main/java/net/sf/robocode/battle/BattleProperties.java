@@ -10,6 +10,7 @@ package net.sf.robocode.battle;
 
 import robocode.AdvancedRobot;
 import robocode.Robot;
+import robocode.control.RobotSetup;
 import robocode.control.RobotSpecification;
 
 import java.io.FileInputStream;
@@ -263,6 +264,35 @@ public class BattleProperties implements Serializable {
 	 */
 	public void setInitialPositions(String positions) {
 		this.initialPositions = positions; 
+	}
+
+	/**
+	 * Sets the initial robot positions and headings.
+	 *
+	 * @param initialSetups is the initial positions and headings as a {@link RobotSetup} array.
+	 * 
+	 * @since 1.9.2.0
+	 */
+	public void setInitialPositions(RobotSetup[] initialSetups) {
+		if (initialSetups == null) {
+			return;
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		for (RobotSetup setup : initialSetups) {
+			String x = (setup.getX() == null) ? "?" : "" + setup.getX();
+			String y = (setup.getY() == null) ? "?" : "" + setup.getY();
+			String heading = (setup.getHeading() == null) ? "?" : "" + setup.getHeading();
+
+			sb.append('(');
+			sb.append(x).append(',');
+			sb.append(y).append(',');
+			sb.append(heading);
+			sb.append("),");
+		}
+		
+		this.initialPositions = sb.toString();
 	}
 
 	/**

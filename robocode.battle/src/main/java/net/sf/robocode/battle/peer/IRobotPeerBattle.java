@@ -9,6 +9,7 @@ package net.sf.robocode.battle.peer;
 
 
 import robocode.Event;
+import robocode.control.RobotSetup;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ interface IRobotPeerBattle extends ContestantPeer {
 
 	void setWinner(boolean newWinner);
 
-	void initializeRound(List<RobotPeer> robots, double[][] initialRobotPositions);
+	void initializeRound(List<RobotPeer> robots, RobotSetup[] initialRobotPositions);
 
 	void startRound(long millisWait, int nanosWait);
 

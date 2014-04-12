@@ -340,14 +340,36 @@ namespace Robocode.Control
             return spec.robotSpecification;
         }
 
-        private robocode.control.BattleSpecification MapBattleSpecification(Robocode.Control.BattleSpecification spec)
+        private robocode.control.BattleSpecification MapBattleSpecification(BattleSpecification spec)
         {
-            robocode.control.BattlefieldSpecification battleField = new robocode.control.BattlefieldSpecification(spec.Battlefield.Width, spec.Battlefield.Height);
-            robocode.control.RobotSpecification[] robots = MapRobotSpecifications(spec.Robots);
+            robocode.control.BattlefieldSpecification battlefieldSpec = new robocode.control.BattlefieldSpecification(spec.Battlefield.Width, spec.Battlefield.Height);
+            robocode.control.RobotSpecification[] robotSpecs = MapRobotSpecifications(spec.Robots);
+            robocode.control.RobotSetup[] initialSetups = MapInitialSetups(spec.InitialSetups);
 
-            return new robocode.control.BattleSpecification(spec.NumRounds, spec.InactivityTime, spec.GunCoolingRate, battleField, robots);
+            return new robocode.control.BattleSpecification(battlefieldSpec, spec.NumRounds, spec.InactivityTime,
+                spec.GunCoolingRate, spec.SentryBorderSize, spec.HideEnemyNames, robotSpecs, initialSetups);
         }
 
+        private robocode.control.RobotSetup[] MapInitialSetups(RobotSetup[] setups)
+        {
+            if (setups == null)
+            {
+                return null;
+            }
+
+            robocode.control.RobotSetup[] mappedSetups = new robocode.control.RobotSetup[setups.Length];
+
+            for (int i = 0; i < setups.Length; i++)
+            {
+                mappedSetups[i] = MapRobotSetup(setups[i]);
+            }
+            return mappedSetups;
+        }
+
+        private robocode.control.RobotSetup MapRobotSetup(RobotSetup setup)
+        {
+            return new robocode.control.RobotSetup(setup.X, setup.Y, setup.Heading);
+        }
         #endregion
 
         #region Battle observer (internal engine events -> Robocode.Control.Events)
@@ -500,7 +522,7 @@ namespace Robocode.Control
             int numRounds = obj.Invoke<int>("getNumRounds", "()I", new object[] { });
             double gunCoolingRate = obj.Invoke<double>("getGunCoolingRate", "()D", new object[] { });
             long inactivityTime = obj.Invoke<long>("getInactivityTime", "()J", new object[] { });
-            bool hideEnemyNames = obj.Invoke<bool>("getHideEnemyNames", "()B", new object[] { });
+            bool hideEnemyNames = obj.Invoke<bool>("getHideEnemyNames", "()Z", new object[] { });
             int sentryBorderSize = obj.Invoke<int>("getSentryBorderSize", "()I", new object[] { });
 
             MethodInfo method = typeof(BattleRules).GetMethod("createHiddenHelper", BindingFlags.Static | BindingFlags.NonPublic);

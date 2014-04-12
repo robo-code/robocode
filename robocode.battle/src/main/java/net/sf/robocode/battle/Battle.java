@@ -24,6 +24,7 @@ import net.sf.robocode.settings.ISettingsManager;
 import robocode.*;
 import robocode.control.RandomFactory;
 import robocode.control.RobotResults;
+import robocode.control.RobotSetup;
 import robocode.control.RobotSpecification;
 import robocode.control.events.*;
 import robocode.control.events.RoundEndedEvent;
@@ -77,11 +78,12 @@ public final class Battle extends BaseBattle {
 	// Death events
 	private final List<RobotPeer> deathRobots = new CopyOnWriteArrayList<RobotPeer>();
 
-	// Initial robot start positions (if any)
-	private double[][] initialRobotPositions;
+	// Initial robot setups (if any)
+	private RobotSetup[] initialRobotSetups;
 
 	public Battle(ISettingsManager properties, IBattleManager battleManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher eventDispatcher) { // NO_UCD (unused code)
-		super(properties, battleManager, eventDispatcher);
+		super(
+				properties, battleManager, eventDispatcher);
 		this.hostManager = hostManager;
 		this.cpuConstant = cpuManager.getCpuConstant();
 	}
@@ -338,7 +340,7 @@ public final class Battle extends BaseBattle {
 		// At this point the unsafe loader thread will now set itself to wait for a notify
 
 		for (RobotPeer robotPeer : robots) {
-			robotPeer.initializeRound(robots, initialRobotPositions);
+			robotPeer.initializeRound(robots, initialRobotSetups);
 			robotPeer.println("=========================");
 			robotPeer.println("Round " + (getRoundNum() + 1) + " of " + getNumRounds());
 			robotPeer.println("=========================");
@@ -722,7 +724,7 @@ public final class Battle extends BaseBattle {
 	}
 
 	private void computeInitialPositions(String initialPositions) {
-		initialRobotPositions = null;
+		initialRobotSetups = null;
 
 		if (initialPositions == null || initialPositions.trim().length() == 0) {
 			return;
@@ -743,7 +745,7 @@ public final class Battle extends BaseBattle {
 			return;
 		}
 
-		initialRobotPositions = new double[positions.size()][3];
+		initialRobotSetups = new RobotSetup[positions.size()];
 
 		String[] coords;
 		double x, y, heading;
@@ -761,25 +763,23 @@ public final class Battle extends BaseBattle {
 
 			if (len >= 1 && coords[0].trim().length() > 0) {
 				try {
-					x = Double.parseDouble(coords[0].replaceAll("[\\D]", ""));
+					x = Double.parseDouble(coords[0].replaceAll("[^0-9.]", ""));
 				} catch (NumberFormatException ignore) {// Could be the '?', which is fine
 				}
 				if (len >= 2 && coords[1].trim().length() > 0) {
 					try {
-						y = Double.parseDouble(coords[1].replaceAll("[\\D]", ""));
+						y = Double.parseDouble(coords[1].replaceAll("[^0-9.]", ""));
 					} catch (NumberFormatException ignore) {// Could be the '?', which is fine
 					}
 					if (len >= 3 && coords[2].trim().length() > 0) {
 						try {
-							heading = Math.toRadians(Double.parseDouble(coords[2].replaceAll("[\\D]", "")));
+							heading = Math.toRadians(Double.parseDouble(coords[2].replaceAll("[^0-9.]", "")));
 						} catch (NumberFormatException ignore) {// Could be the '?', which is fine
 						}
 					}
 				}
 			}
-			initialRobotPositions[i][0] = x;
-			initialRobotPositions[i][1] = y;
-			initialRobotPositions[i][2] = heading;
+			initialRobotSetups[i] = new RobotSetup(x, y, heading);
 		}
 	}
 

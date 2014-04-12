@@ -26,6 +26,7 @@ public class BattleSpecification implements java.io.Serializable {
 	private final boolean hideEnemyNames;
 	private final int sentryBorderSize;
 	private final RobotSpecification[] robots;
+	private final RobotSetup[] initialSetups;
 
 	/**
 	 * Creates a new BattleSpecification with the given number of rounds, battlefield size, and robots.
@@ -82,15 +83,36 @@ public class BattleSpecification implements java.io.Serializable {
 	 * @since 1.9.0.0
 	 */
 	public BattleSpecification(BattlefieldSpecification battlefieldSize, int numRounds, long inactivityTime, double gunCoolingRate, int sentryBorderSize, boolean hideEnemyNames, RobotSpecification[] robots) {
-		this.battlefieldWidth = battlefieldSize.getWidth();
-		this.battlefieldHeight = battlefieldSize.getHeight();
-		this.numRounds = numRounds;
-		this.inactivityTime = inactivityTime;
-		this.gunCoolingRate = gunCoolingRate;
-		this.sentryBorderSize = sentryBorderSize;
-		this.hideEnemyNames = hideEnemyNames;
-		this.robots = robots;
+		this(battlefieldSize, numRounds, inactivityTime, gunCoolingRate, 100, hideEnemyNames, robots, null);
+	}
 
+	/**
+	 * Creates a new BattleSpecification with the given settings.
+	 *
+	 * @param battlefieldSize is the battlefield size.
+	 * @param numRounds	is the number of rounds in this battle.
+	 * @param inactivityTime is the inactivity time allowed for the robots before they will loose energy.
+	 * @param gunCoolingRate is the gun cooling rate for the robots.
+	 * @param sentryBorderSize is the sentry border size for a {@link robocode.BorderSentry BorderSentry}.
+	 * @param hideEnemyNames  flag specifying if enemy names are hidden from robots.
+	 * @param robots is the robots participating in this battle.
+	 * @param initialSetup is the initial position and heading of the robots, where the indices matches the indices from the {@code robots} parameter.
+	 * 
+	 * @since 1.9.2.0
+	 */
+	public BattleSpecification(BattlefieldSpecification battlefieldSize, int numRounds, long inactivityTime, double gunCoolingRate, int sentryBorderSize, boolean hideEnemyNames, RobotSpecification[] robots, RobotSetup[] initialSetups) {
+		if (battlefieldSize == null) {
+			throw new IllegalArgumentException("battlefieldSize cannot be null");
+		}
+		if (robots == null) {
+			throw new IllegalArgumentException("robots cannot be null");
+		}
+		if (robots.length < 1) {
+			throw new IllegalArgumentException("robots.length must be > 0");
+		}
+		if (initialSetups != null && initialSetups.length != robots.length) {
+			throw new IllegalArgumentException("initialSetups.length must be == robots.length");
+		}
 		if (numRounds < 1) {
 			throw new IllegalArgumentException("numRounds must be >= 1");
 		}
@@ -103,6 +125,15 @@ public class BattleSpecification implements java.io.Serializable {
 		if (sentryBorderSize < 50) {
 			throw new IllegalArgumentException("sentryBorderSize must be >= 50");
 		}
+		this.battlefieldWidth = battlefieldSize.getWidth();
+		this.battlefieldHeight = battlefieldSize.getHeight();
+		this.numRounds = numRounds;
+		this.inactivityTime = inactivityTime;
+		this.gunCoolingRate = gunCoolingRate;
+		this.sentryBorderSize = sentryBorderSize;
+		this.hideEnemyNames = hideEnemyNames;
+		this.robots = robots;
+		this.initialSetups = initialSetups;
 	}
 
 	/**
@@ -144,7 +175,7 @@ public class BattleSpecification implements java.io.Serializable {
 	/**
 	 * Returns the flag specifying if the enemy names must be hidden from events sent to robots.
 	 *
-	 * @return true if the enemy names must be hidden; false otherwise.
+	 * @return {@code true} if the enemy names must be hidden; {@code false} otherwise.
 	 * 
 	 * @since 1.7.3
 	 */
@@ -171,17 +202,33 @@ public class BattleSpecification implements java.io.Serializable {
 	/**
 	 * Returns the specifications of the robots participating in this battle.
 	 *
-	 * @return the specifications of the robots participating in this battle.
+	 * @return an array of {@link RobotSpecification} instances - one entry for each robot.
+	 * 
+	 * @see #getInitialSetups()
 	 */
 	public RobotSpecification[] getRobots() {
 		if (robots == null) {
 			return null;
 		}
-
 		RobotSpecification[] robotsCopy = new RobotSpecification[robots.length];
-
 		System.arraycopy(robots, 0, robotsCopy, 0, robots.length);
-
 		return robotsCopy;
+	}
+
+	/**
+	 * Returns the initial position and heading of each robot participating in this battle.
+	 * 
+	 * @return an array of {@link RobotSetup} instances - one entry for each robot.
+	 * The the indices of this array matches the array indices from the robot specifications (see {@link #getRobots()}).
+	 * 
+	 * @see #getRobots()
+	 */
+	public RobotSetup[] getInitialSetups() {
+		if (initialSetups == null) {
+			return null;
+		}
+		RobotSetup[] setupsCopy = new RobotSetup[initialSetups.length];
+		System.arraycopy(initialSetups, 0, setupsCopy, 0, initialSetups.length);
+		return setupsCopy;
 	}
 }

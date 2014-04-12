@@ -23,6 +23,7 @@ import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.*;
 import robocode.control.RandomFactory;
+import robocode.control.RobotSetup;
 import robocode.control.RobotSpecification;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.RobotState;
@@ -34,7 +35,9 @@ import static robocode.util.Utils.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+
 import static java.lang.Math.*;
+
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -648,21 +651,22 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public void initializeRound(List<RobotPeer> robots, double[][] initialRobotPositions) {
+	public void initializeRound(List<RobotPeer> robots, RobotSetup[] initialRobotSetups) {
 		boolean valid = false;
 
-		if (initialRobotPositions != null) {
+		if (initialRobotSetups != null) {
 			int robotIndex = statics.getRobotIndex();
 
-			if (robotIndex >= 0 && robotIndex < initialRobotPositions.length) {
-				double[] pos = initialRobotPositions[robotIndex];
+			if (robotIndex >= 0 && robotIndex < initialRobotSetups.length) {
+				RobotSetup setup = initialRobotSetups[robotIndex];
+				if (setup != null) {
+					x = setup.getX();
+					y = setup.getY();
+					bodyHeading = gunHeading = radarHeading = setup.getHeading();
 
-				x = pos[0];
-				y = pos[1];
-				bodyHeading = pos[2];
-				gunHeading = radarHeading = bodyHeading;
-				updateBoundingBox();
-				valid = validSpot(robots);
+					updateBoundingBox();
+					valid = validSpot(robots);
+				}
 			}
 		}
 

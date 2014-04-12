@@ -16,11 +16,10 @@ namespace Robocode.Control
 {
     /// <summary>
     /// Defines the size of a battlefield, which is a part of the <see cref="BattleSpecification" />.
-    /// <p />
+    /// </summary>
     /// <seealso cref="BattleSpecification(int, BattlefieldSpecification, RobotSpecification[])" />
     /// <seealso cref="BattleSpecification(int, long, double, BattlefieldSpecification, RobotSpecification[])" />
     /// <seealso cref="BattleSpecification.Battlefield" />
-    /// </summary>
     [Serializable]
     public class BattlefieldSpecification
     {
