@@ -1,4 +1,4 @@
-## Version 1.9.2.0 Alpha 1 (11-Apr-2014)
+## Version 1.9.2.0 (23-Apr-2014)
 
 ### New feature
 * Initial positions and headings added to the Control API.
