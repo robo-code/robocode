@@ -1,3 +1,8 @@
+## Version 1.9.2.1 Alpha 1 (07-May-2014)
+
+### Bug fixes
+* [Bug-371][]: High cpu usage on editor.
+
 ## Version 1.9.2.0 (23-Apr-2014)
 
 ### New feature
@@ -2953,6 +2958,8 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-368]: http://sourceforge.net/p/robocode/bugs/368/  (Issues with sentries)
 [Bug-369]: http://sourceforge.net/p/robocode/bugs/369/  (RoboRumble: NoClassDefFoundError for CodeSizeCalculator)
 [Bug-370]: http://sourceforge.net/p/robocode/bugs/370/  (Robot Packager cannot find robot .properties file in development path)
+[Bug-371]: http://sourceforge.net/p/robocode/bugs/371/  (High cpu usage on editor)
+
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)

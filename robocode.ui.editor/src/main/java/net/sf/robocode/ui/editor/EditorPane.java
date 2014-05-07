@@ -69,7 +69,8 @@ public class EditorPane extends JTextPane {
 		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 
 		new LineNumberArea(this);
-		new HighlightLinePainter(this);
+
+		LineHighlighter.install(this);
 
 		EditorKit editorKit = new StyledEditorKit() {
 			@Override
