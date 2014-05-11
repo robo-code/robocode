@@ -10,11 +10,11 @@ package net.sf.robocode.battle;
 
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.core.Container;
-import net.sf.robocode.core.RobocodeProperties;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.RobocodeProperties;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.recording.BattlePlayer;
@@ -24,6 +24,7 @@ import net.sf.robocode.settings.ISettingsManager;
 import robocode.Event;
 import robocode.control.BattleSpecification;
 import robocode.control.RandomFactory;
+import robocode.control.RobotSetup;
 import robocode.control.RobotSpecification;
 import robocode.control.events.BattlePausedEvent;
 import robocode.control.events.BattleResumedEvent;
@@ -97,7 +98,13 @@ public class BattleManager implements IBattleManager {
 		battleProperties.setHideEnemyNames(spec.getHideEnemyNames());
 		battleProperties.setSentryBorderSize(spec.getSentryBorderSize());
 		battleProperties.setSelectedRobots(spec.getRobots());
-		battleProperties.setInitialPositions(initialPositions);
+
+		final RobotSetup[] initialSetups = spec.getInitialSetups();
+		if (initialSetups != null) {
+			battleProperties.setInitialPositions(initialSetups);
+		} else {
+			battleProperties.setInitialPositions(initialPositions);
+		}
 
 		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(spec.getRobots());
 
