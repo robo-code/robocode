@@ -9,20 +9,23 @@ package net.sf.robocode.core;
 
 
 import net.sf.robocode.io.Logger;
+
 import org.picocontainer.Characteristics;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.OptInCaching;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 
-import java.awt.*;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.*;
-import java.util.List;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -191,7 +194,7 @@ public final class Container extends ContainerBase {
 	}
 
 	static URL[] findJars(String allowed) {
-		java.util.List<String> urls = new ArrayList<String>();
+		List<String> urls = new ArrayList<String>();
 		final String classPath = System.getProperty("robocode.class.path", null);
 
 		for (String path : classPath.split(File.pathSeparator)) {
@@ -207,7 +210,7 @@ public final class Container extends ContainerBase {
 		return convertUrls(urls);
 	}
 
-	private static URL[] convertUrls(java.util.List<String> surls) {
+	private static URL[] convertUrls(List<String> surls) {
 		final URL[] urls = new URL[surls.size()];
 
 		for (int i = 0; i < surls.size(); i++) {
@@ -244,7 +247,7 @@ public final class Container extends ContainerBase {
 		return null;
 	}
 
-	public static <T> java.util.List<T> getComponents(java.lang.Class<T> tClass) {
+	public static <T> List<T> getComponents(java.lang.Class<T> tClass) {
 		return cache.getComponents(tClass);
 	}
 
