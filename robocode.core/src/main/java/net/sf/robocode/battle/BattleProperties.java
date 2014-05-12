@@ -314,11 +314,11 @@ public class BattleProperties implements Serializable {
 		props.setProperty(BATTLE_SENTRY_BORDER_SIZE, "" + sentryBorderSize);
 	}
 
-	void store(FileOutputStream out, String desc) throws IOException {
+	public void store(FileOutputStream out, String desc) throws IOException {
 		props.store(out, desc);
 	}
 
-	void load(FileInputStream in) throws IOException {
+	public void load(FileInputStream in) throws IOException {
 		props.load(in);
 		battlefieldWidth = Integer.parseInt(props.getProperty(BATTLEFIELD_WIDTH, "800"));
 		battlefieldHeight = Integer.parseInt(props.getProperty(BATTLEFIELD_HEIGHT, "600"));

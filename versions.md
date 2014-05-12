@@ -1,7 +1,8 @@
-## Version 1.9.2.1 Alpha 1 (07-May-2014)
+## Version 1.9.2.1 Alpha 1 (13-May-2014)
 
 ### Bug fixes
 * [Bug-371][]: High cpu usage on editor.
+* [Bug-372][]: Cannot load battle file when ``-DNOSECURITY=true`` is enabled - ``java.lang.IllegalAccessError``.
 
 ## Version 1.9.2.0 (23-Apr-2014)
 
@@ -2959,6 +2960,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-369]: http://sourceforge.net/p/robocode/bugs/369/  (RoboRumble: NoClassDefFoundError for CodeSizeCalculator)
 [Bug-370]: http://sourceforge.net/p/robocode/bugs/370/  (Robot Packager cannot find robot .properties file in development path)
 [Bug-371]: http://sourceforge.net/p/robocode/bugs/371/  (High cpu usage on editor)
+[Bug-372]: http://sourceforge.net/p/robocode/bugs/372/  (Cannot load battle file when -DNOSECURITY=true is enabled - java.lang.IllegalAccessError)
 
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
