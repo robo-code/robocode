@@ -1,4 +1,4 @@
-## Version 1.9.2.1 Alpha 1 (13-May-2014)
+## Version 1.9.2.1 (21-May-2014)
 
 ### Bug fixes
 * [Bug-371][]: High cpu usage on editor.
