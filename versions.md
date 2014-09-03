@@ -1,3 +1,6 @@
+## Version 1.9.2.2 (03-Sep-2014)
+* [Bug-373][]: Wrong robot size calculation in version 1.9.0 - 1.9.2.
+
 ## Version 1.9.2.1 (21-May-2014)
 
 ### Bug fixes
@@ -2961,7 +2964,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-370]: http://sourceforge.net/p/robocode/bugs/370/  (Robot Packager cannot find robot .properties file in development path)
 [Bug-371]: http://sourceforge.net/p/robocode/bugs/371/  (High cpu usage on editor)
 [Bug-372]: http://sourceforge.net/p/robocode/bugs/372/  (Cannot load battle file when -DNOSECURITY=true is enabled - java.lang.IllegalAccessError)
-
+[Bug-373]: http://sourceforge.net/p/robocode/bugs/373/  (Wrong robot size calculation in version 1.9.0 - 1.9.2)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
