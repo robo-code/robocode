@@ -50,21 +50,21 @@ under the License.
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.tests.robots/1.9.2.2/robocode.tests.robots-1.9.2.2.jar!/"/>
+          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.tests.robots/1.9.2.3/robocode.tests.robots-1.9.2.3.jar!/"/>
         </CLASSES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.api/1.9.2.2/robocode.api-1.9.2.2.jar!/"/>
+          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.api/1.9.2.3/robocode.api-1.9.2.3.jar!/"/>
         </CLASSES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.samples/1.9.2.2/robocode.samples-1.9.2.2.jar!/"/>
+          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.samples/1.9.2.3/robocode.samples-1.9.2.3.jar!/"/>
         </CLASSES>
       </library>
     </orderEntry>
@@ -86,14 +86,14 @@ under the License.
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.host/1.9.2.2/robocode.host-1.9.2.2.jar!/"/>
+          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.host/1.9.2.3/robocode.host-1.9.2.3.jar!/"/>
         </CLASSES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.core/1.9.2.2/robocode.core-1.9.2.2.jar!/"/>
+          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.core/1.9.2.3/robocode.core-1.9.2.3.jar!/"/>
         </CLASSES>
       </library>
     </orderEntry>
@@ -107,7 +107,7 @@ under the License.
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.repository/1.9.2.2/robocode.repository-1.9.2.2.jar!/"/>
+          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.repository/1.9.2.3/robocode.repository-1.9.2.3.jar!/"/>
         </CLASSES>
       </library>
     </orderEntry>
@@ -167,7 +167,7 @@ under the License.
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.battle/1.9.2.2/robocode.battle-1.9.2.2.jar!/"/>
+          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.battle/1.9.2.3/robocode.battle-1.9.2.3.jar!/"/>
         </CLASSES>
       </library>
     </orderEntry>
@@ -175,7 +175,7 @@ under the License.
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.tests/1.9.2.2/robocode.tests-1.9.2.2.jar!/"/>
+          <root url="jar://C:/Users/Flemming.Flemming-PC/.m2/repository/net/sf/robocode/robocode.tests/1.9.2.3/robocode.tests-1.9.2.3.jar!/"/>
         </CLASSES>
       </library>
     </orderEntry>

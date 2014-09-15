@@ -55,7 +55,7 @@ namespace SampleCsSentry
     /// <p>
     /// Version: 1.0
     /// <p>
-    /// Since 1.9.2.2
+    /// Since 1.9.2.3
     /// </summary>
     public class BorderGuard
         : AdvancedRobot, IBorderSentry
