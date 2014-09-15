@@ -1,6 +1,10 @@
 ## Version 1.9.2.3 (15-Sep-2014)
 * [Bug-373][]: Wrong robot size calculation in version 1.9.0 - 1.9.2.
+<<<<<<< HEAD
 	* This bug was only partly fixed with version 1.9.2.2.
+=======
+	* This bug was only partly fixed with version 1.9.2.3
+>>>>>>> 0e1515f123e9f2e42723b9c7d659f1ba9a3535e1
 
 ## Version 1.9.2.2 (03-Sep-2014)
 * [Bug-373][]: Wrong robot size calculation in version 1.9.0 - 1.9.2.
