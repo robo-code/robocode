@@ -44,30 +44,31 @@ public class CompetitionsSelector {
 		String name = botName.replace(' ', '_');
 
 		// Read sizes
-		long propertyCodeSize = Long.parseLong(sizes.getProperty(name, "0"));
+		long codeSize = Long.parseLong(sizes.getProperty(name, "0"));
 
 		// Find out the size if not in the file
 		boolean fileNeedsUpdate = false;
 
-		if (propertyCodeSize == 0) {
+		if (codeSize == 0) {
 			File f = new File(repository + name + ".jar");
 			if (f.exists()) {
 				fileNeedsUpdate = true; // Bug-362
 
-				Integer codesize = CodeSizeCalculator.getJarFileCodeSize(f);
-				if (codesize != null) {
-					sizes.setProperty(name, Long.toString(codesize));
+				Integer jarFileCodeSize = CodeSizeCalculator.getJarFileCodeSize(f);
+				if (jarFileCodeSize != null) {
+					codeSize = jarFileCodeSize;
+					sizes.setProperty(name, Long.toString(codeSize));
 				}
 			}
 		}
 
 		// If the file needs update, then save the file
-		if (fileNeedsUpdate && propertyCodeSize > 0) {
+		if (fileNeedsUpdate && codeSize > 0) {
 			storeProperties(sizes, sizesfile, "Bots code size");
 		}
 
 		// Check the code size
-		return (propertyCodeSize < maxSize); // Bug-362
+		return (codeSize < maxSize); // Bug-362
 	}
 
 	public boolean checkCompetitorsForSize(String bot1, String bot2, long maxsize) {

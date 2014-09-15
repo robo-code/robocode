@@ -8,7 +8,7 @@
     <ProjectGuid>{B3487E2D-2737-4C04-AA71-B9A726B3F787}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>net.sf.robocode.dotnet</RootNamespace>
-    <AssemblyName>robocode.dotnet.robotscs-1.9.2.2</AssemblyName>
+    <AssemblyName>robocode.dotnet.robotscs-1.9.2.3</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>false</SignAssembly>
@@ -42,7 +42,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="robocode, Version=1.9.2.2, Culture=neutral, PublicKeyToken=43c1c8ae0e25a953, processorArchitecture=MSIL">
+    <Reference Include="robocode, Version=1.9.2.3, Culture=neutral, PublicKeyToken=43c1c8ae0e25a953, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\robocode.dotnet.api\target\robocode.dll</HintPath>
     </Reference>
