@@ -1,3 +1,7 @@
+## Version 1.9.2.4 Alpha 1 (08-Oct-2014)
+* [Req-159][]: Fix overkilled garbage collection on static fields.
+	* Robocode garbage collected practically any static field on a robot to prevent memory leaks (see [Bug-244][]).
+
 ## Version 1.9.2.3 (15-Sep-2014)
 * [Bug-374][]: Wrong size report for minirumble in v1.9.2.2.
 
@@ -3049,3 +3053,4 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Req-135]: http://sourceforge.net/p/robocode/feature-requests/135/  (Twin Duel configuration files)
 [Req-144]: http://sourceforge.net/p/robocode/feature-requests/144/  (Mac ... start with icon and name)
 [Req-156]: http://sourceforge.net/p/robocode/feature-requests/156/  (Codesize added to properties file)
+[Req-159]: http://sourceforge.net/p/robocode/feature-requests/159/  (Fix overkilled garbage collection on static fields)

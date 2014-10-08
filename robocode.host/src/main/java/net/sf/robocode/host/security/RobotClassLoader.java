@@ -60,9 +60,14 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	private IHostedThread robotProxy;
 	private Class<?> robotClass;
 
+	// Names on classes referenced from the robot class
 	private Set<String> referencedClasses = new HashSet<String>();
 
-	private String[] staticRobotInstanceWarning; // cached warning messages  
+	// Cached names on found system classes
+	private Set<String> foundSystemClasses = new HashSet<String>();
+
+	// Cached warning messages
+	private String[] staticRobotInstanceWarning;  
 
 	public RobotClassLoader(URL robotClassPath, String robotFullClassName) {
 		super(new URL[] { robotClassPath}, Container.systemLoader);
@@ -81,8 +86,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		super.addURL(url);
 	}
 
-	public synchronized Class<?> loadClass(final String name, boolean resolve)
-		throws ClassNotFoundException {
+	public synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 		if (name.startsWith("java.lang")) {
 			// we always delegate java.lang stuff to parent loader
 			return super.loadClass(name, resolve);
@@ -91,15 +95,14 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			testPackages(name);
 		}
 		if (!name.startsWith("robocode")) {
-			final Class<?> result = loadRobotClassLocaly(name, resolve);
-
+			Class<?> result = loadRobotClassLocaly(name, resolve);
 			if (result != null) {
 				// yes, it is in robot's class path
 				// we loaded it locally
 				return result;
 			}
 		}
-		
+
 		// it is robot API
 		// or java class
 		// or security is off
@@ -109,19 +112,19 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 
 	private void testPackages(String name) throws ClassNotFoundException {
 		if (name.startsWith("net.sf.robocode")) {
-			final String message = "Robots are not allowed to reference Robocode engine in package: net.sf.robocode";
+			String message = "Robots are not allowed to reference Robocode engine in package: net.sf.robocode";
 
 			punishSecurityViolation(message);
 			throw new ClassNotFoundException(message);
 		}
 		if (name.startsWith("robocode.control")) {
-			final String message = "Robots are not allowed to reference Robocode engine in package: robocode.control";
+			String message = "Robots are not allowed to reference Robocode engine in package: robocode.control";
 
 			punishSecurityViolation(message);
 			throw new ClassNotFoundException(message);
 		}
 		if (RobocodeProperties.isSecurityOn() && name.startsWith("javax.swing")) {
-			final String message = "Robots are not allowed to reference Robocode engine in package: javax.swing";
+			String message = "Robots are not allowed to reference Robocode engine in package: javax.swing";
 
 			punishSecurityViolation(message);
 			throw new ClassNotFoundException(message);
@@ -130,10 +133,8 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 
 	private Class<?> loadRobotClassLocaly(String name, boolean resolve) throws ClassNotFoundException {
 		Class<?> result = findLoadedClass(name);
-
 		if (result == null) {
-			final ByteBuffer resource = findLocalResource(name);
-
+			ByteBuffer resource = findLocalResource(name);
 			if (resource != null) {
 				result = defineClass(name, resource, codeSource);
 				if (resolve) {
@@ -153,15 +154,14 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 				// try to find it in robot's class path
 				// this is URL, don't change to File.pathSeparator
 				String path = name.replace('.', '/').concat(".class");
-
-				final URL url = findResource(path);
+				URL url = findResource(path);
 				ByteBuffer result = null;
 				InputStream is = null;
 				BufferedInputStream bis = null;
 
 				if (url != null) {
 					try {
-						final URLConnection connection = URLJarCollector.openConnection(url);
+						URLConnection connection = URLJarCollector.openConnection(url);
 
 						is = connection.getInputStream();
 						bis = new BufferedInputStream(is);
@@ -267,6 +267,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		robotProxy = null;
 		robotClass = null;
 		referencedClasses = null;
+		foundSystemClasses = null;
 	}
 
 	/**
@@ -280,7 +281,6 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		}
 
 		Class<?> type = null;
-
 		try {
 			type = loadRobotClassLocaly(className, false);
 		} catch (Throwable t) {
@@ -304,15 +304,12 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 				if (isSystemClass(className)) {
 					continue;
 				}
-		
 				Class<?> type = null;
-		
 				try {
 					type = loadRobotClassLocaly(className, false);
 				} catch (Throwable t) {
 					continue;
 				}
-	
 				if (type != null) {
 					for (Field field : getAllFields(new ArrayList<Field>(), type)) {				
 						if (isStaticReference(field) && IBasicRobot.class.isAssignableFrom(field.getType())
@@ -322,7 +319,6 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 					}
 				}
 			}
-	
 			if (staticRobotReferences.size() > 0) {
 				StringBuilder buf = new StringBuilder();
 	
@@ -366,8 +362,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			Field modifiersField = Field.class.getDeclaredField("modifiers");
 
 			modifiersField.setAccessible(true);
-			final int modifiers = modifiersField.getInt(field);
-
+			int modifiers = modifiersField.getInt(field);
 			modifiersField.setInt(field, modifiers & ~Modifier.FINAL); // Remove the FINAL modifier
 			field.set(null, null);
 		} catch (Throwable ignore) {}
@@ -379,11 +374,10 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	 * @param type the class to retrieve all the fields from
 	 * @return the list specified as input parameter containing all the retrieved fields
 	 */
-	private static List<Field> getAllFields(List<Field> fields, Class<?> type) {
+	private List<Field> getAllFields(List<Field> fields, Class<?> type) {
 		if (type == null || isSystemClass(type.getName())) {
 			return fields;
 		}
-
 		try {
 			for (Field field: type.getDeclaredFields()) {
 				fields.add(field);
@@ -392,11 +386,9 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			// We ignore all exceptions and errors here so we can proceed to retrieve
 			// field from super classes.
 		}
-
 		if (type.getSuperclass() != null) {
 			fields = getAllFields(fields, type.getSuperclass());
 		}
-
 		return fields;
 	}
 
@@ -405,9 +397,17 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	 * @param className the class name to check.
 	 * @return true if the class name is a system class; false otherwise.
 	 */
-	private static boolean isSystemClass(String className) {
-		return className.startsWith("java.") || className.startsWith("javax.") || className.startsWith("robocode.")
-				|| className.startsWith("net.sf.robocode.") || className.startsWith("tested.robots.");
+	private boolean isSystemClass(String className) {
+		boolean isSystemClass = foundSystemClasses.contains(className);
+		if (!isSystemClass) {
+			try {
+				if (findSystemClass(className) != null) {
+					foundSystemClasses.add(className);
+					isSystemClass = true;
+				}
+			} catch (ClassNotFoundException ignore) {}
+		}
+		return isSystemClass;
 	}
 
 	/**
