@@ -514,7 +514,11 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 
 	public URL getWebpage() {
 		try {
-			return new URL(properties.getProperty(ROBOT_WEBPAGE, null));
+			String webPage = properties.getProperty(ROBOT_WEBPAGE, null);
+			if (webPage == null || webPage.trim().isEmpty()) {
+				return null;
+			}
+			return new URL(webPage);
 		} catch (MalformedURLException e) {
 			return null;
 		}
