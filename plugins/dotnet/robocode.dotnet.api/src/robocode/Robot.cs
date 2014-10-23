@@ -53,8 +53,8 @@ namespace Robocode
     public abstract class Robot : IInteractiveRobot, IPaintRobot, IBasicEvents3, IInteractiveEvents, IPaintEvents, IRunnable
     {
         private const int
-            WIDTH = 40,
-            HEIGHT = 40;
+            WIDTH = 36,
+            HEIGHT = 36;
 
         internal IBasicRobotPeer peer;
         internal TextWriter _output;
