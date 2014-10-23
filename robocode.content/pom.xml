@@ -39,7 +39,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 								<artifactItem>
 									<groupId>org.eclipse.jdt.core.compiler</groupId>
 									<artifactId>ecj</artifactId>
-									<version>4.3.1</version>
+									<version>4.4</version>
 									<type>jar</type>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/classes/compilers</outputDirectory>

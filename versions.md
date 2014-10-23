@@ -1,10 +1,13 @@
-## Version 1.9.2.4 Alpha 2 (21-Oct-2014)
+## Version 1.9.2.4 Alpha 3 (24-Oct-2014)
 
 ### Bug fixes
 * [Req-159][]: Fix overkilled garbage collection on static fields.
 	* Robocode garbage collected practically any static field on a robot to prevent memory leaks (see [Bug-244][]).
 * [Bug-375][]: Wrong width and height returned for .NET robots.
 	* The .NET API return 40 instead of 36 with the Width and Height properties.
+
+### Changes
+* Upgraded Eclipse Compiler for Java (ECJ) to version 4.4.
 
 ## Version 1.9.2.3 (15-Sep-2014)
 * [Bug-374][]: Wrong size report for minirumble in v1.9.2.2.
