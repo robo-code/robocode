@@ -279,20 +279,18 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		if (isSystemClass(className)) {
 			return;
 		}
-
 		Class<?> type = null;
 		try {
 			type = loadRobotClassLocaly(className, false);
-		} catch (Throwable t) {
-			return;
-		}
-
-		if (type != null) {
-			for (Field field : getAllFields(new ArrayList<Field>(), type)) {
-				if (isStaticReference(field)) {
-					cleanStaticReference(field);
+			if (type != null) {
+				for (Field field : getAllFields(new ArrayList<Field>(), type)) {
+					if (isStaticReference(field)) {
+						cleanStaticReference(field);
+					}
 				}
 			}
+		} catch (Throwable t) {
+			Logger.logError(t);
 		}
 	}
 
@@ -355,16 +353,19 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	 * @param field the field to clean, if it is a static reference.
 	 */
 	private void cleanStaticReference(Field field) {
+		if (field.getName().startsWith("const__")) {
+			// Ignore 'const__' fields used with e.g. the Clojure language
+			return;
+		}
 		field.setAccessible(true);
-
 		try {
 			// In order to set a 'private static field', we need to fix the modifier, i.e. use magic! ;-)
 			Field modifiersField = Field.class.getDeclaredField("modifiers");
-
 			modifiersField.setAccessible(true);
 			int modifiers = modifiersField.getInt(field);
 			modifiersField.setInt(field, modifiers & ~Modifier.FINAL); // Remove the FINAL modifier
 			field.set(null, null);
+
 		} catch (Throwable ignore) {}
 	}
 

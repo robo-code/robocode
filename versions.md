@@ -1,4 +1,4 @@
-## Version 1.9.2.4 Alpha 1 (08-Oct-2014)
+## Version 1.9.2.4 Alpha 2 (21-Oct-2014)
 * [Req-159][]: Fix overkilled garbage collection on static fields.
 	* Robocode garbage collected practically any static field on a robot to prevent memory leaks (see [Bug-244][]).
 
