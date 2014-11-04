@@ -1,4 +1,14 @@
-﻿// Application that demonstrates how to run two sample robots in Robocode with the RobocodeEngine using the
+﻿#region Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
+
+// Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Eclipse Public License v1.0
+// which accompanies this distribution, and is available at
+// http://robocode.sourceforge.net/license/epl-v10.html
+
+#endregion
+
+// Application that demonstrates how to run two sample robots in Robocode with the RobocodeEngine using the
 // Robocode.Control package.
 //
 // NOTE: this application assumes that Robocode and the .NET plugin has been installed at C:\robocode, and that this
