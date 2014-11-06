@@ -1,12 +1,11 @@
-﻿#region Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
-
-// Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://robocode.sourceforge.net/license/epl-v10.html
-
-#endregion
+/**
+ * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://robocode.sourceforge.net/license/epl-v10.html
+ */
+﻿
 
 // This class is based on the source code from Sun's Java 1.5.0 API for java.nio.ByteBuffer, but
 // rewritten for C# and .NET with the purpose to bridge the .NET and Java internals of Robocode.

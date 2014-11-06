@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+    Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://robocode.sourceforge.net/license/epl-v10.html
+
+-->
 <jni4net-proxygen xmlns="http://jni4net.sf.net/0.8.6.0/toolConfig.xsd">
 
 	<TargetDirJvm>robocode.dotnet.host/src/main/java</TargetDirJvm>
