@@ -1,0 +1,8 @@
+Robocode is licensed under the Eclipse Public License v1.0 (EPL), which is available at
+http://robocode.sourceforge.net/license/epl-v10.html
+
+Notable exceptions are:
+
+Ant and Maven tools:
+- Files/tools located under the directory /tools/bin are licensed under the Apache Software Foundation (ASF).
+  The license files for the Ant and Maven tools are provided under the /tools/licenses directory.
