@@ -1,17 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2007, 2010 Aaron Rotenberg and Robocode Contributors
+/**
+ * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Aaron Rotenberg
- *     - Initial version
- *     Flemming N. Larsen
- *     - Moved functionality from main() into the public method clean() in order
- *       to let the Robocode game call the cleanup tool
- *******************************************************************************/
+ */
 package net.sf.robocode.cachecleaner;
 
 
