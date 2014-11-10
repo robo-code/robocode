@@ -8,31 +8,81 @@
 
 This is guide to build Robocode for .NET
 
-1) Build Java Robocode first with 'mvn install' from root directory (\robocode).
+REQUIRED TOOLS FOR BUILDING THE ROBOCODE .NET PLUG-IN
+=====================================================
 
-2) You need C# compiler and .NET SDK at least 4.0.
-   http://www.microsoft.com/en-us/download/details.aspx?id=17851
+Microsoft C# Compiler and .NET SDK
+----------------------------------
+- You need C# compiler and .NET SDK at least 4.0:
+  http://www.microsoft.com/en-us/download/details.aspx?id=17851
 
-   Best option is to install Visual Studio C# Express 2010 or newer.
+- Best option is to install Visual Studio C# Express 2010 or newer.
 
-3) Make sure you have csc.exe on PATH.
+- NOTE: Make sure you have csc.exe on PATH.
 
-4) Make sure you have JAVA_HOME set to proper version of Java SDK (64/32 bit) depending on your system, i.e. Java 6 SDK or newer.
+Microsoft HTML Help 1 Compiler and Sandcastle Help File Builder
+---------------------------------------------------------------
+- 'HTML Help 1 compiler' must be installed on the system - required by the
+  Sandcastle Help File Builder (SHFB)
 
-5) Install 'HTML Help 1 compiler' and afterward Sandcastle Help File Builder (SHFB):
+  HTML Help 1 compiler:
+  http://msdn.microsoft.com/en-us/library/ms669985(VS.85).aspx
 
-   HTML Help 1 compiler:
-     http://msdn.microsoft.com/en-us/library/ms669985(VS.85).aspx
+- Sandcastle Help File Builder (SHFB) must be installed on the system.
+  http://shfb.codeplex.com/
 
-   SHFB:
-     http://shfb.codeplex.com/
+  NOTE: When installing the SHFB, you don't need to install HTML Help 2 as
+       only version 1 is used for Robocode.
 
-   When installing the SHFB, you don't need to install HTML Help 2 as only version 1 is used for Robocode.
+Java Development Kit (JDK) and JAVA_HOME path
+---------------------------------------------
+- Oracle JDK 6 or newer must be installed on the system:
+  http://www.oracle.com/technetwork/java/javase/downloads
 
-6) Run \plugins\dotnet\tools\loadTools.cmd 
+- NOTE: Make sure to install the proper version (32 or 64-bit) depending on the
+        system.
 
-7) Run \plugins\dotnet\tools\keys\gennetkey.cmd 
 
-8) Run mvnassembly.cmd from \plugins\dotnet\ folder
+HOW TO BUILD THE ROBOCODE .NET PLUG-IN
+======================================
 
-9) Find the results in \robocode\plugins\dotnet\robocode.dotnet.distribution\target\robocode.dotnet-x.x.x.x-setup.jar
+1) Build the regular part of Robocode first with 'mvn install'
+  (or mvnassembly.cmd) from source code root directory of Robocode.
+
+2) CD (change directory) to \plugins\dotnet
+
+3) Run: tools\loadTools.cmd 
+
+4) Run: tools\keys\gennetkey.cmd 
+
+5) Run: mvnassembly.cmd (standing in the \plugins\dotnet directory)
+
+9) Find the resulting distribution file for the Robocode .NET plug-in named 
+   robocode.dotnet-x.x.x.x-setup.jar within this directory:
+   \plugins\dotnet\robocode.dotnet.distribution\target\
+
+   
+HOW TO BUILD NEW PROXY CLASSES USING JNI4NET
+============================================
+Robocode uses Jni4net (http://jni4net.com/) to bridge the .NET and Java parts
+of Robocode. Only the .NET plug-in is written for the Microsoft .NET platform.
+The rest of Robocode is build for the Java platform.
+
+When changing the public APIs or internal classes of Robocode it is important
+that the corresponding .NET classes are updated as well. Some classes for the
+.NET are handwritten. Other parts are auto-generated using the Jni4Net proxygen
+tool (details are provided here: http://jni4net.com/).
+
+In order to update all the auto-generated source files for the .NET plugin you
+must:
+
+1) CD (change directory) to \plugins\dotnet
+
+2) Run: generateProxies.cmd
+
+NOTE: You might need to remove the 'rem' and change the following lines inside
+      the generateProxies.cmd in order to force the JAVA_HOME and PATH to the
+	  correct Java version:
+
+rem set JAVA_HOME=%JDK6_HOME%
+rem set PATH=%JAVA_HOME%\bin;%PATH%
