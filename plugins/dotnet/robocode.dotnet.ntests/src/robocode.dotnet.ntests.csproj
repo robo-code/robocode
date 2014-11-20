@@ -44,9 +44,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="jni4net.n-0.8.6.0, Version=0.8.6.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
+    <Reference Include="jni4net.n-0.8.7.0, Version=0.8.7.0, Culture=neutral, PublicKeyToken=134a23405600bab4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tools\lib\jni4net.n-0.8.6.0.dll</HintPath>
+      <HintPath>..\..\tools\lib\jni4net.n-0.8.7.0.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework-2.4.3.0, Version=2.4.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

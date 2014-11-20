@@ -1,4 +1,4 @@
-## Version 1.9.2.4 Alpha 3 (24-Oct-2014)
+## Version 1.9.2.4 (20-Nov-2014)
 
 ### Bug fixes
 * [Req-159][]: Fix overkilled garbage collection on static fields.
@@ -8,6 +8,11 @@
 
 ### Changes
 * Upgraded Eclipse Compiler for Java (ECJ) to version 4.4.
+* Upgraded jni4net to version 0.8.7.0.
+
+### Other
+* Got rid of various issues (e.g. license headers) with the source files of Robocode in order to create a Debian distribution of Robocode.
+	* Thanks goes to Markus Koschany for all the help and support to make this possible.
 
 ## Version 1.9.2.3 (15-Sep-2014)
 * [Bug-374][]: Wrong size report for minirumble in v1.9.2.2.
