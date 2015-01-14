@@ -1,15 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Added getPaintEvents()
  *******************************************************************************/
 package net.sf.robocode.host.proxies;
 
@@ -17,7 +11,7 @@ package net.sf.robocode.host.proxies;
 import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.peer.IRobotPeer;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import robocode.*;
 import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 
@@ -34,7 +28,7 @@ import java.util.List;
  */
 public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedRobotPeer {
 
-	public AdvancedRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	public AdvancedRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(specification, hostManager, peer, statics);
 	}
 
@@ -192,6 +186,11 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	public List<ScannedRobotEvent> getScannedRobotEvents() {
 		getCall();
 		return eventManager.getScannedRobotEvents();
+	}
+	
+	public List<ScannedShipEvent> getScannedRobotEvents2() {
+		getCall();
+		return eventManager.getScannedRobotEvents2();
 	}
 
 	// data

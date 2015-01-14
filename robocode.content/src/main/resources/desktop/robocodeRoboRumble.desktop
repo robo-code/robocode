@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Robocode RoboRumble
+GenericName=Ranking system of Robocode bots
+Comment=Run RoboRumble battles for the LiteRumble
+Icon=roborumble
+Exec=robocode-RoboRumble
+Categories=Game;StrategyGame;

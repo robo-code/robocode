@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Robocode TwinDuel
+GenericName=Ranking system of Robocode bots
+Comment=Run TwinDuel battles for the LiteRumble
+Icon=roborumble
+Exec=robocode-TwinDuel
+Categories=Game;StrategyGame;

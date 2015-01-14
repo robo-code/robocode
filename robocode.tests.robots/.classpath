@@ -1,7 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-  <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
-  <classpathentry kind="src" path="src/main/resources" excluding="**/_svn/**|**/.svn/**|**/*.java"/>
+  <classpathentry kind="src" path="src/main/java"/>
+  <classpathentry kind="src" path="src/main/resources" excluding="**/_svn/**|**/.svn/**|**/.git/**|**/*.java"/>
   <classpathentry kind="output" path="target/classes"/>
-  <classpathentry kind="src" path="/robocode.api"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="src" path="/robocode.api"/>
+  <classpathentry kind="src" path="/robocode.samples"/>
 </classpath>

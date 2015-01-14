@@ -1,15 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * This is temporary implementation of the interface. You should not build any external component on top of it.
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
  *******************************************************************************/
 package net.sf.robocode.host.proxies;
 
@@ -17,17 +11,20 @@ package net.sf.robocode.host.proxies;
 import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.peer.IRobotPeer;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import robocode.Rules;
 import robocode.robotinterfaces.peer.IJuniorRobotPeer;
 
 
 /**
- * @author Pavel Savara (original)
+ * NOTE: This is temporary implementation of the interface. You should not build any external component on top of it.
+ *
+ * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  */
 public class JuniorRobotProxy extends BasicRobotProxy implements IJuniorRobotPeer {
 
-	public JuniorRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	public JuniorRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(specification, hostManager, peer, statics);
 	}
 
@@ -46,7 +43,7 @@ public class JuniorRobotProxy extends BasicRobotProxy implements IJuniorRobotPee
 
 		// -- Calculate max. velocity for moving perfect in a circle --
 
-		// maxTurnRate = 10 * 0.75 * velocity  (Robocode rule), and
+		// maxTurnRate = 10 * 0.75 * abs(velocity)  (Robocode rule), and
 		// maxTurnRate = velocity * degrees / distance  (curve turn rate)
 		//
 		// Hence, max. velocity = 10 / (degrees / distance + 0.75)
