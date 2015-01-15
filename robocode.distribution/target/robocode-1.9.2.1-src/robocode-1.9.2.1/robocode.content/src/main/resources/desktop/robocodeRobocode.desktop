@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Robocode
+GenericName=Tank AI programming game for Java and .NET
+Comment=Build the best - destroy the rest!
+Icon=robocode
+Exec=robocode-Robocode
+Categories=Game;StrategyGame;

@@ -1,0 +1,45 @@
+<assembly>
+    <id>src</id>
+    <formats>
+        <format>dir</format>
+        <format>zip</format>
+    </formats>
+
+    <fileSets>
+        <fileSet>
+            <excludes>
+                <exclude>plugins/battleview3d/**</exclude>
+                <exclude>plugins/js/**</exclude>
+                <exclude>plugins/scala/**</exclude>
+
+                <exclude>**/_ReSharper*/**</exclude>
+                <exclude>**/_ReSharper.*/**</exclude>
+                <exclude>**/Debug/**</exclude>
+                <exclude>**/Release/**</exclude>
+                <exclude>**/obj/**</exclude>
+                <exclude>**/target/**</exclude>
+                <exclude>**/lib/**</exclude>
+
+                <exclude>**/*.suo</exclude>
+                <exclude>**/*.user</exclude>
+                <exclude>**/*.log</exclude>
+                <exclude>**/*.iws</exclude>
+                <exclude>**/*.iml</exclude>
+                <exclude>**/*.ipr</exclude>
+                <exclude>**/*.jar</exclude>
+                <exclude>**/*.dll</exclude>
+                <exclude>**/*.exe</exclude>
+                <exclude>**/*.bak</exclude>
+                <exclude>**/Thumbs.db</exclude>
+                <exclude>**/~*</exclude>
+                <exclude>**/.*</exclude>
+                <exclude>**/.*</exclude>
+                <exclude>**/_svn/**</exclude>
+                <exclude>**/.svn/**</exclude>
+                <exclude>**/.metadata/**</exclude>
+                <exclude>**/*.jkey</exclude>
+                <exclude>**/*.snk</exclude>
+            </excludes>
+        </fileSet>
+    </fileSets>
+</assembly>

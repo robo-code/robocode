@@ -1,0 +1,10 @@
+robocode
+robocode.annotation
+robocode.control
+robocode.control.events
+robocode.control.snapshot
+robocode.naval
+robocode.naval.interfaces
+robocode.robotinterfaces
+robocode.robotinterfaces.peer
+robocode.util

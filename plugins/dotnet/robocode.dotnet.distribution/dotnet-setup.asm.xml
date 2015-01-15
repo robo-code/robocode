@@ -1,0 +1,110 @@
+<assembly>
+    <id>setup</id>
+    <formats>
+        <format>dir</format>
+        <format>jar</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <!-- robocode.dotnet.api -> robocode.dll -->
+        <dependencySet>
+            <includes>
+                <include>net.sf.robocode:robocode.dotnet.api</include>
+            </includes>
+            <outputDirectory>libs</outputDirectory>
+            <unpack>false</unpack>
+            <outputFileNameMapping>robocode.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+        <!-- robocode.dotnet.control.api -> robocode.control.dll -->
+        <dependencySet>
+            <includes>
+                <include>net.sf.robocode:robocode.dotnet.control.api</include>
+            </includes>
+            <outputDirectory>libs</outputDirectory>
+            <unpack>false</unpack>
+            <outputFileNameMapping>robocode.control.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+        <!-- other libraries -->
+        <dependencySet>
+			<includes>
+                <include>net.sf.robocode:robocode.dotnet.*</include>
+				<include>net.sf.jni4net:*</include>
+			</includes>
+            <excludes>
+                <!-- Used for creating this assembly -->
+                <exclude>net.sf.robocode:robocode.dotnet.distribution</exclude>
+                <!-- These are unpacked in distribution files -->
+                <exclude>net.sf.robocode:robocode.dotnet.installer</exclude>
+                <exclude>net.sf.robocode:robocode.dotnet.content</exclude>
+                <exclude>net.sf.robocode:robocode.dotnet.samples</exclude>
+                <!-- Handled independently and renamed into robocode.dll -->
+                <exclude>net.sf.robocode:robocode.dotnet.api</exclude>
+                <!-- Handled independently and renamed into robocode.control.dll -->
+                <exclude>net.sf.robocode:robocode.dotnet.control.api</exclude>
+            </excludes>
+            <outputDirectory>libs</outputDirectory>
+            <unpack>false</unpack>
+        </dependencySet>
+        <!-- installer and content -->
+        <dependencySet>
+            <includes>
+                <include>net.sf.robocode:robocode.dotnet.installer</include>
+                <include>net.sf.robocode:robocode.dotnet.content</include>
+            </includes>
+            <unpack>true</unpack>
+            <unpackOptions>
+                <excludes>
+                    <exclude>**/META-INF/**</exclude>
+                </excludes>
+            </unpackOptions>
+        </dependencySet>
+        <!-- robot samples -->
+        <dependencySet>
+            <includes>
+                <include>net.sf.robocode:robocode.dotnet.samples</include>
+            </includes>
+            <unpack>false</unpack>
+            <outputDirectory>robots</outputDirectory>
+            <outputFileNameMapping>samplescs-${project.version}.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+        <fileSet>
+            <excludes>
+                <exclude>**/*.csproj</exclude>
+                <exclude>**/*.iws</exclude>
+                <exclude>**/*.user</exclude>
+                <exclude>**/*.bak</exclude>
+                <exclude>**/Thumbs.db</exclude>
+                <exclude>**/~*</exclude>
+                <exclude>**/.*</exclude>
+                <exclude>**/_svn/**</exclude>
+                <exclude>**/.svn/**</exclude>
+                <exclude>**/.git/**</exclude>
+                <exclude>**/.metadata/**</exclude>
+                <exclude>**/bin/**</exclude>
+                <exclude>**/target/**</exclude>
+                <exclude>**/lib/**</exclude>
+                <exclude>**/obj/**</exclude>
+            </excludes>
+            <directory>../robocode.dotnet.samples/src</directory>
+            <outputDirectory>robots</outputDirectory>
+        </fileSet>
+    </fileSets>
+    <files>
+        <file>
+            <source>../robocode.dotnet.api/target/robocode.xml</source>
+            <outputDirectory>libs</outputDirectory>
+        </file>
+        <file>
+            <source>../robocode.dotnet.api/target/Help/RobotAPI.chm</source>
+        </file>
+        <file>
+            <source>../robocode.dotnet.control.api/target/robocode.control.xml</source>
+            <outputDirectory>libs</outputDirectory>
+        </file>
+        <file>
+            <source>../robocode.dotnet.control.api/target/Help/ControlAPI.chm</source>
+        </file>
+    </files>
+</assembly>

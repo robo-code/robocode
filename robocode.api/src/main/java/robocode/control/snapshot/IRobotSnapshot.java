@@ -1,17 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     Flemming N. Larsen
- *     - Javadocs
  *******************************************************************************/
 package robocode.control.snapshot;
+
+import robocode.robotinterfaces.ITransformable;
 
 
 /**
@@ -22,7 +18,7 @@ package robocode.control.snapshot;
  *
  * @since 1.6.2
  */
-public interface IRobotSnapshot {
+public interface IRobotSnapshot extends ITransformable{
 
 	/**
 	 * Returns the name of the robot.
@@ -53,9 +49,39 @@ public interface IRobotSnapshot {
 	String getTeamName();
 
 	/**
-	 * Returns the contestant index of the robot, which is constant during a battle.
+	 * Returns the index of the robot, which is unique for the specific robot and constant during a battle.
 	 *
-	 * @return the contestant index of the robot.
+	 * @return the robot index.
+	 *
+	 * @since 1.7.4
+	 *
+	 * @see #getTeamIndex()
+	 */
+	int getRobotIndex();
+
+	/**
+	 * Returns the index of the team that this robot is a member of, which is unique for the specific team and constant
+	 * during a battle.
+	 *
+	 * @return the team index or -1 if the robot is not a member of a team.
+	 *
+	 * @since 1.7.4
+	 *
+	 * @see #getRobotIndex()
+	 */
+	int getTeamIndex();
+
+	/**
+	 * Returns the contestant index, which is unique for each robot or team participating in a battle.
+	 * Note: If a team of robots is participating in a battle, this method will return the team index (see
+	 * {@link #getTeamIndex()}); otherwise the robot index (see {@link #getRobotIndex()}) is used instead.
+	 * This method is used for the battle results as scores are calculated for either a team of robots or individual
+	 * robot.
+	 * 
+	 * @return the contestant index of the robot or team.
+	 *
+	 * @see #getRobotIndex()
+	 * @see #getTeamIndex()
 	 */
 	int getContestantIndex();
 

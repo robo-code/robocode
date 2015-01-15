@@ -1,14 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
- *     - messages are now serialized and deserialized on sender and receiver threads
  *******************************************************************************/
 package net.sf.robocode.host.proxies;
 
@@ -18,7 +13,7 @@ import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.serialization.RobocodeObjectInputStream;
 import net.sf.robocode.peer.IRobotPeer;
 import net.sf.robocode.peer.TeamMessage;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import robocode.MessageEvent;
 import robocode.robotinterfaces.peer.ITeamRobotPeer;
 
@@ -33,7 +28,7 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 	static final int MAX_MESSAGE_SIZE = 32768;
 	private final ByteArrayOutputStream byteStreamWriter;
 
-	public TeamRobotProxy(IRobotRepositoryItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	public TeamRobotProxy(IRobotItem specification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		super(specification, hostManager, peer, statics);
 		byteStreamWriter = new ByteArrayOutputStream(MAX_MESSAGE_SIZE);
 	}
@@ -102,14 +97,19 @@ public class TeamRobotProxy extends AdvancedRobotProxy implements ITeamRobotPeer
 		for (TeamMessage teamMessage : teamMessages) {
 			try {
 				ByteArrayInputStream byteStreamReader = new ByteArrayInputStream(teamMessage.message);
-
 				byteStreamReader.reset();
-				RobocodeObjectInputStream objectStreamReader = new RobocodeObjectInputStream(byteStreamReader,
-						(ClassLoader) robotClassLoader);
-				Serializable message = (Serializable) objectStreamReader.readObject();
-				final MessageEvent event = new MessageEvent(teamMessage.sender, message);
 
-				eventManager.add(event);
+				RobocodeObjectInputStream objectStreamReader = null;
+				try {
+					objectStreamReader = new RobocodeObjectInputStream(byteStreamReader, (ClassLoader) robotClassLoader);
+					Serializable message = (Serializable) objectStreamReader.readObject();
+					MessageEvent event = new MessageEvent(teamMessage.sender, message);
+					eventManager.add(event);
+				} finally {
+					if (objectStreamReader != null) {
+						objectStreamReader.close();
+					}
+				}
 			} catch (IOException e) {
 				out.printStackTrace(e);
 			} catch (ClassNotFoundException e) {

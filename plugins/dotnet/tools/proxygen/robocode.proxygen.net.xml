@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jni4net-proxygen xmlns="http://jni4net.sf.net/0.8.6.0/toolConfig.xsd">
+
+	<TargetDirJvm>robocode.dotnet.host/src/main/java</TargetDirJvm>
+	<TargetDirClr>robocode.dotnet.nhost/src/generated</TargetDirClr>
+
+	<ClassPath Path="robocode.dotnet.host/target/classes"/>
+	<ClassPath Path="../../robocode.core/target/classes"/>
+	<ClassPath Path="../../robocode.api/target/classes"/>
+	<ClassPath Path="../../robocode.host/target/classes"/>
+
+	<AssemblyReference Assembly="robocode.dotnet.nhost\target\robocode.control.dll" />
+	<AssemblyReference Assembly="robocode.dotnet.nhost\target\robocode.dotnet.nhost.dll" />
+
+	<ClrType TypeName="net.sf.robocode.dotnet.host.DotNetHost"/>
+	<ClrType TypeName="net.sf.robocode.dotnet.repository.root.DllRootHelper"/>
+	<ClrType TypeName="net.sf.robocode.dotnet.nhost.ModuleN"/>
+
+</jni4net-proxygen>

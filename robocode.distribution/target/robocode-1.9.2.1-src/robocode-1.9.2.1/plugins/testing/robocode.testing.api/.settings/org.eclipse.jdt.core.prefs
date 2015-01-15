@@ -1,0 +1,9 @@
+#Tue Nov 27 22:14:19 CET 2012
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6
+eclipse.preferences.version=1
+encoding/src/main/java=8859_1
+org.eclipse.jdt.core.compiler.source=1.6
+encoding/src/test/resources=8859_1
+encoding/src/main/resources=8859_1
+encoding/src/test/java=8859_1
+org.eclipse.jdt.core.compiler.compliance=1.6

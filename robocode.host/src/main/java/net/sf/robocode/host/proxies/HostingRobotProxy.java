@@ -1,13 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- *
- * Contributors:
- *     Pavel Savara
- *     - Initial implementation
  *******************************************************************************/
 package net.sf.robocode.host.proxies;
 
@@ -22,7 +18,7 @@ import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.peer.BadBehavior;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.IRobotPeer;
-import net.sf.robocode.repository.IRobotRepositoryItem;
+import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.core.Container;
 import robocode.RobotStatus;
 import robocode.exception.AbortedException;
@@ -37,24 +33,31 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+// XXX Remember to update the .NET version whenever a change is made to this class!
+
 /**
  * @author Pavel Savara (original)
  */
 public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
+
+	private final IRobotItem robotSpecification;
+
 	protected EventManager eventManager;
+	protected final IHostManager hostManager;
 	protected RobotThreadManager robotThreadManager;
 	protected RobotFileSystemManager robotFileSystemManager;
-	private final IRobotRepositoryItem robotSpecification;
+	private IThreadManager threadManager;
+
+	protected IBasicRobot robot;
+	protected final IRobotPeer peer;
 	protected IRobotClassLoader robotClassLoader;
+
 	protected final RobotStatics statics;
 	protected RobotOutputStream out;
-	protected final IRobotPeer peer;
-	protected final IHostManager hostManager;
-	private IThreadManager threadManager;
-	protected IBasicRobot robot;
+
 	private final Set<String> securityViolations = Collections.synchronizedSet(new HashSet<String>());
 
-	HostingRobotProxy(IRobotRepositoryItem robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
+	HostingRobotProxy(IRobotItem robotSpecification, IHostManager hostManager, IRobotPeer peer, RobotStatics statics) {
 		this.peer = peer;
 		this.statics = statics;
 		this.hostManager = hostManager;
@@ -75,8 +78,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		robotFileSystemManager.initialize();
 	}
 
-	private JavaHost getHost(IRobotRepositoryItem robotSpecification) {
-		return (JavaHost) Container.cache.getComponent("robocode.host." + robotSpecification.getRobotLanguage());
+	private JavaHost getHost(IRobotItem robotSpecification) {
+		return (JavaHost) Container.cache.getComponent("robocode.host." + robotSpecification.getPlatform().toLowerCase());
 	}
 
 	public void cleanup() {
@@ -214,11 +217,8 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 					// has started running.
 					eventManager.processEvents();
 
-					Runnable runnable = robot.getRobotRunnable();
-
-					if (runnable != null) {
-						runnable.run();
-					}
+					// Call user code
+					callUserCode();
 				}
 				while (peer.isRunning()) {
 					executeImpl();
@@ -229,27 +229,28 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 				println("SYSTEM: " + statics.getName() + " has died");
 			} catch (DisabledException e) {
 				drainEnergy();
-				String msg = e.getMessage();
 
+				String msg = e.getMessage();
 				if (msg == null) {
 					msg = "";
 				} else {
 					msg = ": " + msg;
 				}
-				println("SYSTEM: Robot disabled" + msg);
-				logMessage(statics.getName() + "Robot disabled");
+				println("SYSTEM: Robot disabled: " + msg);
+				logMessage("Robot disabled: " + statics.getName());
 			} catch (Exception e) {
 				drainEnergy();
 				println(e);
 				logMessage(statics.getName() + ": Exception: " + e); // without stack here
+			} catch (ThreadDeath e) {
+				drainEnergy();
+				println(e);
+				logMessage(statics.getName() + " stopped successfully.");
+				throw e; // must be re-thrown in order to stop the thread
 			} catch (Throwable t) {
 				drainEnergy();
-				if (t instanceof ThreadDeath) {
-					logMessage(statics.getName() + " stopped successfully.");
-				} else {
-					println(t);
-					logMessage(statics.getName() + ": Throwable: " + t); // without stack here
-				}
+				println(t);
+				logMessage(statics.getName() + ": Throwable: " + t); // without stack here
 			} finally {
 				waitForBattleEndImpl();
 			}
@@ -264,6 +265,13 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 		// If battle is waiting for us, well, all done!
 		synchronized (this) {
 			notifyAll();
+		}
+	}
+
+	private void callUserCode() {
+		Runnable runnable = robot.getRobotRunnable();
+		if (runnable != null) {
+			runnable.run();
 		}
 	}
 
@@ -295,4 +303,6 @@ public abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedTh
 			}
 		}
 	}
+	
+	public void fire(int index) {}
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javadocOptions>
+  <docletArtifacts>
+    <docletArtifact />
+  </docletArtifacts>
+  <tagletArtifacts>
+    <tagletArtifact />
+  </tagletArtifacts>
+  <links>
+    <link>http://docs.oracle.com/javase/6/docs/api/</link>
+  </links>
+  <excludePackageNames>
+    <excludePackageName>robocode.exception</excludePackageName>
+    <excludePackageName>net.sf.robocode.*</excludePackageName>
+  </excludePackageNames>
+  <docfilesSubdirsUsed>true</docfilesSubdirsUsed>
+  <javadocResourcesDirectory>src/main/javadoc</javadocResourcesDirectory>
+</javadocOptions>
