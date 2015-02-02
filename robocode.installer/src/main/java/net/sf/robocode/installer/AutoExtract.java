@@ -299,9 +299,9 @@ public class AutoExtract implements ActionListener {
 		if (argv.length == 1) {
 			suggestedDirName = argv[0];
 		} else if (isWindowsOS()) {
-			suggestedDirName = "C:\\robocode\\";
+			suggestedDirName = "C:\\naval-robocode\\";
 		} else {
-			suggestedDirName = System.getProperty("user.home") + File.separator + "robocode" + File.separator;
+			suggestedDirName = System.getProperty("user.home") + File.separator + "naval-robocode" + File.separator;
 		}
 
 		String message;
@@ -325,7 +325,7 @@ public class AutoExtract implements ActionListener {
 	private static boolean install(File suggestedDir) {
 		// Verify that the Java version is version 6 (1.6.0) or newer
 		if (javaVersion.startsWith("1.") && javaVersion.charAt(2) < '5') {
-			final String message = "Robocode requires Java 6 (1.6.0) or newer.\n"
+			final String message = "Naval Robocode requires Java 6 (1.6.0) or newer.\n"
 					+ "Your system is currently running Java " + javaVersion + ".\n"
 					+ "If you have not installed (or activated) at least\n" + "JRE 6 or JDK 6, please do so.";
 
@@ -347,7 +347,7 @@ public class AutoExtract implements ActionListener {
 
 			while (!done) {
 				int rc = JOptionPane.showConfirmDialog(null,
-						"Robocode will be installed in:\n" + suggestedDir + "\nIs this ok?", "Installing Robocode",
+						"Naval Robocode will be installed in:\n" + suggestedDir + "\nIs this ok?", "Installing Naval Robocode",
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (rc == JOptionPane.YES_OPTION) {
@@ -399,7 +399,7 @@ public class AutoExtract implements ActionListener {
 
 			// Create shortcuts and file associations
 			if (extractor.extract(installDir)) {
-				extractor.createShortcuts(installDir, "robocode.bat", "Robocode", "Robocode");
+				extractor.createShortcuts(installDir, "robocode.bat", "Naval Robocode", "Naval Robocode");
 				extractor.createFileAssociations(installDir);
 				return true;
 			}
@@ -466,28 +466,28 @@ public class AutoExtract implements ActionListener {
 		if (osName.toLowerCase().indexOf("win") == 0) {
 			if (createWindowsShortcuts(installDir, runnable, folder, name) == false) {
 				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Robocode, enter the following at a command prompt:\n" + "cd "
+						message + "\n" + "To start Naval Robocode, enter the following at a command prompt:\n" + "cd "
 						+ installDir.getAbsolutePath() + "\n" + "robocode.bat");
 			}
 		} else if (osName.toLowerCase().indexOf("mac") == 0) {
 			if (osVersion >= 10.1) {
 				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Robocode, browse to " + installDir + " then double-click robocode.sh\n");
+						message + "\n" + "To start Naval Robocode, browse to " + installDir + " then double-click robocode.sh\n");
 			} else {
 				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Robocode, enter the following at a command prompt:\n"
+						message + "\n" + "To start Naval Robocode, enter the following at a command prompt:\n"
 						+ installDir.getAbsolutePath() + "/robocode.sh");
 			}
 		} else {
 			JOptionPane.showMessageDialog(null,
-					message + "\n" + "To start Robocode, enter the following at a command prompt:\n"
+					message + "\n" + "To start Naval Robocode, enter the following at a command prompt:\n"
 					+ installDir.getAbsolutePath() + "/robocode.sh");
 		}
 	}
 
 	private boolean createWindowsShortcuts(File installDir, String runnable, String folder, String name) {
 		int rc = JOptionPane.showConfirmDialog(null,
-				"Would you like to install a shortcut to Robocode in the Start menu? (Recommended)", "Create Shortcuts",
+				"Would you like to install a shortcut to Naval Robocode in the Start menu? (Recommended)", "Create Shortcuts",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 		if (rc != JOptionPane.YES_OPTION) {
@@ -538,7 +538,7 @@ public class AutoExtract implements ActionListener {
 				return false;
 			}
 			JOptionPane.showMessageDialog(null,
-					message + "\n" + "A Robocode program group has been added to your Start menu\n"
+					message + "\n" + "A Naval Robocode program group has been added to your Start menu\n"
 					+ "A Robocode icon has been added to your desktop.");
 			if (!shortcutMaker.delete()) {
 				System.err.println("Can't delete: " + shortcutMaker);
