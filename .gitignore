@@ -1,3 +1,4 @@
 target
-
 maven-build.xml
+maven-build.properties
+build.xml
