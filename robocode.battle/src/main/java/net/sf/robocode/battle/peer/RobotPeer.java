@@ -1,15 +1,16 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.battle.peer;
 
 
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.battle.Battle;
+import net.sf.robocode.battle.BattleManager;
 import net.sf.robocode.battle.BoundingRectangle;
 import net.sf.robocode.host.IHostManager;
 import net.sf.robocode.host.RobotStatics;
@@ -30,6 +31,7 @@ import robocode.control.snapshot.RobotState;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.WinException;
+import robocode.robotinterfaces.ITransformable;
 import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;
@@ -62,7 +64,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author "Positive" (contributor)
  * @author "BD123" (contributor)
  */
-public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
+public /*final*/ class RobotPeer implements IRobotPeerBattle, IRobotPeer, ITransformable {
 
 	public static final int
 			WIDTH = 36,
@@ -75,14 +77,14 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private static final int MAX_SKIPPED_TURNS = 30;
 	private static final int MAX_SKIPPED_TURNS_WITH_IO = 240;
 
-	private Battle battle;
-	private RobotStatistics statistics;
-	private final TeamPeer teamPeer;
+	protected Battle battle;
+	protected RobotStatistics statistics;
+	protected final TeamPeer teamPeer;
 	private final RobotSpecification robotSpecification;
 
-	private IHostingRobotProxy robotProxy;
-	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
-	private AtomicReference<ExecCommands> commands = new AtomicReference<ExecCommands>();
+	protected IHostingRobotProxy robotProxy;
+	protected AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
+	protected AtomicReference<ExecCommands> commands = new AtomicReference<ExecCommands>();
 	private AtomicReference<EventQueue> events = new AtomicReference<EventQueue>(new EventQueue());
 	private AtomicReference<List<TeamMessage>> teamMessages = new AtomicReference<List<TeamMessage>>(
 			new ArrayList<TeamMessage>());
@@ -95,22 +97,22 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private final StringBuilder battleText = new StringBuilder(1024);
 	private final StringBuilder proxyText = new StringBuilder(1024);
 	private RobotStatics statics;
-	private BattleRules battleRules;
+	protected BattleRules battleRules;
 
 	// for battle thread, during robots processing
-	private ExecCommands currentCommands;
-	private double lastHeading;
+	protected ExecCommands currentCommands;
+	protected double lastHeading;
 	private double lastGunHeading;
 	private double lastRadarHeading;
 
 	private double energy;
-	private double velocity;
-	private double bodyHeading;
+	protected double velocity;
+	protected double bodyHeading;
 	private double radarHeading;
 	private double gunHeading;
 	private double gunHeat;
-	private double x;
-	private double y;
+	protected double x;
+	protected double y;
 
 	private boolean scan;
 	private boolean turnedRadarWithGun; // last round
@@ -120,7 +122,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private boolean sgPaintEnabled;
 
 	// waiting for next tick
-	private final AtomicBoolean isSleeping = new AtomicBoolean(false);
+	protected final AtomicBoolean isSleeping = new AtomicBoolean(false);
 	private final AtomicBoolean halt = new AtomicBoolean(false);
 
 	// last and current execution time and detecting skipped turns
@@ -130,12 +132,12 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private boolean isExecFinishedAndDisabled;
 	private boolean isEnergyDrained;
 	private boolean isWinner;
-	private boolean inCollision;
-	private boolean isOverDriving;
+	protected boolean inCollision;
+	protected boolean isOverDriving;
 
 	private RobotState state;
-	private final Arc2D scanArc;
-	private final BoundingRectangle boundingBox;
+	protected final Arc2D scanArc;
+	protected final BoundingRectangle boundingBox;
 	private final RbSerializer rbSerializer;
 
 	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int robotIndex) {
@@ -177,6 +179,23 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		this.statistics = new RobotStatistics(this, battle.getRobotsCount());
 
 		this.robotProxy = (IHostingRobotProxy) hostManager.createRobotProxy(robotSpecification, statics, this);
+
+	}
+	
+	/**
+	 * Empty constructor for RobotPeer
+	 */
+	public RobotPeer(){
+		super();
+		this.battle = null;
+		this.robotSpecification = null;
+
+		this.rbSerializer = null;
+
+		this.boundingBox = new BoundingRectangle();
+		this.scanArc = new Arc2D.Double();
+		this.teamPeer = null;
+		this.state = RobotState.ACTIVE;
 	}
 
 	public void println(String s) {
@@ -342,10 +361,23 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// robot space
 	// -------------------
 
+	/**
+	 * Method for updating headings. Would be a pain if I made getters and setters for all of them 
+	 */
+	protected void updateOldHeadings(){
+		lastHeading = bodyHeading;
+		lastGunHeading = gunHeading;
+		lastRadarHeading = radarHeading;
+	}
+	
 	public double getGunHeading() {
 		return gunHeading;
 	}
 
+	public void setBodyHeading(double bodyHeading){
+		this.bodyHeading = bodyHeading;
+	}
+	
 	public double getBodyHeading() {
 		return bodyHeading;
 	}
@@ -353,13 +385,25 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public double getRadarHeading() {
 		return radarHeading;
 	}
+	
+	protected void setVelocity(double velocity){
+		this.velocity = velocity;
+	}
 
 	public double getVelocity() {
 		return velocity;
 	}
 
+	public void setX(double x){
+		this.x = x;
+	}
+	
 	public double getX() {
 		return x;
+	}
+	
+	public void setY(double y){
+		this.y = y;
 	}
 
 	public double getY() {
@@ -370,6 +414,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return energy;
 	}
 
+	public void setGunHeat(double gunHeat){
+		this.gunHeat = gunHeat;
+	}
+	
 	public double getGunHeat() {
 		return gunHeat;
 	}
@@ -453,7 +501,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		rbSerializer.serializeToBuffer(bidirectionalBuffer, RbSerializer.ExecResults_TYPE, results);
 	}
 
-	public final ExecResults executeImpl(ExecCommands newCommands) {
+	public /*final*/ ExecResults executeImpl(ExecCommands newCommands) {
 		validateCommands(newCommands);
 
 		if (!isExecFinishedAndDisabled) {
@@ -496,12 +544,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		final RobotStatus resStatus = status.get();
 
 		final boolean shouldWait = battle.isAborted() || (battle.isLastRound() && isWinner());
-
-		return new ExecResults(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), readoutBullets(),
+		return new ExecResults(resCommands, resStatus, readoutEvents(), readoutTeamMessages(), readoutBullets(), null,
 				isHalt(), shouldWait, isPaintEnabled());
 	}
 
-	public final ExecResults waitForBattleEndImpl(ExecCommands newCommands) {
+	public /*final*/ ExecResults waitForBattleEndImpl(ExecCommands newCommands) {
 		if (!isHalt()) {
 			// from robot to battle
 			commands.set(new ExecCommands(newCommands, true));
@@ -517,11 +564,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		readoutTeamMessages(); // throw away
 		
-		return new ExecResults(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), readoutBullets(),
+		return new ExecResults(resCommands, resStatus, readoutEvents(), new ArrayList<TeamMessage>(), readoutBullets(),null,
 				isHalt(), shouldWait, false);
 	}
 
-	private void validateCommands(ExecCommands newCommands) {
+	protected void validateCommands(ExecCommands newCommands) {
 		if (Double.isNaN(newCommands.getMaxTurnRate())) {
 			println("You cannot setMaxTurnRate to: " + newCommands.getMaxTurnRate());
 		}
@@ -665,7 +712,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					bodyHeading = gunHeading = radarHeading = setup.getHeading();
 
 					updateBoundingBox();
+					
 					valid = validSpot(robots);
+					
 				}
 			}
 		}
@@ -706,19 +755,31 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 						x = sentryBorderSize + RobotPeer.WIDTH + rndX * (safeZoneWidth - 2 * RobotPeer.WIDTH);
 						y = sentryBorderSize + RobotPeer.HEIGHT + rndY * (safeZoneHeight - 2 * RobotPeer.HEIGHT);
-					} else {				
-						x = RobotPeer.WIDTH + rndX * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
-						y = RobotPeer.HEIGHT + rndY * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+					} else {
+						if(HiddenAccess.getNaval()){
+							x = ShipPeer.HEIGHT + rndX * (battleRules.getBattlefieldWidth() - 2 * ShipPeer.HEIGHT);
+							y = ShipPeer.HEIGHT + rndY * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+						}else{
+							x = RobotPeer.WIDTH + rndX * (battleRules.getBattlefieldWidth() - 2 * RobotPeer.WIDTH);
+							y = RobotPeer.HEIGHT + rndY * (battleRules.getBattlefieldHeight() - 2 * RobotPeer.HEIGHT);
+						}
+						
 					}
 				}
 
 				bodyHeading = 2 * Math.PI * random.nextDouble();
 				gunHeading = radarHeading = bodyHeading;
 				updateBoundingBox();
-
-				if (validSpot(robots)) {
-					break;
-				}
+				
+//				if(BattleManager.IS_NAVAL){
+//					if (validSpotShips(robots)) {
+//						break;
+//					}
+//				}else{
+					if (validSpot(robots)) {
+						break;
+					}
+//				}
 			}
 		}
 
@@ -754,7 +815,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		lastExecutionTime = -1;
 
+		
 		status = new AtomicReference<RobotStatus>();
+		
 
 		readoutEvents();
 		readoutTeamMessages();
@@ -771,7 +834,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		commands = new AtomicReference<ExecCommands>(newExecCommands);
 	}
 
-	private boolean validSpot(List<RobotPeer> robots) {
+	protected boolean validSpot(List<RobotPeer> robots) {
 		for (RobotPeer otherRobot : robots) {
 			if (otherRobot != null && otherRobot != this) {
 				if (getBoundingBox().intersects(otherRobot.getBoundingBox())) {
@@ -781,6 +844,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 		return true;
 	}
+		
 
 	public void startRound(long waitMillis, int waitNanos) {
 		Logger.logMessage(".", false);
@@ -840,7 +904,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	private void fireBullets(List<BulletCommand> bulletCommands) {
+	protected void fireBullets(List<BulletCommand> bulletCommands) {
 		BulletPeer newBullet = null;
 
 		for (BulletCommand bulletCmd : bulletCommands) {
@@ -870,14 +934,17 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			newBullet.setX(x);
 			newBullet.setY(y);
 		}
+
 		// there is only last bullet in one turn
 		if (newBullet != null) {
 			// newBullet.update(robots, bullets);
 			battle.addBullet(newBullet);
 		}
+		
+		
 	}
 
-	public final void performMove(List<RobotPeer> robots, double zapEnergy) {
+	public /*final*/ void performMove(List<RobotPeer> robots, double zapEnergy) {
 
 		// Reset robot state to active if it is not dead
 		if (isDead()) {
@@ -932,7 +999,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			zap(zapEnergy);
 		}
 	}
-
+	
 	public void performScan(List<RobotPeer> robots) {
 		if (isDead()) {
 			return;
@@ -940,7 +1007,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 		turnedRadarWithGun = false;
 		// scan
-		if (scan) {
+		if(isShip()){
+			scan(robots);
+		}
+		else if (scan) {
 			scan(lastRadarHeading, robots);
 			turnedRadarWithGun = (lastGunHeading == lastRadarHeading) && (gunHeading == radarHeading);
 			scan = false;
@@ -961,6 +1031,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		lastGunHeading = -1;
 		lastRadarHeading = -1;
 	}
+	
+	protected void scan(List<RobotPeer> robots){ System.out.println("Not possible as a Robot. 'Abstract' method for ShipPeer!");}
 
 	private void addTeamMessage(TeamMessage message) {
 		final List<TeamMessage> queue = teamMessages.get();
@@ -1000,7 +1072,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return otherRobot.getName();
 	}		
 
-	private void checkRobotCollision(List<RobotPeer> robots) {
+	protected void checkRobotCollision(List<RobotPeer> robots) {
 		inCollision = false;
 
 		for (RobotPeer otherRobot : robots) {
@@ -1062,7 +1134,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	private void checkWallCollision() {
+	protected void checkWallCollision() {
 		int minX = 0 + HALF_WIDTH_OFFSET;
 		int minY = 0 + HALF_HEIGHT_OFFSET;
 		int maxX = (int) getBattleFieldWidth() - HALF_WIDTH_OFFSET;
@@ -1229,15 +1301,15 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	private double getBattleFieldHeight() {
+	public double getBattleFieldHeight() {
 		return battleRules.getBattlefieldHeight();
 	}
 
-	private double getBattleFieldWidth() {
+	public double getBattleFieldWidth() {
 		return battleRules.getBattlefieldWidth();
 	}
 
-	private void updateBoundingBox() {
+	protected void updateBoundingBox() {
 		boundingBox.setRect(x - HALF_WIDTH_OFFSET, y - HALF_HEIGHT_OFFSET, WIDTH, HEIGHT);
 	}
 
@@ -1404,9 +1476,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	 * This is Nat Pavasants method described here:
 	 *   http://robowiki.net/wiki/User:Positive/Optimal_Velocity#Nat.27s_updateMovement
 	 */
-	private void updateMovement() {
+	protected void updateMovement() {
 		double distance = currentCommands.getDistanceRemaining();
-
 		if (Double.isNaN(distance)) {
 			distance = 0;
 		}
@@ -1440,7 +1511,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	private double getDistanceTraveledUntilStop(double velocity) {
+	protected double getDistanceTraveledUntilStop(double velocity) {
 		double distance = 0;
 
 		velocity = Math.abs(velocity);
@@ -1503,14 +1574,14 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return Math.min(1, decelTime) * Rules.DECELERATION + Math.max(0, accelTime) * Rules.ACCELERATION;
 	}
 
-	private void updateGunHeat() {
+	protected void updateGunHeat() {
 		gunHeat -= battleRules.getGunCoolingRate();
 		if (gunHeat < 0) {
 			gunHeat = 0;
 		}
 	}
 
-	private void scan(double lastRadarHeading, List<RobotPeer> robots) {
+	protected void scan(double lastRadarHeading, List<RobotPeer> robots) {		
 		if (statics.isDroid()) {
 			return;
 		}
@@ -1558,7 +1629,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				|| arc.intersects(rect);
 	}
 
-	private void zap(double zapAmount) {
+	protected void zap(double zapAmount) {
 		if (energy == 0) {
 			kill();
 			return;
@@ -1713,6 +1784,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	public boolean isTryingToPaint() {
 		return commands.get().isTryingToPaint();
 	}
+	
+	public boolean isShip() {
+		return statics.isShip();
+	}
 
 	public List<DebugProperty> getDebugProperties() {
 		return commands.get().getDebugProperties();
@@ -1755,10 +1830,35 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 		return 0;
 	}
+	
+	public BattleRules getBattleRules(){
+		return battle.getBattleRules();
+	}
 
 	@Override
 	public String toString() {
 		return statics.getShortName() + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString()
 				+ (isSleeping() ? " sleeping " : "") + (isRunning() ? " running" : "") + (isHalt() ? " halted" : "");
 	}
+
+	protected void scan() {
+		scan = true;
+	}
+	
+	protected boolean getScan(){
+		return scan;
+	}
+	
+	protected void checkScan(double lastX, double lastY){
+		// Scan false means robot did not call scan() manually.
+		// But if we're moving, scan
+		if (!scan) {
+			scan = (lastHeading != bodyHeading || lastGunHeading != gunHeading || lastRadarHeading != radarHeading
+					|| lastX != x || lastY != y);
+		}
+	}
+	
+	
+	public void onScannedShip(ScannedShipEvent event) {}
+
 }

@@ -72,6 +72,23 @@ public final class RbSerializer {
 	public final static byte MouseReleasedEvent_TYPE = 53;
 	public final static byte MouseWheelMovedEvent_TYPE = 54;
 	public final static byte RoundEndedEvent_TYPE = 55;
+	
+	// CUSTOM ones are below.
+	public final static byte ScannedProjectileEvent_TYPE = 56;
+	public final static byte ScannedShipEvent_TYPE = 57;
+	public final static byte MineHitMineEvent_TYPE = 58;
+	public final static byte MineHitEvent_TYPE = 59;
+	public final static byte HitByMineEvent_TYPE = 60;
+	public final static byte Mine_TYPE = 61;
+	public final static byte ComponentManager_TYPE = 62;
+	public final static byte MineCommand_TYPE = 63;
+	public final static byte ComponentsCommand_TYPE = 64;
+	public final static byte MineStatus_TYPE = 65;
+		
+	//       Custom once go down from 127(7F) (Java uses SBYTE!)
+	public final static byte RadarComponent_TYPE = 0x7F;
+	public final static byte WeaponComponent_TYPE = 0x7E;
+	public final static byte MineComponent_TYPE = 0x7D;
 
 	private final static ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
 	private static Map<Class<?>, Byte> classToType = new HashMap<Class<?>, Byte>();

@@ -605,4 +605,8 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 	public String toString() {
 		return itemUrl.toString();
 	}
+
+	public boolean isShip(){
+		return robotType.isShip();
+	}
 }

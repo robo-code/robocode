@@ -11,6 +11,10 @@ package net.sf.robocode.api;
 import net.sf.robocode.core.IModule;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.*;
+import robocode.naval.ComponentManager;
+import robocode.naval.MineComponent;
+import robocode.naval.RadarComponent;
+import robocode.naval.WeaponComponent;
 
 import java.util.List;
 
@@ -50,5 +54,16 @@ public class Module implements IModule {
 		RbSerializer.register(MousePressedEvent.class, RbSerializer.MousePressedEvent_TYPE);
 		RbSerializer.register(MouseReleasedEvent.class, RbSerializer.MouseReleasedEvent_TYPE);
 		RbSerializer.register(MouseWheelMovedEvent.class, RbSerializer.MouseWheelMovedEvent_TYPE);
+	
+		// RobotComponent
+		RbSerializer.register(RadarComponent.class, RbSerializer.RadarComponent_TYPE);
+		RbSerializer.register(WeaponComponent.class, RbSerializer.WeaponComponent_TYPE);
+		RbSerializer.register(MineComponent.class, RbSerializer.MineComponent_TYPE);
+		RbSerializer.register(ComponentManager.class, RbSerializer.ComponentManager_TYPE);
+							
+		//Mines
+		RbSerializer.register(MineHitMineEvent.class, RbSerializer.MineHitMineEvent_TYPE);
+		RbSerializer.register(MineHitEvent.class, RbSerializer.MineHitEvent_TYPE);
+		RbSerializer.register(HitByMineEvent.class, RbSerializer.HitByMineEvent_TYPE);
 	}
 }

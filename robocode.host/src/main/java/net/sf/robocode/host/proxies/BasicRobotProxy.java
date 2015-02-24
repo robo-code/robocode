@@ -48,13 +48,13 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	private IGraphicsProxy graphicsProxy;
 
-	private RobotStatus status;
+	protected RobotStatus status;
 	private boolean isDisabled;
 	protected ExecCommands commands;
-	private ExecResults execResults;
+	protected ExecResults execResults;
 
-	private final Map<Integer, Bullet> bullets = new ConcurrentHashMap<Integer, Bullet>();
-	private int nextBulletId = 1; // 0 is used for bullet explosions 
+	protected final Map<Integer, Bullet> bullets = new ConcurrentHashMap<Integer, Bullet>();
+	protected int nextBulletId = 1; // 0 is used for bullet explosions 
 
 	private final AtomicInteger setCallCount = new AtomicInteger(0);
 	private final AtomicInteger getCallCount = new AtomicInteger(0);
@@ -72,7 +72,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		graphicsProxy = new Graphics2DSerialized();
 
 		// dummy
-		execResults = new ExecResults(null, null, null, null, null, false, false, false);
+		execResults = new ExecResults(null, null, null, null, null, null, false, false, false);
 
 		setSetCallCount(0);
 		setGetCallCount(0);
@@ -353,7 +353,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 	}
 
 	@Override
-	protected final void executeImpl() {
+	protected void executeImpl() {
 		if (execResults == null) {
 			// this is to slow down undead robot after cleanup, from fast exception-loop
 			try {
@@ -466,7 +466,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	protected void loadTeamMessages(java.util.List<TeamMessage> teamMessages) {}
 
-	private final double getEnergyImpl() {
+	protected final double getEnergyImpl() {
 		return status.getEnergy() - firedEnergy;
 	}
 

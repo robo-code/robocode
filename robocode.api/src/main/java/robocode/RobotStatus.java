@@ -24,7 +24,7 @@ import java.nio.ByteBuffer;
  *
  * @since 1.5
  */
-public final class RobotStatus implements Serializable {
+public class RobotStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final double energy;
@@ -336,7 +336,7 @@ public final class RobotStatus implements Serializable {
 		return time;
 	}
 
-	private RobotStatus(double energy, double x, double y, double bodyHeading, double gunHeading, double radarHeading,
+	protected RobotStatus(double energy, double x, double y, double bodyHeading, double gunHeading, double radarHeading,
 			double velocity, double bodyTurnRemaining, double radarTurnRemaining, double gunTurnRemaining,
 			double distanceRemaining, double gunHeat, int others, int numSentries, int roundNum, int numRounds, long time) {
 		this.energy = energy;

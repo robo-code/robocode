@@ -1,13 +1,14 @@
-/**
- * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
+/*******************************************************************************
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.ui;
 
 
+import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.gfx.ImageUtil;
 import net.sf.robocode.ui.gfx.RenderImage;
@@ -23,7 +24,7 @@ import java.util.List;
  * @author Titus Chen (contributor)
  */
 public class ImageManager implements IImageManager {
-
+	
 	private final ISettingsManager properties;
 
 	private Image[] groundImages;
@@ -34,12 +35,25 @@ public class ImageManager implements IImageManager {
 	private Image bodyImage;
 	private Image gunImage;
 	private Image radarImage;
+	
+	// Naval
+	private Image navalImageBody;
+	private Image navalImageGun;
+	private Image navalImageRadar;
+	private Image navalImageMine;
+	private Image navalImageMineComponent;
 
 	private static final int MAX_NUM_COLORS = 256;
 
 	private HashMap<Integer, RenderImage> robotBodyImageCache;
 	private HashMap<Integer, RenderImage> robotGunImageCache;
 	private HashMap<Integer, RenderImage> robotRadarImageCache;
+	
+	private HashMap<Integer, RenderImage> navalImageCacheBody;
+	private HashMap<Integer, RenderImage> navalImageCacheGun;
+	private HashMap<Integer, RenderImage> navalImageCacheRadar;
+	private HashMap<Integer, RenderImage> navalImageCacheMine;
+	private HashMap<Integer, RenderImage> navalImageCacheMineComponent;
 
 	public ImageManager(ISettingsManager properties) {
 		this.properties = properties;
@@ -64,12 +78,36 @@ public class ImageManager implements IImageManager {
 		getGunImage();
 		getRadarImage();
 		getExplosionRenderImage(0, 0);
+		
+		// Naval, reset
+		{
+			navalImageBody = null;
+			navalImageGun = null;
+			navalImageRadar = null;
+			navalImageMine = null;
+			navalImageMineComponent = null;
+			
+			navalImageCacheBody = new RenderCache<Integer, RenderImage>();
+			navalImageCacheGun = new RenderCache<Integer, RenderImage>();
+			navalImageCacheRadar = new RenderCache<Integer, RenderImage>();
+			navalImageCacheMine = new RenderCache<Integer, RenderImage>();
+			navalImageCacheMineComponent = new RenderCache<Integer, RenderImage>();
+
+			getNavalImageBody();
+			getNavalImageGun();
+			getNavalImageRadar();
+			getNavalImageMine();
+			getNavalImageMineComponent();
+		}
 	}
 
 	public Image getGroundTileImage(int index) {
-		if (groundImages[index] == null) {
+		if (HiddenAccess.getNaval()) {
+			groundImages[index] = getImage("/net/sf/robocode/ui/images/naval/ground/blue_metal_" + index + ".png");
+		} else {
 			groundImages[index] = getImage("/net/sf/robocode/ui/images/ground/blue_metal/blue_metal_" + index + ".png");
 		}
+		
 		return groundImages[index];
 	}
 
@@ -139,6 +177,12 @@ public class ImageManager implements IImageManager {
 		}
 		return bodyImage;
 	}
+	private Image getNavalImageBody() {
+		if (navalImageBody == null) {
+			navalImageBody = getImage("/net/sf/robocode/ui/images/naval/body.png");
+		}
+		return navalImageBody;
+	}
 
 	/**
 	 * Gets the gun image
@@ -151,6 +195,24 @@ public class ImageManager implements IImageManager {
 			gunImage = getImage("/net/sf/robocode/ui/images/turret.png");
 		}
 		return gunImage;
+	}
+	private Image getNavalImageGun() {
+		if (navalImageGun == null) {
+			navalImageGun = getImage("/net/sf/robocode/ui/images/naval/turret.png");
+		}
+		return navalImageGun;
+	}
+	private Image getNavalImageMine(){
+		if(navalImageMine == null){
+			navalImageMine = getImage("/net/sf/robocode/ui/images/naval/Mine.png");
+		}
+		return navalImageMine;
+	}
+	private Image getNavalImageMineComponent(){
+		if(navalImageMineComponent == null){
+			navalImageMineComponent = getImage("/net/sf/robocode/ui/images/naval/MComponent.png");
+		}
+		return navalImageMineComponent;
 	}
 
 	/**
@@ -165,6 +227,12 @@ public class ImageManager implements IImageManager {
 		}
 		return radarImage;
 	}
+	private Image getNavalImageRadar() {
+		if (navalImageRadar == null) {
+			navalImageRadar = getImage("/net/sf/robocode/ui/images/naval/radar.png");
+		}
+		return navalImageRadar;
+	}
 
 	public RenderImage getColoredBodyRenderImage(Integer color) {
 		RenderImage img = robotBodyImageCache.get(color);
@@ -173,6 +241,17 @@ public class ImageManager implements IImageManager {
 			img = new RenderImage(ImageUtil.createColouredRobotImage(getBodyImage(), new Color(color, true)));
 			robotBodyImageCache.put(color, img);
 		}
+
+		return img;
+	}
+	public RenderImage getColoredBodyRenderNavalImage(Integer color) {
+		RenderImage img = navalImageCacheBody.get(color);
+
+		if (img == null) {
+			img = new RenderImage(ImageUtil.createColouredRobotImage(getNavalImageBody(), new Color(color, true)));
+			navalImageCacheBody.put(color, img);
+		}
+
 		return img;
 	}
 
@@ -185,6 +264,33 @@ public class ImageManager implements IImageManager {
 		}
 		return img;
 	}
+	public RenderImage getColoredGunRenderNavalImage(Integer color) {
+		RenderImage img = navalImageCacheGun.get(color);
+
+		if (img == null) {
+			img = new RenderImage(ImageUtil.createColouredRobotImage(getNavalImageGun(), new Color(color, true)));
+			navalImageCacheGun.put(color, img);
+		}
+		return img;
+	}
+	public RenderImage getColoredMineRenderNavalImage(Integer color){
+		RenderImage img = navalImageCacheMine.get(color);
+		
+		if(img == null){
+			img = new RenderImage(ImageUtil.createColouredRobotImage(getNavalImageMine(), new Color(color,true)));
+			navalImageCacheMine.put(color, img);
+		}
+		return img;
+	}
+	public RenderImage getColoredMineComponentRenderNavalImage(Integer color){
+		RenderImage img = navalImageCacheMineComponent.get(color);
+		
+		if(img == null){
+			img = new RenderImage(ImageUtil.createColouredRobotImage(getNavalImageMineComponent(), new Color(color,true)));
+			navalImageCacheMineComponent.put(color, img);
+		}
+		return img;
+	}
 
 	public RenderImage getColoredRadarRenderImage(Integer color) {
 		RenderImage img = robotRadarImageCache.get(color);
@@ -192,6 +298,15 @@ public class ImageManager implements IImageManager {
 		if (img == null) {
 			img = new RenderImage(ImageUtil.createColouredRobotImage(getRadarImage(), new Color(color, true)));
 			robotRadarImageCache.put(color, img);
+		}
+		return img;
+	}
+	public RenderImage getColoredRadarRenderNavalImage(Integer color) {
+		RenderImage img = navalImageCacheRadar.get(color);
+
+		if (img == null) {
+			img = new RenderImage(ImageUtil.createColouredRobotImage(getNavalImageRadar(), new Color(color, true)));
+			navalImageCacheRadar.put(color, img);
 		}
 		return img;
 	}

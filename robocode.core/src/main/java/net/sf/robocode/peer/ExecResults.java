@@ -1,10 +1,10 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.peer;
 
 
@@ -30,16 +30,18 @@ public final class ExecResults implements Serializable {
 	private List<Event> events;
 	private List<TeamMessage> teamMessages;
 	private List<BulletStatus> bulletUpdates;
+	private List<MineStatus> mineUpdates;
 	private boolean halt;
 	private boolean shouldWait;
 	private boolean paintEnabled;
 
-	public ExecResults(ExecCommands commands, RobotStatus status, List<Event> events, List<TeamMessage> teamMessages, List<BulletStatus> bulletUpdates, boolean halt, boolean shouldWait, boolean paintEnabled) {
+	public ExecResults(ExecCommands commands, RobotStatus status, List<Event> events, List<TeamMessage> teamMessages, List<BulletStatus> bulletUpdates, List<MineStatus> mineUpdates, boolean halt, boolean shouldWait, boolean paintEnabled) {
 		this.commands = commands;
 		this.status = status;
 		this.events = events;
 		this.teamMessages = teamMessages;
 		this.bulletUpdates = bulletUpdates;
+		this.mineUpdates = mineUpdates;
 		this.halt = halt;
 		this.shouldWait = shouldWait;
 		this.paintEnabled = paintEnabled;
@@ -67,6 +69,14 @@ public final class ExecResults implements Serializable {
 		return bulletUpdates;
 	}
 
+	public List<MineStatus> getMineUpdates(){
+		return mineUpdates;
+	}
+	
+	public void setMineUpdates(List<MineStatus> mineUpdates){
+		this.mineUpdates = mineUpdates;
+	}
+	
 	public boolean isHalt() {
 		return halt;
 	}
@@ -108,6 +118,12 @@ public final class ExecResults implements Serializable {
 				size += serializer.sizeOf(RbSerializer.BulletStatus_TYPE, b);
 			}
 			size += 1;
+			
+			// mines
+			for (MineStatus b : obj.mineUpdates) {
+				size += serializer.sizeOf(RbSerializer.MineStatus_TYPE, b);
+			}
+			size += 1;
 
 			return size;
 		}
@@ -134,6 +150,10 @@ public final class ExecResults implements Serializable {
 				serializer.serialize(buffer, RbSerializer.BulletStatus_TYPE, bulletStatus);
 			}
 			buffer.put(RbSerializer.TERMINATOR_TYPE);
+			for (MineStatus mineStatus : obj.mineUpdates) {
+				serializer.serialize(buffer, RbSerializer.MineStatus_TYPE, mineStatus);
+			}
+			buffer.put(RbSerializer.TERMINATOR_TYPE);
 		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
@@ -149,6 +169,7 @@ public final class ExecResults implements Serializable {
 			res.events = new ArrayList<Event>();
 			res.teamMessages = new ArrayList<TeamMessage>();
 			res.bulletUpdates = new ArrayList<BulletStatus>();
+			res.mineUpdates = new ArrayList<MineStatus>();
 			Object item = serializer.deserializeAny(buffer);
 
 			while (item != null) {
@@ -168,6 +189,13 @@ public final class ExecResults implements Serializable {
 			while (item != null) {
 				if (item instanceof BulletStatus) {
 					res.bulletUpdates.add((BulletStatus) item);
+				}
+				item = serializer.deserializeAny(buffer);
+			}
+			item = serializer.deserializeAny(buffer);
+			while (item != null) {
+				if (item instanceof MineStatus) {
+					res.mineUpdates.add((MineStatus) item);
 				}
 				item = serializer.deserializeAny(buffer);
 			}

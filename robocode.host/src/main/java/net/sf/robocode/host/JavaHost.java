@@ -1,10 +1,10 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.host;
 
 
@@ -43,7 +43,9 @@ public class JavaHost implements IHost {
 		IHostingRobotProxy robotProxy;
 		final IRobotItem specification = (IRobotItem) HiddenAccess.getFileSpecification(robotSpecification);
 
-		if (specification.isTeamRobot()) {
+		if (specification.isShip()) {
+			robotProxy = new ShipProxy(specification, hostManager, peer, (RobotStatics) statics);
+		} else if (specification.isTeamRobot()) {
 			robotProxy = new TeamRobotProxy(specification, hostManager, peer, (RobotStatics) statics);
 		} else if (specification.isAdvancedRobot()) {
 			robotProxy = new AdvancedRobotProxy(specification, hostManager, peer, (RobotStatics) statics);
@@ -112,7 +114,12 @@ public class JavaHost implements IHost {
 		boolean isTeamRobot = false;
 		boolean isDroid = false;
 		boolean isSentryRobot = false;
+		boolean isShip = false;
 
+		if (IShip.class.isAssignableFrom(robotClass)) {
+			isShip = true;
+		}
+		
 		if (IAdvancedRobot.class.isAssignableFrom(robotClass)) { // Note: must be checked first
 			isAdvancedRobot = true;
 		}
@@ -169,7 +176,7 @@ public class JavaHost implements IHost {
 		}
 
 		return new RobotType(isJuniorRobot, isStandardRobot, isInteractiveRobot, isPaintRobot, isAdvancedRobot,
-				isTeamRobot, isDroid, isSentryRobot);
+				isTeamRobot, isDroid, isSentryRobot, isShip);
 	}
 
 	private boolean checkMethodOverride(Class<?> robotClass, Class<?> knownBase, String name, Class<?>... parameterTypes) {

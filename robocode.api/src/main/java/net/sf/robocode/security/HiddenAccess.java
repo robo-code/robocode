@@ -14,9 +14,12 @@ import net.sf.robocode.peer.IRobotStatics;
 import robocode.BattleRules;
 import robocode.Bullet;
 import robocode.Event;
+import robocode.Mine;
 import robocode.RobotStatus;
+import robocode.ShipStatus;
 import robocode.control.RobotSpecification;
 import robocode.control.events.IBattleListener;
+import robocode.naval.ComponentManager;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.awt.*;
@@ -43,12 +46,18 @@ public class HiddenAccess {
 	private static IHiddenSpecificationHelper specificationHelper;
 	private static IHiddenStatusHelper statusHelper;
 	private static IHiddenRulesHelper rulesHelper;
+	
+	//HiddenHelpers for Naval Robocode
+	private static IHiddenMineHelper	  	mineHelper;
+	private static IHiddenShipStatusHelper 	shipStatusHelper;
+	
 	private static Method initContainer;
 	private static Method initContainerRe;
 	private static Method cleanup;
 	private static Method robocodeMain;
 	private static boolean initialized;
 	private static boolean foundCore = false;
+	private static boolean isNaval = false;
 
 	public static void init() {
 		if (initialized) {
@@ -81,6 +90,19 @@ public class HiddenAccess {
 			method.setAccessible(true);
 			rulesHelper = (IHiddenRulesHelper) method.invoke(null);
 			method.setAccessible(false);
+			
+			// Initialisation HiddenHelpers Naval Robocode.
+
+			method = ShipStatus.class.getDeclaredMethod("createHiddenSerializer");
+			method.setAccessible(true);
+			shipStatusHelper = (IHiddenShipStatusHelper) method.invoke(null);
+			method.setAccessible(false);
+
+			method = Mine.class.getDeclaredMethod("createHiddenHelper");
+			method.setAccessible(true);
+			mineHelper = (IHiddenMineHelper) method.invoke(null);
+			method.setAccessible(false);
+			
 
 			ClassLoader loader = getClassLoader();
 			Class<?> main = loader.loadClass("net.sf.robocode.core.RobocodeMainBase");
@@ -202,6 +224,10 @@ public class HiddenAccess {
 	public static void update(Bullet bullet, double x, double y, String victimName, boolean isActive) {
 		bulletHelper.update(bullet, x, y, victimName, isActive);
 	}
+	
+	public static void update(Mine mine, String victimName, boolean isActive) {
+		mineHelper.update(mine, victimName, isActive);
+	}
 
 	public static RobotSpecification createSpecification(Object fileSpecification, String name, String author, String webpage, String version, String robocodeVersion, String jarFile, String fullClassName, String description) {
 		return specificationHelper.createSpecification(fileSpecification, name, author, webpage, version,
@@ -226,6 +252,13 @@ public class HiddenAccess {
 		return statusHelper.createStatus(energy, x, y, bodyHeading, gunHeading, radarHeading, velocity,
 				bodyTurnRemaining, radarTurnRemaining, gunTurnRemaining, distanceRemaining, gunHeat, others, numSentries,
 				roundNum, numRounds, time);
+	}
+	
+	//Creates a ShipStatus object.
+	public static ShipStatus createStatus(double energy, double x, double y, double bodyHeading, double velocity, double bodyTurnRemaining, double distanceRemaining, 
+				int others, int roundNum, int numRounds, long time, ComponentManager components){
+		return shipStatusHelper.createStatus(energy, x, y, bodyHeading, velocity, bodyTurnRemaining, distanceRemaining,
+				others, roundNum, numRounds, time, components);
 	}
 
 	public static BattleRules createRules(int battlefieldWidth, int battlefieldHeight, int numRounds, double gunCoolingRate, long inactivityTime, boolean hideEnemyNames, int sentryBorderSize) {
@@ -285,6 +318,30 @@ public class HiddenAccess {
 			Logger.logError(e.getCause());
 			Logger.logError(e);
 		}
+	}
+	
+	/**
+	 * Main function for Naval Robocode. Basically just runs Robocode normally
+	 * and sets the variable isNaval to true.
+	 */
+	public static void navalRobocodeMain(final String[] args) {
+		init();
+		try {
+			robocodeMain.invoke(null, (Object) args);
+		} catch (IllegalAccessException e) {
+			Logger.logError(e);
+		} catch (InvocationTargetException e) {
+			Logger.logError(e.getCause());
+			Logger.logError(e);
+		}
+		isNaval = true;
+	}
+	
+	/**
+	 * @return true if the current game is Naval Robocode, false otherwise.
+	 */
+	public static final boolean getNaval(){
+		return isNaval;
 	}
 
 }

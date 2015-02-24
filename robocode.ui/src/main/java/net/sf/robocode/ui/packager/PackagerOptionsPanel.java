@@ -15,6 +15,7 @@ import net.sf.robocode.ui.util.LimitedDocument;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.InvocationTargetException;

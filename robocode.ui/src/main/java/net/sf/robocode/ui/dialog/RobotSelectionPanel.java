@@ -11,11 +11,13 @@ package net.sf.robocode.ui.dialog;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.repository.IRobotSpecItem;
 import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.ui.IWindowManager;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
@@ -420,7 +422,7 @@ public class RobotSelectionPanel extends WizardPanel {
 					repositoryManager.refresh(withClear);
 
 					List<IRobotSpecItem> robotList = repositoryManager.getRepositoryItems(onlyShowSource,
-							onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, false, ignoreTeamRobots, onlyShowInJar);
+							onlyShowWithPackage, onlyShowRobots, onlyShowDevelopment, false, ignoreTeamRobots, onlyShowInJar, HiddenAccess.getNaval());
 
 					getAvailableRobotsPanel().setRobotList(robotList);
 					if (preSelectedRobots != null && preSelectedRobots.length() > 0) {

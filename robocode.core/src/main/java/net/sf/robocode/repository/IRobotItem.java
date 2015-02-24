@@ -27,6 +27,8 @@ public interface IRobotItem extends IRobotSpecItem {
 	boolean isInteractiveRobot();
 	boolean isPaintRobot();
 
+	boolean isShip();
+	
 	URL getClassPathURL();
 	URL[] getSourcePathURLs();
 

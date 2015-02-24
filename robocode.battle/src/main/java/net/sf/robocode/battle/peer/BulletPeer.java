@@ -1,20 +1,24 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.battle.peer;
 
 
 import net.sf.robocode.peer.BulletStatus;
+import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
 import robocode.control.snapshot.BulletState;
+import robocode.util.Collision;
 
 import java.awt.geom.Line2D;
+
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+
 import java.util.List;
 
 
@@ -26,7 +30,7 @@ import java.util.List;
  * @author Titus Chen (constributor)
  * @author Pavel Savara (constributor)
  */
-public class BulletPeer {
+public class BulletPeer /*implements IProjectile*/{
 
 	private static final int EXPLOSION_LENGTH = 17;
 
@@ -69,6 +73,23 @@ public class BulletPeer {
 		this.bulletId = bulletId;
 		state = BulletState.FIRED;
 		color = owner.getBulletColor(); // Store current bullet color set on robot
+	}
+	
+	/**
+	 * An extra constructor for the ShipPeer.
+	 * This is done because the BulletColor is held within the WeaponComponents, not the ShipPeer
+	 * @param owner	The owner of the bullet
+	 * @param battleRules The rules of this battle
+	 * @param bulletId The id of the bullet
+	 * @param color The color of the bullet. This parameter is why this constructor was made.
+	 */
+	BulletPeer(ShipPeer owner, BattleRules battleRules, int bulletId, int color){
+		super();
+		this.owner = owner;
+		this.battleRules = battleRules;
+		this.bulletId = bulletId;
+		state = BulletState.FIRED;
+		this.color = color;
 	}
 
 	private void checkBulletCollision(List<BulletPeer> bullets) {
@@ -215,6 +236,78 @@ public class BulletPeer {
 			}
 		}
 	}
+	
+	/**
+	 * Function that checks whether the bullet has his a Ship.
+	 * @param robots A list of RobotPeers (ships) currently in the BattleField.
+	 */
+	private void checkShipCollision(List<RobotPeer> robots) {
+		for (RobotPeer otherRobot : robots) {
+			if (!(otherRobot == null || otherRobot == owner || otherRobot.isDead())) {
+				if(Collision.collide(otherRobot, boundingLine)){
+					state = BulletState.HIT_VICTIM;
+					frame = 0;
+					victim = otherRobot;
+	
+					double damage = Rules.getBulletDamage(power);
+	
+					double score = damage;
+					if (score > otherRobot.getEnergy()) {
+						score = otherRobot.getEnergy();
+					}
+					otherRobot.updateEnergy(-damage);
+	
+					boolean teamFire = (owner.getTeamPeer() != null && owner.getTeamPeer() == otherRobot.getTeamPeer());
+	
+					if (!teamFire && !otherRobot.isSentryRobot()) {
+						owner.getRobotStatistics().scoreBulletDamage(otherRobot.getName(), score);
+					}
+	
+					if (otherRobot.getEnergy() <= 0 && otherRobot.isAlive()) {
+						otherRobot.kill();
+						if (!teamFire && !otherRobot.isSentryRobot()) {
+							double bonus = owner.getRobotStatistics().scoreBulletKill(otherRobot.getName());
+							if (bonus > 0) {
+								owner.println(
+										"SYSTEM: Bonus for killing "
+												+ (owner.getNameForEvent(otherRobot) + ": " + (int) (bonus + .5)));
+							}
+						}
+					}
+	
+					if (!victim.isSentryRobot()) {
+						owner.updateEnergy(Rules.getBulletHitBonus(power));
+					}
+	
+					otherRobot.addEvent(
+							new HitByBulletEvent(
+									robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()),
+									createBullet(true))); // Bugfix #366
+	
+					owner.addEvent(
+							new BulletHitEvent(owner.getNameForEvent(otherRobot), otherRobot.getEnergy(), createBullet(false))); // Bugfix #366
+	
+					double newX, newY;
+	
+					if (otherRobot.getBoundingBox().contains(lastX, lastY)) {
+						newX = lastX;
+						newY = lastY;
+	
+						setX(newX);
+						setY(newY);
+					} else {
+						newX = x;
+						newY = y;
+					}
+	
+					deltaX = newX - otherRobot.getX();
+					deltaY = newY - otherRobot.getY();
+	
+					break;
+				}
+			}
+		}
+	}
 
 	private void checkWallCollision() {
 		if ((x - RADIUS <= 0) || (y - RADIUS <= 0) || (x + RADIUS >= battleRules.getBattlefieldWidth())
@@ -311,7 +404,12 @@ public class BulletPeer {
 			updateMovement();
 			checkWallCollision();
 			if (isActive()) {
-				checkRobotCollision(robots);
+				if(HiddenAccess.getNaval()){
+					checkShipCollision(robots);
+				}
+				else{
+					checkRobotCollision(robots);
+				}
 			}
 			if (isActive() && bullets != null) {
 				checkBulletCollision(bullets);

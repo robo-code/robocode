@@ -41,6 +41,8 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 	private JCheckBox visibleGroundCheckBox;
 	private JCheckBox visibleExplosionDebrisCheckBox;
 	private JCheckBox visibleSentryBorderCheckBox;
+	//NAVAL
+	private JCheckBox visibleNavalBlindSpotCheckBox;
 
 	private JButton defaultViewOptionsButton;
 	private JButton enableAllViewOptionsButton;
@@ -332,6 +334,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 			visibleOptionsPanel.add(getVisibleGroundCheckBox(), c);
 			visibleOptionsPanel.add(getVisibleExplosionDebrisCheckBox(), c);
 			visibleOptionsPanel.add(getVisibleSentryBorderCheckBox(), c);
+			visibleOptionsPanel.add(getVisibleNavalBlindSpotCheckBox(), c);
 
 			c.insets = new Insets(10, 0, 0, 10);
 			c.gridwidth = 1;
@@ -406,6 +409,15 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		}
 		return visibleSentryBorderCheckBox;
 	}
+	
+	private JCheckBox getVisibleNavalBlindSpotCheckBox() {
+		if (visibleNavalBlindSpotCheckBox == null) {
+			visibleNavalBlindSpotCheckBox = new JCheckBox("Visible Naval Blind Spot");
+			visibleNavalBlindSpotCheckBox.setMnemonic('a');
+			visibleNavalBlindSpotCheckBox.setDisplayedMnemonicIndex(9);
+		}
+		return visibleNavalBlindSpotCheckBox;
+	}
 
 	private void initialize() {
 		setLayout(new GridLayout(1, 2));
@@ -435,6 +447,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		getVisibleGroundCheckBox().setSelected(robocodeProperties.getOptionsViewGround());
 		getVisibleExplosionDebrisCheckBox().setSelected(robocodeProperties.getOptionsViewExplosionDebris());
 		getVisibleSentryBorderCheckBox().setSelected(robocodeProperties.getOptionsViewSentryBorder());
+		getVisibleNavalBlindSpotCheckBox().setSelected(robocodeProperties.getOptionsViewNavalBlindSpot());
 		getDesiredTpsTextField().setText("" + robocodeProperties.getOptionsBattleDesiredTPS());
 		getPreventSpeedupWhenMinimizedCheckBox().setSelected(
 				robocodeProperties.getOptionsViewPreventSpeedupWhenMinimized());
@@ -452,6 +465,7 @@ public class PreferencesViewOptionsTab extends WizardPanel {
 		props.setOptionsViewGround(getVisibleGroundCheckBox().isSelected());
 		props.setOptionsViewExplosionDebris(getVisibleExplosionDebrisCheckBox().isSelected());
 		props.setOptionsViewSentryBorder(getVisibleSentryBorderCheckBox().isSelected());
+		props.setOptionsViewNavalBlindSpot(getVisibleNavalBlindSpotCheckBox().isSelected());
 		props.setOptionsBattleDesiredTPS(Integer.parseInt(getDesiredTpsTextField().getText()));
 		props.setOptionsViewPreventSpeedupWhenMinimized(getPreventSpeedupWhenMinimizedCheckBox().isSelected());
 		properties.saveProperties();

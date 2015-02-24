@@ -1,10 +1,10 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.settings;
 
 
@@ -47,7 +47,9 @@ public class SettingsManager implements ISettingsManager {
 			optionsViewExplosions = true,
 			optionsViewGround = true,
 			optionsViewExplosionDebris = true,
-			optionsViewSentryBorder = false;
+			optionsViewSentryBorder = false,
+			optionsViewNavalBoundingBox = false,
+			optionsViewNavalBlindSpot = false;
 
 	// View Options (Turns Per Second)
 	private boolean
@@ -177,6 +179,30 @@ public class SettingsManager implements ISettingsManager {
 			}
 		}
 	}
+	
+	/* NAVAL */
+	@Override
+	public boolean getOptionsViewNavalBoundingBox() {
+		return optionsViewNavalBoundingBox;
+	}
+
+	@Override
+	public void setOptionsViewNavalBoundingBox(boolean optionsViewBoundingBox) {
+		this.optionsViewNavalBoundingBox = optionsViewBoundingBox;
+		props.setProperty(OPTIONS_VIEW_NAVAL_BOUNDING_BOX, "" + optionsViewBoundingBox);
+	}
+
+	@Override
+	public boolean getOptionsViewNavalBlindSpot() {
+		return optionsViewNavalBlindSpot;
+	}
+
+	@Override
+	public void setOptionsViewNavalBlindSpot(boolean optionsViewBlindSpot) {
+		this.optionsViewNavalBlindSpot = optionsViewBlindSpot;
+		props.setProperty(OPTIONS_VIEW_NAVAL_BLIND_SPOT, "" + optionsViewBlindSpot);
+	}
+	/*/NAVAL */
 
 	public boolean getOptionsViewRobotNames() {
 		return optionsViewRobotNames;
@@ -717,6 +743,7 @@ public class SettingsManager implements ISettingsManager {
 		optionsViewExplosions = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSIONS, "true"));
 		optionsViewExplosionDebris = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_EXPLOSION_DEBRIS, "true"));
 		optionsViewSentryBorder = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_SENTRY_BORDER, "false"));
+		optionsViewNavalBlindSpot = Boolean.valueOf(props.getProperty(OPTIONS_VIEW_NAVAL_BLIND_SPOT, "false"));
 		optionsViewPreventSpeedupWhenMinimized = Boolean.valueOf(
 				props.getProperty(OPTIONS_VIEW_PREVENT_SPEEDUP_WHEN_MINIMIZED, "false"));
 

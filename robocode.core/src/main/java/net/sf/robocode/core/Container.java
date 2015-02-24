@@ -92,7 +92,7 @@ public final class Container extends ContainerBase {
 		for (IModule module : modules) {
 			module.afterLoaded(modules);
 		}
-	}
+ 	}
 
 	static void init() {}
 

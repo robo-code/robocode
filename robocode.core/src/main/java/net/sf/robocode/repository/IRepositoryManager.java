@@ -40,7 +40,7 @@ public interface IRepositoryManager extends IRepositoryManagerBase {
 	void reload(boolean forced);
 
 	List<IRobotSpecItem> getRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage,
-			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar);
+			boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar, boolean onlyShips);
 
 	RobotSpecification[] loadSelectedRobots(RobotSpecification[] selectedRobots);
 

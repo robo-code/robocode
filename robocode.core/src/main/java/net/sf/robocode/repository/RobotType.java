@@ -1,10 +1,10 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.repository;
 
 
@@ -27,7 +27,8 @@ public final class RobotType implements Serializable {
 			DROID_FLAG = 16,
 			INTERACTIVE_FLAG = 32,
 			PAINTING_FLAG = 64,
-			SENTRY_FLAG = 128;
+			SENTRY_FLAG = 128,
+			SHIP_FLAG = 256; //Should work
 
 	public static final transient RobotType INVALID = new RobotType(NONE_FLAG);
 
@@ -45,7 +46,8 @@ public final class RobotType implements Serializable {
 			boolean isAdvancedRobot,
 			boolean isTeamRobot,
 			boolean isDroid,
-			boolean isSentryRobot) {
+			boolean isSentryRobot,
+			boolean isShip) {
 
 		typeFlags = NONE_FLAG;
 
@@ -72,6 +74,9 @@ public final class RobotType implements Serializable {
 		}
 		if (isSentryRobot) {
 			typeFlags |= SENTRY_FLAG;
+		}
+		if(isShip){
+			typeFlags |= SHIP_FLAG;
 		}
 	}
 
@@ -113,6 +118,10 @@ public final class RobotType implements Serializable {
 
 	public boolean isSentryRobot() {
 		return (typeFlags & SENTRY_FLAG) != 0;
+	}
+	
+	public boolean isShip(){
+		return (typeFlags & SHIP_FLAG) != 0;
 	}
 
 	@Override

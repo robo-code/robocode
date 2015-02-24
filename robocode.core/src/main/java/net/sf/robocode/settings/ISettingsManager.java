@@ -1,10 +1,10 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.settings;
 
 
@@ -25,6 +25,16 @@ public interface ISettingsManager {
 	boolean getOptionsViewRobotNames();
 
 	void setOptionsViewRobotNames(boolean optionsViewRobotNames);
+	
+	/* NAVAL */
+	boolean getOptionsViewNavalBoundingBox();
+
+	void setOptionsViewNavalBoundingBox(boolean optionsViewBoundingBox);
+	
+	boolean getOptionsViewNavalBlindSpot();
+
+	void setOptionsViewNavalBlindSpot(boolean optionsViewNavalBlindSpot);
+	/*/NAVAL */
 
 	boolean getOptionsViewScanArcs();
 
@@ -254,6 +264,8 @@ public interface ISettingsManager {
 			OPTIONS_VIEW_EXPLOSIONS = "robocode.options.view.explosions",
 			OPTIONS_VIEW_EXPLOSION_DEBRIS = "robocode.options.view.explosionDebris",
 			OPTIONS_VIEW_SENTRY_BORDER = "robocode.options.view.sentryBorder",
+			OPTIONS_VIEW_NAVAL_BOUNDING_BOX = "robocode.options.view.naval.boundingBox",
+			OPTIONS_VIEW_NAVAL_BLIND_SPOT = "robocode.options.view.naval.blindSpot",
 
 			OPTIONS_BATTLE_DESIREDTPS = "robocode.options.battle.desiredTPS",
 

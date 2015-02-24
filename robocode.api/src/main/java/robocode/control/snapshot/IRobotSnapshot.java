@@ -7,6 +7,8 @@
  */
 package robocode.control.snapshot;
 
+import robocode.robotinterfaces.ITransformable;
+
 
 /**
  * Interface of a robot snapshot at a specific time in a battle.
@@ -16,7 +18,7 @@ package robocode.control.snapshot;
  *
  * @since 1.6.2
  */
-public interface IRobotSnapshot {
+public interface IRobotSnapshot extends ITransformable{
 
 	/**
 	 * Returns the name of the robot.
