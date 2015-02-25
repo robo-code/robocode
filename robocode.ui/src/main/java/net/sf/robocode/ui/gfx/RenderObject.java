@@ -11,6 +11,8 @@ package net.sf.robocode.ui.gfx;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+import robocode.naval.interfaces.IPaint;
+
 
 /**
  * The base of all renderable objects.
@@ -18,7 +20,7 @@ import java.awt.geom.AffineTransform;
  *
  * @author Flemming N. Larsen (original)
  */
-public class RenderObject {
+public class RenderObject implements IPaint{
 
 	/**
 	 * Base transform, e.g. the initial rotation and translation

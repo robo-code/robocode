@@ -1,10 +1,10 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.ui.gfx;
 
 
@@ -16,8 +16,11 @@ import java.awt.geom.*;
  * This class is used for rendering the Robocode logo.
  *
  * @author Flemming N. Larsen (original)
+ * @author Jiri Waning (NAVAL robocode)
  */
 public class RobocodeLogo {
+	
+	private static final boolean naval = true;
 
 	public final static int WIDTH = 570;
 	public final static int HEIGHT = 213;
@@ -305,7 +308,35 @@ public class RobocodeLogo {
 
 			e.transform(AffineTransform.getTranslateInstance(290, 16));
 			robocodeTextPath.append(e, false);
+			
+			// =======
+			//  Naval
+			// =======
+			if (naval) {
+				final double OFFSET_X = 66;
+				final double OFFSET_Y = -50;
+						
+				GeneralPath n = getPathN();
+				n.transform(AffineTransform.getTranslateInstance(OFFSET_X, OFFSET_Y));
+				robocodeTextPath.append(n, false);
+						
+				GeneralPath a = getPathA();
+				a.transform(AffineTransform.getTranslateInstance(OFFSET_X + 44, OFFSET_Y));
+				robocodeTextPath.append(a, false);
+					
+				GeneralPath v = getPathV();
+				v.transform(AffineTransform.getTranslateInstance(OFFSET_X + 80, OFFSET_Y));
+				robocodeTextPath.append(v, false);
+							
+				a.transform(AffineTransform.getTranslateInstance(72, OFFSET_Y + 50));
+				robocodeTextPath.append(a, false);
+							
+				GeneralPath l = getPathL();
+				l.transform(AffineTransform.getTranslateInstance(OFFSET_X + 170, OFFSET_Y));
+				robocodeTextPath.append(l, false);
+			}
 		}
+		
 		return robocodeTextPath;
 	}
 
@@ -440,6 +471,136 @@ public class RobocodeLogo {
 		path.lineTo(31, 12);
 		path.closePath();
 
+		return path;
+	}
+	
+	// ========
+	//  Naval
+	// ========
+	private GeneralPath getPathN() {
+		GeneralPath path = new GeneralPath();
+		
+		final float HEIGHT = 40;
+		final float LINE_WIDTH = 10;
+		
+		/* Left path */
+		GeneralPath left = new GeneralPath();
+		{
+			left.moveTo(0, 0);
+			left.lineTo(LINE_WIDTH, 0);
+			left.lineTo(LINE_WIDTH, HEIGHT);
+			left.lineTo(0, HEIGHT);
+			left.closePath();
+		}
+		path.append(left, false);
+		
+		/* Middle path */
+		GeneralPath middle = new GeneralPath();
+		{
+			final float OFFSET = 12;
+			final float WIDTH = LINE_WIDTH + 4;
+			final float THICKNESS = LINE_WIDTH + 6;
+			
+			middle.moveTo(OFFSET, 0);
+			middle.lineTo(OFFSET + WIDTH, HEIGHT - THICKNESS);
+			middle.lineTo(OFFSET + WIDTH, HEIGHT);
+			middle.lineTo(OFFSET, THICKNESS);
+			middle.closePath();
+		}
+		path.append(middle, false);
+		
+		/* Right path */
+		GeneralPath right = new GeneralPath();
+		{
+			final float OFFSET = 28;
+			
+			right.moveTo(OFFSET, 0);
+			right.lineTo(OFFSET + LINE_WIDTH, 0);
+			right.lineTo(OFFSET + LINE_WIDTH, HEIGHT);
+			right.lineTo(OFFSET, HEIGHT);
+			right.closePath();
+		}
+		path.append(right, false);
+		
+		return path;
+	}
+	
+	private GeneralPath getPathA() {
+		GeneralPath path = new GeneralPath();
+		
+		GeneralPath outerArea = getPathV();
+		outerArea.transform(AffineTransform.getRotateInstance(Math.PI, 25.0d, 20.0d));
+		path.append(outerArea, false);
+		
+		/* Middle path */
+		GeneralPath middle = new GeneralPath();
+		{
+			middle.moveTo(22, 20);
+			middle.lineTo(26, 20);
+			middle.lineTo(30, 28);
+			middle.lineTo(18, 28);
+			middle.closePath();
+		}
+		path.append(middle, false);
+		
+		return path;
+	}
+	
+	private GeneralPath getPathV() {
+		GeneralPath path = new GeneralPath();
+		
+		final float THICKNESS = 10;
+		
+		/* Left path */
+		GeneralPath left = new GeneralPath();
+		{
+			left.moveTo(0, 0); // Left bottom
+			left.lineTo(20, 40);
+			left.lineTo(20 + THICKNESS, 40);
+			left.lineTo(THICKNESS, 0);
+			left.closePath();
+		}
+		path.append(left, false);
+		
+		/* Right path */
+		GeneralPath right = new GeneralPath();
+		{
+			right.moveTo(32, 38);
+			right.lineTo(40 + THICKNESS, 0);
+			right.lineTo(40, 0);
+			right.lineTo(28, 30);
+			right.closePath();
+		}
+		path.append(right, false);
+		
+		return path;
+	}
+	
+	private GeneralPath getPathL() {
+		GeneralPath path = new GeneralPath();
+		
+		/* Left path */
+		GeneralPath left = new GeneralPath();
+		{
+			left.moveTo(0, 0);
+			left.lineTo(10, 0);
+			left.lineTo(10, 40);
+			left.lineTo(0, 40);
+			left.closePath();
+		}
+		path.append(left, false);
+		
+		/* Right path */
+		GeneralPath right = new GeneralPath();
+		{
+			right.moveTo(12, 30);
+			right.lineTo(28, 30);
+			right.lineTo(28, 40);
+			right.lineTo(12, 40);
+			right.closePath();
+		}
+		path.append(right, false);
+		
 		return path;
 	}
 }

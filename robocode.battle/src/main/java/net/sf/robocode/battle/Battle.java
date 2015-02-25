@@ -1,17 +1,19 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.battle;
 
 
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.peer.BulletPeer;
 import net.sf.robocode.battle.peer.ContestantPeer;
+import net.sf.robocode.battle.peer.MinePeer;
 import net.sf.robocode.battle.peer.RobotPeer;
+import net.sf.robocode.battle.peer.ShipPeer;
 import net.sf.robocode.battle.peer.TeamPeer;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.host.ICpuManager;
@@ -26,10 +28,12 @@ import robocode.control.RandomFactory;
 import robocode.control.RobotResults;
 import robocode.control.RobotSetup;
 import robocode.control.RobotSpecification;
+import robocode.control.ShipResults;
 import robocode.control.events.*;
 import robocode.control.events.RoundEndedEvent;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.ITurnSnapshot;
+import robocode.control.snapshot.MineState;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -48,6 +52,7 @@ import java.util.regex.Pattern;
  * @author Nathaniel Troutman (contributor)
  * @author Julian Kent (contributor)
  * @author Pavel Savara (contributor)
+ * @author Thales B.V. / Thomas Hakkers (Naval Robocode)
  */
 public final class Battle extends BaseBattle {
 
@@ -70,6 +75,7 @@ public final class Battle extends BaseBattle {
 	private List<RobotPeer> robots = new ArrayList<RobotPeer>();
 	private List<ContestantPeer> contestants = new ArrayList<ContestantPeer>();
 	private final List<BulletPeer> bullets = new CopyOnWriteArrayList<BulletPeer>();
+	private final List<MinePeer> mines = new CopyOnWriteArrayList<MinePeer>();		//The mines currently in the battle
 
 	// Robot counters
 	private int activeParticipants;
@@ -82,8 +88,7 @@ public final class Battle extends BaseBattle {
 	private RobotSetup[] initialRobotSetups;
 
 	public Battle(ISettingsManager properties, IBattleManager battleManager, IHostManager hostManager, ICpuManager cpuManager, BattleEventDispatcher eventDispatcher) { // NO_UCD (unused code)
-		super(
-				properties, battleManager, eventDispatcher);
+		super(properties, battleManager, eventDispatcher);
 		this.hostManager = hostManager;
 		this.cpuConstant = cpuManager.getCpuConstant();
 	}
@@ -208,15 +213,22 @@ public final class Battle extends BaseBattle {
 				}
 			}
 			Integer duplicate = robotDuplicates.get(i);
-			RobotPeer robotPeer = new RobotPeer(this, hostManager, specification, duplicate, team, robotIndex);
-
+			
+			RobotPeer robotPeer;
+			final IRobotItem fileSpec = (IRobotItem) HiddenAccess.getFileSpecification(specification);
+			if (fileSpec.isShip()) {
+				robotPeer = new ShipPeer(this, hostManager, specification, duplicate, team, robotIndex);
+			} else {
+				robotPeer = new RobotPeer(this, hostManager, specification, duplicate, team, robotIndex);
+			}
 			robots.add(robotPeer);
 			if (team == null) {
 				contestants.add(robotPeer);
 			}
 		}
 	}
-
+	
+	
 	public void registerDeathRobot(RobotPeer r) {
 		deathRobots.add(r);
 	}
@@ -235,6 +247,14 @@ public final class Battle extends BaseBattle {
 
 	public void addBullet(BulletPeer bullet) {
 		bullets.add(bullet);
+	}
+	
+	/**
+	 * Adds the given MinePeer to the Battle.
+	 * @param mine The mine that needs to be added to the current Battle.
+	 */
+	public void addMine(MinePeer mine){
+		mines.add(mine);
 	}
 
 	public void resetInactiveTurnCount(double energyLoss) {
@@ -320,7 +340,13 @@ public final class Battle extends BaseBattle {
 		eventDispatcher.onBattleFinished(new BattleFinishedEvent(isAborted()));
 
 		if (!isAborted()) {
-			eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, computeBattleResults()));
+			//THOMA_NOTE: Different score system for Naval Robocode.
+			if(HiddenAccess.getNaval()){			
+				eventDispatcher.onBattleCompleted(new NavalBattleCompletedEvent(battleRules, computeNavalBattleResults()));
+			}
+			else{
+				eventDispatcher.onBattleCompleted(new BattleCompletedEvent(battleRules, computeBattleResults()));
+			}
 		}
 
 		for (RobotPeer robotPeer : robots) {
@@ -383,7 +409,7 @@ public final class Battle extends BaseBattle {
 
 		Logger.logMessage(""); // puts in a new-line in the log message
 
-		final ITurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets, false);
+		final ITurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets, mines,  false);
 
 		eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum()));
 	}
@@ -396,6 +422,7 @@ public final class Battle extends BaseBattle {
 			robotPeer.waitForStop();
 		}
 		bullets.clear();
+		mines.clear();	//Clear the mines
 
 		eventDispatcher.onRoundEnded(new RoundEndedEvent(getRoundNum(), currentTime, totalTurns));
 	}
@@ -414,6 +441,8 @@ public final class Battle extends BaseBattle {
 		loadCommands();
 
 		updateBullets();
+		
+		updateMines();
 
 		updateRobots();
 
@@ -496,7 +525,7 @@ public final class Battle extends BaseBattle {
 
 	@Override
 	protected void finalizeTurn() {
-		eventDispatcher.onTurnEnded(new TurnEndedEvent(new TurnSnapshot(this, robots, bullets, true)));
+		eventDispatcher.onTurnEnded(new TurnEndedEvent(new TurnSnapshot(this, robots, bullets, mines, true)));
 
 		super.finalizeTurn();
 	}
@@ -514,13 +543,41 @@ public final class Battle extends BaseBattle {
 			RobotSpecification robotSpec = null;
 			if (contestant instanceof RobotPeer) {
 				robotSpec = ((RobotPeer) contestant).getRobotSpecification();
+				results.set(rank, new RobotResults(robotSpec, battleResults));
 			} else if (contestant instanceof TeamPeer) {
 				robotSpec = ((TeamPeer) contestant).getTeamLeader().getRobotSpecification();
+				results.set(rank, new RobotResults(robotSpec, battleResults));
+			} else if(contestant instanceof ShipPeer){
+				robotSpec = ((ShipPeer) contestant).getRobotSpecification();
+				results.set(rank, new ShipResults(robotSpec, (NavalBattleResults)battleResults));	//Custom scores
 			}
-			results.set(rank, new RobotResults(robotSpec, battleResults));
 		}
 		return results.toArray(new BattleResults[results.size()]);
 	}
+	
+	/**
+	 * Function that decides the Battle Results for Naval Robocode
+	 * @return The Battle Results for Naval Robocode in the form of NavalBattleResults[].
+	 */
+	private NavalBattleResults[] computeNavalBattleResults() {
+		ArrayList<NavalBattleResults> results = new ArrayList<NavalBattleResults>();
+		for (int i = 0; i < contestants.size(); i++) {
+			results.add(null);
+		}
+		for (int rank = 0; rank < contestants.size(); rank++) {
+			ContestantPeer contestant = contestants.get(rank);
+			contestant.getStatistics().setRank(rank + 1);
+			NavalBattleResults battleResults = (NavalBattleResults) contestant.getStatistics().getFinalResults();
+
+			RobotSpecification robotSpec = null;
+			if(contestant instanceof ShipPeer){
+				robotSpec = ((ShipPeer) contestant).getRobotSpecification();
+				results.set(rank, new ShipResults(robotSpec, (NavalBattleResults)battleResults));
+			}
+		}
+		return results.toArray(new NavalBattleResults[results.size()]);
+	}
+	
 
 	/**
 	 * Returns a list of all robots in random order. This method is used to gain fair play in Robocode,
@@ -545,6 +602,17 @@ public final class Battle extends BaseBattle {
 	 */
 	private List<BulletPeer> getBulletsAtRandom() {
 		List<BulletPeer> shuffledList = new ArrayList<BulletPeer>(bullets);
+
+		Collections.shuffle(shuffledList, RandomFactory.getRandom());
+		return shuffledList;
+	}
+	
+	/**
+	 * Returns a list of all mines in random order.
+	 * @return a list of mine peers.
+	 */
+	private List<MinePeer> getMinesAtRandom(){
+		List<MinePeer> shuffledList = new ArrayList<MinePeer>(mines);
 
 		Collections.shuffle(shuffledList, RandomFactory.getRandom());
 		return shuffledList;
@@ -577,6 +645,20 @@ public final class Battle extends BaseBattle {
 			}
 		}
 	}
+	
+	/**
+	 * Updates the mines. 
+	 * Which means it tells the mines to check for collision.
+	 * And to kill the mines if they're INACTIVE.
+	 */
+	private void updateMines(){
+		for(MinePeer mine : getMinesAtRandom()){
+			mine.update(getRobotsAtRandom(), getMinesAtRandom());
+			if (mine.getState() == MineState.INACTIVE) {
+				mines.remove(mine);
+			}
+		}
+	}
 
 	private void updateRobots() {
 		boolean zap = (inactiveTurnCount > battleRules.getInactivityTime());
@@ -592,6 +674,7 @@ public final class Battle extends BaseBattle {
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
 			robotPeer.performScan(getRobotsAtRandom());
 		}
+		
 	}
 
 	private void handleDeadRobots() {
@@ -883,4 +966,6 @@ public final class Battle extends BaseBattle {
 			}
 		}
 	}
+	
+	
 }

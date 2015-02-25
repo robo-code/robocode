@@ -1,10 +1,10 @@
-/**
- * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
+/*******************************************************************************
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.battle.snapshot;
 
 
@@ -20,6 +20,7 @@ import robocode.control.snapshot.IScoreSnapshot;
 import robocode.control.snapshot.RobotState;
 
 import java.awt.geom.Arc2D;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -35,96 +36,117 @@ import java.util.Map;
  *
  * @since 1.6.1
  */
-public final class RobotSnapshot implements Serializable, IXmlSerializable, IRobotSnapshot {
+public /*final*/ class RobotSnapshot implements Serializable, IXmlSerializable, IRobotSnapshot{
 
 	private static final long serialVersionUID = 2L;
 
 	/** The name of the robot */
-	private String name;
+	protected String name;
 
 	/** The short name of the robot */
-	private String shortName;
+	protected String shortName;
 
 	/** Very short name of the robot */
-	private String veryShortName;
+	protected String veryShortName;
 
 	/** Very short name of the team leader robot (might be null) */
-	private String teamName;
+	protected String teamName;
 
 	/** The unique robot index */
-	private int robotIndex;
+	protected int robotIndex;
 
 	/** The team index for the robot */
-	private int teamIndex;
+	protected int teamIndex;
 
 	/** The robot state */
-	private RobotState state;
+	protected RobotState state;
 
 	/** The energy level of the robot */
-	private double energy;
+	protected double energy;
 
 	/** The velocity of the robot */
-	private double velocity;
+	protected double velocity;
 
 	/** The gun heat level of the robot */
-	private double gunHeat;
+	protected double gunHeat;
 
 	/** The body heading in radians */
-	private double bodyHeading;
+	protected double bodyHeading;
 
 	/** The gun heading in radians */
-	private double gunHeading;
+	protected double gunHeading;
 
 	/** The radar heading in radians */
-	private double radarHeading;
+	protected double radarHeading;
 
 	/** The X position */
-	private double x;
+	protected double x;
 
 	/** The Y position */
-	private double y;
+	protected double y;
 
 	/** The ARGB color of the body */
-	private int bodyColor = ExecCommands.defaultBodyColor;
+	protected int bodyColor = ExecCommands.defaultBodyColor;
 
 	/** The ARGB color of the gun */
-	private int gunColor = ExecCommands.defaultGunColor;
+	protected int gunColor = ExecCommands.defaultGunColor;
 
 	/** The ARGB color of the radar */
-	private int radarColor = ExecCommands.defaultRadarColor;
+	protected int radarColor = ExecCommands.defaultRadarColor;
 
 	/** The ARGB color of the scan arc */
-	private int scanColor = ExecCommands.defaultScanColor;
+	protected int scanColor = ExecCommands.defaultScanColor;
 
-	/** Flag specifying if this robot is a Droid */
-	private boolean isDroid;
-
-	/** Flag specifying if this robot is a SentryRobot */
-	private boolean isSentryRobot;
+	/** Flag specifying if this robot is a Ship */
+	protected boolean isShip;
 	
+	/** Flag specifying if this robot is a SentryRobot */
+	protected boolean isSentryRobot;
+	
+	/** Flag specifying if this robot is a Droid */
+	protected boolean isDroid;
+	
+	/** Flag specifying if this robot is an Advanced Robot */
+	protected boolean isAdvancedRobot;
+	
+	/** Flag specifying if this robot is an Interactive Robot */
+	protected boolean isInteractiveRobot;
+	
+	/** Flag specifying if this robot is an Junior Robot */
+	protected boolean isJuniorRobot;
+
 	/** Flag specifying if this robot is a IPaintRobot or is invoking getGraphics() */
-	private boolean isPaintRobot;
+	protected boolean isPaintRobot;
 
 	/** Flag specifying if painting is enabled for this robot */
-	private boolean isPaintEnabled;
+	protected boolean isPaintEnabled;
 
 	/** Flag specifying if RobocodeSG painting is enabled for this robot */
-	private boolean isSGPaintEnabled;
+	protected boolean isSGPaintEnabled;
 
 	/** Snapshot of the scan arc */
-	private SerializableArc scanArc;
+	protected SerializableArc scanArc;
 
 	/** Snapshot of the object with queued calls for Graphics object */
-	private Object graphicsCalls;
+	protected Object graphicsCalls;
 
 	/** Snapshot of debug properties */
-	private DebugProperty[] debugProperties;
+	protected DebugProperty[] debugProperties;
 
 	/** Snapshot of the output print stream for this robot */
-	private String outputStreamSnapshot;
+	protected String outputStreamSnapshot;
 
 	/** Snapshot of score of the robot */
-	private IScoreSnapshot robotScoreSnapshot;
+	protected IScoreSnapshot robotScoreSnapshot;
+	
+	/** Snapshot of the width of the battlefield **/
+	protected double battleFieldWidth;
+	
+	/** Snapshot of the height of the battlefield **/
+	protected double battleFieldHeight;
+	
+	/** Copy of the bounding box of the robot **/
+	protected Rectangle2D boundingBox;
 
 	/**
 	 * Creates a snapshot of a robot that must be filled out with data later.
@@ -140,7 +162,7 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 * @param readoutText {@code true} if the output text from the robot must be included in the snapshot;
 	 *                    {@code false} otherwise.
 	 */
-	RobotSnapshot(RobotPeer robot, boolean readoutText) {
+	public RobotSnapshot(RobotPeer robot, boolean readoutText) {
 		name = robot.getName();
 		shortName = robot.getShortName();
 		veryShortName = robot.getVeryShortName();
@@ -167,10 +189,18 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 		radarColor = robot.getRadarColor();
 		scanColor = robot.getScanColor();
 
+		isShip = robot.isShip();
 		isDroid = robot.isDroid();
+		isAdvancedRobot = robot.isAdvancedRobot();
+		isInteractiveRobot = robot.isInteractiveRobot();
+		isJuniorRobot = robot.isJuniorRobot();
 		isPaintRobot = robot.isPaintRobot() || robot.isTryingToPaint();
 		isPaintEnabled = robot.isPaintEnabled();
 		isSGPaintEnabled = robot.isSGPaintEnabled();
+		
+		battleFieldWidth = robot.getBattleFieldWidth();
+		battleFieldHeight = robot.getBattleFieldHeight();
+		boundingBox = robot.getBoundingBox();
 
 		scanArc = robot.getScanArc() != null ? new SerializableArc((Arc2D.Double) robot.getScanArc()) : null;
 
@@ -190,6 +220,27 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	@Override
 	public String toString() {
 		return shortName + " (" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public double getBattleFieldWidth() {
+		return battleFieldWidth;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public double getBattleFieldHeight() {
+		return battleFieldHeight;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public Rectangle2D getBoundingBox() {
+		return boundingBox;
 	}
 
 	/**
@@ -335,6 +386,13 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	public int getScanColor() {
 		return scanColor;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isShip() {
+		return isShip;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -342,12 +400,26 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	public boolean isDroid() {
 		return isDroid;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isSentryRobot() {
-		return isSentryRobot;
+	public boolean isAdvancedRobot() {
+		return isAdvancedRobot;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isInteractiveRobot() {
+		return isInteractiveRobot;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isJuniorRobot() {
+		return isJuniorRobot;
 	}
 
 	/**
@@ -362,6 +434,10 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 	 */
 	public boolean isPaintEnabled() {
 		return isPaintEnabled;
+	}
+	
+	public boolean isSentryRobot() {
+		return isSentryRobot;
 	}
 
 	/**

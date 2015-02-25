@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class BattleCompletedEvent extends BattleEvent {
 	private final BattleRules battleRules;
-	private final BattleResults[] results;
+	protected final BattleResults[] results;
 
 	/**
 	 * Called by the game to create a new BattleCompletedEvent.

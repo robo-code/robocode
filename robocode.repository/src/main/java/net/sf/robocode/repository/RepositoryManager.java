@@ -307,8 +307,12 @@ public class RepositoryManager implements IRepositoryManager { // NO_UCD (use de
 		return result;
 	}
 
-	public List<IRobotSpecItem> getRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar) {
+	public List<IRobotSpecItem> getRepositoryItems(boolean onlyWithSource, boolean onlyWithPackage, boolean onlyRobots, boolean onlyDevelopment, boolean onlyNotDevelopment, boolean ignoreTeamRobots, boolean onlyInJar, boolean onlyShips) {
 		checkDbExists();
+		
+		if(onlyShips){
+			ignoreTeamRobots = true;
+		}
 
 		final List<IRobotSpecItem> res = new ArrayList<IRobotSpecItem>();
 
@@ -337,6 +341,21 @@ public class RepositoryManager implements IRepositoryManager { // NO_UCD (use de
 				continue;
 			}
 			if (res.contains(spec)) {
+				continue;
+			}
+			if(repositoryItem instanceof RobotItem){
+				if(onlyShips){
+					if(!((RobotItem)repositoryItem).isShip()){
+						continue;
+					}
+				}
+				else{
+					if(((RobotItem)repositoryItem).isShip()){
+						continue;
+					}
+				}
+			}
+			if(ignoreTeamRobots && (repositoryItem instanceof TeamItem)){
 				continue;
 			}
 			res.add(spec);

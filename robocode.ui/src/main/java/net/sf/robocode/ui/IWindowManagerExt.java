@@ -10,6 +10,7 @@ package net.sf.robocode.ui;
 
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.BattleResultsTableModel;
+import net.sf.robocode.battle.NavalBattleResultsTableModel;
 import robocode.control.events.BattleCompletedEvent;
 
 import javax.swing.*;
@@ -66,6 +67,8 @@ public interface IWindowManagerExt extends IWindowManager {
 	void showImportRobotDialog();
 
 	void showSaveResultsDialog(BattleResultsTableModel tableModel);
+	
+	void showSaveResultsDialog(NavalBattleResultsTableModel tableModel);
 
 	int getFPS();
 }

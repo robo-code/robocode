@@ -1,16 +1,18 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.battle.snapshot;
 
 
 import net.sf.robocode.battle.Battle;
 import net.sf.robocode.battle.peer.BulletPeer;
+import net.sf.robocode.battle.peer.MinePeer;
 import net.sf.robocode.battle.peer.RobotPeer;
+import net.sf.robocode.battle.peer.ShipPeer;
 import net.sf.robocode.serialization.IXmlSerializable;
 import net.sf.robocode.serialization.XmlReader;
 import net.sf.robocode.serialization.SerializableOptions;
@@ -39,6 +41,8 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 
 	/** List of snapshots for the bullets that are currently on the battlefield */
 	private List<IBulletSnapshot> bullets;
+	
+	private List<IMineSnapshot> mines;
 
 	/** Current TPS (turns per second) */
 	private int tps;
@@ -63,17 +67,33 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 	 * @param readoutText {@code true} if the output text from the robots must be included in the snapshot;
 	 *                    {@code false} otherwise.
 	 */
-	public TurnSnapshot(Battle battle, List<RobotPeer> battleRobots, List<BulletPeer> battleBullets, boolean readoutText) {
+	public TurnSnapshot(Battle battle, List<RobotPeer> battleRobots, List<BulletPeer> battleBullets, List<MinePeer> battleMines, boolean readoutText) {
 		robots = new ArrayList<IRobotSnapshot>();
 		bullets = new ArrayList<IBulletSnapshot>();
-
-		for (RobotPeer robotPeer : battleRobots) {
-			robots.add(new RobotSnapshot(robotPeer, readoutText));
+		mines = new ArrayList<IMineSnapshot>();
+		
+		boolean isNaval = battleRobots.get(0) instanceof ShipPeer; 	//Probably not the best way to check
+		if(isNaval){
+			//only add mines and ships if we're in a naval environment
+			for (RobotPeer robotPeer : battleRobots) {
+				robots.add(new ShipSnapshot((ShipPeer)robotPeer, readoutText));
+			}
+			for(MinePeer minePeer : battleMines){
+				mines.add(new MineSnapshot(minePeer));
+			}
 		}
+		else{
+			for (RobotPeer robotPeer : battleRobots) {
+				robots.add(new RobotSnapshot(robotPeer, readoutText));
+			}
+		}
+		
 
 		for (BulletPeer bulletPeer : battleBullets) {
 			bullets.add(new BulletSnapshot(bulletPeer));
 		}
+		
+		
 
 		tps = battle.getTPS();
 		turn = battle.getTime();
@@ -97,6 +117,10 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 	 */
 	public IBulletSnapshot[] getBullets() {
 		return bullets.toArray(new IBulletSnapshot[bullets.size()]);
+	}
+	
+	public IMineSnapshot[] getMines(){
+		return mines.toArray(new IMineSnapshot[mines.size()]);
 	}
 
 	/**
@@ -294,4 +318,5 @@ public final class TurnSnapshot implements java.io.Serializable, IXmlSerializabl
 			}
 		});
 	}
+
 }

@@ -1,19 +1,22 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.ui.dialog;
 
 
 import net.sf.robocode.battle.BattleResultsTableModel;
+import net.sf.robocode.battle.NavalBattleResultsTableModel;
+import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.ui.IWindowManager;
 import robocode.BattleResults;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,7 +38,7 @@ public class ResultsDialog extends BaseScoreDialog {
 	private JPanel buttonPanel;
 	private JButton okButton;
 	private JButton saveButton;
-	private BattleResultsTableModel tableModel;
+	private javax.swing.table.AbstractTableModel tableModel;
 	private final ButtonEventHandler buttonEventHandler;
 
 	public ResultsDialog(IWindowManager manager) {
@@ -46,8 +49,14 @@ public class ResultsDialog extends BaseScoreDialog {
 	}
 
 	public void setup(BattleResults[] results, int numRounds) {
-		tableModel = new BattleResultsTableModel(results, numRounds);
-		setTitle(((BattleResultsTableModel) getTableModel()).getTitle());
+		if(HiddenAccess.getNaval()){
+			tableModel = new NavalBattleResultsTableModel(results, numRounds);
+			setTitle(((NavalBattleResultsTableModel) getTableModel()).getTitle());
+		}
+		else{
+			tableModel = new BattleResultsTableModel(results, numRounds);
+			setTitle(((BattleResultsTableModel) getTableModel()).getTitle());
+		}
 		setResultsData();
 
 		table.setPreferredSize(
@@ -57,7 +66,12 @@ public class ResultsDialog extends BaseScoreDialog {
 	}
 
 	private void saveButtonActionPerformed() {
-		windowManager.showSaveResultsDialog(tableModel);
+		if(tableModel instanceof NavalBattleResultsTableModel){
+			windowManager.showSaveResultsDialog((NavalBattleResultsTableModel)tableModel);
+		}
+		else if(tableModel instanceof BattleResultsTableModel){
+			windowManager.showSaveResultsDialog((BattleResultsTableModel)tableModel);
+		}
 	}
 
 	private void okButtonActionPerformed() {

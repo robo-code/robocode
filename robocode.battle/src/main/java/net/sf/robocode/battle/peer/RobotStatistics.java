@@ -38,7 +38,7 @@ public class RobotStatistics implements ContestantStatistics {
 
 	private Map<String, Double> robotDamageMap;
 
-	private double totalScore;
+	protected double totalScore;
 	private double totalSurvivalScore;
 	private double totalLastSurvivorBonus;
 	private double totalBulletDamageScore;
@@ -67,7 +67,7 @@ public class RobotStatistics implements ContestantStatistics {
 		isInRound = true;
 	}
 
-	private void resetScores() {
+	protected void resetScores() {
 		robotDamageMap = null;
 		survivalScore = 0;
 		lastSurvivorBonus = 0;
@@ -274,7 +274,7 @@ public class RobotStatistics implements ContestantStatistics {
 				totalSeconds, totalThirds);
 	}
 
-	private double getRobotDamage(String robot) {
+	protected double getRobotDamage(String robot) {
 		if (robotDamageMap == null) {
 			robotDamageMap = new HashMap<String, Double>();
 		}
@@ -283,7 +283,7 @@ public class RobotStatistics implements ContestantStatistics {
 		return (damage != null) ? damage : 0;
 	}
 
-	private void incrementRobotDamage(String robot, double damage) {
+	protected void incrementRobotDamage(String robot, double damage) {
 		double newDamage = getRobotDamage(robot) + damage;
 
 		robotDamageMap.put(robot, newDamage);
@@ -294,5 +294,21 @@ public class RobotStatistics implements ContestantStatistics {
 
 	public boolean isInRound() {
 		return isInRound;
+	}
+	
+	public int getRank() {
+		return rank;
+	}
+
+	public RobotPeer getRobotPeer() {
+		return robotPeer;
+	}
+
+	protected boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 }

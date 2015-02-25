@@ -11,6 +11,7 @@ package net.sf.robocode.ui;
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.BattleResultsTableModel;
 import net.sf.robocode.battle.IBattleManager;
+import net.sf.robocode.battle.NavalBattleResultsTableModel;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.ICpuManager;
 import net.sf.robocode.io.FileUtil;
@@ -27,6 +28,7 @@ import robocode.control.snapshot.ITurnSnapshot;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -523,6 +525,53 @@ public class WindowManager implements IWindowManagerExt {
 			tableModel.saveToFile(filename, append);
 		}
 	}
+	
+	public void showSaveResultsDialog(NavalBattleResultsTableModel tableModel) {
+		JFileChooser chooser = new JFileChooser();
+
+		chooser.setFileFilter(new FileFilter() {
+
+			@Override
+			public boolean accept(File pathname) {
+				if (pathname.isHidden()) {
+					return false;
+				}
+				if (pathname.isDirectory()) {
+					return true;
+				}
+				String filename = pathname.getName();
+				int idx = filename.lastIndexOf('.');
+
+				String extension = "";
+
+				if (idx >= 0) {
+					extension = filename.substring(idx);
+				}
+				return extension.equalsIgnoreCase(".csv");
+			}
+
+			@Override
+			public String getDescription() {
+				return "Comma Separated Value (CSV) File Format";
+			}
+		});
+
+		chooser.setDialogTitle("Save battle results");
+
+		if (chooser.showSaveDialog(getRobocodeFrame()) == JFileChooser.APPROVE_OPTION) {
+
+			String filename = chooser.getSelectedFile().getPath();
+
+			if (!filename.endsWith(".csv")) {
+				filename += ".csv";
+			}
+
+			boolean append = settingsManager.getOptionsCommonAppendWhenSavingResults();
+
+			tableModel.saveToFile(filename, append);
+		}
+	}
+
 
 	/**
 	 * Packs, centers, and shows the specified window on the screen.

@@ -35,20 +35,21 @@ public abstract class RobocodeMainBase implements Runnable {
 	// -----------
 
 	public static void robocodeMain(Object args) {
+	
 		// here we cross transition to EngineClassLoader classes using interface which is defined in system classLoader
 		RobocodeMainBase main = Container.getComponent(RobocodeMainBase.class);
-
+	
 		main.loadSetup((String[]) args);
-
+	
 		// Make sure ALL uncaught exceptions are logged
 		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {
 				Logger.logError("UncaughtException on thread " + t.getClass(), e);
 			}
 		});
-
+	
 		ThreadGroup group = new ThreadGroup("Robocode thread group");
-
+	
 		new Thread(group, main, "Robocode main thread").start();
 	}
 

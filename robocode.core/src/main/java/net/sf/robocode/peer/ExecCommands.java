@@ -1,19 +1,22 @@
-/**
- * Copyright (c) 2001-2014 Mathew A. Nelson and Robocode contributors
+/*******************************************************************************
+ * Copyright (c) 2001-2013 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
- */
+ *******************************************************************************/
 package net.sf.robocode.peer;
-
 
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
 import robocode.Rules;
 
+import robocode.naval.ComponentManager;
+
 import java.io.Serializable;
+
 import static java.lang.Math.abs;
+
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +25,7 @@ import java.util.List;
 /**
  * @author Pavel Savara (original)
  */
-public final class ExecCommands implements Serializable {
+public final class ExecCommands implements Serializable{
 	private static final long serialVersionUID = 1L;
 	public static final int defaultBodyColor = 0xFF29298C;
 	public static final int defaultGunColor = 0xFF29298C;
@@ -30,20 +33,20 @@ public final class ExecCommands implements Serializable {
 	public static final int defaultScanColor = 0xFF0000FF;
 	public static final int defaultBulletColor = 0xFFFFFFFF;
 
-	private double bodyTurnRemaining;
-	private double radarTurnRemaining;
-	private double gunTurnRemaining;
-	private double distanceRemaining;
+	private double bodyTurnRemaining;  // [1, 1]
+	private double radarTurnRemaining; // [0, n>
+	private double gunTurnRemaining;   // [0, n>
+	private double distanceRemaining;  // [1, 1]
 
 	private boolean isAdjustGunForBodyTurn;
 	private boolean isAdjustRadarForGunTurn;
 	private boolean isAdjustRadarForBodyTurn;
 	private boolean isAdjustRadarForBodyTurnSet;
 
-	private int bodyColor = defaultBodyColor;
-	private int gunColor = defaultGunColor;
-	private int radarColor = defaultRadarColor;
-	private int scanColor = defaultScanColor;
+	private int bodyColor = defaultBodyColor;   // [1, 1]
+	private int gunColor = defaultGunColor;     // [0, n> OR [1, 1]
+	private int radarColor = defaultRadarColor; // [0, n> OR [1, 1]
+	private int scanColor = defaultScanColor;   // [1, 1]
 	private int bulletColor = defaultBulletColor;
 	private double maxTurnRate;
 	private double maxVelocity;
@@ -53,14 +56,23 @@ public final class ExecCommands implements Serializable {
 	private boolean isIORobot;
 	private boolean isTryingToPaint;
 	private String outputText;
-	private List<BulletCommand> bullets = new ArrayList<BulletCommand>();
 	private List<TeamMessage> teamMessages = new ArrayList<TeamMessage>();
 	private List<DebugProperty> debugProperties = new ArrayList<DebugProperty>();
 	private Object graphicsCalls;
+	private List<BulletCommand> bullets = new ArrayList<BulletCommand>();
+	
+	private List<ComponentCommands> componentCommands = new ArrayList<ComponentCommands>(getMaxComponents());
+	private List<MineCommand> mines = new ArrayList<MineCommand>();	
+
 
 	public ExecCommands() {
 		setMaxVelocity(Double.MAX_VALUE);
 		setMaxTurnRate(Double.MAX_VALUE);
+		
+		// Initialize the values of the components.
+		for (int i = 0; i < getMaxComponents(); i++) {
+			componentCommands.add(new ComponentCommands(0, false));
+		}
 	}
 
 	public ExecCommands(ExecCommands origin, boolean fromRobot) {
@@ -75,6 +87,14 @@ public final class ExecCommands implements Serializable {
 		maxTurnRate = origin.maxTurnRate;
 		maxVelocity = origin.maxVelocity;
 		copyColors(origin);
+		
+//		boundingBox = origin.boundingBox;
+		
+		componentCommands = new ArrayList<ComponentCommands>();
+		for(ComponentCommands cc : origin.getComponentCommands()){
+			componentCommands.add(cc);
+		}
+		
 		if (fromRobot) {
 			debugProperties = origin.debugProperties; 
 			bullets = origin.bullets;
@@ -85,8 +105,29 @@ public final class ExecCommands implements Serializable {
 			teamMessages = origin.teamMessages;
 			isTryingToPaint = origin.isTryingToPaint; 
 		}
+		mines = origin.mines;
 	}
-
+	
+	/**
+	 * Gets the maximum amount of components that may be attached to a vehicle.
+	 * @return The maximum amount of components that may be attached to a vehicle.
+	 */
+	private int getMaxComponents() {
+		return ComponentManager.MAX_COMPONENTS;
+	}
+	
+	public boolean isAdjustComponentForShip(int index){
+		return getComponentCommand(index).isAdjustForBodyTurn();
+	}
+	
+	public void setAdjustComponentForShip(int index, boolean independent){
+		getComponentCommand(index).setAdjustForBodyTurn(independent);
+	}
+	
+	public ComponentCommands getComponentCommand(int index){
+		return componentCommands.get(index);
+	}
+	
 	public void copyColors(ExecCommands origin) {
 		if (origin != null) {
 			bodyColor = origin.bodyColor;
@@ -146,19 +187,19 @@ public final class ExecCommands implements Serializable {
 	}
 
 	public double getRadarTurnRemaining() {
-		return radarTurnRemaining;
+		return getComponentsTurnRemaining(0);
 	}
 
 	public void setRadarTurnRemaining(double radarTurnRemaining) {
-		this.radarTurnRemaining = radarTurnRemaining;
+		setComponentsTurnRemaining(0, radarTurnRemaining);
 	}
 
 	public double getGunTurnRemaining() {
-		return gunTurnRemaining;
+		return getComponentsTurnRemaining(1);
 	}
-
+	
 	public void setGunTurnRemaining(double gunTurnRemaining) {
-		this.gunTurnRemaining = gunTurnRemaining;
+		setComponentsTurnRemaining(1, gunTurnRemaining);
 	}
 
 	public double getDistanceRemaining() {
@@ -236,6 +277,10 @@ public final class ExecCommands implements Serializable {
 	public List<BulletCommand> getBullets() {
 		return bullets;
 	}
+	
+	public List<MineCommand> getMines(){
+		return mines;
+	}
 
 	public Object getGraphicsCalls() {
 		return graphicsCalls;
@@ -286,11 +331,32 @@ public final class ExecCommands implements Serializable {
 	public void setTryingToPaint(boolean tryingToPaint) {
 		isTryingToPaint = tryingToPaint;
 	}
+	
+	// -----
+	//  NEW
+	// -----
+	
+	public List<ComponentCommands> getComponentCommands(){
+		return componentCommands;
+	}
+	
+	/**
+	 * Get the angle, in radians, a component <i>still</i> has to turn.
+	 * @param index The index of the component.
+	 * @return The angle, in radians, the component still has to turn.
+	 */
+	public double getComponentsTurnRemaining(int index) {
+		return getComponentCommand(index).getTurnRemaining();
+	}
+	
+	public void setComponentsTurnRemaining(int index, double turnRemaining) {
+		getComponentCommand(index).setTurnRemaining(turnRemaining);
+	}
 
 	static ISerializableHelper createHiddenSerializer() {
 		return new SerializableHelper();
 	}
-
+	
 	private static class SerializableHelper implements ISerializableHelper {
 		public int sizeOf(RbSerializer serializer, Object object) {
 			ExecCommands obj = (ExecCommands) object;
@@ -319,6 +385,11 @@ public final class ExecCommands implements Serializable {
 				size += serializer.sizeOf(RbSerializer.DebugProperty_TYPE, d);
 			}
 			size += 1;
+			
+			// Custom
+			size += 6 * RbSerializer.SIZEOF_DOUBLE;
+			size += 2 * obj.getMaxComponents() * RbSerializer.SIZEOF_DOUBLE;
+			size += obj.getMaxComponents() * RbSerializer.SIZEOF_BOOL;
 			
 			return size;
 		}
@@ -366,6 +437,14 @@ public final class ExecCommands implements Serializable {
 				serializer.serialize(buffer, RbSerializer.DebugProperty_TYPE, prop);
 			}
 			buffer.put(RbSerializer.TERMINATOR_TYPE);
+			for (MineCommand mine : obj.mines) {
+				serializer.serialize(buffer, RbSerializer.MineCommand_TYPE, mine);
+			}
+			buffer.put(RbSerializer.TERMINATOR_TYPE);
+			// Custom - Lists
+			for (ComponentCommands c : obj.componentCommands) {
+				serializer.serialize(buffer, RbSerializer.ComponentsCommand_TYPE, c);
+			}
 		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
@@ -398,7 +477,7 @@ public final class ExecCommands implements Serializable {
 			res.outputText = serializer.deserializeString(buffer);
 			
 			res.graphicsCalls = serializer.deserializeBytes(buffer);
-
+     
 			Object item = serializer.deserializeAny(buffer);
 
 			while (item != null) {
@@ -421,6 +500,20 @@ public final class ExecCommands implements Serializable {
 				}
 				item = serializer.deserializeAny(buffer);
 			}
+			
+			while (item != null) {
+				if (item instanceof MineCommand) {
+					res.mines.add((MineCommand) item);
+				}
+				item = serializer.deserializeAny(buffer);
+			}
+			
+			// Custom - Lists
+			int maxCapacity = res.getMaxComponents();
+			for (int i = 0; i < maxCapacity; i++) {
+				res.componentCommands.add(i, (ComponentCommands)serializer.deserializeAny(buffer));
+			}
+			
 			return res;
 		}
 	}
