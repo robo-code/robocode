@@ -1,21 +1,15 @@
-## Naval Robocode 0.9.4 (24-Feb-2015)
-* Pull request to naval-robocode-workspace2
+## Naval Robocode Version 0.9.2 (24-Feb-2015)
 
-## Naval Robocode 0.9.3 (24-Feb-2015)
-* Merged all changes into the new Robocode 1.9.2.4
-
-## Naval Robocode Version 0.9.2
+### Changes
+* Merged all changes with Naval Robocode with Robocode 1.9.2.4 (newest version).
 * Flemming clean-up and Naval Robocode specification
-
-## Naval Robocode Version 0.9.1 (27-Jan-2015)
 
 ### Bug fixes
 * Mines now have a blast Radius. (See NavalRules)
 	* Angles have been better documented
-	* Custom run config   robocode.NavalRobocode
-	
+	* Custom run config robocode.NavalRobocode
 
-## Naval Robocode Version 0.9.0 (20-Jan-2015)
+## Naval Robocode Version 0.9.1 (27-Jan-2015)
 
 ### First release
 * Ships instead of tanks
