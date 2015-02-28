@@ -38,5 +38,7 @@ public class Module extends BaseModule {
 		RbSerializer.register(ExecResults.class, RbSerializer.ExecResults_TYPE);
 		RbSerializer.register(BulletStatus.class, RbSerializer.BulletStatus_TYPE);
 		RbSerializer.register(RobotStatics.class, RbSerializer.RobotStatics_TYPE);
+		//	Naval	\\
+		RbSerializer.register(ComponentCommands.class, RbSerializer.ComponentsCommand_TYPE);
 	}
 }

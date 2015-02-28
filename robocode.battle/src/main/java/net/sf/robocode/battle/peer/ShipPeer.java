@@ -86,16 +86,16 @@ public class ShipPeer extends RobotPeer{
 
 	}
 	
-//	/**
-//	 * Is here to do a few tests. See TestWallCollision
-//	 */
-//	public ShipPeer(){
-//		super();
-//		initComponents();
-//		boundingRectangle = new BoundingRectangle(0,0,NavalRules.WIDTH, NavalRules.HEIGHT);
-//		statistics = new ShipStatistics(this, battle.getRobotsCount());
-//	}
-//	
+	/**
+	 * Is here to do a few tests. See TestWallCollision
+	 */
+	public ShipPeer(){
+		super();
+		initComponents();
+		boundingRectangle = new BoundingRectangle(0,0,NavalRules.WIDTH, NavalRules.HEIGHT);
+		statistics = new ShipStatistics(this, 2);	//always 2
+	}
+	
 	/**
 	 * Returns the "BoundingBox" of the Ship.
 	 * This is in fact not an actual BoundingBox. It's just a box that has the same size as the Ship.
@@ -305,7 +305,7 @@ public class ShipPeer extends RobotPeer{
 				angle = Utils.normalRelativeAngle(-bodyHeading);
 			}
 			//Top Wall Forward
-			if (getY() <= OFFSET_BASED_ON_HEADING_Y_FORWARD) {
+			if (getY() <= OFFSET_BASED_ON_HEADING_Y_FORWARD) { 
 				hitWall = true;
 				angle = Utils.normalRelativeAngle(Math.PI - bodyHeading);
 			}

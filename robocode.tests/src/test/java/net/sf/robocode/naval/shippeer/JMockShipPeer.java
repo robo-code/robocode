@@ -8,7 +8,7 @@ public class JMockShipPeer extends ShipPeer{
 	private double y;
 	private double bodyHeading;
 	public JMockShipPeer(double x, double y, double bodyHeading){
-		super(null, null, null, 0, null, 0);	//TODO
+		super();
 		this.x = x;
 		this.y = y;
 		this.bodyHeading = bodyHeading;
@@ -19,6 +19,7 @@ public class JMockShipPeer extends ShipPeer{
 	}
 	@Override
 	public double getBattleFieldWidth() {
+		System.out.println("Test!");
 		return 800;
 	}
 	@Override

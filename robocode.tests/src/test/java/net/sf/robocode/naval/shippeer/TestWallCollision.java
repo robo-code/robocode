@@ -13,16 +13,9 @@ public class TestWallCollision {
 	private double distanceFrontToPivot = NavalRules.HEIGHT/2 - NavalRules.PROW_OFFSET;
 	private double distanceBackToPivot = NavalRules.HEIGHT - NavalRules.PROW_OFFSET;
 	
-	public TestWallCollision(){
-		peer = new JMockShipPeer(0,0,0);
-	}
-	
 	public boolean testCollision(double x, double y, double heading, String testName, boolean log){
 		boolean inCollision = false;
-		
-		peer.setX(x);
-		peer.setY(y);
-		peer.setBodyHeading(heading);
+		peer = new JMockShipPeer(x,y,heading);
 		
 		peer.checkWallCollision();
 		inCollision = peer.getState() == RobotState.HIT_WALL;
@@ -38,7 +31,7 @@ public class TestWallCollision {
 	@Test public void test1b(){assertTrue(!testCollision(300, 300, 0,"test1b", true));}
 	@Test public void test1c(){assertTrue(testCollision(NavalRules.WIDTH/2, NavalRules.HEIGHT/2 - NavalRules.PROW_OFFSET, 0,"test1c", true));}
 	@Test public void test1d(){assertTrue(!testCollision(NavalRules.WIDTH/2 + 1, distanceFrontToPivot + 1, 0,"test1d", true));}
-	@Test public void test1e(){assertTrue(!testCollision(peer.getBattleFieldWidth() - (NavalRules.WIDTH/2 + 1), peer.getBattleFieldHeight() - (distanceBackToPivot + 1), 0,"test1e", true));}
+	@Test public void test1e(){assertTrue(!testCollision(800 - (NavalRules.WIDTH/2 + 1), 600 - (distanceBackToPivot + 1), 0,"test1e", true));}
 	@Test public void test1f(){assertTrue(testCollision(-100,-100,0,"test1f",true));}	
 	@Test public void test1g(){assertTrue(testCollision(3489,2459,0,"test1g",true));}	
 

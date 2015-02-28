@@ -43,6 +43,7 @@ public final class EventManager implements IEventManager {
 	private Event currentTopEvent;
 	private int currentTopEventPriority;
 	private ScannedRobotEvent dummyScannedRobotEvent;
+	private ScannedShipEvent dummyScannedShipEvent;
 	private Map<String, Event> eventNames;
 
 	private IBasicRobot robot;
@@ -256,6 +257,21 @@ public final class EventManager implements IEventManager {
 		}
 		return events;
 	}
+	
+	/**
+	 * Returns a list containing all ScannedRobotEvents currently in the robot's queue.
+	 */
+	public List<ScannedShipEvent> getScannedRobotEvents2() {
+		List<ScannedShipEvent> events = new ArrayList<ScannedShipEvent>();
+		synchronized (eventQueue) {
+			for (Event e : eventQueue) {
+				if (e instanceof ScannedShipEvent) {
+					events.add((ScannedShipEvent) e);
+				}
+			}
+		}
+		return events;
+	}
 
 	/**
 	 * Returns a list containing all MessageEvents currently in the robot's queue.
@@ -323,6 +339,13 @@ public final class EventManager implements IEventManager {
 	 */
 	public int getScannedRobotEventPriority() {
 		return dummyScannedRobotEvent.getPriority();
+	}
+	
+	/**
+	 * Returns the priority of a ScannedShipEvent.
+	 */
+	public int getScannedShipEventPriority() {
+		return dummyScannedShipEvent.getPriority();
 	}
 
 	/**
@@ -512,6 +535,7 @@ public final class EventManager implements IEventManager {
 	private void registerEventNames() {
 		eventNames = new HashMap<String, Event>();
 		dummyScannedRobotEvent = new ScannedRobotEvent(null, 0, 0, 0, 0, 0, false);
+		dummyScannedShipEvent= new ScannedShipEvent(null, 0, 0, 0, 0, 0, 0, 0);
 		registerEventNames(new BattleEndedEvent(false, null));
 		registerEventNames(new BulletHitBulletEvent(null, null));
 		registerEventNames(new BulletHitEvent(null, 0, null));
@@ -536,9 +560,15 @@ public final class EventManager implements IEventManager {
 		registerEventNames(new RobotDeathEvent(null));
 		registerEventNames(new RoundEndedEvent(0, 0, 0));
 		registerEventNames(dummyScannedRobotEvent);
+		registerEventNames(dummyScannedShipEvent);
 		registerEventNames(new SkippedTurnEvent(0));
 		registerEventNames(new StatusEvent(null));
 		registerEventNames(new WinEvent());
+		
+		//Mines
+		registerEventNames(new MineHitMineEvent(null, null));
+		registerEventNames(new MineHitEvent("", 0, null));
+		registerEventNames(new HitByMineEvent(null));
 
 		// same as any line above but for custom event
 		final DummyCustomEvent customEvent = new DummyCustomEvent();
