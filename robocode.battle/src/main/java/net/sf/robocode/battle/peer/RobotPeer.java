@@ -186,7 +186,6 @@ public /*final*/ class RobotPeer implements IRobotPeerBattle, IRobotPeer, ITrans
 	 * Empty constructor for RobotPeer
 	 */
 	public RobotPeer(){
-		super();
 		this.battle = null;
 		this.robotSpecification = null;
 

@@ -1,3 +1,9 @@
+## Naval Robocode Version 0.9.3 (28-Feb-2015)
+
+### Bug fixes
+* Now able to use naval-robocode.bat to start Naval Robocode
+* Fixed a few UnitTests that fell short due to a few missing classes
+
 ## Naval Robocode Version 0.9.2 (24-Feb-2015)
 
 ### Changes

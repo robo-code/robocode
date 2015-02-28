@@ -386,10 +386,24 @@ public final class ExecCommands implements Serializable{
 			}
 			size += 1;
 			
-			// Custom
-			size += 6 * RbSerializer.SIZEOF_DOUBLE;
-			size += 2 * obj.getMaxComponents() * RbSerializer.SIZEOF_DOUBLE;
-			size += obj.getMaxComponents() * RbSerializer.SIZEOF_BOOL;
+			// Naval
+//			private List<ComponentCommands> componentCommands = new ArrayList<ComponentCommands>(getMaxComponents());
+//			private List<MineCommand> mines = new ArrayList<MineCommand>();	
+//			size += 6 * RbSerializer.SIZEOF_DOUBLE;
+//			size += 2 * obj.getMaxComponents() * RbSerializer.SIZEOF_DOUBLE;
+//			size += obj.getMaxComponents() * RbSerializer.SIZEOF_BOOL;
+			
+			// Mines
+			for (MineCommand mine : obj.mines) {
+				size += serializer.sizeOf(RbSerializer.MineCommand_TYPE, mine);
+			}
+			size += 1;
+			
+			// properties
+			for (ComponentCommands c : obj.componentCommands) {
+				size += serializer.sizeOf(RbSerializer.ComponentsCommand_TYPE, c);
+			}
+			size += 1;
 			
 			return size;
 		}
@@ -437,14 +451,16 @@ public final class ExecCommands implements Serializable{
 				serializer.serialize(buffer, RbSerializer.DebugProperty_TYPE, prop);
 			}
 			buffer.put(RbSerializer.TERMINATOR_TYPE);
+			
+			// Custom - Naval Lists
 			for (MineCommand mine : obj.mines) {
 				serializer.serialize(buffer, RbSerializer.MineCommand_TYPE, mine);
 			}
 			buffer.put(RbSerializer.TERMINATOR_TYPE);
-			// Custom - Lists
 			for (ComponentCommands c : obj.componentCommands) {
 				serializer.serialize(buffer, RbSerializer.ComponentsCommand_TYPE, c);
 			}
+			buffer.put(RbSerializer.TERMINATOR_TYPE);
 		}
 
 		public Object deserialize(RbSerializer serializer, ByteBuffer buffer) {
@@ -500,19 +516,26 @@ public final class ExecCommands implements Serializable{
 				}
 				item = serializer.deserializeAny(buffer);
 			}
-			
+			// Custom - Naval Lists
+			item = serializer.deserializeAny(buffer);
 			while (item != null) {
 				if (item instanceof MineCommand) {
 					res.mines.add((MineCommand) item);
 				}
 				item = serializer.deserializeAny(buffer);
 			}
-			
-			// Custom - Lists
-			int maxCapacity = res.getMaxComponents();
-			for (int i = 0; i < maxCapacity; i++) {
-				res.componentCommands.add(i, (ComponentCommands)serializer.deserializeAny(buffer));
+			item = serializer.deserializeAny(buffer);
+			while (item != null) {
+				if (item instanceof ComponentCommands) {
+					res.componentCommands.add((ComponentCommands) item);
+				}
+				item = serializer.deserializeAny(buffer);
 			}
+			
+//			int maxCapacity = res.getMaxComponents();
+//			for (int i = 0; i < maxCapacity; i++) {
+//				res.componentCommands.add(i, (ComponentCommands)serializer.deserializeAny(buffer));
+//			}
 			
 			return res;
 		}
