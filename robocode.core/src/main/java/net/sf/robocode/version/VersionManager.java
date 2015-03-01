@@ -29,7 +29,7 @@ import java.net.URLConnection;
  */
 public final class VersionManager implements IVersionManager {
 
-	private static final String VERSIONS_TXT = "versions.md";
+	private static final String VERSIONS_TXT = "naval-robocode-versions.md";
 	private static final String UNKNOWN_VERSION = "unknown";
 
 	private static Version version;
@@ -54,7 +54,7 @@ public final class VersionManager implements IVersionManager {
 		BufferedReader reader = null;
 
 		try {
-			URL url = new URL("http://robocode.sourceforge.net/version/version.html");
+			URL url = new URL("http://robocode.sourceforge.net/version/naval-version.html");
 
 			URLConnection urlConnection = url.openConnection();
 
@@ -135,7 +135,7 @@ public final class VersionManager implements IVersionManager {
 				in = new BufferedReader(new InputStreamReader(is));
 
 				versionString = in.readLine();
-				while (versionString != null && !versionString.startsWith("## Version ")) {
+				while (versionString != null && !versionString.startsWith("## Naval Robocode Version ")) {
 					versionString = in.readLine();
 				}
 			}
@@ -184,10 +184,10 @@ public final class VersionManager implements IVersionManager {
 
 			versionString = in.readLine();
 		} catch (FileNotFoundException e) {
-			logError("No " + VERSIONS_TXT + " file.");
+			System.err.println("No " + VERSIONS_TXT + " file.");
 			versionString = UNKNOWN_VERSION;
 		} catch (IOException e) {
-			logError("IO Exception reading " + VERSIONS_TXT, e);
+			System.err.println("IO Exception reading " + VERSIONS_TXT + "\n" + e.getLocalizedMessage());
 			versionString = UNKNOWN_VERSION;
 		} finally {
 			if (fileReader != null) {
@@ -213,7 +213,7 @@ public final class VersionManager implements IVersionManager {
 	}
 
 	private static String versionFileLineToVersion(String versionFileLine) {
-		String version = versionFileLine.substring("## Version ".length());
+		String version = versionFileLine.substring("## Naval Robocode Version ".length());
 
 		int index = version.indexOf('(');
 		if (index >= 0) {

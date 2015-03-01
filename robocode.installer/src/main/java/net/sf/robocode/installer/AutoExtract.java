@@ -399,7 +399,7 @@ public class AutoExtract implements ActionListener {
 
 			// Create shortcuts and file associations
 			if (extractor.extract(installDir)) {
-				extractor.createShortcuts(installDir, "robocode.bat", "Naval Robocode", "Naval Robocode");
+				extractor.createShortcuts(installDir, "naval-robocode.bat", "Naval Robocode", "Naval Robocode");
 				extractor.createFileAssociations(installDir);
 				return true;
 			}
@@ -467,21 +467,21 @@ public class AutoExtract implements ActionListener {
 			if (createWindowsShortcuts(installDir, runnable, folder, name) == false) {
 				JOptionPane.showMessageDialog(null,
 						message + "\n" + "To start Naval Robocode, enter the following at a command prompt:\n" + "cd "
-						+ installDir.getAbsolutePath() + "\n" + "robocode.bat");
+						+ installDir.getAbsolutePath() + "\n" + "naval-robocode.bat");
 			}
 		} else if (osName.toLowerCase().indexOf("mac") == 0) {
 			if (osVersion >= 10.1) {
 				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Naval Robocode, browse to " + installDir + " then double-click robocode.sh\n");
+						message + "\n" + "To start Naval Robocode, browse to " + installDir + " then double-click naval-robocode.command\n");
 			} else {
 				JOptionPane.showMessageDialog(null,
-						message + "\n" + "To start Naval Robocode, enter the following at a command prompt:\n"
-						+ installDir.getAbsolutePath() + "/robocode.sh");
+						message + "\n" + "To start Naval Robocode, enter the following at a shell:\n"
+						+ installDir.getAbsolutePath() + "/naval-robocode.sh");
 			}
 		} else {
 			JOptionPane.showMessageDialog(null,
-					message + "\n" + "To start Naval Robocode, enter the following at a command prompt:\n"
-					+ installDir.getAbsolutePath() + "/robocode.sh");
+					message + "\n" + "To start Naval Robocode, enter the following at a shell:\n"
+					+ installDir.getAbsolutePath() + "/naval-robocode.sh");
 		}
 	}
 
@@ -632,7 +632,7 @@ public class AutoExtract implements ActionListener {
 		sb.append(HKCR).append(progId).append("\\shell]\n");
 		sb.append(HKCR).append(progId).append("\\shell\\open]\n");
 		sb.append(HKCR).append(progId).append("\\shell\\open\\command]\n");
-		sb.append("@=\"").append(getWindowsCmd()).append("\\\"cd \\\"").append(installDir.replaceAll("[\\\\]", "\\\\\\\\")).append("\\\" && robocode.bat ").append(robocodeCmdParam).append(
+		sb.append("@=\"").append(getWindowsCmd()).append("\\\"cd \\\"").append(installDir.replaceAll("[\\\\]", "\\\\\\\\")).append("\\\" && naval-robocode.bat ").append(robocodeCmdParam).append(
 				" \\\"%1\\\"\\\"\"\n");
 
 		return sb.toString();

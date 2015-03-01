@@ -193,13 +193,13 @@ public class RobocodeFrame extends JFrame {
 	}
 
 	private void showLatestVersion(String version) {
-		JOptionPane.showMessageDialog(this, "You have version " + version + ".  This is the latest version of Robocode.",
+		JOptionPane.showMessageDialog(this, "You have version " + version + ".  This is the latest version of Naval Robocode.",
 				"No update available", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void showNewVersion(String newVersion) {
 		if (JOptionPane.showConfirmDialog(this,
-				"Version " + newVersion + " of Robocode is now available.  Would you like to download it?",
+				"Version " + newVersion + " of Naval Robocode is now available.  Would you like to download it?",
 				"Version " + newVersion + " available", JOptionPane.YES_NO_OPTION)
 				== JOptionPane.YES_OPTION) {
 			try {
@@ -534,7 +534,7 @@ public class RobocodeFrame extends JFrame {
 	 */
 	private void initialize() {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		setTitle("Robocode");
+		setTitle("Naval Robocode");
 		setIconImage(ImageUtil.getImage("/net/sf/robocode/ui/icons/robocode-icon.png"));
 		setResizable(true);
 		setVisible(false);
@@ -731,7 +731,7 @@ public class RobocodeFrame extends JFrame {
 		public void windowClosing(WindowEvent e) {
 			exitOnClose = true;
 			if (windowManager.isSlave()) {
-				WindowUtil.message("If you wish to exit Robocode, please exit the program controlling it.");
+				WindowUtil.message("If you wish to exit Naval Robocode, please exit the program controlling it.");
 				exitOnClose = false;
 				return;
 			}
@@ -926,7 +926,7 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		private void updateTitle() {
-			StringBuffer title = new StringBuffer("Robocode");
+			StringBuffer title = new StringBuffer("Naval Robocode");
 
 			if (isBattleRunning) {
 				title.append(": ");

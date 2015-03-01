@@ -92,5 +92,9 @@
 			<source>../versions.md</source>
 			<lineEnding>lf</lineEnding> <!-- for Unix/Linux -->
 		</file>
+		<file>
+			<source>../naval-robocode-versions.md</source>
+			<lineEnding>lf</lineEnding> <!-- for Unix/Linux -->
+		</file>
 	</files>
 </assembly>

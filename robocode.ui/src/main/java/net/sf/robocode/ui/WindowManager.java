@@ -230,7 +230,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showVersionsTxt() {
-		showInBrowser("file://" + new File(FileUtil.getCwd(), "").getAbsoluteFile() + File.separator + "versions.md");
+		showInBrowser("file://" + new File(FileUtil.getCwd(), "").getAbsoluteFile() + File.separator + "naval-robocode-versions.md");
 	}
 
 	public void showHelpApi() {
