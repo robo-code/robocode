@@ -18,6 +18,7 @@ import net.sf.robocode.io.RobocodeProperties;
 import net.sf.robocode.recording.BattleRecordFormat;
 import net.sf.robocode.recording.IRecordManager;
 import net.sf.robocode.repository.IRepositoryManager;
+import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.SerializableOptions;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.sound.ISoundManager;
@@ -134,7 +135,8 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 				if (setup.battleFilename == null && versionManager.isLastRunVersionChanged()) {
 					properties.saveProperties();
-					windowManager.runIntroBattle();
+					if(!HiddenAccess.getNaval())
+						windowManager.runIntroBattle();
 				}
 			}
 

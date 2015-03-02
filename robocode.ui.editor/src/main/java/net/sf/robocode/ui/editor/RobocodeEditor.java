@@ -212,6 +212,10 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 	public void createNewRobot() {
 		createNewRobot("Robot");
 	}
+	
+	public void createNewShip(){
+		createNewRobot("Ship");
+	}
 
 	public void createNewJuniorRobot() {
 		createNewRobot("JuniorRobot");

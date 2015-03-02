@@ -38,6 +38,8 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			
 			if (source == RobocodeEditorMenuBar.this.getFileNewRobotMenuItem()) {
 				fileNewRobotActionPerformed();
+			} else if(source == RobocodeEditorMenuBar.this.getFileNewShipMenuItem()){	//For adding ships
+				fileNewShipActionPerformed();
 			} else if (source == RobocodeEditorMenuBar.this.getFileNewJuniorRobotMenuItem()) {
 				fileNewJuniorRobotActionPerformed();
 			} else if (source == RobocodeEditorMenuBar.this.getFileNewJavaFileMenuItem()) {
@@ -102,6 +104,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	private JMenuItem fileNewJavaFileMenuItem;
 	private JMenu fileNewMenu;
 	private JMenuItem fileNewRobotMenuItem;
+	private JMenuItem fileNewShipMenuItem;
 	private JMenuItem fileNewJuniorRobotMenuItem;
 
 	// Compiler menu
@@ -195,6 +198,13 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 	private void fileNewRobotActionPerformed() {
 		editor.createNewRobot();
 
+		getFileSaveMenuItem().setEnabled(true);
+		getFileSaveAsMenuItem().setEnabled(true);
+	}
+	
+	private void fileNewShipActionPerformed(){
+		editor.createNewShip();
+		
 		getFileSaveMenuItem().setEnabled(true);
 		getFileSaveAsMenuItem().setEnabled(true);
 	}
@@ -408,6 +418,7 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			fileNewMenu.setText("New");
 			fileNewMenu.setMnemonic('N');
 			fileNewMenu.add(getFileNewRobotMenuItem());
+			fileNewMenu.add(getFileNewShipMenuItem());
 			fileNewMenu.add(getFileNewJuniorRobotMenuItem());
 			fileNewMenu.add(getFileNewJavaFileMenuItem());
 		}
@@ -423,6 +434,18 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			fileNewRobotMenuItem.addActionListener(eventHandler);
 		}
 		return fileNewRobotMenuItem;
+	}
+	
+	//New JMenuItem to add Ships
+	private JMenuItem getFileNewShipMenuItem(){
+		if(fileNewShipMenuItem == null){
+			fileNewShipMenuItem = new JMenuItem();
+			fileNewShipMenuItem.setText("Ship");
+			
+			fileNewShipMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, MENU_SHORTCUT_KEY_MASK));
+			fileNewShipMenuItem.addActionListener(eventHandler);
+		}
+		return fileNewShipMenuItem;
 	}
 
 	private JMenuItem getFileNewJuniorRobotMenuItem() {

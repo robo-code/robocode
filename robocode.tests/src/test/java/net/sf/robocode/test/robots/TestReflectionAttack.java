@@ -31,7 +31,7 @@ public class TestReflectionAttack extends RobocodeTestBed {
 
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-		if (out.contains("access denied (java.lang.reflect.ReflectPermission")) {
+		if (out.contains("access denied (\"java.lang.reflect.ReflectPermission")) {
 			messagedAccessDenied = true;	
 		}	
 	}

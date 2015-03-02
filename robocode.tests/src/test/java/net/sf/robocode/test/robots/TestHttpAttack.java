@@ -31,7 +31,7 @@ public class TestHttpAttack extends RobocodeTestBed {
 
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-		if (out.contains("access denied (java.net.SocketPermission")) {
+		if (out.contains("access denied (\"java.net.SocketPermission")) {
 			messagedAccessDenied = true;	
 		}	
 	}
