@@ -4,6 +4,9 @@
 * Now able to use naval-robocode.bat to start Naval Robocode
 * Fixed a few UnitTests that fell short due to a few missing classes
 
+### Additions
+* The in-game editor can now create a sample ship for you.
+
 ## Naval Robocode Version 0.9.2 (24-Feb-2015)
 
 ### Changes

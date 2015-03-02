@@ -31,7 +31,7 @@ public class TestFileOutputStreamAttack extends RobocodeTestBed {
 
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-		if (out.contains("access denied (java.io.FilePermission")) {
+		if (out.contains("access denied (\"java.io.FilePermission")) {
 			messagedAccessDenied = true;	
 		}	
 	}
