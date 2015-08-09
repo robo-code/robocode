@@ -13,6 +13,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	</organization>
 	<properties>
 		<project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
+		<robocode.version>1.9.2.4</robocode.version> <!-- Any string, but no spaces (use '-' instead of space) -->
+		<robocode.dotnet.version>1.9.2.4</robocode.dotnet.version> <!-- Only X.X.X.X format -->
+		<javadoc.additionalparam/>
 	</properties>
 	<repositories>
 		<repository>
@@ -162,4 +165,15 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			</resource>
 		</resources>
 	</build>
+	<profiles>
+		<profile>
+			<id>java8</id>
+			<activation>
+				<jdk>[1.8,)</jdk>
+			</activation>
+			<properties>
+				<javadoc.additionalparam>-Xdoclint:none</javadoc.additionalparam>
+			</properties>
+		</profile>
+	</profiles>
 </project>
