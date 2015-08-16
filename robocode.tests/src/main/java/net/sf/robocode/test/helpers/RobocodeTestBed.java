@@ -39,18 +39,30 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	public static boolean isDumpingOutput = true;
 	public static boolean isDumpingErrors = true;
 	public static boolean isDumpingMessages = true;
+	public static boolean hasJavaNetURLPermission = isClassAvailable("java.net.URLPermission");
+
+	private static boolean isClassAvailable(String name) {
+		try {
+			return Class.forName(name) != null;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
+	}
 
 	static {
 		System.setProperty("EXPERIMENTAL", "true");
 		System.setProperty("TESTING", "true");
 		System.setProperty("WORKINGDIRECTORY", "target/test-classes");
 		try {
-			if (new File("").getAbsolutePath().endsWith("robocode.tests")) {
+			String currentDirAbsolutePath = new File("").getAbsolutePath();
+			if (currentDirAbsolutePath.endsWith("robocode.tests")) {
 				robotsPath = new File("../robocode.tests.robots").getCanonicalPath();
-			} else if (new File("").getAbsolutePath().endsWith("robocode.dotnet.tests")) {
+			} else if (currentDirAbsolutePath.endsWith("robocode.dotnet.tests")) {
 				robotsPath = new File("../../../robocode.tests.robots").getCanonicalPath();
+			} else if (new File("robocode.tests.robots").isDirectory()) {
+				robotsPath = new File("robocode.tests.robots").getCanonicalPath();
 			} else {
-				throw new Error("Unknown directory");
+				throw new Error("Unknown directory: " + currentDirAbsolutePath);
 			}
 		} catch (IOException e) {
 			e.printStackTrace(Logger.realErr);

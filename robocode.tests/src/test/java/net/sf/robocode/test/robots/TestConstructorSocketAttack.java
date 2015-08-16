@@ -36,7 +36,8 @@ public class TestConstructorSocketAttack extends RobocodeTestBed {
 			messagedInitialization = true;	
 		}	
 
-		if (out.contains("access denied (java.net.SocketPermission")) {
+		if (out.contains("access denied (java.net.SocketPermission")
+				|| out.contains("access denied (\"java.net.SocketPermission\"")) {
 			messagedAccessDenied = true;	
 		}	
 	}

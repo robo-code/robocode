@@ -31,7 +31,8 @@ public class TestHttpAttack extends RobocodeTestBed {
 
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-		if (out.contains("access denied (java.net.SocketPermission")) {
+		if (out.contains("access denied (java.net.SocketPermission")
+				|| out.contains("access denied (\"java.net.SocketPermission\"")) {
 			messagedAccessDenied = true;	
 		}	
 	}
@@ -43,6 +44,6 @@ public class TestHttpAttack extends RobocodeTestBed {
 
 	@Override
 	protected int getExpectedErrors() {
-		return 1; // Security error must be reported as an error
+		return hasJavaNetURLPermission ? 2 : 1; // Security error must be reported as an error. Java 8 reports two errors.
 	}
 }
