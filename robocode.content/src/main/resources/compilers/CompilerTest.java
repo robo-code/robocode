@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  */
- public class CompilerTest {
+public class CompilerTest {
 	public static void main(String args[]) {
 		System.out.println("Compiler operational");
 	}

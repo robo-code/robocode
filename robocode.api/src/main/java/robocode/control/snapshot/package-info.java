@@ -5,7 +5,8 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  */
- /**
+
+/**
  * Snapshots of the battle turns, robots, bullets, scores etc.
  */
 package robocode.control.snapshot;

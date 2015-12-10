@@ -5,7 +5,8 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  */
- /**
+
+/**
  * The Robocode Control API is used for controlling the Robocode
  * application from another external application. Basically, it is possible
  * to run battles between selected robots and retrieve the results. However,

@@ -7,6 +7,7 @@
  */
 package robocode.robocodeGL.system;
 
+
 /**
  * Dummy class to stub out class to provide backwards compability with RobocodeGL.
  */

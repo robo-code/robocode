@@ -32,7 +32,7 @@ public class TestConstructorReflectionAttack extends RobocodeTestBed {
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
 		if (out.contains("access denied (java.lang.reflect.ReflectPermission")
-			|| out.contains("access denied (\"java.lang.reflect.ReflectPermission\"")) {
+				|| out.contains("access denied (\"java.lang.reflect.ReflectPermission\"")) {
 			messagedAccessDenied = true;
 		}
 	}

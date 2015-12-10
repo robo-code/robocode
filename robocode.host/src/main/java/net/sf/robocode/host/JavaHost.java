@@ -92,7 +92,8 @@ public class JavaHost implements IHost {
 			if (message) {
 				logError("Got an error with " + robotItem.getFullClassName() + ": " + t); // just message here
 				if (t.getMessage() != null && t.getMessage().contains("Bad version number in .class file")) {
-					logError("Maybe robot was compiled with a newer Java version the Java version used for running Robocode?");
+					logError(
+							"Maybe robot was compiled with a newer Java version the Java version used for running Robocode?");
 				}
 			}
 			return RobotType.INVALID;

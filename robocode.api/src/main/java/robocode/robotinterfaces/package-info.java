@@ -5,7 +5,8 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  */
- /**
+
+/**
  * Robot Interfaces used for creating new robot types, e.g. with other programming languages.
  */
 package robocode.robotinterfaces;

@@ -34,11 +34,14 @@ public class TestFileAttack extends RobocodeTestBed {
 		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
 
 		if (out.contains("Preventing tested.robots.FileAttack from access: (java.io.FilePermission C:\\MSDOS.SYS read)")
-				|| out.contains("Preventing tested.robots.FileAttack from access: (\"java.io.FilePermission\" \"C:\\MSDOS.SYS\" \"read\")")) {
+				|| out.contains(
+						"Preventing tested.robots.FileAttack from access: (\"java.io.FilePermission\" \"C:\\MSDOS.SYS\" \"read\")")) {
 			messagedRead = true;
 		}
-		if (out.contains("Preventing tested.robots.FileAttack from access: (java.io.FilePermission C:\\Robocode.attack write)")
-				|| out.contains("Preventing tested.robots.FileAttack from access: (\"java.io.FilePermission\" \"C:\\Robocode.attack\" \"write\")")) {
+		if (out.contains(
+				"Preventing tested.robots.FileAttack from access: (java.io.FilePermission C:\\Robocode.attack write)")
+						|| out.contains(
+								"Preventing tested.robots.FileAttack from access: (\"java.io.FilePermission\" \"C:\\Robocode.attack\" \"write\")")) {
 			messagedWrite = true;
 		}
 	}

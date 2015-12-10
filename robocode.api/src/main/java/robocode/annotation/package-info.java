@@ -5,7 +5,8 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  */
- /**
+
+/**
  * Contains annotations that can be used with Robocode.
  */
 package robocode.annotation;

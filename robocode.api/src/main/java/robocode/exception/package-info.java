@@ -5,7 +5,8 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  */
- /**
+
+/**
  * Contains exceptions that occur inside a robot thrown by the game.
  */
 package robocode.exception;

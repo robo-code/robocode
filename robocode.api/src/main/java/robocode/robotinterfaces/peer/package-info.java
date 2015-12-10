@@ -5,6 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  */
+
 /**
  * Robot peers available for implementing new robot types based on the Robot Interfaces.
  */
