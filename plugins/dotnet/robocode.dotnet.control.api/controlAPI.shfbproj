@@ -37,7 +37,7 @@
       <NamespaceSummaryItem name="Robocode.Control.Events" isDocumented="True">Control API used for controlling Robocode from an external .NET application.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Robocode.Control.Snapshot" isDocumented="True">Control API used for controlling Robocode from an external .NET application.</NamespaceSummaryItem>
     </NamespaceSummaries>
-    <CopyrightText>Copyright %28c%29 2001-2014 Mathew A. Nelson and Robocode contributors</CopyrightText>
+    <CopyrightText>Copyright %28c%29 2001-2016 Mathew A. Nelson and Robocode contributors</CopyrightText>
     <FeedbackEMailAddress>fnl%40users.sourceforge.net</FeedbackEMailAddress>
     <FeedbackEMailLinkText>administator and maintainer of Robocode</FeedbackEMailLinkText>
     <ProjectSummary>Robocode Control API for .NET</ProjectSummary>

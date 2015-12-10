@@ -58,7 +58,7 @@
       <NamespaceSummaryItem name="robocode.util" isDocumented="True" xmlns="">Utility classes that can be used when writing robots. Kept for compatibility with legacy robots.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <ProjectSummary>Robocode Robot API for .NET</ProjectSummary>
-    <CopyrightText>Copyright %28c%29 2001-2014 Mathew A. Nelson and Robocode contributors</CopyrightText>
+    <CopyrightText>Copyright %28c%29 2001-2016 Mathew A. Nelson and Robocode contributors</CopyrightText>
     <FeedbackEMailAddress>fnl%40users.sourceforge.net</FeedbackEMailAddress>
     <FeedbackEMailLinkText>administator and maintainer of Robocode</FeedbackEMailLinkText>
     <PresentationStyle>vs2010</PresentationStyle>
