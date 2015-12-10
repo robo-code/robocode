@@ -1,3 +1,8 @@
+## Version 1.9.2.5 (10-Dec-2015)
+
+### Bug fix
+* [Bug-378][]: robocode.robocodeGL.system.GLRenderer ClassNotFoundException
+
 ## Version 1.9.2.4 (20-Nov-2014)
 
 ### Bug fixes
@@ -2986,6 +2991,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-373]: http://sourceforge.net/p/robocode/bugs/373/  (Wrong robot size calculation in version 1.9.0 - 1.9.2)
 [Bug-374]: http://sourceforge.net/p/robocode/bugs/374/  (Wrong size report for minirumble in v1.9.2.2)
 [Bug-375]: http://sourceforge.net/p/robocode/bugs/375/  (Wrong width and height returned for .NET robots)
+[Bug-378]: http://sourceforge.net/p/robocode/bugs/378/  (robocode.robocodeGL.system.GLRenderer ClassNotFoundException)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
