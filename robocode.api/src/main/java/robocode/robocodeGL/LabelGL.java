@@ -9,6 +9,17 @@ package robocode.robocodeGL;
 
 
 /**
- * Dummy class to stub out class to provide backwards compability with RobocodeGL.
+ * Dummy class that stub out RobocodeGL 0.1.4 functionality.
+ *
+ * Original author is David Alves for RobocodeGL.
  */
-public class EllipseGL {}
+public class LabelGL {
+
+	public LabelGL(String s) {}
+
+    public synchronized void setString(String s) {}
+    
+    public synchronized String toString() {
+    	return "";
+    }
+}

@@ -5,10 +5,12 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  */
-package robocode.robocodeGL;
+package gl4java;
 
 
 /**
- * Dummy class to stub out class to provide backwards compability with RobocodeGL.
+ * Dummy class that stub out RobocodeGL 0.1.4 functionality.
+ *
+ * Original author is David Alves for RobocodeGL.
  */
-public class RectangleGL {}
+public class GLFont {}
