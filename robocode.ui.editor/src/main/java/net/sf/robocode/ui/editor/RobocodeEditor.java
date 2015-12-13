@@ -592,7 +592,6 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 				EditorPane editorPane = editWindow.getEditorPane();
 
 				editorPane.read(bufferedReader, new File(robotFilename));
-				editorPane.setCaretPosition(0);
 
 				editWindow.setFileName(robotFilename);
 

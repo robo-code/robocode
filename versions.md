@@ -1,6 +1,7 @@
-## Version 1.9.2.5 (10-Dec-2015)
+## Version 1.9.2.5 (13-Dec-2015)
 
-### Bug fix
+### Bug fixes
+* Robot Editor: Source files were set to modified (starred) as soon as they were loaded. The modification state remained, even when no changes were made to the source file or when undoing all changes. Therefore the editor would always bring up a dialog with a warning, that the source file needed to be saved before closing the editor.
 * [Bug-378][]: robocode.robocodeGL.system.GLRenderer ClassNotFoundException
 
 ## Version 1.9.2.4 (20-Nov-2014)

@@ -145,7 +145,7 @@ public class EditorPane extends JTextPane {
 	}
 
 	public boolean isModified() {
-		return undoManager.canUndoOrRedo();
+		return undoManager.canUndo();
 	}
 
 	public void undo() {

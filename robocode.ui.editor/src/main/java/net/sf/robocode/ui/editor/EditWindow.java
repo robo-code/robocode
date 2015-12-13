@@ -138,8 +138,7 @@ public class EditWindow extends JInternalFrame {
 				}
 
 				public void changedUpdate(DocumentEvent e) {
-					// Fixes problem, where document is not initialized as being unsaved
-					setModified(true);
+					updateModificationState();
 				}
 
 				// Bug-361 Problem in the text editor related with the .java file modification
@@ -154,30 +153,34 @@ public class EditWindow extends JInternalFrame {
 
 	public void setFileName(String newFileName) {
 		fileName = newFileName;
-	}
-
-	public void setModified(boolean modified) {
-		boolean updated = (modified != this.modified);
-
-		if (updated) {
-			this.modified = modified;
-
-			StringBuffer titleBuf = new StringBuffer("Editing");
-			if (fileName != null) {
-				titleBuf.append(" - ").append(fileName);
-			} else if (robotName != null) {
-				titleBuf.append(" - ").append(robotName);
-			}
-			if (modified) {
-				titleBuf.append(" *");
-			}
-			setTitle(titleBuf.toString());
-		}
-		editor.setSaveFileMenuItemsEnabled(modified);
+		updateTitle();
 	}
 
 	public void setRobotName(String newRobotName) {
 		robotName = newRobotName;
+		updateTitle();
+	}
+
+	private void updateTitle() {
+		StringBuffer titleBuf = new StringBuffer("Editing");
+		if (fileName != null) {
+			titleBuf.append(" - ").append(fileName);
+		} else if (robotName != null) {
+			titleBuf.append(" - ").append(robotName);
+		}
+		if (modified) {
+			titleBuf.append(" *");
+		}
+		setTitle(titleBuf.toString());
+	}
+
+	private void setModified(boolean modified) {
+		boolean updated = (modified != this.modified);
+		if (updated) {
+			this.modified = modified;
+			updateTitle();
+			editor.setSaveFileMenuItemsEnabled(modified);
+		}
 	}
 
 	public void compile() {
