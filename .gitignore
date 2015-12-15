@@ -8,3 +8,4 @@ maven-build.properties
 ucdetector_reports
 /plugins/dotnet/*.suo
 *.class
+.recommenders
