@@ -18,6 +18,7 @@ namespace net.sf.robocode.host
     [Serializable]
     public class RobotStatics : IRobotStaticsN
     {
+        private readonly string robocodeVersion;
         private readonly BattleRules battleRules;
         private readonly int contestantIndex;
         private readonly string fullClassName;
@@ -37,11 +38,12 @@ namespace net.sf.robocode.host
         private readonly string[] teammates;
         private readonly string veryShortName;
 
-        public RobotStatics(bool isJuniorRobot, bool isInteractiveRobot, bool isPaintRobot, bool isAdvancedRobot,
+        public RobotStatics(string robocodeVersion, bool isJuniorRobot, bool isInteractiveRobot, bool isPaintRobot, bool isAdvancedRobot,
                             bool isTeamRobot, bool isTeamLeader, bool isDroid, bool isSentryRobot, string name, string shortName,
                             string veryShortName, string fullClassName, string shortClassName, BattleRules battleRules,
                             string[] teammates, string teamName, int index, int contestantIndex)
         {
+            this.robocodeVersion = robocodeVersion;
             this.isJuniorRobot = isJuniorRobot;
             this.isAdvancedRobot = isAdvancedRobot;
             this.isTeamRobot = isTeamRobot;
@@ -85,6 +87,11 @@ namespace net.sf.robocode.host
         }
 
         #endregion
+
+        public string getRobocodeVersion()
+        {
+            return robocodeVersion;
+        }
 
         public bool IsJuniorRobot()
         {
@@ -172,7 +179,8 @@ namespace net.sf.robocode.host
             {
                 var obj = (RobotStatics) obje;
                 int size = RbSerializerN.SIZEOF_TYPEINFO
-                           + RbSerializerN.SIZEOF_BOOL*9
+                           + serializer.sizeOf(obj.robocodeVersion)
+                           + RbSerializerN.SIZEOF_BOOL * 9
                            + serializer.sizeOf(obj.name)
                            + serializer.sizeOf(obj.shortName)
                            + serializer.sizeOf(obj.veryShortName)
@@ -198,6 +206,7 @@ namespace net.sf.robocode.host
             {
                 var obj = (RobotStatics) obje;
 
+                serializer.serialize(buffer, obj.robocodeVersion);
                 serializer.serialize(buffer, obj.isJuniorRobot);
                 serializer.serialize(buffer, obj.isInteractiveRobot);
                 serializer.serialize(buffer, obj.isPaintRobot);
@@ -233,6 +242,7 @@ namespace net.sf.robocode.host
 
             public object deserialize(RbSerializerN serializer, ByteBuffer buffer)
             {
+                string robocodeVersion = serializer.deserializeString(buffer);
                 bool isJuniorRobot = serializer.deserializeBoolean(buffer);
                 bool isInteractiveRobot = serializer.deserializeBoolean(buffer);
                 bool isPaintRobot = serializer.deserializeBoolean(buffer);
@@ -272,6 +282,7 @@ namespace net.sf.robocode.host
                 int contestantIndex = serializer.deserializeInt(buffer);
 
                 return new RobotStatics(
+                    robocodeVersion,
                     isJuniorRobot,
                     isInteractiveRobot,
                     isPaintRobot,

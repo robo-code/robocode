@@ -25,7 +25,7 @@ public class Version implements Comparable<Object> {
 	private final int maturity; // Alpha is 1, Beta is 2, Final is 3
 	private final int maturity_version; // The number following e.g. "Alpha" or "Beta"
 
-	Version(String version) {
+	public Version(String version) {
 		
 		// Validate version format
 		if (!version.matches("\\s*[0-9]+\\.[0-9]+(\\.[0-9]+)?(\\.[0-9]+)?(\\s?(([aA]lpha)|([bB]eta))(\\s?[0-9]+)?)?\\s*")) {

@@ -23,6 +23,7 @@ public class EllipseGL extends RenderElement {
 	public EllipseGL() {}
 
 	public EllipseGL(double x, double y, double width, double height) {}
+
 	public EllipseGL(double x, double y, double width, double height, Color color, double lineWidth) {}
 	
 	public void setFrame(double x, double y, double width, double height) {}

@@ -11,6 +11,7 @@ package net.sf.robocode.host.io;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.version.Version;
 
 import java.io.*;
 import java.net.JarURLConnection;
@@ -130,6 +131,13 @@ public class RobotFileSystemManager {
 		// TODO the file is never replaced from jar or directory after it was created
 		// TODO it would be good to replace it when it have bigger last modified date
 		if (!file.exists()) {
+			if (parent == null) {
+				// #380 yet another historical bot related bug
+				Version robocodeVersion = robotProxy.getStatics().getRobocodeVersion();
+				if (robocodeVersion.compareTo("1.8.2.0") < 0) {
+					throw new NullPointerException();
+				}
+			}
 			if (parent != null && !parent.exists() && !parent.mkdirs()) {
 				return file;
 			}

@@ -43,10 +43,10 @@ class __ISerializableHelper extends system.Object implements net.sf.robocode.ser
     @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;Ljava/lang/Object;)V")
     public native void serialize(net.sf.robocode.serialization.RbSerializer par0, java.nio.ByteBuffer par1, java.lang.Object par2);
     
-    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/serialization/RbSerializer;Ljava/lang/Object;)I")
-    public native int sizeOf(net.sf.robocode.serialization.RbSerializer par0, java.lang.Object par1);
-    
     @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/serialization/RbSerializer;Ljava/nio/ByteBuffer;)Ljava/lang/Object;")
     public native java.lang.Object deserialize(net.sf.robocode.serialization.RbSerializer par0, java.nio.ByteBuffer par1);
+    
+    @net.sf.jni4net.attributes.ClrMethod("(Lnet/sf/robocode/serialization/RbSerializer;Ljava/lang/Object;)I")
+    public native int sizeOf(net.sf.robocode.serialization.RbSerializer par0, java.lang.Object par1);
 }
 //</generated-proxy>
