@@ -13,7 +13,6 @@ import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
-import net.sf.robocode.version.Version;
 import robocode.BattleRules;
 import robocode.control.RobotSpecification;
 
@@ -129,19 +128,8 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 		this.teamIndex = teamIndex;
 	}
 
-	public Version getRobocodeVersion() {
-		String vers = this.robocodeVersion;
-		if (vers != null) {
-			vers = vers.trim();
-			if (vers.length() > 0) {
-				try {
-					return new Version(vers);
-				} catch (IllegalArgumentException ex) {
-					return null;
-				}
-			}
-		}
-		return null;
+	public String getRobocodeVersion() {
+		return robocodeVersion;
 	}
 
 	public String getAnnonymousName() {
