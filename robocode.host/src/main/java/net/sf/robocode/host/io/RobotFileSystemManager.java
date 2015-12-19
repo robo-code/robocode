@@ -147,7 +147,7 @@ public class RobotFileSystemManager {
 				} catch (FileNotFoundException ex) { // Expected as no file might exists with the specified input 'filename'
 					// #380 yet another historical bot related bug
 					Version robocodeVersion = toVersion(robotProxy.getStatics().getRobocodeVersion());
-					if (robocodeVersion.compareTo("1.8.2.0") < 0) {
+					if (robocodeVersion != null && robocodeVersion.compareTo("1.8.2.0") < 0) {
 						throw ex;
 					}
 				}
@@ -160,7 +160,7 @@ public class RobotFileSystemManager {
 				boolean legacyRobot = false;
 				if (e instanceof FileNotFoundException) {
 					Version robocodeVersion = toVersion(robotProxy.getStatics().getRobocodeVersion());
-					if (robocodeVersion.compareTo("1.8.2.0") < 0) {
+					if (robocodeVersion != null && robocodeVersion.compareTo("1.8.2.0") < 0) {
 						legacyRobot = true;
 					}
 				}
