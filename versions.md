@@ -1,9 +1,12 @@
-## Version 1.9.2.5 (16-Dec-2015)
+## Version 1.9.2.5 (19-Dec-2015)
 
 ### Bug fixes
 * [Bug-378][]: robocode.robocodeGL.system.GLRenderer ClassNotFoundException.
 * [Bug-380][]: Yet another historical bot related bug.
 * Robot Editor: Source files were set to modified (starred) as soon as they were loaded. The modification state remained, even when no changes were made to the source file or when undoing all changes. Therefore the editor would always bring up a dialog with a warning, that the source file needed to be saved before closing the editor.
+
+### Change
+* [Req-160][]: Fixed width font in console. Some systems did not used monospaced font in console windows.
 
 ## Version 1.9.2.4 (20-Nov-2014)
 

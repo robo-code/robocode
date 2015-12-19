@@ -47,6 +47,7 @@ public class ConsoleScrollPane extends JScrollPane {
 			textArea.setBackground(Color.DARK_GRAY);
 			textArea.setForeground(Color.WHITE);
 			textArea.setBounds(0, 0, 1000, 1000);
+			textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 
 			// Make sure the caret is not reset every time text is updated, meaning that
 			// the view will not reset it's position until we want it to.
