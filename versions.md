@@ -1,4 +1,4 @@
-## Version 1.9.2.5 (19-Dec-2015)
+## Version 1.9.2.5 (30-Dec-2015)
 
 ### Bug fixes
 * [Bug-378][]: robocode.robocodeGL.system.GLRenderer ClassNotFoundException.
