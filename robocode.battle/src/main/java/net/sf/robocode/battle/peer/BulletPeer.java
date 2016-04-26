@@ -80,23 +80,18 @@ public class BulletPeer {
 					if (x > sentryBorderSize && x < (battleRules.getBattlefieldWidth() - sentryBorderSize)
 							&& y > sentryBorderSize && y < (battleRules.getBattlefieldHeight() - sentryBorderSize)) {
 
-						continue; // Continue, as the sentry should not interfere with bullets in the safe zone 
+						continue; // Continue, as the sentry should not interfere with bullets in the safe zone
 					}
 				}
 
-				state = BulletState.HIT_BULLET;
-				frame = 0;
-				x = lastX;
-				y = lastY;
+				// Update self direction
+				// Kind of random cause I don't know the math
+				heading = 2 * Math.PI - heading;
 
-				b.state = BulletState.HIT_BULLET;
-				b.frame = 0;
-				b.x = b.lastX;
-				b.y = b.lastY;
+				// Update other bullet direction
+				// Kind of random cause I don't know the math
+				b.heading = 2 * Math.PI - b.heading;
 
-				// Bugfix #366
-				owner.addEvent(new BulletHitBulletEvent(createBullet(false), b.createBullet(true)));
-				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(false), createBullet(true)));
 				break;
 			}
 		}
@@ -150,7 +145,7 @@ public class BulletPeer {
 				if (owner.isSentryRobot()) {
 					if (victim.isSentryRobot()) {
 						damage = 0;
-					} else {					
+					} else {
 						int range = battleRules.getSentryBorderSize();
 						if (x > range && x < (battleRules.getBattlefieldWidth() - range) && y > range
 								&& y < (battleRules.getBattlefieldHeight() - range)) {
