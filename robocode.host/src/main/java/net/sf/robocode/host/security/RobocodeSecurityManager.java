@@ -108,6 +108,11 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 
+		// Bug fix #382 Unable to run robocode.bat -- Access Control Exception
+		if ("SeedGenerator Thread".equals(c.getName()) && "SeedGenerator ThreadGroup".equals(cg.getName())) {
+			return; // The SeedGenerator might create a thread, which needs to be silently ignored
+		}
+		
 		IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
 
 		if (robotProxy == null) {
