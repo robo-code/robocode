@@ -218,8 +218,10 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 	}
 
 	private void createNewRobot(final String robotType) {
-		String message = "Enter the name of your new robot.\nExample: MyFirst" + robotType
-				+ "\nNote that the name cannot contain spaces.";
+		final String ROBOT_NAME_DESCRIPTION = "Enter the name of your new robot.\nExample: MyFirst" + robotType
+				+ "\nNote that the name cannot be empty or contain spaces.";
+		
+		String message = ROBOT_NAME_DESCRIPTION;
 		String name = "";
 
 		boolean done = false;
@@ -227,9 +229,13 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 		while (!done) {
 			name = (String) JOptionPane.showInputDialog(this, message, "New " + robotType, JOptionPane.PLAIN_MESSAGE,
 					null, null, name);
-			name = (name == null) ? "" : name.trim();
+			if (name == null) {
+				return; // cancelled
+			}
+			name = name.trim();
 			if (name.length() == 0) {
-				return;
+				message = ROBOT_NAME_DESCRIPTION;
+				continue;
 			}
 			if (name.length() > MAX_ROBOT_NAME_LENGTH) {
 				name = name.substring(0, MAX_ROBOT_NAME_LENGTH);
@@ -275,22 +281,28 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 			}
 		}
 
-		message = "Enter a short package name for your new robot and without spaces (lower-case letters are prefered).\n"
+		final String ROBOT_PACKAGE_NAME_DESCRIPTION = "Enter a short package name for your new robot and without spaces (lower-case letters are prefered).\n"
 				+ "Your initials will work well here.\n"
 				+ "Your robot will be put into this package to avoid name conflict with other robots.\n"
 				+ "The package name is used to identify your robot(s) in the game, especially if you\n"
 				+ "want to let your robot(s) participate in competitions like e.g. RoboRumble@Home.\n"
-				+ "Hence, you should enter the same package name for all of your robots."; 
+				+ "Hence, you should enter the same package name for all of your robots.\n"
+				+ "Note that the package name cannot be empty or contain spaces.";
 
+		message = ROBOT_PACKAGE_NAME_DESCRIPTION;
 		String packageName = "";
 
 		done = false;
 		while (!done) {
 			packageName = (String) JOptionPane.showInputDialog(this, message, "Package name for " + name,
 					JOptionPane.PLAIN_MESSAGE, null, null, packageName);
-			packageName = (packageName == null) ? "" : packageName.trim();
+			if (packageName == null) {
+				return; // cancelled
+			}
+			packageName = packageName.trim();
 			if (packageName.length() == 0) {
-				return;
+				message = ROBOT_PACKAGE_NAME_DESCRIPTION;				
+				continue;
 			}
 			if (packageName.length() > MAX_PACKAGE_NAME_LENGTH) {
 				packageName = packageName.substring(0, MAX_PACKAGE_NAME_LENGTH);
