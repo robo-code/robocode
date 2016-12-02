@@ -6,4 +6,4 @@
 @REM http://robocode.sourceforge.net/license/epl-v10.html
 @REM
 
-"C:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin\sn.exe" -k robocode.snk
+sn.exe -k tools\keys\robocode.snk

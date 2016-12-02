@@ -53,15 +53,17 @@ HOW TO BUILD THE ROBOCODE .NET PLUG-IN
 
 3) Run: tools\loadTools.cmd 
 
-4) Run: tools\keys\gennetkey.cmd 
+4) Run: tools\keys\gennetkey.cmd
 
 5) Run: mvnassembly.cmd (standing in the \plugins\dotnet directory)
 
-9) Find the resulting distribution file for the Robocode .NET plug-in named 
+6) Find the resulting distribution file for the Robocode .NET plug-in named
    robocode.dotnet-x.x.x.x-setup.jar within this directory:
    \plugins\dotnet\robocode.dotnet.distribution\target\
 
-   
+- NOTE: You may need to open Visual Studio Developer Command Prompt
+        at Step 4) and 5).
+
 HOW TO BUILD NEW PROXY CLASSES USING JNI4NET
 ============================================
 Robocode uses Jni4net (http://jni4net.com/) to bridge the .NET and Java parts
