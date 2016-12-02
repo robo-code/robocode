@@ -126,7 +126,7 @@ namespace net.sf.robocode.dotnet.host.seed
                 {
                     if (Reflection.CheckInterfaces(type) != RobotTypeN.INVALID)
                     {
-                        sb.Append("file://");
+                        sb.Append("file:///");
                         sb.Append(robotAssemblyFileName);
                         sb.Append("!/");
                         sb.Append(type.FullName);
