@@ -10,6 +10,7 @@
 
 if not exist "%~dp0/lib/" (
    mkdir "%~dp0/lib/"
+   copy "%~dp0proxygen\proxygen.exe.config" "%~dp0lib\"
 )
 
 java -cp "%~dp0/../../../tools/loader" Loader http://robocode.sourceforge.net/mvnrepo/net/sf/jni4net/jni4net.n/0.8.7.0/ "%~dp0/lib/" jni4net.n-0.8.7.0.dll
