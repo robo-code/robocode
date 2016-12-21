@@ -6,6 +6,7 @@
  * http://robocode.sourceforge.net/license/epl-v10.html
  */
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Security;
@@ -32,6 +33,8 @@ namespace net.sf.robocode.dotnet.host.seed
         protected IRobotPeer robotPeer;
         private string robotShadow;
         private string tempDir;
+        private string domainName;
+        private List<string> shadowFiles = new List<string>();
 
         #region IDisposable Members
 
@@ -54,40 +57,51 @@ namespace net.sf.robocode.dotnet.host.seed
                     }
                 }
             }
-            if (tempDir != null && Directory.Exists(tempDir))
+            foreach (var shadow in shadowFiles)
             {
-                try
+                if (!string.IsNullOrEmpty(shadow) && File.Exists(shadow))
                 {
-                    Directory.Delete(tempDir, true);
+                    try
+                    {
+                        File.Delete(shadow);
+                    }
+                    catch (IOException)
+                    {
+                        //ignore
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        //ignore
+                    }
                 }
-                catch (IOException)
-                {
-                    //ignore
-                }
-				catch (UnauthorizedAccessException)
-                {
-                    //ignore
-                }
-                tempDir = null;
             }
+            tempDir = null;
         }
 
         #endregion
 
+        private static void CopyIfNotExist(string source, string destination)
+        {
+            if (!File.Exists(destination))
+            {
+                File.Copy(source, destination);
+            }
+        }
+
         public void Init(bool fullBind)
         {
-            string name = Path.GetRandomFileName();
-            tempDir = Path.Combine(Path.GetTempPath(), name);
+            domainName = Guid.NewGuid().ToString();
+            tempDir = Path.Combine(Directory.GetCurrentDirectory(), "staging");
             string robocodeShadow = Path.Combine(tempDir, Path.GetFileName(robocodeAssembly.Location));
             string hostShadow = Path.Combine(tempDir, Path.GetFileName(hostAssembly.Location));
             string controlShadow = Path.Combine(tempDir, Path.GetFileName(controlAssembly.Location));
             string jniShadow = Path.Combine(tempDir, Path.GetFileName(jniAssembly.Location));
 
             Directory.CreateDirectory(tempDir);
-            File.Copy(robocodeAssembly.Location, robocodeShadow);
-            File.Copy(controlAssembly.Location, controlShadow);
-            File.Copy(hostAssembly.Location, hostShadow);
-            File.Copy(jniAssembly.Location, jniShadow);
+            CopyIfNotExist(robocodeAssembly.Location, robocodeShadow);
+            CopyIfNotExist(controlAssembly.Location, controlShadow);
+            CopyIfNotExist(hostAssembly.Location, hostShadow);
+            CopyIfNotExist(jniAssembly.Location, jniShadow);
 
             var trustAssemblies = new[]
                                       {
@@ -107,7 +121,7 @@ namespace net.sf.robocode.dotnet.host.seed
 
             domainSetup.ApplicationBase = tempDir;
 
-            domainSetup.ApplicationName = name;
+            domainSetup.ApplicationName = domainName;
             //domainSetup.SandboxInterop = true;
             domainSetup.DisallowBindingRedirects = true;
             domainSetup.DisallowCodeDownload = true;
@@ -115,7 +129,7 @@ namespace net.sf.robocode.dotnet.host.seed
             domainSetup.AppDomainInitializer = AppDomainSeed.Load;
             
 
-            domain = AppDomain.CreateDomain(name, securityInfo, domainSetup, permissionSet, trustAssemblies);
+            domain = AppDomain.CreateDomain(domainName, securityInfo, domainSetup, permissionSet, trustAssemblies);
             domain.SetData("fullBind", fullBind);
             domain.SetData("JavaHome", Bridge.Setup.JavaHome);
             domain.DoCallBack(AppDomainSeed.Bind);
@@ -124,10 +138,15 @@ namespace net.sf.robocode.dotnet.host.seed
         public void Open(string dllName)
         {
             robotAssemblyFileName = Path.GetFullPath(dllName);
-            robotShadow = Path.Combine(tempDir, Path.GetFileName(robotAssemblyFileName));
+            var shadowName = Path.GetFileNameWithoutExtension(robotAssemblyFileName)
+                             + '-'
+                             + domainName
+                             + Path.GetExtension(robotAssemblyFileName);
+            robotShadow = Path.Combine(tempDir, shadowName);
             if (!File.Exists(robotShadow))
             {
                 File.Copy(robotAssemblyFileName, robotShadow);
+                shadowFiles.Add(robotShadow);
             }
             domain.SetData("robotAssemblyFileName", robotAssemblyFileName);
             domain.SetData("robotAssemblyShadowFileName", robotShadow);
