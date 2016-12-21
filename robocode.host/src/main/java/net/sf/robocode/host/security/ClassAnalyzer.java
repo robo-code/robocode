@@ -36,6 +36,9 @@ class ClassAnalyzer {
 	private final static byte CONSTANT_Double = 6;
 	private final static byte CONSTANT_NameAndType = 12;
 	private final static byte CONSTANT_Utf8 = 1;
+	private final static byte CONSTANT_MethodHandle = 15;
+	private final static byte CONSTANT_MethodType = 16;
+	private final static byte CONSTANT_InvokeDynamic = 18;
 
 	/**
 	 * ClassAnalyzer constructor comment.
@@ -110,6 +113,9 @@ class ClassAnalyzer {
 			 CONSTANT_Double  6
 			 CONSTANT_NameAndType  12
 			 CONSTANT_Utf8  1
+			 CONSTANT_MethodHandle  15
+			 CONSTANT_MethodType  16
+			 CONSTANT_InvokeDynamic  18
 			 */
 
 
@@ -147,23 +153,47 @@ class ClassAnalyzer {
 				 u2 class_index;
 				 u2 name_and_type_index;
 				 }
+				 CONSTANT_InvokeDynamic_info {
+				 u1 tag;
+				 u2 bootstrap_method_attr_index;
+				 u2 name_and_type_index;
+				 }
 				 */
 				case CONSTANT_Fieldref:
 				case CONSTANT_Methodref:
-				case CONSTANT_InterfaceMethodref: {
+				case CONSTANT_InterfaceMethodref:
+				case CONSTANT_InvokeDynamic: {
 						in.readUnsignedShort(); // class index
 						in.readUnsignedShort(); // name and type index
 					}
 					break;
 
 				/*
+				 CONSTANT_MethodHandle_info {
+				 u1 tag;
+				 u1 reference_kind;
+				 u2 reference_index;
+				 }
+				 */
+				case CONSTANT_MethodHandle: {
+						in.readUnsignedByte(); //reference_kind
+						in.readUnsignedShort(); // reference_index
+					}
+					break;
+					
+				/*
 				 CONSTANT_String_info {
 				 u1 tag;
 				 u2 string_index;
 				 }
+				 CONSTANT_MethodType_info {
+				 u1 tag;
+				 u2 descriptor_index;
+				 }
 				 */
-				case CONSTANT_String: {
-						in.readUnsignedShort(); // string index
+				case CONSTANT_String:
+				case CONSTANT_MethodType: {
+						in.readUnsignedShort();
 					}
 					break;
 
