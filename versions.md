@@ -1,7 +1,12 @@
 ## Version 1.9.2.6 Alpha (21-12-2016)
+
+### Bug fixes
 * [Bug-381][]: Improve feedback after entering empty package name during robot creation.
 * [Bug-382][]: Unable to run robocode.bat -- AccessControlException.
 * [Bug-383][]: Java 8 lamba expressions cause ClassNotFoundException.
+
+### Changes
+* Upgraded Eclipse Compiler for Java (ECJ) to version 4.6.1
 
 ## Version 1.9.2.5 (30-Dec-2015)
 
