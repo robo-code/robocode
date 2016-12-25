@@ -5,6 +5,9 @@
  * which accompanies this distribution, and is available at
  * http://robocode.sourceforge.net/license/epl-v10.html
  */
+
+using System;
+using System.Runtime.InteropServices;
 using net.sf.robocode.dotnet.host.seed;
 using net.sf.robocode.dotnet.repository.root;
 using net.sf.robocode.repository;
@@ -20,6 +23,10 @@ namespace net.sf.robocode.dotnet
         [Test]
         public void testDomain()
         {
+            Console.WriteLine("clr.arch            :" + ((IntPtr.Size == 8) ? "64bit" : "32bit"));
+            Console.WriteLine("clr.version         :" + RuntimeEnvironment.GetSystemVersion());
+            Console.Out.Flush();
+
             string[] strings = DllRootHelper.findItems(@"file:/" + typeof(MyFirstRobot).Assembly.Location);
             Assert.GreaterOrEqual(strings.Length, 5);
         }

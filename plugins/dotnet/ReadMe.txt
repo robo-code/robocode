@@ -18,7 +18,9 @@ Microsoft C# Compiler and .NET SDK
 
 - Best option is to install Visual Studio C# Express 2010 or newer.
 
-- NOTE: Make sure you have csc.exe on PATH.
+- NOTE: Make sure you have csc.exe version 3.5 on PATH.
+Something like
+c:\Windows\Microsoft.NET\Framework\v3.5\csc.exe 
 
 Microsoft HTML Help 1 Compiler and Sandcastle Help File Builder
 ---------------------------------------------------------------

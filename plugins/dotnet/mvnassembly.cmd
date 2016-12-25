@@ -8,5 +8,6 @@
 
 @echo off
 
+set PATH=c:\Windows\Microsoft.NET\Framework\v3.5\;%PATH%
 mvn clean install ant:ant -DskipTests=false %*
 rem mvn eclipse:eclipse
