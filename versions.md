@@ -1,4 +1,4 @@
-## Version 1.9.2.6 Alpha (21-12-2016)
+## Version 1.9.2.6 (01-01-2017)
 
 ### Bug fixes
 * [Bug-381][]: Improve feedback after entering empty package name during robot creation.

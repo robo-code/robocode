@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2001-2016 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2017 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -139,7 +139,7 @@ public final class Rules {
 	public static final double ROBOT_HIT_DAMAGE = 0.6;
 
 	/**
-	 * The amount of bonus given when a robot moving forward hits an opponent
+	 * The amount of bonus damage dealt by a robot moving forward that hits an opponent
 	 * robot (ramming), which is 1.2 energy points.
 	 */
 	public static final double ROBOT_HIT_BONUS = 1.2;
