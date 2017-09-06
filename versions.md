@@ -1,3 +1,9 @@
+## Version 1.9.2.7 (06-09-2017)
+
+### Bug fix
+* [Bug-387][]: Not printing in console when a bot is force stopped.
+	* Thanks goes to MultiplyByZer0 and Julian Kent (aka Skilgannon) for the fix. :-)
+
 ## Version 1.9.2.6 (01-01-2017)
 
 ### Bug fixes
@@ -3011,6 +3017,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-381]: http://sourceforge.net/p/robocode/bugs/381/  (Improve feedback after entering empty package name during robot creation)
 [Bug-382]: http://sourceforge.net/p/robocode/bugs/382/  (Unable to run robocode.bat -- AccessControlException)
 [Bug-383]: http://sourceforge.net/p/robocode/bugs/383/  (Java 8 lamba expressions cause ClassNotFoundException)
+[Bug-387]: http://sourceforge.net/p/robocode/bugs/387/  (Not printing in console when a bot is force stopped)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)

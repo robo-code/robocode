@@ -13,8 +13,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	</organization>
 	<properties>
 		<project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
-		<robocode.version>1.9.2.6</robocode.version> <!-- Any string, but no spaces (use '-' instead of space) -->
-		<robocode.dotnet.version>1.9.2.6</robocode.dotnet.version> <!-- Only X.X.X.X format -->
+		<robocode.version>1.9.2.7</robocode.version> <!-- Any string, but no spaces (use '-' instead of space) -->
+		<robocode.dotnet.version>1.9.2.7</robocode.dotnet.version> <!-- Only X.X.X.X format -->
 		<javadoc.additionalparam/>
 	</properties>
 	<repositories>

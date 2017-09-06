@@ -760,8 +760,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		readoutTeamMessages();
 		readoutBullets();
 
-		battleText.setLength(0);
-		proxyText.setLength(0);
+		synchronized (proxyText) { // Bug fix #387
+			battleText.setLength(0);
+			proxyText.setLength(0);
+		}
 
 		// Prepare new execution commands, but copy the colors from the last commands.
 		// Bugfix [2628217] - Robot Colors don't stick between rounds.
@@ -1700,10 +1702,13 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		events = null;
 		teamMessages = null;
 		bulletUpdates = null;
-		battleText.setLength(0);
-		proxyText.setLength(0);
 		statics = null;
 		battleRules = null;
+
+		synchronized (proxyText) { // Bug fix #387
+			battleText.setLength(0);
+			proxyText.setLength(0);
+		}
 	}
 
 	public Object getGraphicsCalls() {
