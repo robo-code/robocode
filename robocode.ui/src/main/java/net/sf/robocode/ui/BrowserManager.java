@@ -24,6 +24,7 @@ import java.net.URISyntaxException;
 public class BrowserManager {
 
 	public static void openURL(String url) throws IOException {
+		url = url.replace('\\', '/');
 
 		// Plan A: try to open the URL using the Java 6 Desktop class
 		if (Desktop.isDesktopSupported()) {

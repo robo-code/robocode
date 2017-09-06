@@ -43,7 +43,7 @@ public interface IWindowManagerExt extends IWindowManager {
 
 	void showGoogleGroupRobocode();
 
-	void showRobocodeRepository();
+	void showRoboRumble();
 
 	void showOptionsPreferences();
 

@@ -250,7 +250,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showJavaDocumentation() {
-		showInBrowser("http://docs.oracle.com/javase/6/docs/api/");
+		showInBrowser("https://docs.oracle.com/javase/8/docs/api/");
 	}
 
 	public void showRobocodeHome() {
@@ -265,8 +265,8 @@ public class WindowManager implements IWindowManagerExt {
 		showInBrowser("https://groups.google.com/forum/?fromgroups#!forum/robocode");
 	}
 
-	public void showRobocodeRepository() {
-		showInBrowser("http://robocoderepository.com");
+	public void showRoboRumble() {
+		showInBrowser("http://robowiki.net/wiki/RoboRumble");
 	}
 
 	public void showOptionsPreferences() {
