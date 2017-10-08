@@ -1,9 +1,12 @@
-## Version 1.9.3.0 Alpha (06-10-2017)
+## Version 1.9.3.0 (08-10-2017) The Java 9 support release
 
 ### Bug fixes
-* [Bug-390][]: Bad CPU constant calculation on Java 9.
+* [Bug-386][]: Can't run Robocode 1.9.2.6 on Mac OS.
+  - Java 9 issue, which was fixed by bug fix for Bug-391. Thanks goes to MultiplyByZer0
 * [Bug-387][]: Not printing in console when a bot is force stopped.
 	* Thanks goes to MultiplyByZer0 and Julian Kent (aka Skilgannon) for the fix. :-)
+* [Bug-391][]: Fix for "Illegal reflective access".
+* [Bug-390][]: Bad CPU constant calculation on Java 9.
 
 ## Version 1.9.2.6 (01-01-2017)
 
@@ -3018,8 +3021,10 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-381]: http://sourceforge.net/p/robocode/bugs/381/  (Improve feedback after entering empty package name during robot creation)
 [Bug-382]: http://sourceforge.net/p/robocode/bugs/382/  (Unable to run robocode.bat -- AccessControlException)
 [Bug-383]: http://sourceforge.net/p/robocode/bugs/383/  (Java 8 lamba expressions cause ClassNotFoundException)
+[Bug-386]: http://sourceforge.net/p/robocode/bugs/386/  (Can't run Robocode 1.9.2.6 on Mac OS)
 [Bug-387]: http://sourceforge.net/p/robocode/bugs/387/  (Not printing in console when a bot is force stopped)
-[bug-390]: http://sourceforge.net/p/robocode/bugs/390/  (Bad CPU constant calculation on Java 9)
+[Bug-390]: http://sourceforge.net/p/robocode/bugs/390/  (Bad CPU constant calculation on Java 9)
+[Bug-391]: http://sourceforge.net/p/robocode/bugs/391/  (Fix for "Illegal reflective access")
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)

@@ -34,7 +34,7 @@ public class AutoExtract implements ActionListener {
 	private static File installDir;
 	private static final String osName = System.getProperty("os.name");
 	private static final double osVersion = doubleValue(System.getProperty("os.version"));
-	private static final String javaVersion = System.getProperty("java.version");
+	private static final int JAVA_MAJOR_VERSION = javaMajorVersion();
 
 	private static double doubleValue(String s) {
 		s = s.replaceAll("[^.0-9]", ""); // Remove invalid characters, e.g. "3.0-ARCH" become "3.0"
@@ -64,12 +64,19 @@ public class AutoExtract implements ActionListener {
 
 		InputStream is;
 
+		JarFile extractJar = null;
 		try {
-			JarFile extractJar = new JarFile("extract.jar");
+			extractJar = new JarFile("extract.jar");
 
 			is = extractJar.getInputStream(extractJar.getJarEntry("license/cpl-v10.html"));
 		} catch (IOException e) {
 			return true;
+		} finally {
+			if (extractJar != null) {
+				try {
+					extractJar.close();
+				} catch (IOException ignore) {}
+			}
 		}
 		if (is == null) {
 			return true;
@@ -180,9 +187,9 @@ public class AutoExtract implements ActionListener {
 
 		byte buf[] = new byte[2048];
 
-		final String name = AutoExtract.class.getName().replaceAll("\\.", "/") + ".class";
+		String name = AutoExtract.class.getName().replaceAll("\\.", "/") + ".class";
 		String urlJar = AutoExtract.class.getClassLoader().getResource(name).toString();
-		final String src = urlJar.substring("jar:file:/".length(), urlJar.indexOf("!/"));
+		String src = urlJar.substring("jar:file:/".length(), urlJar.indexOf("!/"));
 
 		if (src.indexOf('!') > -1) {
 			message = src + "\nContains an exclamation point.  Please move the file to a different directory.";
@@ -192,7 +199,7 @@ public class AutoExtract implements ActionListener {
 		JarInputStream jarIS = null;
 
 		try {
-			final URL url = new URL("file:/" + src);
+			URL url = new URL("file:/" + src);
 			InputStream is = url.openStream();
 
 			jarIS = new JarInputStream(is);
@@ -214,15 +221,15 @@ public class AutoExtract implements ActionListener {
 
 					// Skip .bat, .sh, and .command files depending on which OS Robocode is installed
 
-					final String entryNameLC = entryName.toLowerCase();
+					String entryNameLC = entryName.toLowerCase();
 
 					boolean skipEntry = false;
 
-					final boolean isBatFile = entryNameLC.length() > ".bat".length() && entryNameLC.endsWith(".bat");
-					final boolean isShFile = entryNameLC.length() > ".sh".length() && entryNameLC.endsWith(".sh");
-					final boolean isCommandFile = entryNameLC.length() > ".command".length()
+					boolean isBatFile = entryNameLC.length() > ".bat".length() && entryNameLC.endsWith(".bat");
+					boolean isShFile = entryNameLC.length() > ".sh".length() && entryNameLC.endsWith(".sh");
+					boolean isCommandFile = entryNameLC.length() > ".command".length()
 							&& entryNameLC.endsWith(".command");
-					final boolean isDesktopFile = entryNameLC.startsWith("desktop/");
+					boolean isDesktopFile = entryNameLC.startsWith("desktop/");
 
 					// Unix systems and Mac OS X
 					if (File.separatorChar == '/') {
@@ -246,23 +253,60 @@ public class AutoExtract implements ActionListener {
 						}
 						fos = new FileOutputStream(out);
 
-						int index = 0;
-						int num;
-						int count = 0;
+						int bytes = 0;
 
-						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
-							fos.write(buf, 0, num);
-							index += num;
-							count++;
-							if (count > 80) {
-								status.setText(entryName + " " + SPINNER[spin++] + " (" + index + " bytes)");
+						// With Java 9 some options needs to be added to executing 'java' for the .bat, .sh, and .command files
+						if (JAVA_MAJOR_VERSION >= 9 && (isBatFile || isShFile || isCommandFile)) {
+
+							BufferedReader br = new BufferedReader(new InputStreamReader(jarIS));
+							BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+							String line;
+							while ((line = br.readLine()) != null) {
+	
+								int index = line.indexOf("java ");
+								if (index >= 0 && JAVA_MAJOR_VERSION >= 9 && (isBatFile || isShFile || isCommandFile)) {
+									String split1 = line.substring(0, index + 5);
+									String split2 = line.substring(index + 5);
+	
+									line = split1;
+									line += "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED ";
+									line += "--add-opens java.base/java.lang.reflect=ALL-UNNAMED ";
+									line += "--add-opens=java.desktop/sun.awt=ALL-UNNAMED ";
+									line += split2;
+								}
+	
+								bw.write(line);
+								bw.newLine();
+	
+								bytes += line.length();
+								status.setText(entryName + " " + SPINNER[spin++] + " (" + bytes + " bytes)");
 								if (spin > 3) {
 									spin = 0;
 								}
-								count = 0;
 							}
+							bw.close();
+							fos.close();
+	
+						} else {
+							// Other files are copied as binary files
+							
+							int num;
+							int count = 0;
+	
+							while ((num = jarIS.read(buf, 0, 2048)) != -1) {
+								fos.write(buf, 0, num);
+								bytes += num;
+								count++;
+								if (count > 80) {
+									status.setText(entryName + " " + SPINNER[spin++] + " (" + bytes + " bytes)");
+									if (spin > 3) {
+										spin = 0;
+									}
+									count = 0;
+								}
+							}
+							fos.close();						
 						}
-						fos.close();
 
 						// Set file permissions for .sh and .command files under Unix and Mac OS X
 						if (File.separatorChar == '/') {
@@ -272,7 +316,7 @@ public class AutoExtract implements ActionListener {
 							}
 						}
 
-						status.setText(entryName + " " + SPINNER[spin] + " (" + index + " bytes)");
+						status.setText(entryName + " " + SPINNER[spin++] + " (" + bytes + " bytes)");
 					}
 				}
 			}
@@ -324,9 +368,9 @@ public class AutoExtract implements ActionListener {
 	
 	private static boolean install(File suggestedDir) {
 		// Verify that the Java version is version 6 (1.6.0) or newer
-		if (javaVersion.startsWith("1.") && javaVersion.charAt(2) < '5') {
-			final String message = "Robocode requires Java 6 (1.6.0) or newer.\n"
-					+ "Your system is currently running Java " + javaVersion + ".\n"
+		if (JAVA_MAJOR_VERSION < 6) {
+			String message = "Robocode requires Java 6 (1.6.0) or newer.\n"
+					+ "Your system is currently running Java " + JAVA_MAJOR_VERSION + ".\n"
 					+ "If you have not installed (or activated) at least\n" + "JRE 6 or JDK 6, please do so.";
 
 			JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
@@ -411,7 +455,7 @@ public class AutoExtract implements ActionListener {
 		File libs = new File(installDir, "libs");
 
 		if (libs.exists()) {
-			final File[] del = libs.listFiles(new FilenameFilter() {
+			File[] del = libs.listFiles(new FilenameFilter() {
 
 				public boolean accept(File dir, String name) {
 					String test = name.toLowerCase();
@@ -494,7 +538,7 @@ public class AutoExtract implements ActionListener {
 			return false;
 		}
 
-		final String command = getWindowsCmd() + " cscript.exe ";
+		String command = getWindowsCmd() + " cscript.exe ";
 
 		try {
 			File shortcutMaker = new File(installDir, "makeshortcut.vbs");
@@ -622,7 +666,7 @@ public class AutoExtract implements ActionListener {
 	private static String createWindowsRegistryFileAssociation(String installDir, String fileExt, String progId, String description, String robocodeCmdParam) {
 		StringBuffer sb = new StringBuffer();
 
-		final String HKCR = "[HKEY_CLASSES_ROOT\\";
+		String HKCR = "[HKEY_CLASSES_ROOT\\";
 
 		sb.append("REGEDIT4\n");
 		sb.append(HKCR).append(fileExt).append("]\n");
@@ -677,7 +721,7 @@ public class AutoExtract implements ActionListener {
 	 * @param file the file or directory to delete
 	 * @return true if success
 	 */
-	private static boolean deleteFileAndParentDirsIfEmpty(final File file) {
+	private static boolean deleteFileAndParentDirsIfEmpty(File file) {
 		boolean wasDeleted = false;
 
 		if (file != null && file.exists()) {
@@ -701,5 +745,28 @@ public class AutoExtract implements ActionListener {
 			}
 		}
 		return wasDeleted;
+	}
+
+	private static int javaMajorVersion() {
+		String version = System.getProperty("java.version");
+
+		String major;
+
+		if (version.startsWith("1.")) {
+			major = version.substring(2, version.lastIndexOf('.'));
+		} else {		
+			int index = version.indexOf('.');
+			if (index > 0) {
+				major = version.substring(0, index);
+			} else {
+				index = version.indexOf('-');
+				if (index > 0) {
+					major = version.substring(0, index);
+				} else {
+					major = version;
+				}
+			}
+		}
+		return Integer.parseInt(major);
 	}
 }
