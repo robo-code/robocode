@@ -254,59 +254,22 @@ public class AutoExtract implements ActionListener {
 						fos = new FileOutputStream(out);
 
 						int bytes = 0;
+						int count = 0;
+						int num;
 
-						// With Java 9 some options needs to be added to executing 'java' for the .bat, .sh, and .command files
-						if (JAVA_MAJOR_VERSION >= 9 && (isBatFile || isShFile || isCommandFile)) {
-
-							BufferedReader br = new BufferedReader(new InputStreamReader(jarIS));
-							BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-							String line;
-							while ((line = br.readLine()) != null) {
-	
-								int index = line.indexOf("java ");
-								if (index >= 0 && JAVA_MAJOR_VERSION >= 9 && (isBatFile || isShFile || isCommandFile)) {
-									String split1 = line.substring(0, index + 5);
-									String split2 = line.substring(index + 5);
-	
-									line = split1;
-									line += "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED ";
-									line += "--add-opens java.base/java.lang.reflect=ALL-UNNAMED ";
-									line += "--add-opens=java.desktop/sun.awt=ALL-UNNAMED ";
-									line += split2;
-								}
-	
-								bw.write(line);
-								bw.newLine();
-	
-								bytes += line.length();
+						while ((num = jarIS.read(buf, 0, 2048)) != -1) {
+							fos.write(buf, 0, num);
+							bytes += num;
+							count++;
+							if (count > 80) {
 								status.setText(entryName + " " + SPINNER[spin++] + " (" + bytes + " bytes)");
 								if (spin > 3) {
 									spin = 0;
 								}
+								count = 0;
 							}
-							bw.close();
-							fos.close();
-	
-						} else {
-							// Other files are copied as binary files
-							
-							int num;
-							int count = 0;
-	
-							while ((num = jarIS.read(buf, 0, 2048)) != -1) {
-								fos.write(buf, 0, num);
-								bytes += num;
-								count++;
-								if (count > 80) {
-									status.setText(entryName + " " + SPINNER[spin++] + " (" + bytes + " bytes)");
-									if (spin > 3) {
-										spin = 0;
-									}
-									count = 0;
-								}
-							}
-							fos.close();						
 						}
+						fos.close();						
 
 						// Set file permissions for .sh and .command files under Unix and Mac OS X
 						if (File.separatorChar == '/') {
