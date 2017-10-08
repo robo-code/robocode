@@ -2,9 +2,10 @@
 
 ### Bug fixes
 * [Bug-386][]: Can't run Robocode 1.9.2.6 on Mac OS.
-  - Java 9 issue, which was fixed by bug fix for Bug-391. Thanks goes to MultiplyByZer0
+	* Java 9 issue, which was fixed by bug fix for Bug-391. Thanks goes to MultiplyByZer0
 * [Bug-387][]: Not printing in console when a bot is force stopped.
 	* Thanks goes to MultiplyByZer0 and Julian Kent (aka Skilgannon) for the fix. :-)
+* [Bug-388][]: UI exception in team battles.
 * [Bug-391][]: Fix for "Illegal reflective access".
 * [Bug-390][]: Bad CPU constant calculation on Java 9.
 
@@ -3023,6 +3024,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-383]: http://sourceforge.net/p/robocode/bugs/383/  (Java 8 lamba expressions cause ClassNotFoundException)
 [Bug-386]: http://sourceforge.net/p/robocode/bugs/386/  (Can't run Robocode 1.9.2.6 on Mac OS)
 [Bug-387]: http://sourceforge.net/p/robocode/bugs/387/  (Not printing in console when a bot is force stopped)
+[Bug-388]: http://sourceforge.net/p/robocode/bugs/388/  (UI exception in team battles)
 [Bug-390]: http://sourceforge.net/p/robocode/bugs/390/  (Bad CPU constant calculation on Java 9)
 [Bug-391]: http://sourceforge.net/p/robocode/bugs/391/  (Fix for "Illegal reflective access")
 

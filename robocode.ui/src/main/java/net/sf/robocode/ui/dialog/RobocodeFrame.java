@@ -849,7 +849,7 @@ public class RobocodeFrame extends JFrame {
 					final boolean attach = index < RobotDialogManager.MAX_PRE_ATTACHED;
 					final RobotButton button = net.sf.robocode.core.Container.createComponent(RobotButton.class);
 
-					button.setup(robot.getName(), maxEnergy, index, robot.getContestantIndex(), attach);
+					button.setup(robot.getName(), maxEnergy, index, robot.getContestantIndex(), robot.getTeamIndex(), attach);
 					button.setText(robot.getShortName());
 					addRobotButton(button);
 				}
