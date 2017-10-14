@@ -93,7 +93,6 @@ public class JarJarURLConnection extends URLConnection {
 			return -1;
 		}
 
-		@SuppressWarnings({ "deprecation"})
 		protected void parseURL(URL url, String spec,
 				int start, int limit) {
 			String file = null;
@@ -132,7 +131,7 @@ public class JarJarURLConnection extends URLConnection {
 				file = toBangSlash + afterBangSlash;
 			}
 			file = file != null ? "jar:" + file.replaceFirst("\\" + SEPARATOR, "!/") : null;
-			setURL(url, "jarjar", "", -1, file, ref);
+			setURL(url, "jarjar", "", -1, null, null, file, null, ref);
 		}
 
 		private String parseAbsoluteSpec(String spec) {
