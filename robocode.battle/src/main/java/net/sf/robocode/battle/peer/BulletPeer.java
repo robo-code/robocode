@@ -73,7 +73,7 @@ public class BulletPeer {
 
 	private void checkBulletCollision(List<BulletPeer> bullets) {
 		for (BulletPeer b : bullets) {
-			if (b != null && b != this && b.isActive() && intersect(b.boundingLine)) {
+			if (b != null && b != this && b.owner != owner && b.isActive() && intersect(b.boundingLine)) {
 				// Check if one of the bullets belongs to a sentry robot and is within the safe zone
 				if (owner.isSentryRobot() || b.getOwner().isSentryRobot()) {
 					int sentryBorderSize = battleRules.getSentryBorderSize();

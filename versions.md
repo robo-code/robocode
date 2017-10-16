@@ -7,8 +7,9 @@
 	* Thanks goes to MultiplyByZer0 and Julian Kent (aka Skilgannon) for the fix. :-)
 * [Bug-388][]: UI exception in team battles.
 * [Bug-389][]: Third-party team JARs broken with Java 9
-* [Bug-391][]: Fix for "Illegal reflective access".
 * [Bug-390][]: Bad CPU constant calculation on Java 9.
+* [Bug-391][]: Fix for "Illegal reflective access".
+* [Bug-392][]: Bullets of the same bot collide at low bullet powers and high gun-cooling rate.
 
 ## Version 1.9.2.6 (01-01-2017)
 
@@ -3029,6 +3030,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-389]: http://sourceforge.net/p/robocode/bugs/389/  (Third-party team JARs broken with Java 9)
 [Bug-390]: http://sourceforge.net/p/robocode/bugs/390/  (Bad CPU constant calculation on Java 9)
 [Bug-391]: http://sourceforge.net/p/robocode/bugs/391/  (Fix for "Illegal reflective access")
+[Bug-392]: http://sourceforge.net/p/robocode/bugs/392/  (Bullets of the same bot collide at low bullet powers and high gun-cooling rate)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
