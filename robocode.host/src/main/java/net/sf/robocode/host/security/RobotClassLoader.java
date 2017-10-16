@@ -421,4 +421,34 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		return Modifier.isStatic(field.getModifiers())
 				&& !(field.getType().isPrimitive() || field.isEnumConstant() || field.isSynthetic());
 	}
+
+	// Work-round for bug 389: Third-party team JARs broken with Java 9
+	// The URLClassLoader.findResource() in Java 9 returns null with some robot JARs
+	@Override
+	public URL findResource(String name) {
+		URL url = super.findResource(name);
+		if (url == null) {
+			// Ignore internal Java and Robocode classes
+			if (name.startsWith("jdk/") || name.startsWith("java/") || name.startsWith("net.sf.robocode/")) {
+				return null;
+			}
+			URL[] urls = getURLs();
+			if (urls != null) {
+				for (int i = 0; i < urls.length; i++) {
+					URL u = urls[i];
+					if (u != null) {
+						try {
+							url = new URL(u.getProtocol(), u.getHost(), u.getPort(), u.getPath() + name);
+							if (u.openConnection() != null) {							
+								break;
+							}
+						} catch (MalformedURLException ignore) {
+						} catch (IOException ignore) {
+						}
+					}
+				}
+			}
+		}
+		return url;
+	}
 }

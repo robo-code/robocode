@@ -1,4 +1,4 @@
-## Version 1.9.3.0 (08-10-2017) The Java 9 support release
+## Version 1.9.3.0 (16-10-2017) The Java 9 support release
 
 ### Bug fixes
 * [Bug-386][]: Can't run Robocode 1.9.2.6 on Mac OS.
@@ -6,6 +6,7 @@
 * [Bug-387][]: Not printing in console when a bot is force stopped.
 	* Thanks goes to MultiplyByZer0 and Julian Kent (aka Skilgannon) for the fix. :-)
 * [Bug-388][]: UI exception in team battles.
+* [Bug-389][]: Third-party team JARs broken with Java 9
 * [Bug-391][]: Fix for "Illegal reflective access".
 * [Bug-390][]: Bad CPU constant calculation on Java 9.
 
@@ -3025,6 +3026,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-386]: http://sourceforge.net/p/robocode/bugs/386/  (Can't run Robocode 1.9.2.6 on Mac OS)
 [Bug-387]: http://sourceforge.net/p/robocode/bugs/387/  (Not printing in console when a bot is force stopped)
 [Bug-388]: http://sourceforge.net/p/robocode/bugs/388/  (UI exception in team battles)
+[Bug-389]: http://sourceforge.net/p/robocode/bugs/389/  (Third-party team JARs broken with Java 9)
 [Bug-390]: http://sourceforge.net/p/robocode/bugs/390/  (Bad CPU constant calculation on Java 9)
 [Bug-391]: http://sourceforge.net/p/robocode/bugs/391/  (Fix for "Illegal reflective access")
 
