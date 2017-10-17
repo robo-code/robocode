@@ -429,7 +429,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		URL url = super.findResource(name);
 		if (url == null) {
 			// Ignore internal Java and Robocode classes
-			if (name.startsWith("jdk/") || name.startsWith("java/") || name.startsWith("net.sf.robocode/")) {
+			if (name.startsWith("jdk/") || name.startsWith("java/") || name.startsWith("sun/") || name.startsWith("net.sf.robocode/")) {
 				return null;
 			}
 			URL[] urls = getURLs();
