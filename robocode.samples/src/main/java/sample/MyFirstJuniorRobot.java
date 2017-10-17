@@ -13,7 +13,7 @@ import robocode.JuniorRobot;
 
 /**
  * MyFirstJuniorRobot - a sample robot by Flemming N. Larsen
- * <p/>
+ * <p>
  * Moves in a seesaw motion, and spins the gun around at each end
  * when it cannot see any enemy robot. When the robot sees and enemy
  * robot, it will immediately turn the gun and fire at it.

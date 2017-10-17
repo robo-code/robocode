@@ -79,7 +79,7 @@ public final class RobotStatus implements Serializable {
 	/**
 	 * Returns the direction that the robot's body is facing, in radians.
 	 * The value returned will be between 0 and 2 * PI (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * PI / 2 means East, PI means South, and 3 * PI / 2 means West.
 	 *
@@ -92,7 +92,7 @@ public final class RobotStatus implements Serializable {
 	/**
 	 * Returns the direction that the robot's body is facing, in degrees.
 	 * The value returned will be between 0 and 360 (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * 90 means East, 180 means South, and 270 means West.
 	 *
@@ -105,7 +105,7 @@ public final class RobotStatus implements Serializable {
 	/**
 	 * Returns the direction that the robot's gun is facing, in radians.
 	 * The value returned will be between 0 and 2 * PI (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * PI / 2 means East, PI means South, and 3 * PI / 2 means West.
 	 *
@@ -118,7 +118,7 @@ public final class RobotStatus implements Serializable {
 	/**
 	 * Returns the direction that the robot's gun is facing, in degrees.
 	 * The value returned will be between 0 and 360 (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * 90 means East, 180 means South, and 270 means West.
 	 *
@@ -131,7 +131,7 @@ public final class RobotStatus implements Serializable {
 	/**
 	 * Returns the direction that the robot's radar is facing, in radians.
 	 * The value returned will be between 0 and 2 * PI (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * PI / 2 means East, PI means South, and 3 * PI / 2 means West.
 	 *
@@ -144,7 +144,7 @@ public final class RobotStatus implements Serializable {
 	/**
 	 * Returns the direction that the robot's radar is facing, in degrees.
 	 * The value returned will be between 0 and 360 (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * 90 means East, 180 means South, and 270 means West.
 	 *
@@ -156,7 +156,7 @@ public final class RobotStatus implements Serializable {
 
 	/**
 	 * Returns the velocity of the robot measured in pixels/turn.
-	 * <p/>
+	 * <p>
 	 * The maximum velocity of a robot is defined by {@link Rules#MAX_VELOCITY}
 	 * (8 pixels / turn).
 	 *
@@ -169,7 +169,7 @@ public final class RobotStatus implements Serializable {
 
 	/**
 	 * Returns the angle remaining in the robots's turn, in radians.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently turning to the right. Negative values
 	 * means that the robot is currently turning to the left.
@@ -182,7 +182,7 @@ public final class RobotStatus implements Serializable {
 
 	/**
 	 * Returns the angle remaining in the robots's turn, in degrees.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently turning to the right. Negative values
 	 * means that the robot is currently turning to the left.
@@ -195,7 +195,7 @@ public final class RobotStatus implements Serializable {
 
 	/**
 	 * Returns the angle remaining in the radar's turn, in radians.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the radar is currently turning to the right. Negative values
 	 * means that the radar is currently turning to the left.
@@ -208,7 +208,7 @@ public final class RobotStatus implements Serializable {
 
 	/**
 	 * Returns the angle remaining in the radar's turn, in degrees.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the radar is currently turning to the right. Negative values
 	 * means that the radar is currently turning to the left.
@@ -221,7 +221,7 @@ public final class RobotStatus implements Serializable {
 
 	/**
 	 * Returns the angle remaining in the gun's turn, in radians.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the gun is currently turning to the right. Negative values
 	 * means that the gun is currently turning to the left.
@@ -234,7 +234,7 @@ public final class RobotStatus implements Serializable {
 
 	/**
 	 * Returns the angle remaining in the gun's turn, in degrees.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the gun is currently turning to the right. Negative values
 	 * means that the gun is currently turning to the left.
@@ -248,7 +248,7 @@ public final class RobotStatus implements Serializable {
 	/**
 	 * Returns the distance remaining in the robot's current move measured in
 	 * pixels.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently moving forwards. Negative values means
 	 * that the robot is currently moving backwards.
@@ -264,11 +264,11 @@ public final class RobotStatus implements Serializable {
 	 * Returns the current heat of the gun. The gun cannot fire unless this is
 	 * 0. (Calls to fire will succeed, but will not actually fire unless
 	 * getGunHeat() == 0).
-	 * <p/>
+	 * <p>
 	 * The amount of gun heat generated when the gun is fired is
 	 * 1 + (firePower / 5). Each turn the gun heat drops by the amount returned
 	 * by {@link Robot#getGunCoolingRate()}, which is a battle setup.
-	 * <p/>
+	 * <p>
 	 * Note that all guns are "hot" at the start of each round, where the gun
 	 * heat is 3.
 	 *

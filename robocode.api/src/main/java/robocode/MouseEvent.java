@@ -31,7 +31,7 @@ public abstract class MouseEvent extends Event {
 
 	/**
 	 * Do not call this method!
-	 * <p/>
+	 * <p>
 	 * This method is used by the game to determine the type of the source mouse
 	 * event that occurred in the AWT.
 	 *

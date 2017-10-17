@@ -28,11 +28,11 @@ public interface IBasicEvents {
 	 * This method is called every turn in a battle round in order to provide
 	 * the robot status as a complete snapshot of the robot's current state at
 	 * that specific time.
-	 * <p/>
+	 * <p>
 	 * The main benefit of this method is that you'll automatically receive all
 	 * current data values of the robot like e.g. the x and y coordinate,
 	 * heading, gun heat etc., which are grouped into the exact same time/turn.
-	 * <p/>
+	 * <p>
 	 * This is the only way to map the robots data values to a specific time.
 	 * For example, it is not possible to determine the exact time of the
 	 * robot's heading by calling first calling {@link Robot#getTime()} and then
@@ -51,7 +51,7 @@ public interface IBasicEvents {
 	 * This method is called when one of your bullets hits another robot.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void onBulletHit(BulletHitEvent event) {
@@ -69,7 +69,7 @@ public interface IBasicEvents {
 	 * This method is called when one of your bullets hits another bullet.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void onBulletHitBullet(BulletHitBulletEvent event) {
@@ -87,7 +87,7 @@ public interface IBasicEvents {
 	 * This method is called when one of your bullets misses, i.e. hits a wall.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void onBulletMissed(BulletMissedEvent event) {
@@ -103,7 +103,7 @@ public interface IBasicEvents {
 
 	/**
 	 * This method is called if your robot dies.
-	 * <p/>
+	 * <p>
 	 * You should override it in your robot if you want to be informed of this
 	 * event. Actions will have no effect if called from this section. The
 	 * intent is to allow you to perform calculations or print something out
@@ -122,7 +122,7 @@ public interface IBasicEvents {
 	 * This method is called when your robot is hit by a bullet.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   void onHitByBullet(HitByBulletEvent event) {
@@ -140,7 +140,7 @@ public interface IBasicEvents {
 	 * This method is called when your robot collides with another robot.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   void onHitRobot(HitRobotEvent event) {
@@ -150,9 +150,9 @@ public interface IBasicEvents {
 	 *           ahead(100);
 	 *       }
 	 *   }
-	 * <p/>
+	 * <p>
 	 *   -- or perhaps, for a more advanced robot --
-	 * <p/>
+	 * <p>
 	 *   public void onHitRobot(HitRobotEvent event) {
 	 *       if (event.getBearing() > -90 && event.getBearing() <= 90) {
 	 *           setBack(100);
@@ -161,10 +161,10 @@ public interface IBasicEvents {
 	 *       }
 	 *   }
 	 * </pre>
-	 * <p/>
+	 * <p>
 	 * The angle is relative to your robot's facing. So 0 is straight ahead of
 	 * you.
-	 * <p/>
+	 * <p>
 	 * This event can be generated if another robot hits you, in which case
 	 * {@link HitRobotEvent#isMyFault() event.isMyFault()} will return
 	 * {@code false}. In this case, you will not be automatically stopped by the
@@ -181,13 +181,13 @@ public interface IBasicEvents {
 	 * This method is called when your robot collides with a wall.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * The wall at the top of the screen is 0 degrees, right is 90 degrees,
 	 * bottom is 180 degrees, left is 270 degrees. But this event is relative to
 	 * your heading, so: The bearing is such that {@link Robot#turnRight(double)
 	 * turnRight} {@link HitWallEvent#getBearing() (event.getBearing())} will
 	 * point you perpendicular to the wall.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   void onHitWall(HitWallEvent event) {
@@ -206,16 +206,16 @@ public interface IBasicEvents {
 	 * robot's radar scan "hits" another robot.
 	 * You should override it in your robot if you want to be informed of this
 	 * event. (Almost all robots should override this!)
-	 * <p/>
+	 * <p>
 	 * This event is automatically called if there is a robot in range of your
 	 * radar.
-	 * <p/>
+	 * <p>
 	 * Note that the robot's radar can only see robot within the range defined
 	 * by {@link Rules#RADAR_SCAN_RADIUS} (1200 pixels).
-	 * <p/>
+	 * <p>
 	 * Also not that the bearing of the scanned robot is relative to your
 	 * robot's heading.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   void onScannedRobot(ScannedRobotEvent event) {
@@ -227,7 +227,7 @@ public interface IBasicEvents {
 	 *       }
 	 *   }
 	 * </pre>
-	 * <p/>
+	 * <p>
 	 * <b>Note:</b><br>
 	 * The game assists Robots in firing, as follows:
 	 * <ul>
@@ -236,10 +236,10 @@ public interface IBasicEvents {
 	 * <li>and you call fire() before taking any other actions, {@link
 	 * Robot#fire(double) fire()} will fire directly at the robot.
 	 * </ul>
-	 * <p/>
+	 * <p>
 	 * In essence, this means that if you can see a robot, and it doesn't move,
 	 * then fire will hit it.
-	 * <p/>
+	 * <p>
 	 * AdvancedRobots will NOT be assisted in this manner, and are expected to
 	 * examine the event to determine if {@link Robot#fire(double) fire()} would
 	 * hit. (i.e. you are spinning your gun around, but by the time you get the
@@ -265,7 +265,7 @@ public interface IBasicEvents {
 
 	/**
 	 * This method is called if your robot wins a battle.
-	 * <p/>
+	 * <p>
 	 * Your robot could perform a victory dance here! :-)
 	 *
 	 * @param event the win event set by the game

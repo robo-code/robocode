@@ -15,7 +15,7 @@ import java.awt.*;
 
 /**
  * Crazy - a sample robot by Mathew Nelson.
- * <p/>
+ * <p>
  * This robot moves around in a crazy pattern.
  *
  * @author Mathew A. Nelson (original)

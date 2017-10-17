@@ -14,9 +14,9 @@ import robocode.robotinterfaces.peer.IAdvancedRobotPeer;
 /**
  * This class is used by the system as a placeholder for all *Radians calls in
  * {@link AdvancedRobot}. You may refer to this class for documentation only.
- * <p/>
+ * <p>
  * You should create a {@link AdvancedRobot} instead.
- * <p/>
+ * <p>
  * (The Radians methods themselves will continue work, however).
  *
  * @see Robot

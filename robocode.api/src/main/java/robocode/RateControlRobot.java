@@ -14,7 +14,7 @@ import static java.lang.Math.toDegrees;
 
 /**
  * This advanced robot type allows you to set a rate for each of the robot's movements.
- * <p/>
+ * <p>
  * You can set the rate for:<ul>
  * <li>velocity - pixels per turn</li>
  * <li>robot turn - radians per turn</li>
@@ -26,13 +26,13 @@ import static java.lang.Math.toDegrees;
  * rate must be set to a positive value. If a negative value is used instead, the movement
  * will go back or to the left. In order to stop the movement, the rate must be
  * set to 0.
- * <p/>
+ * <p>
  * Note: When calling {@code setVelocityRate()}, {@code setTurnRate()}, {@code setGunRotationRate()},
  * {@code setRadarRotationRate()} and variants, Any previous calls to "movement" functions outside of
  * {@code RateControlRobot}, such as {@code setAhead()}, {@code setTurnLeft()},
  * {@code setTurnRadarRightRadians()} and similar will be overridden when calling the
  * {@link #execute() execute()} on this robot class.
- * <p/>
+ * <p>
  * Look into the source code for the {@code sample.VelociRobot} in order to see how to use this
  * robot type. 
  *
@@ -57,13 +57,13 @@ public class RateControlRobot extends TeamRobot {
 
 	/**
 	 * Sets the speed the robot will move (forward), in pixels per turn.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the robot will move backwards
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Set the robot to move forward 2 pixels per turn
@@ -110,13 +110,13 @@ public class RateControlRobot extends TeamRobot {
 	
 	/**
 	 * Sets the robot's clockwise (right) rotation per turn, in degrees.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the robot turns counterclockwise (left)
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Set the robot to turn right 10 degrees per turn
@@ -160,13 +160,13 @@ public class RateControlRobot extends TeamRobot {
 	
 	/**
 	 * Sets the robot's clockwise (right) rotation per turn, in radians.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the robot turns counterclockwise (left)
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Set the robot to turn right pi / 32 radians per turn
@@ -210,13 +210,13 @@ public class RateControlRobot extends TeamRobot {
 	
 	/**
 	 * Sets the gun's clockwise (right) rotation per turn, in degrees.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the gun turns counterclockwise (left)
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Set the gun to turn right 15 degrees per turn
@@ -260,13 +260,13 @@ public class RateControlRobot extends TeamRobot {
 	
 	/**
 	 * Sets the gun's clockwise (right) rotation per turn, in radians.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the gun turns counterclockwise (left)
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Set the gun to turn right pi / 16 radians per turn
@@ -310,13 +310,13 @@ public class RateControlRobot extends TeamRobot {
 	
 	/**
 	 * Sets the radar's clockwise (right) rotation per turn, in degrees.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the radar turns counterclockwise (left)
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Set the radar to turn right 45 degrees per turn
@@ -360,13 +360,13 @@ public class RateControlRobot extends TeamRobot {
 	
 	/**
 	 * Sets the radar's clockwise (right) rotation per turn, in radians.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input,
 	 * where negative values means that the radar turns counterclockwise (left)
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Set the radar to turn right pi / 4 radians per turn
@@ -411,15 +411,15 @@ public class RateControlRobot extends TeamRobot {
 	/**
 	 * Executes any pending actions, or continues executing actions that are
 	 * in process. This call returns after the actions have been started.
-	 * <p/>
+	 * <p>
 	 * Note that advanced robots <em>must</em> call this function in order to
 	 * execute pending set* calls like e.g. {@code setVelocityRate()}, {@code setFire()},
 	 * {@code setTurnRate()} etc. Otherwise, these calls will never get executed.
-	 * <p/>
+	 * <p>
 	 * Any previous calls to "movement" functions outside of {@code RateControlRobot},
 	 * such as {@code setAhead()}, {@code setTurnLeft()}, {@code setTurnRadarLeftRadians()}
 	 * etc. will be overridden when this method is called on this robot class.
-	 * <p/>
+	 * <p>
 	 * In this example the robot will move while turning:
 	 * <pre>
 	 *   setVelocityRate(6);

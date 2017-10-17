@@ -24,7 +24,7 @@ public interface IBasicEvents3 extends IBasicEvents2 {
 	/**
 	 * This method is called after the end of a round.
 	 * You should override it in your robot if you want to be informed of this event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void onRoundEnded(RoundEndedEvent event) {

@@ -63,10 +63,10 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Event handler for the menu item
-	 * <p/>
+	 * <p>
 	 * Brings the window to the front. This should be called for the "More
 	 * Windows..." Item, because it doesn't make itself its own ActionListener.
-	 * <p/>
+	 * <p>
 	 * Note that e can be null, and this menu item might not be showing (if this
 	 * is called from the "More Windows" dialog).
 	 */
@@ -180,7 +180,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 	/**
 	 * Figures out what index (from 0 to WINDOW_MENU_MAX_SIZE-1) this item is in
 	 * the window menu.
-	 * <p/>
+	 * <p>
 	 * @return -1 if this item isn't showing.
 	 */
 	protected int getIndex() {
@@ -212,7 +212,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Returns true if this item should be showing.
-	 * <p/>
+	 * <p>
 	 * Returns false if there are more than WINDOW_MENU_MAX_SIZE items before it
 	 * in the menu.
 	 */
@@ -235,7 +235,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Returns true if this item should be enabled (selectable).
-	 * <p/>
+	 * <p>
 	 * Returns false if it is a More Windows... item and there are no windows.
 	 */
 	@Override
@@ -255,7 +255,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Determines if this menu item should currently show as "selected".
-	 * <p/>
+	 * <p>
 	 * The item should be seleced if the window it's tied to has focus.
 	 */
 	@Override
@@ -281,7 +281,7 @@ public class WindowMenuItem extends JCheckBoxMenuItem implements ActionListener 
 
 	/**
 	 * Creates a string representation of this object.
-	 * <p/>
+	 * <p>
 	 * Handy for repurposing the menu items as list items :-)
 	 */
 	@Override

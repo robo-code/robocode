@@ -31,7 +31,7 @@ public abstract class KeyEvent extends Event {
 
 	/**
 	 * Do not call this method!
-	 * <p/>
+	 * <p>
 	 * This method is used by the game to determine the type of the source key
 	 * event that occurred in the AWT.
 	 *

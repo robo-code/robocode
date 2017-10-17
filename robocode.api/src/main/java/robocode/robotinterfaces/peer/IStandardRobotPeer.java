@@ -11,7 +11,7 @@ package robocode.robotinterfaces.peer;
 /**
  * The standard robot peer for standard robot types like {@link robocode.Robot},
  * {@link robocode.AdvancedRobot}, and {@link robocode.TeamRobot}.
- * <p/>
+ * <p>
  * A robot peer is the object that deals with game mechanics and rules, and
  * makes sure your robot abides by them.
  *
@@ -41,7 +41,7 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	/**
 	 * Immediately resumes the movement you stopped by {@link #stop(boolean)},
 	 * if any.
-	 * <p/>
+	 * <p>
 	 * This call executes immediately, and does not return until it is complete.
 	 *
 	 * @see #stop(boolean)
@@ -52,12 +52,12 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	 * Immediately turns the robot's radar to the right or left by radians.
 	 * This call executes immediately, and does not return until it is complete,
 	 * i.e. when the angle remaining in the radar's turn is 0.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input, where
 	 * positive values means that the robot's radar is set to turn right, and
 	 * negative values means that the robot's radar is set to turn left.
 	 * If 0 is given as input, the robot's radar will stop turning.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Turn the robot's radar 180 degrees to the right
@@ -79,19 +79,19 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 
 	/**
 	 * Sets the gun to turn independent from the robot's turn.
-	 * <p/>
+	 * <p>
 	 * Ok, so this needs some explanation: The gun is mounted on the robot's
 	 * body. So, normally, if the robot turns 90 degrees to the right, then the
 	 * gun will turn with it as it is mounted on top of the robot's body. To
 	 * compensate for this, you can call {@code setAdjustGunForBodyTurn(true)}.
 	 * When this is set, the gun will turn independent from the robot's turn,
 	 * i.e. the gun will compensate for the robot's body turn.
-	 * <p/>
+	 * <p>
 	 * Note: This method is additive until you reach the maximum the gun can
 	 * turn. The "adjust" is added to the amount you set for turning the robot,
 	 * then capped by the physics of the game. If you turn infinite, then the
 	 * adjust is ignored (and hence overridden).
-	 * <p/>
+	 * <p>
 	 * Example, assuming both the robot and gun start out facing up (0 degrees):
 	 * <pre>
 	 *   // Set gun to turn with the robot's turn
@@ -110,7 +110,7 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	 *   turnBodyLeft(Math.PI / 2);
 	 *   // Both are back to 0 degrees.
 	 * </pre>
-	 * <p/>
+	 * <p>
 	 * Note: The gun compensating this way does count as "turning the gun".
 	 * See {@link #setAdjustRadarForGunTurn(boolean)} for details.
 	 *
@@ -122,19 +122,19 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 
 	/**
 	 * Sets the radar to turn independent from the gun's turn.
-	 * <p/>
+	 * <p>
 	 * Ok, so this needs some explanation: The radar is mounted on the robot's
 	 * gun. So, normally, if the gun turns 90 degrees to the right, then the
 	 * radar will turn with it as it is mounted on top of the gun. To compensate
 	 * for this, you can call {@code setAdjustRadarForGunTurn(true)}. When this
 	 * is set, the radar will turn independent from the robot's turn, i.e. the
 	 * radar will compensate for the gun's turn.
-	 * <p/>
+	 * <p>
 	 * Note: This method is additive until you reach the maximum the radar can
 	 * turn. The "adjust" is added to the amount you set for turning the robot,
 	 * then capped by the physics of the game. If you turn infinite, then the
 	 * adjust is ignored (and hence overridden).
-	 * <p/>
+	 * <p>
 	 * Example, assuming both the gun and radar start out facing up (0 degrees):
 	 * <pre>
 	 *   // Set radar to turn with the gun's turn
@@ -164,7 +164,7 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 
 	/**
 	 * Sets the radar to turn independent from the robot's turn.
-	 * <p/>
+	 * <p>
 	 * Ok, so this needs some explanation: The radar is mounted on the gun, and
 	 * the gun is mounted on the robot's body. So, normally, if the robot turns
 	 * 90 degrees to the right, the gun turns, as does the radar. Hence, if the
@@ -173,12 +173,12 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	 * this, you can call {@code setAdjustRadarForBodyTurn(true)}. When this is
 	 * set, the radar will turn independent from the robot's turn, i.e. the
 	 * radar will compensate for the robot's turn.
-	 * <p/>
+	 * <p>
 	 * Note: This method is additive until you reach the maximum the radar can
 	 * turn. The "adjust" is added to the amount you set for turning the gun,
 	 * then capped by the physics of the game. If you turn infinite, then the
 	 * adjust is ignored (and hence overridden).
-	 * <p/>
+	 * <p>
 	 * Example, assuming the robot, gun, and radar all start out facing up (0
 	 * degrees):
 	 * <pre>

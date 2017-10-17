@@ -19,7 +19,7 @@ package net.sf.robocode.host.security;
 
 	/**
 	 * Checks two Permission objects for equality.
-	 * <p/>
+	 * <p>
 	 * Do not use the {@code equals} method for making access control
 	 * decisions; use the {@code implies} method.
 	 *
@@ -38,12 +38,12 @@ package net.sf.robocode.host.security;
 	 * consider to be their
 	 * canonical form. For example, two FilePermission objects created via
 	 * the following:
-	 * <p/>
+	 * <p>
 	 * <pre>
 	 *   perm1 = new FilePermission(p1,"read,write");
 	 *   perm2 = new FilePermission(p2,"write,read");
 	 * </pre>
-	 * <p/>
+	 * <p>
 	 * both return
 	 * "read,write" when the {code getActions()} method is invoked.
 	 *
@@ -56,7 +56,7 @@ package net.sf.robocode.host.security;
 
 	/**
 	 * Returns the hash code value for this Permission object.
-	 * <p/>
+	 * <p>
 	 * The required {@code hashCode} behavior for Permission Objects is
 	 * the following: <p>
 	 * <ul>
@@ -81,10 +81,10 @@ package net.sf.robocode.host.security;
 	/**
 	 * Checks if the specified permission's actions are "implied by"
 	 * this object's actions.
-	 * <p/>
+	 * <p>
 	 * This must be implemented by subclasses of Permission, as they are the
 	 * only ones that can impose semantics on a Permission object.
-	 * <p/>
+	 * <p>
 	 * <p>The {@code implies} method is used by the AccessController to determine
 	 * whether or not a requested permission is implied by another permission that
 	 * is known to be valid in the current execution context.

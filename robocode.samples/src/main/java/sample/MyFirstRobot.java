@@ -15,7 +15,7 @@ import robocode.ScannedRobotEvent;
 
 /**
  * MyFirstRobot - a sample robot by Mathew Nelson.
- * <p/>
+ * <p>
  * Moves in a seesaw motion, and spins the gun around at each end.
  *
  * @author Mathew A. Nelson (original)

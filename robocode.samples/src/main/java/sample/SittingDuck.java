@@ -20,7 +20,7 @@ import java.io.PrintStream;
 
 /**
  * SittingDuck - a sample robot by Mathew Nelson.
- * <p/>
+ * <p>
  * Along with sitting still doing nothing, this robot demonstrates persistency.
  *
  * @author Mathew A. Nelson (original)

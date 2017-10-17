@@ -129,7 +129,7 @@ public abstract class Condition {
 	 * The game will call your test() function, and take action if it returns
 	 * {@code true}. This is valid for both {@link AdvancedRobot#waitFor} and
 	 * {@link AdvancedRobot#addCustomEvent}.
-	 * <p/>
+	 * <p>
 	 * You may not take any actions inside of test().
 	 *
 	 * @return {@code true} if the condition has been met, {@code false}

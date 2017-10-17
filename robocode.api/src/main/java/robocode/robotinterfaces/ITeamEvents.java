@@ -28,7 +28,7 @@ public interface ITeamEvents {
 	 * This method is called when your robot receives a message from a teammate.
 	 * You should override it in your robot if you want to be informed of this
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void onMessageReceived(MessageEvent event) {

@@ -65,7 +65,7 @@ public class SecureInputStream extends java.io.InputStream {
 	 * because the end of the stream has been reached, the value -1 is returned.
 	 * This method blocks until input data is available, the end of the stream
 	 * is detected, or an exception is thrown.
-	 * <p/>
+	 * <p>
 	 * <p> A subclass must provide an implementation of this method.
 	 *
 	 * @return the next byte of data, or -1 if the end of the stream is reached.

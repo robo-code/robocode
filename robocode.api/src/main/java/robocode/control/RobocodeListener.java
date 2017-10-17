@@ -13,7 +13,7 @@ import robocode.control.events.IBattleListener;
 
 /**
  * @deprecated Since 1.6.2. Use the {@link IBattleListener} instead.
- * <p/>
+ * <p>
  * A listener interface for receiving callbacks from the {@link RobocodeEngine}.
  *
  * @author Mathew A. Nelson (original)
@@ -28,7 +28,7 @@ public interface RobocodeListener {
 	 * @deprecated Since 1.6.2. Use the
 	 * {@link IBattleListener#onBattleCompleted(robocode.control.events.BattleCompletedEvent)
 	 * IBattleListener.onBattleCompleted()} instead.
-	 * <p/>
+	 * <p>
 	 * This method is called when a battle completes successfully.
 	 *
 	 * @param battle  information about the battle that completed
@@ -41,7 +41,7 @@ public interface RobocodeListener {
 	 * @deprecated Since 1.6.2. Use the
 	 * {@link IBattleListener#onBattleFinished(robocode.control.events.BattleFinishedEvent)
 	 * IBattleListener.onBattleFinished()} instead.
-	 * <p/>
+	 * <p>
 	 * This method is called when a battle has been aborted.
 	 *
 	 * @param battle information about the battle that was aborted
@@ -53,7 +53,7 @@ public interface RobocodeListener {
 	 * @deprecated Since 1.6.2. Use the
 	 * {@link IBattleListener#onBattleMessage(robocode.control.events.BattleMessageEvent)
 	 * IBattleListener.onBattleMessage()} instead.
-	 * <p/>
+	 * <p>
 	 * This method is called when the game logs messages that is normally
 	 * written out to the console.
 	 *

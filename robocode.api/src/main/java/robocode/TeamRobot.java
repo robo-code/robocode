@@ -20,7 +20,7 @@ import java.util.Vector;
 /**
  * An advanced type of robot that supports sending messages between team
  * mates in a robot team.
- * <p/>
+ * <p>
  * If you have not done already, you should create a {@link Robot} or
  * {@link AdvancedRobot} first.
  *
@@ -39,7 +39,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 
 	/**
 	 * Broadcasts a message to all teammates.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void run() {
@@ -65,7 +65,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	/**
 	 * Returns a vector containing all MessageEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   for (MessageEvent e : getMessageEvents()) {
@@ -89,7 +89,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 
 	/**
 	 * Do not call this method!
-	 * <p/>
+	 * <p>
 	 * {@inheritDoc}
 	 */
 	public final ITeamEvents getTeamEventListener() {
@@ -99,7 +99,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 	/**
 	 * Returns the names of all teammates, or {@code null} there is no
 	 * teammates.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void run() {
@@ -130,7 +130,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 
 	/**
 	 * Checks if a given robot name is the name of one of your teammates.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void onScannedRobot(ScannedRobotEvent e) {
@@ -163,7 +163,7 @@ public class TeamRobot extends AdvancedRobot implements ITeamRobot, ITeamEvents 
 
 	/**
 	 * Sends a message to one (or more) teammates.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void run() {

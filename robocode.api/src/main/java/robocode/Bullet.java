@@ -114,7 +114,7 @@ public class Bullet implements Serializable {
 
 	/**
 	 * Returns the power of this bullet.
-	 * <p/>
+	 * <p>
 	 * The bullet will do (4 * power) damage if it hits another robot.
 	 * If power is greater than 1, it will do an additional 2 * (power - 1)
 	 * damage. You will get (3 * power) back if you hit the other robot.

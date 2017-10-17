@@ -46,12 +46,12 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 * Compares this event to another event regarding precedence.
 	 * The event precedence is first and foremost determined by the event time,
 	 * secondly the event priority, and lastly specific event information.
-	 * <p/>
+	 * <p>
 	 * This method will first compare the time of each event. If the event time
 	 * is the same for both events, then this method compared the priority of
 	 * each event. If the event priorities are equals, then this method will
 	 * compare the two event based on specific event information.
-	 * <p/>
+	 * <p>
 	 * This method is called by the game in order to sort the event queue of a
 	 * robot to make sure the events are listed in chronological order.
 	 *

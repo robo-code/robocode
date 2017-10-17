@@ -16,7 +16,7 @@ import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 /**
  * SimpleDroid - a sample robot by Mathew Nelson.
- * <p/>
+ * <p>
  * Follows orders of team leader.
  *
  * @author Mathew A. Nelson (original)

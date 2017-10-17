@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * The team robot peer for team robots like {@link robocode.TeamRobot}.
- * <p/>
+ * <p>
  * A robot peer is the object that deals with game mechanics and rules, and
  * makes sure your robot abides by them.
  *
@@ -36,7 +36,7 @@ public interface ITeamRobotPeer extends IAdvancedRobotPeer {
 	/**
 	 * Returns the names of all teammates, or {@code null} there is no
 	 * teammates.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void run() {
@@ -61,7 +61,7 @@ public interface ITeamRobotPeer extends IAdvancedRobotPeer {
 
 	/**
 	 * Checks if a given robot name is the name of one of your teammates.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void onScannedRobot(ScannedRobotEvent e) {
@@ -83,7 +83,7 @@ public interface ITeamRobotPeer extends IAdvancedRobotPeer {
 
 	/**
 	 * Broadcasts a message to all teammates.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void run() {
@@ -102,7 +102,7 @@ public interface ITeamRobotPeer extends IAdvancedRobotPeer {
 
 	/**
 	 * Sends a message to one (or more) teammates.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void run() {
@@ -122,7 +122,7 @@ public interface ITeamRobotPeer extends IAdvancedRobotPeer {
 	/**
 	 * Returns a vector containing all MessageEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   for (MessageEvent e : getMessageEvents()) {

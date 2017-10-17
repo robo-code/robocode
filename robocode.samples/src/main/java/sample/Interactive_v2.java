@@ -25,9 +25,9 @@ import java.util.Set;
 /**
  * Interactive_v2 - a modified version of the sample robot Interactive by Flemming N. Larsen
  *                  to use absolute movements (up, right, down, left) by Tuan Anh Nguyen.
- * <p/>
+ * <p>
  * This is a robot that is controlled using the arrow keys (or WASD) and mouse only.
- * <p/>
+ * <p>
  * Keys:
  * - W or arrow up:    Move up
  * - S or arrow down:  Move down
@@ -38,15 +38,15 @@ import java.util.Set;
  * - Button 1:    Fire a bullet with power = 1
  * - Button 2:    Fire a bullet with power = 2
  * - Button 3:    Fire a bullet with power = 3
- * <p/>
+ * <p>
  * The bullet color depends on the fire power:
  * - Power = 1:   Yellow
  * - Power = 2:   Orange
  * - Power = 3:   Red
- * <p/>
+ * <p>
  * Note that the robot will continue firing as long as the mouse button is
  * pressed down.
- * <p/>
+ * <p>
  * By enabling the "Paint" button on the robot console window for this robot,
  * a cross hair will be painted for the robots current aim (controlled by the
  * mouse).

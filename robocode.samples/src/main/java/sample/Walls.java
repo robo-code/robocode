@@ -17,7 +17,7 @@ import java.awt.*;
 
 /**
  * Walls - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
- * <p/>
+ * <p>
  * Moves around the outer edge with the gun facing in.
  *
  * @author Mathew A. Nelson (original)

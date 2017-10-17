@@ -18,7 +18,7 @@ import java.awt.*;
 
 /**
  * TrackFire - a sample robot by Mathew Nelson.
- * <p/>
+ * <p>
  * Sits still. Tracks and fires at the nearest robot it sees.
  *
  * @author Mathew A. Nelson (original)

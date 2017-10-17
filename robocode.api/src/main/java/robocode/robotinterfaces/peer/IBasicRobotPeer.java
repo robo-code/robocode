@@ -45,9 +45,9 @@ public interface IBasicRobotPeer {
 	/**
 	 * Returns the game time of the current round, where the time is equal to
 	 * the current turn in the round.
-	 * <p/>
+	 * <p>
 	 * A battle consists of multiple rounds.
-	 * <p/>
+	 * <p>
 	 * Time is reset to 0 at the beginning of every round.
 	 *
 	 * @return the game time/turn of the current round.
@@ -81,7 +81,7 @@ public interface IBasicRobotPeer {
 
 	/**
 	 * Returns the velocity of the robot measured in pixels/turn.
-	 * <p/>
+	 * <p>
 	 * The maximum velocity of a robot is defined by
 	 * {@link Rules#MAX_VELOCITY} (8 pixels / turn).
 	 *
@@ -93,7 +93,7 @@ public interface IBasicRobotPeer {
 	/**
 	 * Returns the direction that the robot's body is facing, in radians.
 	 * The value returned will be between 0 and 2 * PI (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * PI / 2 means East, PI means South, and 3 * PI / 2 means West.
 	 *
@@ -106,7 +106,7 @@ public interface IBasicRobotPeer {
 	/**
 	 * Returns the direction that the robot's gun is facing, in radians.
 	 * The value returned will be between 0 and 2 * PI (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * PI / 2 means East, PI means South, and 3 * PI / 2 means West.
 	 *
@@ -119,7 +119,7 @@ public interface IBasicRobotPeer {
 	/**
 	 * Returns the direction that the robot's radar is facing, in radians.
 	 * The value returned will be between 0 and 2 * PI (is excluded).
-	 * <p/>
+	 * <p>
 	 * Note that the heading in Robocode is like a compass, where 0 means North,
 	 * PI / 2 means East, PI means South, and 3 * PI / 2 means West.
 	 *
@@ -133,11 +133,11 @@ public interface IBasicRobotPeer {
 	 * Returns the current heat of the gun. The gun cannot fire unless this is
 	 * 0. (Calls to fire will succeed, but will not actually fire unless
 	 * getGunHeat() == 0).
-	 * <p/>
+	 * <p>
 	 * The amount of gun heat generated when the gun is fired is
 	 * 1 + (firePower / 5). Each turn the gun heat drops by the amount returned
 	 * by {@link #getGunCoolingRate()}, which is a battle setup.
-	 * <p/>
+	 * <p>
 	 * Note that all guns are "hot" at the start of each round, where the gun
 	 * heat is 3.
 	 *
@@ -212,7 +212,7 @@ public interface IBasicRobotPeer {
 	/**
 	 * Returns the rate at which the gun will cool down, i.e. the amount of heat
 	 * the gun heat will drop per turn.
-	 * <p/>
+	 * <p>
 	 * The gun cooling rate is default 0.1 / turn, but can be changed by the
 	 * battle setup. So don't count on the cooling rate being 0.1!
 	 *
@@ -225,7 +225,7 @@ public interface IBasicRobotPeer {
 	/**
 	 * Returns the distance remaining in the robot's current move measured in
 	 * pixels.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently moving forwards. Negative values means
 	 * that the robot is currently moving backwards. If the returned value is 0,
@@ -241,7 +241,7 @@ public interface IBasicRobotPeer {
 
 	/**
 	 * Returns the angle remaining in the robot's turn, in radians.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the robot is currently turning to the right. Negative values
 	 * means that the robot is currently turning to the left.
@@ -255,7 +255,7 @@ public interface IBasicRobotPeer {
 
 	/**
 	 * Returns the angle remaining in the gun's turn, in radians.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the gun is currently turning to the right. Negative values
 	 * means that the gun is currently turning to the left.
@@ -269,7 +269,7 @@ public interface IBasicRobotPeer {
 
 	/**
 	 * Returns the angle remaining in the radar's turn, in radians.
-	 * <p/>
+	 * <p>
 	 * This call returns both positive and negative values. Positive values
 	 * means that the radar is currently turning to the right. Negative values
 	 * means that the radar is currently turning to the left.
@@ -284,20 +284,20 @@ public interface IBasicRobotPeer {
 	/**
 	 * Executes any pending actions, or continues executing actions that are
 	 * in process. This call returns after the actions have been started.
-	 * <p/>
+	 * <p>
 	 * Note that advanced robots <em>must</em> call this function in order to
 	 * execute pending set* calls like e.g. {@link
 	 * IAdvancedRobotPeer#setMove(double) setMove(double)},
 	 * {@link IAdvancedRobotPeer#setFire(double) setFire(double)}, {@link
 	 * IAdvancedRobotPeer#setTurnBody(double) setTurnBody(double)} etc.
 	 * Otherwise, these calls will never get executed.
-	 * <p/>
+	 * <p>
 	 * In this example the robot will move while turning:
 	 * <pre>
 	 *   setTurnBody(90);
 	 *   setMove(100);
 	 *   execute();
-	 * <p/>
+	 * <p>
 	 *   while (getDistanceRemaining() > 0 && getTurnRemaining() > 0) {
 	 *       execute();
 	 *   }
@@ -308,23 +308,23 @@ public interface IBasicRobotPeer {
 	/**
 	 * Immediately moves your robot forward or backward by distance measured in
 	 * pixels.
-	 * <p/>
+	 * <p>
 	 * This call executes immediately, and does not return until it is complete,
 	 * i.e. when the remaining distance to move is 0.
-	 * <p/>
+	 * <p>
 	 * If the robot collides with a wall, the move is complete, meaning that the
 	 * robot will not move any further. If the robot collides with another
 	 * robot, the move is complete if you are heading toward the other robot.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input, where
 	 * positive values means that the robot is set to move forward, and negative
 	 * values means that the robot is set to move backward.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Move the robot 100 pixels forward
 	 *   ahead(100);
-	 * <p/>
+	 * <p>
 	 *   // Afterwards, move the robot 50 pixels backward
 	 *   ahead(-50);
 	 * </pre>
@@ -343,17 +343,17 @@ public interface IBasicRobotPeer {
 	 * Immediately turns the robot's body to the right or left by radians.
 	 * This call executes immediately, and does not return until it is complete,
 	 * i.e. when the angle remaining in the body's turn is 0.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input, where
 	 * positive values means that the robot's body is set to turn right, and
 	 * negative values means that the robot's body is set to turn left.
 	 * If 0 is given as input, the robot's body will stop turning.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Turn the robot's body 180 degrees to the right
 	 *   turnBody(Math.PI);
-	 * <p/>
+	 * <p>
 	 *   // Afterwards, turn the robot's body 90 degrees to the left
 	 *   turnBody(-Math.PI / 2);
 	 * </pre>
@@ -372,17 +372,17 @@ public interface IBasicRobotPeer {
 	 * Immediately turns the robot's gun to the right or left by radians.
 	 * This call executes immediately, and does not return until it is complete,
 	 * i.e. when the angle remaining in the gun's turn is 0.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input, where
 	 * positive values means that the robot's gun is set to turn right, and
 	 * negative values means that the robot's gun is set to turn left.
 	 * If 0 is given as input, the robot's gun will stop turning.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Turn the robot's gun 180 degrees to the right
 	 *   turnGun(Math.PI);
-	 * <p/>
+	 * <p>
 	 *   // Afterwards, turn the robot's gun 90 degrees to the left
 	 *   turnGun(-Math.PI / 2);
 	 * </pre>
@@ -400,33 +400,33 @@ public interface IBasicRobotPeer {
 	/**
 	 * Immediately fires a bullet. The bullet will travel in the direction the
 	 * gun is pointing.
-	 * <p/>
+	 * <p>
 	 * The specified bullet power is an amount of energy that will be taken from
 	 * the robot's energy. Hence, the more power you want to spend on the
 	 * bullet, the more energy is taken from your robot.
-	 * <p/>
+	 * <p>
 	 * The bullet will do (4 * power) damage if it hits another robot. If power
 	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
 	 * You will get (3 * power) back if you hit the other robot. You can call
 	 * {@link Rules#getBulletDamage(double)} for getting the damage that a
 	 * bullet with a specific bullet power will do.
-	 * <p/>
+	 * <p>
 	 * The specified bullet power should be between
 	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
-	 * <p/>
+	 * <p>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
 	 * {@link #getGunHeat()} returns a value > 0.
-	 * <p/>
+	 * <p>
 	 * A event is generated when the bullet hits a robot
 	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
 	 * bullet ({@link BulletHitBulletEvent}).
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Fire a bullet with maximum power if the gun is ready
 	 *   if (getGunHeat() == 0) {
 	 *       Bullet bullet = fire(Rules.MAX_BULLET_POWER);
-	 * <p/>
+	 * <p>
 	 *       // Get the velocity of the bullet
 	 *       if (bullet != null) {
 	 *           double bulletVelocity = bullet.getVelocity();
@@ -455,34 +455,34 @@ public interface IBasicRobotPeer {
 	/**
 	 * Sets the gun to fire a bullet when the next execution takes place.
 	 * The bullet will travel in the direction the gun is pointing.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * execute() or take an action that executes.
-	 * <p/>
+	 * <p>
 	 * The specified bullet power is an amount of energy that will be taken from
 	 * the robot's energy. Hence, the more power you want to spend on the
 	 * bullet, the more energy is taken from your robot.
-	 * <p/>
+	 * <p>
 	 * The bullet will do (4 * power) damage if it hits another robot. If power
 	 * is greater than 1, it will do an additional 2 * (power - 1) damage.
 	 * You will get (3 * power) back if you hit the other robot. You can call
 	 * {@link Rules#getBulletDamage(double)} for getting the damage that a
 	 * bullet with a specific bullet power will do.
-	 * <p/>
+	 * <p>
 	 * The specified bullet power should be between
 	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
-	 * <p/>
+	 * <p>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
 	 * {@link #getGunHeat()} returns a value > 0.
-	 * <p/>
+	 * <p>
 	 * A event is generated when the bullet hits a robot
 	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
 	 * bullet ({@link BulletHitBulletEvent}).
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   Bullet bullet = null;
-	 * <p/>
+	 * <p>
 	 *   // Fire a bullet with maximum power if the gun is ready
 	 *   if (getGunHeat() == 0) {
 	 *       bullet = setFireBullet(Rules.MAX_BULLET_POWER);
@@ -516,15 +516,15 @@ public interface IBasicRobotPeer {
 
 	/**
 	 * Sets the color of the robot's body.
-	 * <p/>
+	 * <p>
 	 * A {@code null} indicates the default (blue) color.
-	 * <p/>
+	 * <p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 * <p>
 	 *   public void run() {
 	 *       setBodyColor(Color.BLACK);
 	 *       ...
@@ -543,15 +543,15 @@ public interface IBasicRobotPeer {
 
 	/**
 	 * Sets the color of the robot's gun.
-	 * <p/>
+	 * <p>
 	 * A {@code null} indicates the default (blue) color.
-	 * <p/>
+	 * <p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 * <p>
 	 *   public void run() {
 	 *       setGunColor(Color.RED);
 	 *       ...
@@ -570,15 +570,15 @@ public interface IBasicRobotPeer {
 
 	/**
 	 * Sets the color of the robot's radar.
-	 * <p/>
+	 * <p>
 	 * A {@code null} indicates the default (blue) color.
-	 * <p/>
+	 * <p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 * <p>
 	 *   public void run() {
 	 *       setRadarColor(Color.YELLOW);
 	 *       ...
@@ -597,15 +597,15 @@ public interface IBasicRobotPeer {
 
 	/**
 	 * Sets the color of the robot's bullets.
-	 * <p/>
+	 * <p>
 	 * A {@code null} indicates the default white color.
-	 * <p/>
+	 * <p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 * <p>
 	 *   public void run() {
 	 *       setBulletColor(Color.GREEN);
 	 *       ...
@@ -624,15 +624,15 @@ public interface IBasicRobotPeer {
 
 	/**
 	 * Sets the color of the robot's scan arc.
-	 * <p/>
+	 * <p>
 	 * A {@code null} indicates the default (blue) color.
-	 * <p/>
+	 * <p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p/>
+	 * <p>
 	 *   public void run() {
 	 *       setScanColor(Color.WHITE);
 	 *       ...
@@ -653,7 +653,7 @@ public interface IBasicRobotPeer {
 	 * This call <em>must</em> be made from a robot call to inform the game
 	 * that the robot made a {@code get*} call like e.g. {@link #getX()} or
 	 * {@link #getVelocity()}.
-	 * <p/>
+	 * <p>
 	 * This method is used by the game to determine if the robot is inactive or
 	 * not. Note: You should only make this call once in a {@code get*} method!
 	 *
@@ -665,7 +665,7 @@ public interface IBasicRobotPeer {
 	 * This call <em>must</em> be made from a robot call to inform the game
 	 * that the robot made a {@code set*} call like e.g. {@link
 	 * #setFire(double)} or {@link #setBodyColor(Color)}.
-	 * <p/>
+	 * <p>
 	 * This method is used by the game to determine if the robot is inactive or
 	 * not. Note: You should only make this call once in a {@code set*} method!
 	 *
@@ -675,15 +675,15 @@ public interface IBasicRobotPeer {
 
 	/**
 	 * Returns a graphics context used for painting graphical items for the robot.
-	 * <p/>
+	 * <p>
 	 * This method is very useful for debugging your robot.
-	 * <p/>
+	 * <p>
 	 * Note that the robot will only be painted if the "Paint" is enabled on the
 	 * robot's console window; otherwise the robot will never get painted (the
 	 * reason being that all robots might have graphical items that must be
 	 * painted, and then you might not be able to tell what graphical items that
 	 * have been painted for your robot).
-	 * <p/>
+	 * <p>
 	 * Also note that the coordinate system for the graphical context where you
 	 * paint items fits for the Robocode coordinate system where (0, 0) is at
 	 * the bottom left corner of the battlefield, where X is towards right and Y
@@ -697,7 +697,7 @@ public interface IBasicRobotPeer {
 
 	/**
 	 * Sets the debug property with the specified key to the specified value.
-	 * <p/>
+	 * <p>
 	 * This method is very useful when debugging or reviewing your robot as you
 	 * will be able to see this property displayed in the robot console for your
 	 * robots under the Debug Properties tab page.
@@ -713,10 +713,10 @@ public interface IBasicRobotPeer {
 	 * Rescan for other robots. This method is called automatically by the game,
 	 * as long as the robot is moving, turning its body, turning its gun, or
 	 * turning its radar.
-	 * <p/>
+	 * <p>
 	 * Rescan will cause {@link IBasicEvents#onScannedRobot(ScannedRobotEvent)
 	 * onScannedRobot(ScannedRobotEvent)} to be called if you see a robot.
-	 * <p/>
+	 * <p>
 	 * There are 2 reasons to call {@code rescan()} manually:
 	 * <ol>
 	 * <li>You want to scan after you stop moving.
@@ -725,7 +725,7 @@ public interface IBasicRobotPeer {
 	 * and you still see a robot, then the system will interrupt your
 	 * {@code onScannedRobot} event immediately and start it from the top.
 	 * </ol>
-	 * <p/>
+	 * <p>
 	 * This call executes immediately.
 	 *
 	 * @see IBasicEvents#onScannedRobot(ScannedRobotEvent)

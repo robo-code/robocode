@@ -75,7 +75,7 @@ public interface IRobocodeEngine {
 	 * Returns a selection of robots available from the local robot repository
 	 * of Robocode. These robots must exists in the /robocode/robots directory,
 	 * and must be compiled in advance, before these robot are returned with this method.
-	 * <p/>
+	 * <p>
 	 * Notice: If a specified robot cannot be found in the repository, it will
 	 * not be returned in the array of robots returned by this method.
 	 *

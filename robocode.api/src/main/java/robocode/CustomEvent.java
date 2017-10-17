@@ -50,7 +50,7 @@ public class CustomEvent extends Event {
 	 * The event will have the given priority.
 	 * An event priority is a value from 0 - 99. The higher value, the higher
 	 * priority. The default priority is 80.
-	 * <p/>
+	 * <p>
 	 * This is equivalent to calling {@link Condition#setPriority(int)} on the
 	 * Condition.
 	 *

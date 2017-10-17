@@ -29,13 +29,13 @@ public interface IAdvancedEvents {
 	 * This method is called if the robot is using too much time between
 	 * actions. When this event occur, the robot's turn is skipped, meaning that
 	 * it cannot take action anymore in this turn.
-	 * <p/>
+	 * <p>
 	 * If you receive 30 skipped turn event, your robot will be removed from the
 	 * round and loose the round.
-	 * <p/>
+	 * <p>
 	 * You will only receive this event after taking an action. So a robot in an
 	 * infinite loop will not receive any events, and will simply be stopped.
-	 * <p/>
+	 * <p>
 	 * No correctly working, reasonable robot should ever receive this event
 	 * unless it is using too many CPU cycles.
 	 *
@@ -47,7 +47,7 @@ public interface IAdvancedEvents {
 
 	/**
 	 * This method is called when a custom condition is met.
-	 * <p/>
+	 * <p>
 	 * See the sample robots for examples of use, e.g. the {@code sample.Target}
 	 * robot.
 	 *

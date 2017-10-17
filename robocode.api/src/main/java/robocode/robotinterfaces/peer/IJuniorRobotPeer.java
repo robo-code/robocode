@@ -10,7 +10,7 @@ package robocode.robotinterfaces.peer;
 
 /**
  * The junior robot peer for junior robot types like {@link robocode.JuniorRobot}.
- * <p/>
+ * <p>
  * A robot peer is the object that deals with game mechanics and rules, and
  * makes sure your robot abides by them.
  *
@@ -31,11 +31,11 @@ public interface IJuniorRobotPeer extends IBasicRobotPeer {
 	 * right or left by degrees at the same time. The robot will move in a curve
 	 * that follows a perfect circle, and the moving and turning will end at
 	 * exactly the same time.
-	 * <p/>
+	 * <p>
 	 * Note that the max. velocity and max. turn rate is automatically adjusted,
 	 * which means that the robot will move slower the sharper the turn is
 	 * compared to the distance.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input:
 	 * <ul>
 	 * <li>If the {@code distance} parameter is set to a positive value, it

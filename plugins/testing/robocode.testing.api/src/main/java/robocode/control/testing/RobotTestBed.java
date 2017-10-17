@@ -31,7 +31,7 @@ import java.io.File;
 /**
  * RobotTestBed provides a superclass that can be extended in order to implement JUnit tests
  * for Robocode robots.
- * <p/>
+ * <p>
  * The user must set the system property robocode.home to the location of the robocode installation,
  * otherwise we cannot set up the Robocode engine.  If robocode.home is not a system property,
  * we throw a RuntimeException.
@@ -101,7 +101,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	 * of the IBattleListener methods.   Your subclass can provide overridden methods for more
 	 * of the IBattleListener methods, or override any of the methods in this class, in order to
 	 * check for the desired behavior by your robot.
-	 * <p/>
+	 * <p>
 	 * Also instantiates a Robocode engine for running the test battle. This requires a system
 	 * property called robocode.home to be defined and to provide the path to a Robocode installation
 	 * containing the robots under test.
@@ -134,7 +134,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	/**
 	 * Called after each turn, and implements basic logging information about the turn number and
 	 * the position of each robot.
-	 * <p/>
+	 * <p>
 	 * Override this method to perform testing at the end of each turn.
 	 *
 	 * @param event The TurnEndedEvent.
@@ -162,7 +162,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 
 	/**
 	 * Must return a comma-separated list of fully qualified robot names to be in this battle.
-	 * <p/>
+	 * <p>
 	 * You must override this event to specify the robots to battle in this test case.
 	 *
 	 * @return The list of robots.
@@ -183,9 +183,9 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	 * Returns a comma or space separated list like: x1,y1,heading1, x2,y2,heading2, which are the
 	 * coordinates and heading of robot #1 and #2. So "0,0,180, 50,80,270" means that robot #1
 	 * has position (0,0) and heading 180, and robot #2 has position (50,80) and heading 270.
-	 * <p/>
+	 * <p>
 	 * Override this method to explicitly specify the initial positions.
-	 * <p/>
+	 * <p>
 	 * Defaults to null, which means that the initial positions are determined randomly.  Since
 	 * battles are deterministic by default, the initial positions are randomly chosen but will
 	 * always be the same each time you run the test case.
@@ -209,7 +209,7 @@ public abstract class RobotTestBed extends BattleAdaptor {
 	/**
 	 * Defaults to true, indicating that the battle is deterministic and robots will always start
 	 * in the same position each time.
-	 * <p/>
+	 * <p>
 	 * Override to support random initialization.
 	 *
 	 * @return True if the battle will be deterministic.

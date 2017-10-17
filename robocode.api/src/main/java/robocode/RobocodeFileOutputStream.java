@@ -19,10 +19,10 @@ import java.io.*;
  * RobocodeFileOutputStream is similar to a {@link java.io.FileOutputStream}
  * and is used for streaming/writing data out to a file, which you got
  * previously by calling {@link AdvancedRobot#getDataFile(String) getDataFile()}.
- * <p/>
+ * <p>
  * You should read {@link java.io.FileOutputStream} for documentation of this
  * class.
- * <p/>
+ * <p>
  * Please notice that the max. size of your data file is set to 200000
  * (~195 KB).
  *

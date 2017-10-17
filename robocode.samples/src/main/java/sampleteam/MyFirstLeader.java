@@ -18,7 +18,7 @@ import java.io.IOException;
 
 /**
  * MyFirstLeader - a sample team robot by Mathew Nelson.
- * <p/>
+ * <p>
  * Looks around for enemies, and orders teammates to fire
  *
  * @author Mathew A. Nelson (original)

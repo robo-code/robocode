@@ -17,7 +17,7 @@ import java.awt.*;
 
 /**
  * SpinBot - a sample robot by Mathew Nelson.
- * <p/>
+ * <p>
  * Moves in a circle, firing hard when an enemy is detected.
  *
  * @author Mathew A. Nelson (original)

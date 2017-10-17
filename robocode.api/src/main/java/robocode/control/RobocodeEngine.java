@@ -27,9 +27,9 @@ import java.util.List;
  * The RobocodeEngine is the interface provided for external applications
  * in order to let these applications run battles within the Robocode application,
  * and to get the results from these battles.
- * <p/>
+ * <p>
  * This class in the main entry class of the {@code robocode.control} package.
- * <p/>
+ * <p>
  * The RobocodeEngine is used by e.g. RoboRumble@Home client, which is integrated in
  * Robocode. In addition, the RobocodeEngine is also used by the test units for
  * testing the Robocode application itself.
@@ -75,7 +75,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	/**
 	 * @deprecated Since 1.6.2. Use {@link #RobocodeEngine(File)} and
 	 * {@link #addBattleListener(IBattleListener) addBattleListener()} instead.
-	 * <p/>
+	 * <p>
 	 * Creates a new RobocodeEngine for controlling Robocode.
 	 *
 	 * @param robocodeHome the root directory of Robocode, e.g. C:\Robocode.
@@ -93,7 +93,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 	/**
 	 * @deprecated Since 1.6.2. Use {@link #RobocodeEngine()} and
 	 * {@link #addBattleListener(IBattleListener) addBattleListener()} instead.
-	 * <p/>
+	 * <p>
 	 * Creates a new RobocodeEngine for controlling Robocode. The JAR file of
 	 * Robocode is used to determine the root directory of Robocode.
 	 *

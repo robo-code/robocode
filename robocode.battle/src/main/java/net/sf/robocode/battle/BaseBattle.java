@@ -184,7 +184,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 	 * to create a thread, starting the thread causes the object's
 	 * {@code run()} method to be called in that separately executing
 	 * thread.
-	 * <p/>
+	 * <p>
 	 * The general contract of the method {@code run()} is that it may
 	 * take any action whatsoever.
 	 *

@@ -17,7 +17,7 @@ import java.awt.*;
 
 /**
  * RamFire - a sample robot by Mathew Nelson.
- * <p/>
+ * <p>
  * Drives at robots trying to ram them.
  * Fires when it hits them.
  *

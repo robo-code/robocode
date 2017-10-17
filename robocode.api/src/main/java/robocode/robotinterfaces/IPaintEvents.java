@@ -28,15 +28,15 @@ public interface IPaintEvents {
 	 * This method is called every time the robot is painted. You should
 	 * override this method if you want to draw items for your robot on the
 	 * battle field, e.g. targets, virtual bullets etc.
-	 * <p/>
+	 * <p>
 	 * This method is very useful for debugging your robot.
-	 * <p/>
+	 * <p>
 	 * Note that the robot will only be painted if the "Paint" is enabled on the
 	 * robot's console window; otherwise the robot will never get painted (the
 	 * reason being that all robots might have graphical items that must be
 	 * painted, and then you might not be able to tell what graphical items that
 	 * have been painted for your robot).
-	 * <p/>
+	 * <p>
 	 * Also note that the coordinate system for the graphical context where you
 	 * paint items fits for the Robocode coordinate system where (0, 0) is at
 	 * the bottom left corner of the battlefield, where X is towards right and Y

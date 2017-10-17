@@ -65,7 +65,7 @@ public final class BattleRules implements java.io.Serializable {
 
 	/**
 	 * Returns the rate at which the gun will cool down, i.e. the amount of heat the gun heat will drop per turn.
-	 * <p/>
+	 * <p>
 	 * The gun cooling rate is default 0.1 per turn, but can be changed by the battle setup.
 	 * So don't count on the cooling rate being 0.1!
 	 *
@@ -82,11 +82,11 @@ public final class BattleRules implements java.io.Serializable {
 	 * Returns the allowed inactivity time, where the robot is not taking any action, before will begin to be zapped.
 	 * The inactivity time is measured in turns, and is the allowed time that a robot is allowed to omit taking
 	 * action before being punished by the game by zapping.
-	 * <p/>
+	 * <p>
 	 * When a robot is zapped by the game, it will loose 0.1 energy points per turn. Eventually the robot will be
 	 * killed by zapping until the robot takes action. When the robot takes action, the inactivity time counter is
 	 * reset. 
-	 * <p/>
+	 * <p>
 	 * The allowed inactivity time is per default 450 turns, but can be changed by the battle setup.
 	 * So don't count on the inactivity time being 450 turns!
 	 *

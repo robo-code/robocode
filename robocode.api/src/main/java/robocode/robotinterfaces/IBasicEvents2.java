@@ -25,7 +25,7 @@ public interface IBasicEvents2 extends IBasicEvents {
 	/**
 	 * This method is called after the end of the battle, even when the battle is aborted.
 	 * You should override it in your robot if you want to be informed of this event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   public void onBattleEnded(BattleEndedEvent event) {

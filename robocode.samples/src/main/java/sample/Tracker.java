@@ -19,7 +19,7 @@ import java.awt.*;
 
 /**
  * Tracker - a sample robot by Mathew Nelson.
- * <p/>
+ * <p>
  * Locks onto a robot, moves close, fires when close.
  *
  * @author Mathew A. Nelson (original)

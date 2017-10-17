@@ -72,7 +72,7 @@ public class RobocodeEditor extends JFrame implements Runnable, IRobocodeEditor 
 
 	/**
 	 * Action that launches the Replace dialog.
-	 * <p/>
+	 * <p>
 	 * The reason this is needed (and the menubar isn't sufficient) is that
 	 * ctrl+H is bound in JTextComponents at a lower level to backspace and in
 	 * order to override this, I need to rebind it to an Action when the

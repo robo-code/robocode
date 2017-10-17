@@ -18,7 +18,7 @@ import java.awt.*;
 
 /**
  * Corners - a sample robot by Mathew Nelson.
- * <p/>
+ * <p>
  * This robot moves to a corner, then swings the gun back and forth.
  * If it dies, it tries a new corner in the next round.
  *

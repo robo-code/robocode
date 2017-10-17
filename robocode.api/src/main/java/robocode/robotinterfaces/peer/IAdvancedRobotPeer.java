@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * The advanced robot peer for advanced robot types like
  * {@link robocode.AdvancedRobot} and {@link robocode.TeamRobot}.
- * <p/>
+ * <p>
  * A robot peer is the object that deals with game mechanics and rules, and
  * makes sure your robot abides by them.
  *
@@ -36,7 +36,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Checks if the gun is set to adjust for the robot turning, i.e. to turn
 	 * independent from the robot's body turn.
-	 * <p/>
+	 * <p>
 	 * This call returns {@code true} if the gun is set to turn independent of
 	 * the turn of the robot's body. Otherwise, {@code false} is returned,
 	 * meaning that the gun is set to turn with the robot's body turn.
@@ -53,7 +53,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Checks if the radar is set to adjust for the robot turning, i.e. to turn
 	 * independent from the robot's body turn.
-	 * <p/>
+	 * <p>
 	 * This call returns {@code true} if the radar is set to turn independent of
 	 * the turn of the robot. Otherwise, {@code false} is returned, meaning that
 	 * the radar is set to turn with the robot's turn.
@@ -70,7 +70,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Checks if the radar is set to adjust for the gun turning, i.e. to turn
 	 * independent from the gun's turn.
-	 * <p/>
+	 * <p>
 	 * This call returns {@code true} if the radar is set to turn independent of
 	 * the turn of the gun. Otherwise, {@code false} is returned, meaning that
 	 * the radar is set to turn with the gun's turn.
@@ -88,7 +88,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * This call is identical to {@link IStandardRobotPeer#stop(boolean)
 	 * stop(boolean)}, but returns immediately, and will not execute until you
 	 * call {@link IBasicRobotPeer#execute() execute()} or take an action that executes.
-	 * <p/>
+	 * <p>
 	 * If there is already movement saved from a previous stop, you can
 	 * overwrite it by calling {@code setStop(true)}.
 	 *
@@ -105,7 +105,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * Sets the robot to resume the movement stopped by
 	 * {@link IStandardRobotPeer#stop(boolean) stop(boolean)} or
 	 * {@link #setStop(boolean)}, if any.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * {@link IBasicRobotPeer#execute() execute()} or take an action that executes.
 	 *
@@ -119,17 +119,17 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Sets the robot to move forward or backward by distance measured in pixels
 	 * when the next execution takes place.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * {@link IBasicRobotPeer#execute() execute()} or take an action that executes.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input, where
 	 * positive values means that the robot is set to move forward, and negative
 	 * values means that the robot is set to move backward. If 0 is given as
 	 * input, the robot will stop its movement, but will have to decelerate
 	 * till it stands still, and will thus not be able to stop its movement
 	 * immediately, but eventually.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Set the robot to move 50 pixels forward
@@ -159,16 +159,16 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Sets the robot's body to turn right or left by radians when the next
 	 * execution takes place.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * {@link IBasicRobotPeer#execute() execute()} or take an action that
 	 * executes.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input, where
 	 * positive values means that the robot's body is set to turn right, and
 	 * negative values means that the robot's body is set to turn left.
 	 * If 0 is given as input, the robot's body will stop turning.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Set the robot's body to turn 180 degrees to the right
@@ -198,16 +198,16 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Sets the robot's gun to turn right or left by radians when the next
 	 * execution takes place.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * {@link IBasicRobotPeer#execute() execute()} or take an action that
 	 * executes.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input, where
 	 * positive values means that the robot's gun is set to turn right, and
 	 * negative values means that the robot's gun is set to turn left.
 	 * If 0 is given as input, the robot's gun will stop turning.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Set the robot's gun to turn 180 degrees to the right
@@ -236,16 +236,16 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Sets the robot's radar to turn right or left by radians when the next
 	 * execution takes place.
-	 * <p/>
+	 * <p>
 	 * This call returns immediately, and will not execute until you call
 	 * {@link IBasicRobotPeer#execute() execute()} or take an action that
 	 * executes.
-	 * <p/>
+	 * <p>
 	 * Note that both positive and negative values can be given as input, where
 	 * positive values means that the robot's radar is set to turn right, and
 	 * negative values means that the robot's radar is set to turn left.
 	 * If 0 is given as input, the robot's radar will stop turning.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Set the robot's radar to turn 180 degrees to the right
@@ -298,9 +298,9 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Does not return until a condition is met, i.e. when a
 	 * {@link Condition#test()} returns {@code true}.
-	 * <p/>
+	 * <p>
 	 * This call executes immediately.
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.Crazy} robot for how this method can be used.
 	 *
 	 * @param condition the condition that must be met before this call returns
@@ -312,7 +312,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Call this during an event handler to allow new events of the same
 	 * priority to restart the event handler.
-	 * <p/>
+	 * <p>
 	 * <p>Example:
 	 * <pre>
 	 *   public void onScannedRobot(ScannedRobotEvent e) {
@@ -338,18 +338,18 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 
 	/**
 	 * Sets the priority of a class of events.
-	 * <p/>
+	 * <p>
 	 * Events are sent to the onXXX handlers in order of priority.
 	 * Higher priority events can interrupt lower priority events.
 	 * For events with the same priority, newer events are always sent first.
 	 * Valid priorities are 0 - 99, where 100 is reserved and 80 is the default
 	 * priority.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   setEventPriority("RobotDeathEvent", 15);
 	 * </pre>
-	 * <p/>
+	 * <p>
 	 * The default priorities are, from highest to lowest:
 	 * <pre>
 	 *   {@link RoundEndedEvent}:      100 (reserved)
@@ -371,7 +371,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 *   {@link PaintEvent}:             5
 	 *   {@link DeathEvent}:            -1 (reserved)
 	 * </pre>
-	 * <p/>
+	 * <p>
 	 * Note that you cannot change the priority for events with the special
 	 * priority value -1 or 100 (reserved) as these event are system events.
 	 * Also note that you cannot change the priority of CustomEvent.
@@ -393,12 +393,12 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * Returns the current priority of a class of events.
 	 * An event priority is a value from 0 - 99. The higher value, the higher
 	 * priority.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   int myHitRobotPriority = getEventPriority("HitRobotEvent");
 	 * </pre>
-	 * <p/>
+	 * <p>
 	 * The default priorities are, from highest to lowest:
 	 * <pre>
 	 *   {@link RoundEndedEvent}:      100 (reserved)
@@ -431,7 +431,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * Registers a custom event to be called when a condition is met.
 	 * When you are finished with your condition or just want to remove it you
 	 * must call {@link #removeCustomEvent(Condition)}.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Create the condition for our custom event
@@ -456,7 +456,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Removes a custom event that was previously added by calling
 	 * {@link #addCustomEvent(Condition)}.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   // Create the condition for our custom event
@@ -494,7 +494,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Returns a vector containing all events currently in the robot's queue.
 	 * You might, for example, call this while processing another event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   for (Event event : getAllEvents()) {
@@ -521,7 +521,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Returns a vector containing all StatusEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   for (StatusEvent event : getStatusEvents()) {
@@ -543,7 +543,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * Returns a vector containing all BulletMissedEvents currently in the
 	 * robot's queue. You might, for example, call this while processing another
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   for (BulletMissedEvent event : getBulletMissedEvents()) {
@@ -564,7 +564,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * Returns a vector containing all BulletHitBulletEvents currently in the
 	 * robot's queue. You might, for example, call this while processing another
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   for (BulletHitBulletEvent event : getBulletHitBulletEvents()) {
@@ -584,7 +584,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Returns a vector containing all BulletHitEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   for (BulletHitEvent event: getBulletHitEvents()) {
@@ -605,7 +605,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * Returns a vector containing all HitByBulletEvents currently in the
 	 * robot's queue. You might, for example, call this while processing
 	 * another event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   for (HitByBulletEvent event : getHitByBulletEvents()) {
@@ -625,7 +625,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Returns a vector containing all HitRobotEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   for (HitRobotEvent event : getHitRobotEvents()) {
@@ -645,7 +645,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Returns a vector containing all HitWallEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   for (HitWallEvent event : getHitWallEvents()) {
@@ -665,7 +665,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Returns a vector containing all RobotDeathEvents currently in the robot's
 	 * queue. You might, for example, call this while processing another event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   for (RobotDeathEvent event : getRobotDeathEvents()) {
@@ -686,7 +686,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * Returns a vector containing all ScannedRobotEvents currently in the
 	 * robot's queue. You might, for example, call this while processing another
 	 * event.
-	 * <p/>
+	 * <p>
 	 * Example:
 	 * <pre>
 	 *   for (ScannedRobotEvent event : getScannedRobotEvents()) {
@@ -707,7 +707,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * Returns a file representing a data directory for the robot, which can be
 	 * written to using {@link RobocodeFileOutputStream} or
 	 * {@link RobocodeFileWriter}.
-	 * <p/>
+	 * <p>
 	 * The system will automatically create the directory for you, so you do not
 	 * need to create it by yourself.
 	 *
@@ -721,13 +721,13 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	/**
 	 * Returns a file in your data directory that you can write to using
 	 * {@link RobocodeFileOutputStream} or {@link RobocodeFileWriter}.
-	 * <p/>
+	 * <p>
 	 * The system will automatically create the directory for you, so you do not
 	 * need to create it by yourself.
-	 * <p/>
+	 * <p>
 	 * Please notice that the max. size of your data file is set to 200000
 	 * (~195 KB).
-	 * <p/>
+	 * <p>
 	 * See the {@code sample.SittingDuck} to see an example of how to use this
 	 * method.
 	 *

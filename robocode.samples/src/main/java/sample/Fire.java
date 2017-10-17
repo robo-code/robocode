@@ -19,7 +19,7 @@ import java.awt.*;
 
 /**
  * Fire - a sample robot by Mathew Nelson, and maintained.
- * <p/>
+ * <p>
  * Sits still. Spins gun around. Moves when hit.
  *
  * @author Mathew A. Nelson (original)

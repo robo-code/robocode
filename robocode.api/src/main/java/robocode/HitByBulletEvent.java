@@ -48,7 +48,7 @@ public final class HitByBulletEvent extends Event {
 	/**
 	 * Returns the bearing to the bullet, relative to your robot's heading,
 	 * in degrees (-180 < getBearing() <= 180).
-	 * <p/>
+	 * <p>
 	 * If you were to turnRight(event.getBearing()), you would be facing the
 	 * direction the bullet came from. The calculation used here is:
 	 * (bullet's heading in degrees + 180) - (your heading in degrees)
@@ -62,7 +62,7 @@ public final class HitByBulletEvent extends Event {
 	/**
 	 * Returns the bearing to the bullet, relative to your robot's heading,
 	 * in radians (-Math.PI < getBearingRadians() <= Math.PI).
-	 * <p/>
+	 * <p>
 	 * If you were to turnRightRadians(event.getBearingRadians()), you would be
 	 * facing the direction the bullet came from. The calculation used here is:
 	 * (bullet's heading in radians + Math.PI) - (your heading in radians)
@@ -85,7 +85,7 @@ public final class HitByBulletEvent extends Event {
 	/**
 	 * Returns the heading of the bullet when it hit you, in degrees
 	 * (0 <= getHeading() < 360).
-	 * <p/>
+	 * <p>
 	 * Note: This is not relative to the direction you are facing. The robot
 	 * that fired the bullet was in the opposite direction of getHeading() when
 	 * it fired the bullet.
@@ -108,7 +108,7 @@ public final class HitByBulletEvent extends Event {
 	/**
 	 * Returns the heading of the bullet when it hit you, in radians
 	 * (0 <= getHeadingRadians() < 2 * PI).
-	 * <p/>
+	 * <p>
 	 * Note: This is not relative to the direction you are facing. The robot
 	 * that fired the bullet was in the opposite direction of
 	 * getHeadingRadians() when it fired the bullet.

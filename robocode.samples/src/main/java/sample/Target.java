@@ -17,7 +17,7 @@ import java.awt.*;
 
 /**
  * Target - a sample robot by Mathew Nelson.
- * <p/>
+ * <p>
  * Sits still. Moves every time energy drops by 20.
  * This Robot demonstrates custom events.
  *

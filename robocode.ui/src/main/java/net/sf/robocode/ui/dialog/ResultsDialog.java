@@ -22,7 +22,7 @@ import java.awt.event.KeyEvent;
 
 /**
  * Dialog to display results (scores) of a battle.
- * <p/>
+ * <p>
  * This class is just a wrapper class used for storing the window position and
  * dimension.
  *

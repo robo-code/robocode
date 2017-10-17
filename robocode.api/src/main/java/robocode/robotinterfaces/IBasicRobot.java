@@ -56,7 +56,7 @@ public interface IBasicRobot {
 	/**
 	 * Do not call this method! Your robot will simply stop interacting with
 	 * the game.
-	 * <p/>
+	 * <p>
 	 * This method is called by the game. A robot peer is the object that deals
 	 * with game mechanics and rules, and makes sure your robot abides by them.
 	 *
@@ -66,7 +66,7 @@ public interface IBasicRobot {
 
 	/**
 	 * Do not call this method!
-	 * <p/>
+	 * <p>
 	 * This method is called by the game when setting the output stream for your
 	 * robot.
 	 *
