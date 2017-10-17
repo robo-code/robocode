@@ -1,4 +1,4 @@
-## Version 1.9.3.0 (16-10-2017) The Java 9 support release
+## Version 1.9.3.0 (17-10-2017) The Java 9 support release
 
 ### Bug fixes
 * [Bug-386][]: Can't run Robocode 1.9.2.6 on Mac OS.
