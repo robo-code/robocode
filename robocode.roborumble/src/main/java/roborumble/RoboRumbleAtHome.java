@@ -22,7 +22,7 @@ import java.util.Properties;
  * Implements the client side of RoboRumble@Home.
  * Controlled by properties files.
  *
- * @author Albert Pérez (original)
+ * @author Albert PÃ©rez (original)
  * @author Flemming N. Larsen (contributor)
  * @author Jerome Lavigne (contributor)
  */
@@ -64,7 +64,7 @@ public class RoboRumbleAtHome {
 
 			System.out.println("Iteration number " + iterations);
 
-			// Download data from Internet if downloads is YES and it has not been download for two hours
+			// Download data from Internet if downloads is YES and it has not been download for 10 minutes
 			if (downloads.equals("YES")) {
 				BotsDownload download = new BotsDownload(parameters);
 
@@ -73,7 +73,7 @@ public class RoboRumbleAtHome {
 					System.out.println("Downloading rating files ...");
 					ratingsdownloaded = download.downloadRatings();
 				}
-				if ((System.currentTimeMillis() - lastdownload) > 2 * 3600 * 1000) {
+				if ((System.currentTimeMillis() - lastdownload) > 10 * 60 * 1000) {
 					System.out.println("Downloading participants list ...");
 					participantsdownloaded = download.downloadParticipantsList();
 					System.out.println("Downloading missing bots ...");

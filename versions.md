@@ -1,3 +1,10 @@
+## Version 1.9.3.1 (24-10-2017)
+
+### Bug fix
+* [Bug-393][]: More frequent roorumble server checks.
+     * The check for new robots was changed from 2 hours to 10 minutes.
+     * Thanks goes to Julian Kent (aka Skilgannon) for this fix.
+
 ## Version 1.9.3.0 (17-10-2017) The Java 9 support release
 
 ### Bug fixes
@@ -3031,6 +3038,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-390]: http://sourceforge.net/p/robocode/bugs/390/  (Bad CPU constant calculation on Java 9)
 [Bug-391]: http://sourceforge.net/p/robocode/bugs/391/  (Fix for "Illegal reflective access")
 [Bug-392]: http://sourceforge.net/p/robocode/bugs/392/  (Bullets of the same bot collide at low bullet powers and high gun-cooling rate)
+[Bug-393]: http://sourceforge.net/p/robocode/bugs/393/  (More frequent roorumble server checks)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
