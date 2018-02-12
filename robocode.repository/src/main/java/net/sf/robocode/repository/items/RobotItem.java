@@ -290,20 +290,16 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 			if (force) {
 				isValid = true;
 			}
-
-			// trying to guess all correct file locations
-			populate();
-
+			if (isValid) {
+				validateType(false);
+			}
 			this.lastModified = lastModified;
 			if (classURL == null) {
 				isValid = false;
 			}
 			loadProperties();
-			if (root.isJAR() && !isPropertiesLoaded) {
+			if (!isTeamRobot() && root.isJAR() && !isPropertiesLoaded) {
 				isValid = false;
-			}
-			if (isValid) {
-				validateType(false);
 			}
 			if (isValid) {
 				verifyName();

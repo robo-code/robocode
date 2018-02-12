@@ -1,9 +1,10 @@
-## Version 1.9.3.1 (24-10-2017)
+## Version 1.9.3.1 (13-02-2018)
 
 ### Bug fix
 * [Bug-393][]: More frequent roorumble server checks.
      * The check for new robots was changed from 2 hours to 10 minutes.
      * Thanks goes to Julian Kent (aka Skilgannon) for this fix.
+* Fixed issues with creating and packaging robot teams.
 
 ## Version 1.9.3.0 (17-10-2017) The Java 9 support release
 

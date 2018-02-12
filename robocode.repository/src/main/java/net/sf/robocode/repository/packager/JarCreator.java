@@ -123,7 +123,8 @@ public class JarCreator {
 	private static void addTeamItemToJar(JarOutputStream target, Set<String> jarEntries, TeamItem teamItem, RobotProperties props) throws IOException {
 		String robotPathWithoutFileExt = teamItem.getRelativePath() + '/' + teamItem.getShortClassName();
 
-		File file = new File(FileUtil.getRobotsDir(), robotPathWithoutFileExt);
+		String fileExt = ".team";
+		File file = new File(FileUtil.getRobotsDir(), robotPathWithoutFileExt + fileExt);
 
 		// Store .team file into local robot dir
 		FileOutputStream fis = null;
@@ -134,7 +135,7 @@ public class JarCreator {
 			FileUtil.cleanupStream(fis);
 		}
 		// Store .team file into jar file
-		addToJar(target, jarEntries, FileUtil.getRobotsDir().getPath(), robotPathWithoutFileExt, ".team");
+		addToJar(target, jarEntries, FileUtil.getRobotsDir().getPath(), robotPathWithoutFileExt, fileExt);
 	}
 
 	private static void addRobotFilesToJar(JarOutputStream target, Set<String> jarEntries, IRobotItem robotItem, RobotProperties props) throws IOException {

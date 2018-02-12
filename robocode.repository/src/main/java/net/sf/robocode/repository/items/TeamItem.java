@@ -196,11 +196,11 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 		if (props.getVersion() != null) {
 			properties.setProperty(TEAM_VERSION, props.getVersion());
 		}
-		if (props.getDescription() != null) {
-			properties.setProperty(TEAM_DESCRIPTION, props.getDescription());
-		}
 		if (props.getAuthor() != null) {
 			properties.setProperty(TEAM_AUTHOR_NAME, props.getAuthor());
+		}
+		if (props.getDescription() != null) {
+			properties.setProperty(TEAM_DESCRIPTION, props.getDescription());
 		}
 		if (props.getWebPage() != null) {
 			properties.setProperty(TEAM_WEBPAGE, props.getWebPage().toExternalForm());
@@ -216,6 +216,9 @@ public class TeamItem extends RobotSpecItem implements IRobotSpecItem {
 		try {
 			Properties team = loadTeamProperties(target);
 
+			if (props.getVersion() != null) {
+				team.setProperty(TEAM_VERSION, props.getVersion());
+			}
 			if (props.getMembers() != null) {
 				team.setProperty(TEAM_MEMBERS, props.getMembers());
 			}
