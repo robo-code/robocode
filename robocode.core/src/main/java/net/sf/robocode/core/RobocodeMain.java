@@ -205,6 +205,9 @@ public final class RobocodeMain extends RobocodeMainBase {
 		// http://java.sun.com/developer/technicalArticles/J2SE/Desktop/headless/
 		System.setProperty("java.awt.headless", "false");
 
+		// Make sure this Java2D is not DPI Aware (for Windows 10 running with HiDPI)
+		System.setProperty("sun.java2d.dpiaware", "false");
+
 		for (int i = 0; i < args.length; i++) {
 			String currentArg = args[i];
 			if (currentArg.equalsIgnoreCase("-cwd") && (i < args.length + 1)) {
