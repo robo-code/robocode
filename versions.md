@@ -1,4 +1,4 @@
-## Version 1.9.3.1 (11-03-2018)
+## Version 1.9.3.1 (16-03-2018)
 
 ### Bug fix
 * [Bug-393][]: More frequent roborumble server checks.

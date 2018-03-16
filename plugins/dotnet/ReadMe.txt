@@ -1,5 +1,5 @@
 ====
-    Copyright (c) 2001-2017 Mathew A. Nelson and Robocode contributors
+    Copyright (c) 2001-2018 Mathew A. Nelson and Robocode contributors
     All rights reserved. This program and the accompanying materials
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
@@ -25,16 +25,13 @@ c:\Windows\Microsoft.NET\Framework\v3.5\csc.exe
 Microsoft HTML Help 1 Compiler and Sandcastle Help File Builder
 ---------------------------------------------------------------
 - 'HTML Help 1 compiler' must be installed on the system - required by the
-  Sandcastle Help File Builder (SHFB)
+  Sandcastle Help File Builder
 
   HTML Help 1 compiler:
   http://msdn.microsoft.com/en-us/library/ms669985(VS.85).aspx
 
 - Sandcastle Help File Builder (SHFB) must be installed on the system.
-  http://shfb.codeplex.com/
-
-  NOTE: When installing the SHFB, you don't need to install HTML Help 2 as
-       only version 1 is used for Robocode.
+  https://github.com/EWSoftware/SHFB/releases/tag/v2015.1.12.0
 
 Java Development Kit (JDK) and JAVA_HOME path
 ---------------------------------------------

@@ -13,8 +13,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	</organization>
 	<properties>
 		<project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
-		<robocode.version>1.9.3.0</robocode.version> <!-- Any string, but no spaces (use '-' instead of space) -->
-		<robocode.dotnet.version>1.9.3.0</robocode.dotnet.version> <!-- Only X.X.X.X format -->
+		<robocode.version>1.9.3.1</robocode.version> <!-- Any string, but no spaces (use '-' instead of space) -->
+		<robocode.dotnet.version>1.9.3.1</robocode.dotnet.version> <!-- Only X.X.X.X format -->
 		<javadoc.additionalparam/>
 	</properties>
 	<repositories>
@@ -22,6 +22,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<id>net.sf.robocode</id>
 			<name>Robocode Release Repository</name>
 			<url>http://robocode.sourceforge.net/maven2/</url>
+		</repository>
+		<repository>
+			<id>net.sf.robocode</id>
+			<name>Robocode Release Repository</name>
+			<url>http://robocode.sourceforge.net/mvnrepo/</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2001-2017 Mathew A. Nelson and Robocode contributors
+ * Copyright (c) 2001-2018 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -206,7 +206,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 		System.setProperty("java.awt.headless", "false");
 
 		// Make sure this Java2D is not DPI Aware (for Windows 10 running with HiDPI)
-		System.setProperty("sun.java2d.dpiaware", "false");
+		System.setProperty("sun.java2d.dpiaware", "true");
 
 		for (int i = 0; i < args.length; i++) {
 			String currentArg = args[i];
