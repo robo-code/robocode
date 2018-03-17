@@ -1,6 +1,6 @@
-## Version 1.9.3.1 (16-03-2018)
+## Version 1.9.3.1 (17-03-2018)
 
-### Bug fix
+### Bug fixes
 * [Bug-393][]: More frequent roborumble server checks.
      * The check for new robots was changed from 2 hours to 10 minutes.
      * Thanks goes to Julian Kent (aka Skilgannon) for this fix.

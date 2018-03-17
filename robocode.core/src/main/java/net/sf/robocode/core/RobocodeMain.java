@@ -205,8 +205,11 @@ public final class RobocodeMain extends RobocodeMainBase {
 		// http://java.sun.com/developer/technicalArticles/J2SE/Desktop/headless/
 		System.setProperty("java.awt.headless", "false");
 
-		// Make sure this Java2D is not DPI Aware (for Windows 10 running with HiDPI)
-		System.setProperty("sun.java2d.dpiaware", "true");
+		// Set UI scale to 1 for HiDPI if no UI scale has been set from the command line
+		// This way HiDPI will not affect Robocode, as 1x1 pixel is not affected by HiDPI scaling
+		if (System.getProperty("sun.java2d.uiScale") == null) {
+			System.setProperty("sun.java2d.uiScale", "1");
+		}
 
 		for (int i = 0; i < args.length; i++) {
 			String currentArg = args[i];
