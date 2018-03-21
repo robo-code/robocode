@@ -167,8 +167,12 @@ public class RobocodeSecurityPolicy extends Policy {
 		}
 
 		// check package access
-		if (perm instanceof RuntimePermission && name.startsWith("accessClassInPackage.")) {
-			return impliesRobotPackageAccess(robotProxy, name.substring(21));
+		if (perm instanceof RuntimePermission) {
+			if (name.startsWith("accessClassInPackage.")) {
+				return impliesRobotPackageAccess(robotProxy, name.substring(21));
+			} else if (name.equals("accessDeclaredMembers")) {
+				return true;
+			}
 		}
 
 		// Permission denied.
