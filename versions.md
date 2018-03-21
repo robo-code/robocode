@@ -1,3 +1,8 @@
+## Version 1.9.3.2 (21-03-2018) The Java 10 support release
+
+### Bug fixes
+* Fixed issue with sample.SittingDuck, which got a security violation due to new security restrictions introduced with Java 10.
+
 ## Version 1.9.3.1 (17-03-2018)
 
 ### Bug fixes
