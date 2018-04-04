@@ -16,6 +16,7 @@ import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.ui.dialog.ConsoleDialog;
 import net.sf.robocode.ui.dialog.WindowUtil;
+import net.sf.robocode.util.JavaVersion;
 
 import javax.swing.*;
 import java.io.*;
@@ -26,10 +27,6 @@ import java.io.*;
  * @author Flemming N. Larsen (contributor)
  */
 public class RobocodeCompilerFactory {
-
-	private static final String COMPILER_CLASSPATH = "-classpath " + getJavaLib() + File.pathSeparator + "libs"
-			+ File.separator + "robocode.jar" + File.pathSeparator
-			+ FileUtil.quoteFileName(FileUtil.getRobotsDir().toString());
 
 	private CompilerProperties compilerProperties;
 
@@ -78,6 +75,20 @@ public class RobocodeCompilerFactory {
 		return compilerProperties;
 	}
 
+	private static String getClassPath() {
+		StringBuilder sb = new StringBuilder("-classpath ");
+
+		if (JavaVersion.getJavaMajorVersion() < 9) {
+			// rt.jar is not supported by Java 9+ anymore
+			sb.append(getJavaLib()).append(File.pathSeparator);
+		}
+		sb.append("libs").append(File.separator);
+		sb.append("robocode.jar").append(File.pathSeparator);
+		sb.append(FileUtil.quoteFileName(FileUtil.getRobotsDir().toString()));
+
+		return sb.toString();
+	}
+	
 	private static String getJavaLib() {
 		String javahome = System.getProperty("java.home");
 		String javalib;
@@ -150,7 +161,7 @@ public class RobocodeCompilerFactory {
 		getCompilerProperties().setRobocodeVersion(ContainerBase.getComponent(IVersionManagerBase.class).getVersion());
 		getCompilerProperties().setCompilerBinary(compilerBinary);
 		getCompilerProperties().setCompilerOptions(compilerOptions);
-		getCompilerProperties().setCompilerClasspath(COMPILER_CLASSPATH);
+		getCompilerProperties().setCompilerClasspath(getClassPath());
 		saveCompilerProperties();
 
 		console.scrollToBottom();

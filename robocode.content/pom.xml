@@ -22,6 +22,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			</exclusions>
 		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>eclipse-staging</id>
+			<url>https://repo.eclipse.org/content/repositories/eclipse-staging</url>
+		</repository>
+	</repositories>
 	<build>
 		<plugins>
 			<plugin>
@@ -37,9 +43,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 						<configuration>
 							<artifactItems>
 								<artifactItem>
-									<groupId>org.eclipse.jdt.core.compiler</groupId>
-									<artifactId>ecj</artifactId>
-									<version>4.6.1</version>
+									<groupId>org.eclipse.jdt</groupId>
+									<artifactId>org.eclipse.jdt.core</artifactId>
+									<version>3.14.0.v20180305-0940</version>
 									<type>jar</type>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/classes/compilers</outputDirectory>

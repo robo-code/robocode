@@ -1,7 +1,12 @@
-## Version 1.9.3.2 (21-03-2018) The Java 10 support release
+## Version 1.9.3.2 (04-04-2018) The Java 10 support release
 
 ### Bug fixes
+* Fixed problems with shell and Mac OS commands files, which contained ^M (Microsoft windows) characters.
 * Fixed issue with sample.SittingDuck, which got a security violation due to new security restrictions introduced with Java 10.
+
+### Changes
+* Upgraded Eclipse Compiler for Java (ECJ) to newest version 3.14.0.v20180305-0940.
+	* The older version caused problems with compiling robots on Java 9 or newer.
 
 ## Version 1.9.3.1 (17-03-2018)
 
@@ -378,7 +383,7 @@
 * [Bug-297][]: x,y coords between ``BulletHitEvent`` & ``HitByBulletEvent`` differ.
 * [Bug-299][]: Custom events no longer firing after clearing event queue.
 * Fixed typo in the documentation with valid range of values for the battlefield width and height.
-	* Thanks goes to Tamás Balog for pointing this out.
+	* Thanks goes to Tamï¿½s Balog for pointing this out.
 
 ### New Features
 * Added "Enable auto recording" option to the Common Options, which automatically generates a zipped XML record for every battle.

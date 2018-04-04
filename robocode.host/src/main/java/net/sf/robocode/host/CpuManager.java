@@ -12,6 +12,7 @@ import net.sf.robocode.core.Container;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.ui.IWindowManager;
+import net.sf.robocode.util.JavaVersion;
 
 
 /**
@@ -22,10 +23,10 @@ import net.sf.robocode.ui.IWindowManager;
  */
 public class CpuManager implements ICpuManager { // NO_UCD (use default)
 
-	private final static int APPROXIMATE_CYCLES_ALLOWED = 6250;
-	private final static int TEST_PERIOD_MILLIS = 5000;
+	private static final int APPROXIMATE_CYCLES_ALLOWED = 6250;
+	private static final int TEST_PERIOD_MILLIS = 5000;
 
-	private final static boolean JAVA_9 = System.getProperty("java.version").startsWith("9");
+	private static final boolean JAVA_9_OR_NEWER = JavaVersion.getJavaMajorVersion() >= 9;
 
 	private long cpuConstant = -1;
 	private final ISettingsManager properties;
@@ -87,7 +88,7 @@ public class CpuManager implements ICpuManager { // NO_UCD (use default)
 	// Work-around for bug #390
 	// The Java 9 Math.log(x) methods is much faster than in Java 8
 	private static double log(double x) {
-		if (JAVA_9) {
+		if (JAVA_9_OR_NEWER) {
 			double d = 0;
 			for (int i = 0; i < 6; i++) {
 				d += Math.log(x);
@@ -101,7 +102,7 @@ public class CpuManager implements ICpuManager { // NO_UCD (use default)
 	// Work-around for bug #390
 	// The Java 9 Math.exp(x) methods is much faster than in Java 8
 	private static double exp(double x) {
-		if (JAVA_9) {
+		if (JAVA_9_OR_NEWER) {
 			double d = 0;
 			for (int i = 0; i < 62; i++) {
 				d += Math.exp(x);
