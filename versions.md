@@ -1,3 +1,8 @@
+## Version 1.9.3.3 (09-04-2018)
+
+## Bug fix
+* Fixed issue with the RobocodeEngine, which could not read robots in "developer mode" (marked with a asterix '*' character)
+
 ## Version 1.9.3.2 (04-04-2018) The Java 10 support release
 
 ### Bug fixes
