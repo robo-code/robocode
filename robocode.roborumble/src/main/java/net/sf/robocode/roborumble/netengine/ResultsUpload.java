@@ -180,29 +180,30 @@ public class ResultsUpload {
 
 			String data = "game=" + game + commonData;
 
+			boolean errsaved = false;
+
 			if (matchtype.equals("GENERAL") || matchtype.equals("SERVER")) {
-				errorsfound = errorsfound | senddata(game, data, outtxt, true, results, i, battlesnum, prioritybattles);
+				errsaved = senddata(game, data, outtxt, true, results, i, battlesnum, prioritybattles);
 			}
 
 			if (sizesfile.length() != 0) { // upload also related competitions
 				if (minibots.length() != 0 && !matchtype.equals("NANO") && !matchtype.equals("MICRO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 1500)) {
 					data = "game=" + minibots + commonData;
-					errorsfound = errorsfound
-							| senddata(minibots, data, outtxt, true, results, i, battlesnum, prioritybattles);
+					errsaved = errsaved
+							| senddata(minibots, data, outtxt, !errsaved, results, i, battlesnum, prioritybattles);
 				}
 				if (microbots.length() != 0 && !matchtype.equals("NANO")
 						&& size.checkCompetitorsForSize(first[0], second[0], 750)) {
 					data = "game=" + microbots + commonData;
-					errorsfound = errorsfound
-							| senddata(microbots, data, outtxt, true, results, i, battlesnum, prioritybattles);
-				}
+					errsaved = errsaved
+							| senddata(microbots, data, outtxt, !errsaved, results, i, battlesnum, prioritybattles);
 				if (nanobots.length() != 0 && size.checkCompetitorsForSize(first[0], second[0], 250)) {
 					data = "game=" + nanobots + commonData;
-					errorsfound = errorsfound
-							| senddata(nanobots, data, outtxt, true, results, i, battlesnum, prioritybattles);
-				}
+					errsaved = errsaved
+							| senddata(nanobots, data, outtxt, !errsaved, results, i, battlesnum, prioritybattles);
 			}
+			errorsfound = errorsfound || errsaved;
 		}
 
 		// close files

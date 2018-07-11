@@ -1,7 +1,9 @@
-## Version 1.9.3.3 (09-04-2018)
+## Version 1.9.3.3 (11-07-2018)
 
 ## Bug fix
 * Fixed issue with the RobocodeEngine, which could not read robots in "developer mode" (marked with a asterix '*' character)
+* [Bug-395][]: Roborumble client duplicates battle results on network error
+	* Thanks goes to bumfod for this fix. :-)
 
 ## Version 1.9.3.2 (04-04-2018) The Java 10 support release
 
@@ -3057,6 +3059,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-392]: http://sourceforge.net/p/robocode/bugs/392/  (Bullets of the same bot collide at low bullet powers and high gun-cooling rate)
 [Bug-393]: http://sourceforge.net/p/robocode/bugs/393/  (More frequent roborumble server checks)
 [Bug-394]: http://sourceforge.net/p/robocode/bugs/394/  (HiDPI scaling causes visual glitches)
+[Bug-395]: http://sourceforge.net/p/robocode/bugs/395/	(Roborumble client duplicates battle results on network error)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
