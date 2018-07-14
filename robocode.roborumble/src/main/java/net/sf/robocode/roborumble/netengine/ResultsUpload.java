@@ -198,10 +198,12 @@ public class ResultsUpload {
 					data = "game=" + microbots + commonData;
 					errsaved = errsaved
 							| senddata(microbots, data, outtxt, !errsaved, results, i, battlesnum, prioritybattles);
+				}
 				if (nanobots.length() != 0 && size.checkCompetitorsForSize(first[0], second[0], 250)) {
 					data = "game=" + nanobots + commonData;
 					errsaved = errsaved
 							| senddata(nanobots, data, outtxt, !errsaved, results, i, battlesnum, prioritybattles);
+				}
 			}
 			errorsfound = errorsfound || errsaved;
 		}
