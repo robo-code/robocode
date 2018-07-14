@@ -51,7 +51,7 @@ public class BattleManager implements IBattleManager {
 
 	private volatile IBattle battle;
 	private Thread battleThread;
-	private BattleProperties battleProperties = new BattleProperties();
+	private BattleProperties battleProperties;
 
 	private final BattleEventDispatcher battleEventDispatcher;
 
@@ -69,6 +69,7 @@ public class BattleManager implements IBattleManager {
 		this.hostManager = hostManager;
 		this.battleEventDispatcher = battleEventDispatcher;
 		Logger.setLogListener(battleEventDispatcher);
+		battleProperties = new BattleProperties(properties);
 	}
 
 	public synchronized void cleanup() {

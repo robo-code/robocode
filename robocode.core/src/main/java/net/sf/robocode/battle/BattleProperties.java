@@ -8,6 +8,7 @@
 package net.sf.robocode.battle;
 
 
+import net.sf.robocode.settings.ISettingsManager;
 import robocode.AdvancedRobot;
 import robocode.Robot;
 import robocode.control.RobotSetup;
@@ -50,6 +51,19 @@ public class BattleProperties implements Serializable {
 	private String initialPositions;
 
 	private final Properties props = new Properties();
+
+	public BattleProperties() {
+	}
+
+	public BattleProperties(ISettingsManager properties) {
+		battlefieldWidth = properties.getBattleDefaultBattlefieldWidth();
+		battlefieldHeight = properties.getBattleDefaultBattlefieldHeight();
+		numRounds = properties.getBattleDefaultNumberOfRounds();
+		gunCoolingRate = properties.getBattleDefaultGunCoolingRate();
+		inactivityTime = properties.getBattleDefaultInactivityTime();
+		hideEnemyNames = properties.getBattleDefaultHideEnemyNames();
+		sentryBorderSize = properties.getBattleDefaultSentryBorderSize();
+	}
 
 	/**
 	 * Gets the battlefieldWidth.
