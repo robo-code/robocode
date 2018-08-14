@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b60fda-f8a8-4d53-aed3-7cd4a974d9a2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IInteractivePlayer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicPlayer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IBasicPlayerPeer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Robocode.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/Robocode.ipr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.iws" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.iws" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/robocode.api/target/" />
@@ -189,6 +191,7 @@
     <session id="-1204060952">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.opened" value="1" />
         </counts>
@@ -196,25 +199,25 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="html" value="1" />
-          <entry key="java" value="48" />
+          <entry key="java" value="50" />
           <entry key="team" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="HTML" value="1" />
-          <entry key="JAVA" value="48" />
+          <entry key="JAVA" value="50" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="803" />
+          <entry key="JAVA" value="989" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="803" />
+          <entry key="java" value="989" />
         </counts>
       </usages-collector>
     </session>
@@ -254,17 +257,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicRobot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
+            <state relative-caret-position="582">
+              <caret line="75" column="41" lean-forward="true" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="41" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IBasicRobotPeer.java">
+        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicPlayer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7380">
-              <caret line="35" column="17" selection-start-line="35" selection-start-column="17" selection-end-line="35" selection-end-column="17" />
+            <state relative-caret-position="165">
+              <caret line="11" column="41" selection-start-line="11" selection-start-column="41" selection-end-line="11" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IBasicPlayerPeer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="612">
+              <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -293,6 +305,8 @@
         <option value="$PROJECT_DIR$/robocode.api/src/main/java/net/sf/robocode/security/IHiddenBallHelper.java" />
         <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/Ball.java" />
         <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IInteractivePlayer.java" />
+        <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IBasicPlayerPeer.java" />
+        <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicPlayer.java" />
       </list>
     </option>
   </component>
@@ -438,7 +452,7 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1533999997735" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1534259019246" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/robocode.ipr" />
   </component>
   <component name="RunDashboard">
@@ -959,17 +973,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicRobot.java">
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IBasicRobotPeer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
+        <state relative-caret-position="177">
+          <caret line="709" column="52" lean-forward="true" selection-start-line="709" selection-start-column="4" selection-end-line="709" selection-end-column="52" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IBasicRobotPeer.java">
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IBasicPlayerPeer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7380">
-          <caret line="35" column="17" selection-start-line="35" selection-start-column="17" selection-end-line="35" selection-end-column="17" />
+        <state relative-caret-position="612">
+          <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicRobot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="582">
+          <caret line="75" column="41" lean-forward="true" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="41" selection-start-line="11" selection-start-column="41" selection-end-line="11" selection-end-column="41" />
         </state>
       </provider>
     </entry>
