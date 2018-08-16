@@ -7,13 +7,11 @@
  */
 package robocode.control;
 
-
-import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logWarning;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Random;
-
 
 /**
  * The RandomFactory is used for controlling the generation of random numbers,
@@ -21,82 +19,127 @@ import java.util.Random;
  * useful for testing purposes.
  *
  * @author Pavel Savara (original)
+ * @author Xor (fixed for Java 8)
+ * @author Flemming N. Larsen (fixed for Java 8)
  *
  * @since 1.6.1
  */
 public class RandomFactory {
-	private static Random randomNumberGenerator;
+	private static Random randomNumberGenerator = new Random();
 
 	private static boolean warningNotSupportedLogged;
 	private static boolean isDeterministic;
-
-	static {
-		randomNumberGenerator = new Random();
-	}
 
 	public boolean isDeterministic() {
 		return isDeterministic;
 	}
 
 	/**
-	 * Returns the random number generator used for generating a stream of
-	 * random numbers.
+	 * Returns the random number generator used for generating a stream of random
+	 * numbers.
 	 *
 	 * @return a {@link java.util.Random} instance.
 	 * @see java.util.Random
 	 */
 	public static Random getRandom() {
 		if (randomNumberGenerator == null) {
-			try {
-				Math.random();
-				final Field field = Math.class.getDeclaredField("randomNumberGenerator");
-				final boolean savedFieldAccessible = field.isAccessible();
-
-				field.setAccessible(true);
-				randomNumberGenerator = (Random) field.get(null);
-				field.setAccessible(savedFieldAccessible);
-			} catch (NoSuchFieldException e) {
+			Field field = getRandomNumberGeneratorField();
+			if (field != null) {
+				try {
+					randomNumberGenerator = getRandomNumberGenerator(field);
+				} catch (IllegalAccessException e) {
+					logWarningNotSupported();
+				}
+			}
+			if (randomNumberGenerator == null) {
 				logWarningNotSupported();
-				randomNumberGenerator = new Random();
-			} catch (IllegalAccessException e) {
-				logError(e);
 				randomNumberGenerator = new Random();
 			}
 		}
 		return randomNumberGenerator;
 	}
 
+	private static Field getRandomNumberGeneratorField() {
+		try {
+			return Math.class.getDeclaredField("randomNumberGenerator");
+		} catch (NoSuchFieldException e) {
+			try {
+				final Class<?> clazz = Class.forName("java.lang.Math$RandomNumberGeneratorHolder");
+				return clazz.getDeclaredField("randomNumberGenerator");
+			} catch (NoSuchFieldException e1) {
+				logWarningNotSupported();
+			} catch (ClassNotFoundException e1) {
+				logWarningNotSupported();
+			}
+		}
+		return null;
+	}
+
+	private static Random getRandomNumberGenerator(Field field) throws IllegalAccessException {
+		Math.random();
+		final boolean savedFieldAccessible = field.isAccessible();
+
+		field.setAccessible(true);
+		randomNumberGenerator = (Random) field.get(null);
+		field.setAccessible(savedFieldAccessible);
+
+		return randomNumberGenerator;
+	}
+
 	/**
-	 * Sets the random number generator instance used for generating a
-	 * stream of random numbers.
+	 * Sets the random number generator instance used for generating a stream of
+	 * random numbers.
 	 *
-	 * @param random a {@link java.util.Random} instance.
+	 * @param random
+	 *            a {@link java.util.Random} instance.
 	 * @see java.util.Random
 	 */
 	public static void setRandom(Random random) {
 		randomNumberGenerator = random;
-		try {
-			Math.random();
-			final Field field = Math.class.getDeclaredField("randomNumberGenerator");
-			final boolean savedFieldAccessible = field.isAccessible();
 
-			field.setAccessible(true);
-			field.set(null, randomNumberGenerator);
-			field.setAccessible(savedFieldAccessible);
-		} catch (NoSuchFieldException e) {
+		Field field = getRandomNumberGeneratorField();
+		if (field != null) {
+			try {
+				setRandomNumberGenerator(field);
+			} catch (Exception e) {
+				logWarningNotSupported();
+			}
+		} else {
 			logWarningNotSupported();
-		} catch (IllegalAccessException e) {
-			logError(e);
+		}
+	}
+
+	private static void setRandomNumberGenerator(Field field) throws IllegalAccessException, NoSuchFieldException {
+		Math.random();
+		final boolean savedFieldAccessible = field.isAccessible();
+		field.setAccessible(true);
+
+		Field modifiersField = Field.class.getDeclaredField("modifiers");
+
+		final boolean savedModifiersAccessible = modifiersField.isAccessible();
+		modifiersField.setAccessible(true);
+		try {
+			int oldModifiers = field.getModifiers();
+			try {
+				modifiersField.setInt(field, oldModifiers & ~Modifier.FINAL);
+
+				field.set(null, randomNumberGenerator);
+			} finally {
+				modifiersField.setInt(field, oldModifiers);
+			}
+		} finally {
+			modifiersField.setAccessible(savedModifiersAccessible);
 		}
 
-		// TODO ZAMO using Robot classloader inject seed also for all instances being created by robots
+		field.setAccessible(savedFieldAccessible);
 	}
 
 	/**
 	 * Resets the random number generator instance to be deterministic when
 	 * generating random numbers.
 	 *
-	 * @param seed the seed to use for the new deterministic random generator.
+	 * @param seed
+	 *            the seed to use for the new deterministic random generator.
 	 */
 	public static void resetDeterministic(long seed) {
 		setRandom(new Random(seed));
@@ -104,14 +147,14 @@ public class RandomFactory {
 	}
 
 	/**
-	 * Logs a warning that the deterministic random feature is not supported by the JVM.
+	 * Logs a warning that the deterministic random feature is not supported by the
+	 * JVM.
 	 */
 	private static void logWarningNotSupported() {
 		if (!(warningNotSupportedLogged || System.getProperty("RANDOMSEED", "none").equals("none"))) {
-			logWarning(
-					"The deterministic random generator feature is not supported by this JVM:\n"
-							+ System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.name") + " "
-							+ System.getProperty("java.vm.version"));
+			logWarning("The deterministic random generator feature is not supported by this JVM:\n"
+					+ System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.name") + " "
+					+ System.getProperty("java.vm.version"));
 
 			warningNotSupportedLogged = true;
 		}

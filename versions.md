@@ -4,7 +4,8 @@
 * Fixed issue with the RobocodeEngine, which could not read robots in "developer mode" (marked with a asterix '*' character)
 * [Bug-395][]: Roborumble client duplicates battle results on network error.
 * [Bug-397][]: Robocode UI cannot remember battle settings upon restart.
-	* Thanks goes to bumfod for the two fixes above. :-)
+* [Bug-399][]: RANDOMSEED option does not support Java 8.
+	* Thanks goes to bumfod for all 3 fixes above. :-)
 
 ## Version 1.9.3.2 (04-04-2018) The Java 10 support release
 
@@ -3062,6 +3063,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-394]: http://sourceforge.net/p/robocode/bugs/394/  (HiDPI scaling causes visual glitches)
 [Bug-395]: http://sourceforge.net/p/robocode/bugs/395/	(Roborumble client duplicates battle results on network error)
 [Bug-397]: http://sourceforge.net/p/robocode/bugs/397/  (Robocode UI cannot remember battle settings upon restart)
+[Bug-399]: http://sourceforge.net/p/robocode/bugs/399/  (RANDOMSEED option does not support Java 8)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
