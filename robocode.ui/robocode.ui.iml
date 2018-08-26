@@ -10,8 +10,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="robocode.core" />
-    <orderEntry type="module" module-name="robocode.api" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -21,9 +19,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="robocode.battle" />
-    <orderEntry type="module" module-name="robocode.host" />
-    <orderEntry type="module" module-name="robocode.repository" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -33,7 +28,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="robocode.sound" />
     <orderEntry type="module" module-name="robocode.api" />
     <orderEntry type="module" module-name="robocode.core" />
     <orderEntry type="library" name="Maven: org.picocontainer:picocontainer:2.14.2" level="project" />

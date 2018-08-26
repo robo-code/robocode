@@ -2,10 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b60fda-f8a8-4d53-aed3-7cd4a974d9a2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicPlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IBasicPlayerPeer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IAdvancedPlayer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IJuniorPlayer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IPaintPlayer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/ITeamPlayer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IAdvancedPlayerPeer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IJuniorPlayerPeer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IStandardPlayerPeer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/ITeamPlayerPeer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Robocode.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/Robocode.ipr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.battle/robocode.battle.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.battle/robocode.battle.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.content/robocode.content.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.content/robocode.content.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.core/robocode.core.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.core/robocode.core.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.distribution/robocode.distribution.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.distribution/robocode.distribution.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.host/robocode.host.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.host/robocode.host.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/robocode.iws" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.iws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.repository/robocode.repository.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.repository/robocode.repository.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.samples/robocode.samples.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.samples/robocode.samples.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.sound/robocode.sound.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.sound/robocode.sound.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.tests.robots/robocode.tests.robots.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.tests.robots/robocode.tests.robots.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.tests/robocode.tests.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.tests/robocode.tests.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.ui.editor/robocode.ui.editor.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.ui.editor/robocode.ui.editor.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robocode.ui/robocode.ui.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.ui/robocode.ui.iml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/robocode.api/target/" />
@@ -193,90 +212,70 @@
         <counts>
           <entry key="project.closed" value="1" />
           <entry key="project.open.time.0" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="html" value="1" />
-          <entry key="java" value="50" />
+          <entry key="java" value="71" />
           <entry key="team" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="HTML" value="1" />
-          <entry key="JAVA" value="50" />
+          <entry key="JAVA" value="71" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="989" />
+          <entry key="JAVA" value="1276" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="989" />
+          <entry key="java" value="1276" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/Robot.java">
+        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IPaintRobot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="48" column="13" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="345">
+              <caret line="29" column="41" lean-forward="true" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="41" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IInteractiveRobot.java">
+        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IPaintPlayer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="30" column="3" lean-forward="true" selection-start-line="10" selection-end-line="30" selection-end-column="3" />
+            <state relative-caret-position="45">
+              <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IInteractivePlayer.java">
+        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IInteractiveEvents.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="44" selection-start-line="20" selection-start-column="44" selection-end-line="20" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicRobot.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="582">
-              <caret line="75" column="41" lean-forward="true" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="41" />
+            <state relative-caret-position="221">
+              <caret line="26" column="17" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicPlayer.java">
+        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/control/snapshot/IRobotSnapshot.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
-              <caret line="11" column="41" selection-start-line="11" selection-start-column="41" selection-end-line="11" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IBasicPlayerPeer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
+              <caret line="17" column="3" lean-forward="true" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -307,6 +306,14 @@
         <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IInteractivePlayer.java" />
         <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IBasicPlayerPeer.java" />
         <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicPlayer.java" />
+        <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IStandardPlayerPeer.java" />
+        <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IAdvancedPlayerPeer.java" />
+        <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IJuniorPlayerPeer.java" />
+        <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/ITeamPlayerPeer.java" />
+        <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IAdvancedPlayer.java" />
+        <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/ITeamPlayer.java" />
+        <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IJuniorPlayer.java" />
+        <option value="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IPaintPlayer.java" />
       </list>
     </option>
   </component>
@@ -324,6 +331,13 @@
     <option name="ADD_LABEL_ON_DEBUGGING" value="true" />
     <option name="ADD_LABEL_ON_UNIT_TEST_PASSED" value="true" />
     <option name="ADD_LABEL_ON_UNIT_TEST_FAILED" value="true" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
   </component>
   <component name="PerforceConfiguration">
     <option name="PORT" value="magic:1666" />
@@ -365,9 +379,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="AndroidView" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -418,7 +430,27 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="robocode" type="462c0819:PsiDirectoryNode" />
-              <item name="robotinterfaces" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="robocode" type="b2602c69:ProjectViewProjectNode" />
+              <item name="robocode" type="462c0819:PsiDirectoryNode" />
+              <item name="robocode.api" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="robocode" type="462c0819:PsiDirectoryNode" />
+              <item name="control" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="robocode" type="b2602c69:ProjectViewProjectNode" />
+              <item name="robocode" type="462c0819:PsiDirectoryNode" />
+              <item name="robocode.api" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="robocode" type="462c0819:PsiDirectoryNode" />
+              <item name="control" type="462c0819:PsiDirectoryNode" />
+              <item name="snapshot" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="robocode" type="b2602c69:ProjectViewProjectNode" />
@@ -429,12 +461,23 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="robocode" type="462c0819:PsiDirectoryNode" />
               <item name="robotinterfaces" type="462c0819:PsiDirectoryNode" />
-              <item name="peer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="robocode" type="b2602c69:ProjectViewProjectNode" />
+              <item name="robocode" type="462c0819:PsiDirectoryNode" />
+              <item name="robocode.api" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="robocode" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="ProjectViewSettings">
@@ -452,7 +495,7 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1534259019246" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535297136173" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/robocode.ipr" />
   </component>
   <component name="RunDashboard">
@@ -543,17 +586,14 @@
     <frame x="20" y="43" width="1400" height="781" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Designer" />
-      <window_info id="UI Designer" />
-      <window_info id="Favorites" side_tool="true" />
-      <window_info id="Capture Tool" />
-      <window_info id="Image Layers" />
-      <window_info active="true" id="Project" order="0" visible="true" weight="0.2496318" />
+      <window_info active="true" id="Project" order="0" visible="true" weight="0.2533137" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Web" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Image Layers" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -564,15 +604,18 @@
       <window_info anchor="bottom" id="TODO" order="7" />
       <window_info anchor="bottom" id="CVS" order="8" />
       <window_info anchor="bottom" id="Messages" order="9" />
-      <window_info anchor="right" id="Palette" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="right" id="Maven Projects" />
-      <window_info anchor="right" id="Palette&#9;" />
-      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Aspects" order="3" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Maven Projects" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -631,141 +674,6 @@
     <webview flattenPackages="false" showMembers="false" autoscrollToSource="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/robocode.content/src/main/resources/ReadMe.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.core/src/main/java/net/sf/robocode/version/Version.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1650">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.core/src/main/java/net/sf/robocode/robotpaint/Graphics2DSerialized.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-12900">
-          <caret line="37" column="49" selection-start-line="37" selection-start-column="49" selection-end-line="37" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.core/src/main/java/net/sf/robocode/robotpaint/IGraphicsProxy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.core/src/main/java/net/sf/robocode/host/RobotStatics.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="27" column="19" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
-          <folding>
-            <element signature="e#3144#3152#0" expanded="true" />
-            <element signature="e#9755#9763#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.ui/src/main/java/net/sf/robocode/ui/gfx/RobocodeLogo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5838">
-          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.samples/src/main/java/sampleex/MasterAndSlave.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-348">
-          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.samples/src/main/java/sampleex/AlienComposition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-288">
-          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.samples/src/main/java/sampleteam/MyFirstDroid.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="65">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.samples/src/main/java/sampleteam/Point.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.samples/src/main/java/sampleteam/RobotColors.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/robocode/robots/sampleteam/MyFirstTeam.team">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.samples/src/main/java/sampleteam/MyFirstLeader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-363">
-          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.core/src/main/java/net/sf/robocode/repository/CodeSizeCalculator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.core/src/main/java/net/sf/robocode/repository/RobotProperties.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.core/src/main/java/net/sf/robocode/repository/TeamProperties.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.core/src/main/java/net/sf/robocode/repository/RobotType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-918">
-          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.core/src/main/java/net/sf/robocode/peer/BulletCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/Rules.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2358">
-          <caret line="25" column="19" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/TeamRobot.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1683">
@@ -879,13 +787,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/control/snapshot/IRobotSnapshot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2808">
-          <caret line="18" column="17" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/control/snapshot/IBulletSnapshot.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1080">
@@ -949,20 +850,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IInteractiveRobot.java">
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IBasicRobotPeer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="30" column="3" lean-forward="true" selection-start-line="10" selection-end-line="30" selection-end-column="3" />
+        <state relative-caret-position="177">
+          <caret line="709" column="52" lean-forward="true" selection-start-line="709" selection-start-column="4" selection-end-line="709" selection-end-column="52" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/Robot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
+        <state relative-caret-position="585">
           <caret line="48" column="13" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IInteractiveRobot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="30" column="3" selection-start-line="10" selection-end-line="30" selection-end-column="3" />
         </state>
       </provider>
     </entry>
@@ -973,10 +881,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IBasicRobotPeer.java">
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicRobot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="709" column="52" lean-forward="true" selection-start-line="709" selection-start-column="4" selection-end-line="709" selection-end-column="52" />
+        <state relative-caret-position="1035">
+          <caret line="75" column="41" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="41" selection-start-line="11" selection-start-column="41" selection-end-line="11" selection-end-column="41" />
         </state>
       </provider>
     </entry>
@@ -987,17 +902,152 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicRobot.java">
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IStandardRobotPeer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="582">
-          <caret line="75" column="41" lean-forward="true" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="41" />
+        <state relative-caret-position="525">
+          <caret line="83" column="26" lean-forward="true" selection-start-line="83" selection-start-column="26" selection-end-line="83" selection-end-column="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IBasicPlayer.java">
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/Condition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="147" lean-forward="true" selection-start-line="147" selection-end-line="147" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IStandardPlayerPeer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="34" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IAdvancedRobotPeer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="582">
+          <caret line="749" column="33" lean-forward="true" selection-start-line="749" selection-start-column="4" selection-end-line="749" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IAdvancedPlayerPeer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="33" selection-start-line="25" selection-start-column="33" selection-end-line="25" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/ITeamEvents.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IJuniorPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="51" selection-start-line="2" selection-start-column="51" selection-end-line="2" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IJuniorRobot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="39" column="17" selection-start-line="39" selection-start-column="17" selection-end-line="39" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/ITeamPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="53" selection-start-line="2" selection-start-column="53" selection-end-line="2" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IAdvancedPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IAdvancedRobot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="38" column="47" lean-forward="true" selection-start-line="38" selection-start-column="4" selection-end-line="38" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/ITeamRobot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="38" column="39" lean-forward="true" selection-start-line="38" selection-start-column="4" selection-end-line="38" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/ITeamPlayerPeer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="42" selection-start-line="13" selection-start-column="42" selection-end-line="13" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/ITeamRobotPeer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="582">
+          <caret line="139" column="42" lean-forward="true" selection-start-line="139" selection-start-column="4" selection-end-line="139" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IJuniorPlayerPeer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="54" selection-start-line="3" selection-start-column="54" selection-end-line="3" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IJuniorRobotPeer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="65" column="54" lean-forward="true" selection-start-line="65" selection-start-column="4" selection-end-line="65" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IPaintRobot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="29" column="41" lean-forward="true" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IPaintPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IInteractiveEvents.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="26" column="17" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/control/snapshot/IRobotSnapshot.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
-          <caret line="11" column="41" selection-start-line="11" selection-start-column="41" selection-end-line="11" selection-end-column="41" />
+          <caret line="17" column="3" lean-forward="true" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
         </state>
       </provider>
     </entry>

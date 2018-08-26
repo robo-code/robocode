@@ -10,9 +10,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="robocode.tests.robots" />
-    <orderEntry type="module" module-name="robocode.api" />
-    <orderEntry type="module" module-name="robocode.samples" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -31,7 +28,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="robocode.core" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -41,9 +37,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="robocode.host" />
-    <orderEntry type="module" module-name="robocode.battle" />
-    <orderEntry type="module" module-name="robocode.repository" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
