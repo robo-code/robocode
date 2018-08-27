@@ -127,14 +127,20 @@ class Repository implements IRepository {
 	 * {@inheritDoc}
 	 */
 	public IRepositoryItem getItem(String friendlyUrl) {
-		// Friendly urls containing ending asterix like "test.Robot* must be changed into "test.Robot".
-		// That is, contain no ending asterix.
-		if (friendlyUrl.endsWith("*")) {
-			friendlyUrl = friendlyUrl.substring(0, friendlyUrl.length() - 1);
-		}
 		IRepositoryItem repositoryItem = repositoryItems.get(friendlyUrl);
 		if (repositoryItem == null) {
 			repositoryItem = removedItems.get(friendlyUrl);
+		}
+		if (repositoryItem == null) {			
+			// Friendly urls containing ending asterix like "test.Robot* must be changed into "test.Robot".
+			// That is, contain no ending asterix.
+			if (friendlyUrl.endsWith("*")) {
+				friendlyUrl = friendlyUrl.substring(0, friendlyUrl.length() - 1);
+			}
+			repositoryItem = repositoryItems.get(friendlyUrl);
+			if (repositoryItem == null) {
+				repositoryItem = removedItems.get(friendlyUrl);
+			}
 		}
 		return repositoryItem;
 	}
