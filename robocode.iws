@@ -2,29 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b60fda-f8a8-4d53-aed3-7cd4a974d9a2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IAdvancedPlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IJuniorPlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/IPaintPlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/ITeamPlayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IAdvancedPlayerPeer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IJuniorPlayerPeer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/IStandardPlayerPeer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/robotinterfaces/peer/ITeamPlayerPeer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robocode.api/src/main/java/robocode/control/snapshot/IPlayerSnapshot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Robocode.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/Robocode.ipr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.battle/robocode.battle.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.battle/robocode.battle.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.content/robocode.content.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.content/robocode.content.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.core/robocode.core.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.core/robocode.core.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.distribution/robocode.distribution.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.distribution/robocode.distribution.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.host/robocode.host.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.host/robocode.host.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.iws" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.repository/robocode.repository.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.repository/robocode.repository.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.roborumble/robocode.roborumble.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.samples/robocode.samples.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.samples/robocode.samples.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.sound/robocode.sound.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.sound/robocode.sound.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.tests.robots/robocode.tests.robots.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.tests.robots/robocode.tests.robots.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.tests/robocode.tests.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.tests/robocode.tests.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.ui.editor/robocode.ui.editor.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.ui.editor/robocode.ui.editor.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/robocode.ui/robocode.ui.iml" beforeDir="false" afterPath="$PROJECT_DIR$/robocode.ui/robocode.ui.iml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/robocode.api/target/" />
@@ -210,7 +189,7 @@
     <session id="-1204060952">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.opened" value="2" />
@@ -219,14 +198,14 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="html" value="1" />
-          <entry key="java" value="71" />
+          <entry key="java" value="72" />
           <entry key="team" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="HTML" value="1" />
-          <entry key="JAVA" value="71" />
+          <entry key="JAVA" value="72" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
@@ -271,11 +250,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/control/snapshot/IRobotSnapshot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="17" column="3" lean-forward="true" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
+            <state relative-caret-position="300">
+              <caret line="26" lean-forward="true" selection-start-line="25" selection-start-column="4" selection-end-line="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/control/snapshot/IPlayerSnapshot.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="32" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -495,7 +483,7 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535297136173" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535299285516" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/robocode.ipr" />
   </component>
   <component name="RunDashboard">
@@ -584,7 +572,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="20" y="43" width="1400" height="781" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info active="true" id="Project" order="0" visible="true" weight="0.2533137" />
       <window_info id="Structure" order="1" weight="0.25" />
@@ -674,13 +661,6 @@
     <webview flattenPackages="false" showMembers="false" autoscrollToSource="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/TeamRobot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1683">
-          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/Robocode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -1046,8 +1026,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/control/snapshot/IRobotSnapshot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="17" column="3" lean-forward="true" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
+        <state relative-caret-position="300">
+          <caret line="26" lean-forward="true" selection-start-line="25" selection-start-column="4" selection-end-line="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/robocode.api/src/main/java/robocode/control/snapshot/IPlayerSnapshot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="32" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="32" />
         </state>
       </provider>
     </entry>
