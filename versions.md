@@ -1,4 +1,4 @@
-## Version 1.9.3.3 (29-08-2018)
+## Version 1.9.3.3 (10-09-2018)
 
 ## Bug fix
 * Fixed issue with the RobocodeEngine, which could not read robots in "developer mode" (marked with a asterix '*' character)
