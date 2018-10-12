@@ -13,7 +13,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<dependency>
 			<groupId>net.sf.robocode</groupId>
 			<artifactId>robocode.dotnet.host</artifactId>
-			<version>${robocode.version}</version>
+			<version>1.9.3.3</version>
 			<exclusions>
 				<exclusion>
 					<groupId>net.sf.robocode</groupId>

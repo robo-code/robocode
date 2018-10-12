@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<groupId>net.sf.robocode</groupId>
 	<artifactId>super-pom</artifactId>
 	<name>Robocode Super POM</name>
-	<version>${robocode.version}</version>
+	<version>1.9.3.3</version>
 	<packaging>pom</packaging>
 	<organization>
 		<name>Robocode</name>
@@ -17,25 +17,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<robocode.dotnet.version>1.9.3.3</robocode.dotnet.version> <!-- Only X.X.X.X format -->
 		<javadoc.additionalparam/>
 	</properties>
-	<repositories>
-		<repository>
-			<id>net.sf.robocode</id>
-			<name>Robocode Release Repository</name>
-			<url>http://robocode.sourceforge.net/maven2/</url>
-		</repository>
-		<repository>
-			<id>net.sf.robocode</id>
-			<name>Robocode Release Repository</name>
-			<url>http://robocode.sourceforge.net/mvnrepo/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>net.sf.robocode</id>
-			<name>Robocode Plugin Repository</name>
-			<url>http://robocode.sourceforge.net/maven2</url>
-		</pluginRepository>
-	</pluginRepositories>
 	<distributionManagement>
 		<downloadUrl>http://robocode.sourceforge.net/maven2</downloadUrl>
 		<repository>

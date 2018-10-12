@@ -8,5 +8,5 @@
 
 @echo off
 
-mvn clean install ant:ant -DskipTests=false %*
+mvnw clean install ant:ant -DskipTests=false %*
 rem mvn eclipse:eclipse
