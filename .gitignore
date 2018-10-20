@@ -10,3 +10,7 @@ ucdetector_reports
 *.class
 .recommenders
 .sonarlint
+RemoteSystemsTempFiles
+/mvnw
+/mvnw.cmd
+/.mvn
