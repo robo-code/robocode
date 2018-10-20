@@ -50,7 +50,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 					<links>
 						<link>http://docs.oracle.com/javase/6/docs/api/</link>
 						<link>http://junit.sourceforge.net/javadoc</link>
-						<link>http://robocode.sourceforge.net/docs/robocode</link>
+						<link>https://robocode.sourceforge.io/docs/robocode</link>
 					</links>
 				</configuration>
 			</plugin>

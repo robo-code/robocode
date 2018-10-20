@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/epl-v10.html
+ * https://robocode.sourceforge.io/license/epl-v10.html
  */
 package robocode;
 
@@ -28,9 +28,9 @@ import java.awt.*;
  * <br> Positive x is right.
  * <br> Positive y is up.
  *
- * @see <a target="_top" href="http://robocode.sourceforge.net">
+ * @see <a target="_top" href="https://robocode.sourceforge.io">
  *      robocode.sourceforge.net</a>
- * @see <a href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
+ * @see <a href="https://robocode.sourceforge.io/myfirstrobot/MyFirstRobot.html">
  *      Building your first robot<a>
  *
  * @see JuniorRobot

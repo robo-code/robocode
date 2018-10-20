@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/epl-v10.html
+ * https://robocode.sourceforge.io/license/epl-v10.html
  */
 package net.sf.robocode.ui;
 
@@ -254,7 +254,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showRobocodeHome() {
-		showInBrowser("http://robocode.sourceforge.net");
+		showInBrowser("https://robocode.sourceforge.io");
 	}
 
 	public void showRoboWiki() {

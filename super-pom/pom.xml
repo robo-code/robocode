@@ -18,7 +18,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<javadoc.additionalparam/>
 	</properties>
 	<distributionManagement>
-		<downloadUrl>http://robocode.sourceforge.net/maven2</downloadUrl>
+		<downloadUrl>https://robocode.sourceforge.io/maven2</downloadUrl>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
 			<id>net.sf.robocode-upload</id>

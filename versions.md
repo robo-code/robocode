@@ -1,3 +1,11 @@
+## Version 1.9.3.4 (20-10-2018)
+
+## Bugfix
+* An error was thrown every time Robocode checked for a new version. The reason being that the Robocode web page has been moved.
+
+## Changes
+* The Robocode site is now using HTTPS instead of HTTP, and have been moved permanently to https://robocode.sourceforge.io (".io" instead of ".net")
+
 ## Version 1.9.3.3 (10-09-2018)
 
 ## Bug fix
@@ -1214,7 +1222,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 
 ### New Robot Interfaces
 * A new package named ``robocode.robotinterfaces`` has been introduced, which contains pure Java robot interfaces for basic, advanced, interactive, junior and team robots.
-	* See the Robocode Javadocs (HTML) documentation for more details about these new interfaces [here](http://robocode.sourceforge.net/docs/robocode/robocode/robotinterfaces/package-summary.html).
+	* See the Robocode Javadocs (HTML) documentation for more details about these new interfaces [here](https://robocode.sourceforge.io/docs/robocode/robocode/robotinterfaces/package-summary.html).
 * The main purpose of the new robot interfaces is to make it possible for robot developers to create new robot types with their own API, but also to create robots using other programming languages, which requires used of interfaces instead of classes.
 * The robot interfaces obeys the rules within Robocode, so it is not possible to create new game rules. However, it is possible to create new robot types with other methods names etc. (new API) based on the new robot interfaces. Also note that is is possible to create your own robots based directly on the robot interfaces.
 * See the new '/robots/sampleex' directory for some examples of how to use these new interfaces in Java.
@@ -2742,9 +2750,9 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [RoboRumble]: http://robowiki.net/wiki/RoboRumble (RoboWiki - RoboRumble)
 [Markdown]: http://daringfireball.net/projects/markdown/syntax (Markdown syntax)
 
-[IRobotSnapshot.getContestantIndex()]: http://robocode.sourceforge.net/docs/robocode/robocode/control/snapshot/IRobotSnapshot.html#getContestantIndex()  (robocode.control.snapshot.IRobotSnapshot.getContestantIndex())
-[IRobotSnapshot.getRobotIndex()]: http://robocode.sourceforge.net/docs/robocode/robocode/control/snapshot/IRobotSnapshot.html#getRobotIndex() (robocode.control.snapshot.IRobotSnapshot.getRobotIndex())
-[IRobotSnapshot.getTeamIndex()]: http://robocode.sourceforge.net/docs/robocode/robocode/control/snapshot/IRobotSnapshot.html#getTeamIndex()  (robocode.control.snapshot.IRobotSnapshot.getTeamIndex())
+[IRobotSnapshot.getContestantIndex()]: https://robocode.sourceforge.io/docs/robocode/robocode/control/snapshot/IRobotSnapshot.html#getContestantIndex()  (robocode.control.snapshot.IRobotSnapshot.getContestantIndex())
+[IRobotSnapshot.getRobotIndex()]: https://robocode.sourceforge.io/docs/robocode/robocode/control/snapshot/IRobotSnapshot.html#getRobotIndex() (robocode.control.snapshot.IRobotSnapshot.getRobotIndex())
+[IRobotSnapshot.getTeamIndex()]: https://robocode.sourceforge.io/docs/robocode/robocode/control/snapshot/IRobotSnapshot.html#getTeamIndex()  (robocode.control.snapshot.IRobotSnapshot.getTeamIndex())
 
 [Patch-1]: http://sourceforge.net/p/robocode/patches/1/ (#1 Improved priority battle handling)
 
