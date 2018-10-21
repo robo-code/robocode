@@ -1,14 +1,15 @@
-## Version 1.9.3.4 (20-10-2018)
+## Version 1.9.3.4 (21-10-2018)
 
-## Bugfix
+### Bugfix
 * An error was thrown every time Robocode checked for a new version. The reason being that the Robocode web page has been moved.
+* Undo/Redo with the Robocode Editor got broken with Java 9+.
 
-## Changes
+### Changes
 * The Robocode site is now using HTTPS instead of HTTP, and have been moved permanently to https://robocode.sourceforge.io (".io" instead of ".net")
 
 ## Version 1.9.3.3 (10-09-2018)
 
-## Bug fix
+### Bug fix
 * Fixed issue with the RobocodeEngine, which could not read robots in "developer mode" (marked with a asterix '*' character)
 * [Bug-395][]: Roborumble client duplicates battle results on network error.
 * [Bug-397][]: Robocode UI cannot remember battle settings upon restart.
