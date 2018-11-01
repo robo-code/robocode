@@ -43,6 +43,7 @@ public class HiddenAccess {
 	private static IHiddenSpecificationHelper specificationHelper;
 	private static IHiddenStatusHelper statusHelper;
 	private static IHiddenRulesHelper rulesHelper;
+	private static IHiddenBallHelper ballHelper;
 	private static Method initContainer;
 	private static Method initContainerRe;
 	private static Method cleanup;
@@ -62,14 +63,14 @@ public class HiddenAccess {
 			eventHelper = (IHiddenEventHelper) method.invoke(null);
 			method.setAccessible(false);
 
-			method = Bullet.class.getDeclaredMethod("createHiddenHelper");
+			method = RobotSpecification.class.getDeclaredMethod("createHiddenHelper");
 			method.setAccessible(true);
-			bulletHelper = (IHiddenBulletHelper) method.invoke(null);
+			specificationHelper = (IHiddenSpecificationHelper) method.invoke(null);
 			method.setAccessible(false);
 
 			method = RobotSpecification.class.getDeclaredMethod("createHiddenHelper");
 			method.setAccessible(true);
-			specificationHelper = (IHiddenSpecificationHelper) method.invoke(null);
+			ballHelper = (IHiddenBallHelper) method.invoke(null);
 			method.setAccessible(false);
 
 			method = RobotStatus.class.getDeclaredMethod("createHiddenSerializer");

@@ -47,6 +47,7 @@ public final class RbSerializer {
 	public final static byte BattleResults_TYPE = 8;
 	public final static byte Bullet_TYPE = 9;
 	public final static byte RobotStatics_TYPE = 10;
+	public final static byte Ball_TYPE = 11;
 
 	public final static byte BattleEndedEvent_TYPE = 32;
 	public final static byte BulletHitBulletEvent_TYPE = 33;

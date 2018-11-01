@@ -23,6 +23,7 @@ public class Module implements IModule {
 		RbSerializer.register(RobotStatus.class, RbSerializer.RobotStatus_TYPE);
 		RbSerializer.register(BattleResults.class, RbSerializer.BattleResults_TYPE);
 		RbSerializer.register(Bullet.class, RbSerializer.Bullet_TYPE);
+		RbSerializer.register(Ball.class, RbSerializer.Ball_TYPE);
 
 		// events
 		RbSerializer.register(RoundEndedEvent.class, RbSerializer.RoundEndedEvent_TYPE);
