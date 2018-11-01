@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/epl-v10.html
+ * https://robocode.sourceforge.io/license/epl-v10.html
  */
 using System;
 using System.Collections.Generic;
@@ -19,8 +19,8 @@ namespace Robocode
     ///  custom events, and writes to the filesystem.
     ///  <p />
     ///  If you have not already, you should create a <see cref="Robot"/> first.
-    ///  <br/><see href="http://robocode.sourceforge.net" />
-    ///  <br/><see href="http://robocode.sourceforge.net/myfirstrobot/MyFirstRobot.html">
+    ///  <br/><see href="https://robocode.sourceforge.io" />
+    ///  <br/><see href="https://robocode.sourceforge.io/myfirstrobot/MyFirstRobot.html">
     ///    Building your first robot
     ///  </see>
     /// <seealso cref="JuniorRobot"/>

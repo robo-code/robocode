@@ -4,7 +4,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>robocode.dotnet.host</artifactId>
 	<name>Robocode .NET Host</name>
-	<version>${robocode.version}</version>
+	<version>1.9.3.4</version>
 	<parent>
 		<groupId>net.sf.robocode</groupId>
 		<artifactId>robocode.dotnet</artifactId>
@@ -14,12 +14,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<dependency>
 			<groupId>net.sf.robocode</groupId>
 			<artifactId>robocode.host</artifactId>
-			<version>${robocode.version}</version>
+			<version>1.9.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.robocode</groupId>
 			<artifactId>robocode.repository</artifactId>
-			<version>${robocode.version}</version>
+			<version>1.9.3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.robocode</groupId>

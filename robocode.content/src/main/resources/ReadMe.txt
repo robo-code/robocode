@@ -3,7 +3,7 @@
 Updated 06-Mar-2013 by Flemming N. Larsen
 
 Robocode Home Page:
-[http://robocode.sourceforge.net/](http://robocode.sourceforge.net/)
+[https://robocode.sourceforge.io/](https://robocode.sourceforge.io/)
 
 ### TABLE OF CONTENTS
 
@@ -186,10 +186,10 @@ good starting point:
 The Robocode API is provided as HTML pages for both the Java and .NET
 platform.
 
--   [Java Robot API](http://robocode.sourceforge.net/docs/robocode/)
--   [Java Control API](http://robocode.sourceforge.net/docs/robocode/index.html?robocode/control/package-summary.html)
--   [.NET Robot API](http://robocode.sourceforge.net/docs/robocode.dotnet/Index.html)
--   [.NET Control API](http://robocode.sourceforge.net/docs/robocode.dotnet.control/Index.html)
+-   [Java Robot API](https://robocode.sourceforge.io/docs/robocode/)
+-   [Java Control API](https://robocode.sourceforge.io/docs/robocode/index.html?robocode/control/package-summary.html)
+-   [.NET Robot API](https://robocode.sourceforge.io/docs/robocode.dotnet/Index.html)
+-   [.NET Control API](https://robocode.sourceforge.io/docs/robocode.dotnet.control/Index.html)
 
 The Robocode API actually consists of 3 different APIs.
 
@@ -321,7 +321,7 @@ You can read more details here:
 
 Links relevant to Robocode are provided on the home page of Robocode:
 
--   [Home Page of Robocode](http://robocode.sourceforge.net/)
+-   [Home Page of Robocode](https://robocode.sourceforge.io/)
 
 Other links are provided from the RoboWiki - especially for challenges
 and competitions:

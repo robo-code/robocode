@@ -3,7 +3,7 @@
     All rights reserved. This program and the accompanying materials
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
-    http://robocode.sourceforge.net/license/epl-v10.html
+    https://robocode.sourceforge.io/license/epl-v10.html
 ====
 
 This is guide to build Robocode for .NET
@@ -85,3 +85,25 @@ NOTE: You might need to remove the 'rem' and change the following lines inside
 
 rem set JAVA_HOME=%JDK6_HOME%
 rem set PATH=%JAVA_HOME%\bin;%PATH%
+
+
+INSTALL LIBRARIES INTO THE LOCAL MAVEN REPOSITORY
+=================================================
+Robocode will give compiler error when running mvnassembly the first time or if the jni4net version is rolled.
+Make sure to run these commands:
+
+mvn install:install-file -DgroupId=net.sf.jni4net -DartifactId=jni4net.n -Dversion=0.8.7.0 -Dpackaging=dotnet:library -Dfile=<robocode-work-dir>\plugins\dotnet\tools\lib\jni4net.n-0.8.7.0.dll
+
+mvn install:install-file -DgroupId=net.sf.jni4net -DartifactId=jni4net.j -Dversion=0.8.7.0 -Dpackaging=jar -Dfile=<robocode-work-dir>\plugins\dotnet\tools\lib\jni4net.j-0.8.7.0.jar
+
+mvn install:install-file -DgroupId=net.sf.jni4net -DartifactId=jni4net.n.w32.v20 -Dversion=0.8.7.0 -Dpackaging=dotnet:library -Dfile=<robocode-work-dir>\plugins\dotnet\tools\lib\jni4net.n.w32.v20-0.8.7.0.dll
+
+mvn install:install-file -DgroupId=net.sf.jni4net -DartifactId=jni4net.n.w32.v40 -Dversion=0.8.7.0 -Dpackaging=dotnet:library -Dfile=<robocode-work-dir>\plugins\dotnet\tools\lib\jni4net.n.w32.v40-0.8.7.0.dll
+
+mvn install:install-file -DgroupId=net.sf.jni4net -DartifactId=jni4net.n.w64.v20 -Dversion=0.8.7.0 -Dpackaging=dotnet:library -Dfile=<robocode-work-dir>\plugins\dotnet\tools\lib\jni4net.n.w64.v20-0.8.7.0.dll
+
+mvn install:install-file -DgroupId=net.sf.jni4net -DartifactId=jni4net.n.w64.v40 -Dversion=0.8.7.0 -Dpackaging=dotnet:library -Dfile=<robocode-work-dir>\plugins\dotnet\tools\lib\jni4net.n.w64.v40-0.8.7.0.dll
+
+mvn install:install-file -DgroupId=org.nunit -DartifactId=nunit.framework -Dversion=2.4.3.0 -Dpackaging=dotnet:library -Dfile=<robocode-work-dir>\plugins\dotnet\tools\lib\nunit.framework-2.4.3.0.dll
+
+Where <robocode-work-dir> is the directory containing your Robocode sources, e.g. D:\robocode-work

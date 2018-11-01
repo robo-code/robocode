@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/epl-v10.html
+ * https://robocode.sourceforge.io/license/epl-v10.html
  */
 package tested.robots;
 
@@ -20,7 +20,7 @@ import java.net.URL;
  */
 public class HttpAttack extends AdvancedRobot {
 
-	static final String HTTP_ADDR = "http://robocode.sourceforge.net/";
+	static final String HTTP_ADDR = "https://robocode.sourceforge.io/";
 
 	public void run() {
 		try {

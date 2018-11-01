@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/epl-v10.html
+ * https://robocode.sourceforge.io/license/epl-v10.html
  */
 package net.sf.robocode.ui.editor;
 
@@ -114,7 +114,7 @@ public class RobocodeCompilerFactory {
 
 		String compilerName = "Java Compiler (javac)";
 		String compilerBinary = "javac";
-		String compilerOptions = "-deprecation -g -source 1.6 -encoding UTF-8";
+		String compilerOptions = "-version";
 
 		boolean javacOK = testCompiler(compilerName, compilerBinary, console);
 		boolean ecjOK = false;

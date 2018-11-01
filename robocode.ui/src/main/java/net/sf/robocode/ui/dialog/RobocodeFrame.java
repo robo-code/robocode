@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/epl-v10.html
+ * https://robocode.sourceforge.io/license/epl-v10.html
  */
 package net.sf.robocode.ui.dialog;
 
@@ -49,7 +49,7 @@ public class RobocodeFrame extends JFrame {
 	private final static int MAX_TPS_SLIDER_VALUE = 61;
 
 	private final static int UPDATE_TITLE_INTERVAL = 500; // milliseconds
-	private final static String INSTALL_URL = "http://robocode.sourceforge.net/installer";
+	private final static String INSTALL_URL = "https://robocode.sourceforge.io/installer";
 
 	private static final Cursor BUSY_CURSOR = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 	private static final Cursor DEFAULT_CURSOR = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);

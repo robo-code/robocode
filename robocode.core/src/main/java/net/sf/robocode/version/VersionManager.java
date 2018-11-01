@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/epl-v10.html
+ * https://robocode.sourceforge.io/license/epl-v10.html
  */
 package net.sf.robocode.version;
 
@@ -54,10 +54,8 @@ public final class VersionManager implements IVersionManager {
 		BufferedReader reader = null;
 
 		try {
-			URL url = new URL("http://robocode.sourceforge.net/version/version.html");
-
+			URL url = new URL("https://robocode.sourceforge.io/version/version.html");
 			URLConnection urlConnection = url.openConnection();
-
 			urlConnection.setConnectTimeout(5000);
 
 			if (urlConnection instanceof HttpURLConnection) {
@@ -73,7 +71,7 @@ public final class VersionManager implements IVersionManager {
 			reader = new BufferedReader(inputStreamReader);
 
 			newVersLine = reader.readLine();
-
+			
 		} catch (MalformedURLException e) {
 			logError("Unable to check for new version", e);
 			newVersLine = null;

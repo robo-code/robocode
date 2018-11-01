@@ -3,12 +3,15 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://robocode.sourceforge.net/license/epl-v10.html
+ * https://robocode.sourceforge.io/license/epl-v10.html
  */
 package net.sf.robocode.ui.editor;
 
 
 import javax.swing.event.UndoableEditEvent;
+
+import java.lang.reflect.Field;
+
 import javax.swing.event.DocumentEvent.EventType;
 import javax.swing.text.AbstractDocument.DefaultDocumentEvent;
 import javax.swing.text.BadLocationException;
@@ -38,10 +41,25 @@ public class CompoundUndoManager extends UndoManagerWithActions {
 	public void undoableEditHappened(UndoableEditEvent undoableEditEvent) {
 		UndoableEdit edit = undoableEditEvent.getEdit();
 
+		DefaultDocumentEvent event = null;
+		
 		// Make sure this event is a document event
 		if (edit instanceof DefaultDocumentEvent) {
 			// Get the event type
-			DefaultDocumentEvent event = (DefaultDocumentEvent) edit;
+			event = (DefaultDocumentEvent) edit;
+		} else {
+			try {
+				Class<?> clazz = Class.forName("javax.swing.text.AbstractDocument$DefaultDocumentEventUndoableWrapper");
+				if (UndoableEdit.class.isAssignableFrom(clazz)) {
+					Field f = clazz.getDeclaredField("dde"); // DefaultDocumentEvent
+					f.setAccessible(true);
+					event = (DefaultDocumentEvent) f.get(edit);
+				}				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (event != null) {
 			EventType eventType = event.getType();
 
 			// Check if the event type is not a change on character attributes, but instead an insertion or removal of
