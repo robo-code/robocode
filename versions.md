@@ -1,6 +1,8 @@
 ## Version 1.9.3.4 (06-11-2018)
 
 ### Bugfix
+* [Bug-401][]: RoboRumble client: Biased Melee prioritized pairings
+	* All credits goes to Xor for this fix. :-)
 * An error was thrown every time Robocode checked for a new version. The reason being that the Robocode web page has been moved.
 * Undo/Redo with the Robocode Editor got broken with Java 9+.
 
@@ -15,7 +17,7 @@
 * [Bug-395][]: Roborumble client duplicates battle results on network error.
 * [Bug-397][]: Robocode UI cannot remember battle settings upon restart.
 * [Bug-399][]: RANDOMSEED option does not support Java 8.
-	* Thanks goes to bumfod for all 3 fixes above. :-)
+	* Thanks goes to Xor for all 3 fixes above. :-)
 * [Bug-400][]: Problem to compile Robot.
     * The compiler options have been cut down to include only the -verbose option per default.
 
@@ -3077,6 +3079,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-397]: http://sourceforge.net/p/robocode/bugs/397/  (Robocode UI cannot remember battle settings upon restart)
 [Bug-399]: http://sourceforge.net/p/robocode/bugs/399/  (RANDOMSEED option does not support Java 8)
 [Bug-400]: http://sourceforge.net/p/robocode/bugs/400/  (Problem to compile Robot)
+[Bug-401]: http://sourceforge.net/p/robocode/bugs/401/  (RoboRumble client: Biased Melee prioritized pairings)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
