@@ -1,10 +1,11 @@
-## Version 1.9.3.4 (21-10-2018)
+## Version 1.9.3.4 (06-11-2018)
 
 ### Bugfix
 * An error was thrown every time Robocode checked for a new version. The reason being that the Robocode web page has been moved.
 * Undo/Redo with the Robocode Editor got broken with Java 9+.
 
 ### Changes
+* Upgraded the Codesize tool to version 1.2, which support newer versions of Java (9 experimental) and Java 8 lambdas.
 * The Robocode site is now using HTTPS instead of HTTP, and have been moved permanently to https://robocode.sourceforge.io (".io" instead of ".net")
 
 ## Version 1.9.3.3 (10-09-2018)
