@@ -30,7 +30,7 @@ public class PrepareBattles {
 
 	private final String botsrepository;
 	private final String participantsfile;
-	private final String battlesfile;
+	private final BattlesFile battlesfile;
 	private final int numbattles;
 	private final CompetitionsSelector size;
 	private final String runonly;
@@ -50,7 +50,7 @@ public class PrepareBattles {
 
 		botsrepository = parameters.getProperty("BOTSREP", "");
 		participantsfile = parameters.getProperty("PARTICIPANTSFILE", "");
-		battlesfile = parameters.getProperty("INPUT", "");
+		battlesfile = new BattlesFile(parameters.getProperty("INPUT", ""));
 		numbattles = Integer.parseInt(parameters.getProperty("NUMBATTLES", "100"));
 		String sizesfile = parameters.getProperty("CODESIZEFILE", "");
 
@@ -112,14 +112,8 @@ public class PrepareBattles {
 				} catch (IOException ignored) {}
 			}
 		}
-		// Open battles file
-		PrintStream outtxt;
 
-		try {
-			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesfile)), false);
-		} catch (IOException e) {
-			System.out.println("Not able to open battles file " + battlesfile + " ... Aborting");
-			System.out.println(e);
+		if (!battlesfile.openWrite()) {
 			return false;
 		}
 		// Create the participants file
@@ -131,11 +125,11 @@ public class PrepareBattles {
 			int bot2 = random.nextInt(names.size());
 
 			if (bot1 != bot2) {
-				outtxt.println(names.get(bot1) + "," + names.get(bot2) + "," + runonly);
+				battlesfile.writeBattle(new RumbleBattle(new String[]{names.get(bot1), names.get(bot2)}, runonly));
 				count++;
 			}
 		}
-		outtxt.close();
+		battlesfile.closeWrite();
 		return true;
 	}
 
@@ -258,24 +252,20 @@ public class PrepareBattles {
 			System.out.println("Cannot delete: " + priority);
 		}
 
-		// Open battles file
-		PrintStream outtxt;
-
-		try {
-			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesfile)), false);
-		} catch (IOException e) {
-			System.out.println("Not able to open battles file " + battlesfile + " ... Aborting");
-			System.out.println(e);
+		if (!battlesfile.openWrite()) {
 			return false;
 		}
-
 		// Create the participants file
 		int count = 0;
 
 		// Add priority battles
 		while (count < numbattles && count < priorityBattles.size()) {
 			String battle = priorityBattles.get(count);
-			outtxt.println(battle);
+
+			String[] items = battle.split(",");
+
+			battlesfile.writeBattle(new RumbleBattle(new String[]{items[0], items[1]}, items[2]));
+
 			count++;
 		}
 		// Add bots with less than 500 battles, or a random battle if all bots have enough battles
@@ -301,12 +291,13 @@ public class PrepareBattles {
 					bots = getRandomBots(namesAll, namesAll);
 				}
 				if (bots != null) {
-					outtxt.println(bots[0] + "," + bots[1] + "," + runonly);
+					battlesfile.writeBattle(new RumbleBattle(new String[]{bots[0], bots[1]}, runonly));
+
 					count++;
 				}
 			}
 		}
-		outtxt.close();
+		battlesfile.closeWrite();
 		return true;
 	}
 
@@ -476,17 +467,9 @@ public class PrepareBattles {
 			System.out.println("Cannot delete: " + priority);
 		}
 
-		// Open battles file
-		PrintStream outtxt;
-
-		try {
-			outtxt = new PrintStream(new BufferedOutputStream(new FileOutputStream(battlesfile)), false);
-		} catch (IOException e) {
-			System.out.println("Not able to open battles file " + battlesfile + " ... Aborting");
-			System.out.println(e);
+		if (!battlesfile.openWrite()) {
 			return false;
 		}
-
 		// Create the participants file
 		int count = 0;
 
@@ -494,6 +477,7 @@ public class PrepareBattles {
 		if (namesAll.size() > meleebots) {
 			while (count < numbattles) {
 				String[] bots = null;
+				boolean prioritized = false;
 				if (namesNoRanking.size() > 0) {
 					// Bug [3547611] - New bots not given priority 
 					List<String> listWithSingleItem = new ArrayList<String>();
@@ -504,31 +488,30 @@ public class PrepareBattles {
 				} else if (count < priorityPairs.size()) {
 					String[] prioritybots = priorityPairs.get(count);
 					bots = getRandomMeleeBots(prioritybots[0], prioritybots[1], namesAll);
+					prioritized = true;
 				} else if (priorityAll.size() > 0 && namesAll.size() >= meleebots) {
 					bots = getRandomMeleeBots(priorityAll, namesAll);
+					prioritized = true;
 				} else if (priorityMini.size() > 0 && namesMini.size() >= meleebots) {
 					bots = getRandomMeleeBots(priorityMini, namesMini);
+					prioritized = true;
 				} else if (priorityMicro.size() > 0 && namesMicro.size() >= meleebots) {
 					bots = getRandomMeleeBots(priorityMicro, namesMicro);
+					prioritized = true;
 				} else if (priorityNano.size() > 0 && namesNano.size() >= meleebots) {
 					bots = getRandomMeleeBots(priorityNano, namesNano);
+					prioritized = true;
 				} else if (namesAll.size() >= meleebots) {
 					bots = getRandomMeleeBots(namesAll, namesAll);
 				}
 				if (bots != null) {
-					StringBuilder battle = new StringBuilder(bots[0]);
-	
-					for (int i = 1; i < bots.length; i++) {
-						battle.append(',').append(bots[i]);
-					}
-					battle.append(',').append(runonly);
-	
-					outtxt.println(battle);
+					battlesfile.writeBattle(new RumbleBattle(bots, runonly, prioritized));
+
 					count++;
 				}
 			}
 		}
-		outtxt.close();
+		battlesfile.closeWrite();
 		return true;
 	}
 
