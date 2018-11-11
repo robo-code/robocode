@@ -168,6 +168,9 @@ public class HiddenAccess {
 				if (name.contains("codesize")) {
 					urls.add(file.toURI().toURL());
 				}
+				if (name.contains("bcel")) {
+					urls.add(file.toURI().toURL());
+				}
 				classPath.append(File.pathSeparator);
 				classPath.append(file.toString());
 			}
