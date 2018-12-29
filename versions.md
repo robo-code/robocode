@@ -1,4 +1,4 @@
-## Version 1.9.3.4 (06-11-2018)
+## Version 1.9.3.4 (29-12-2018)
 
 ### Bugfix
 * [Bug-401][]: RoboRumble client: Biased Melee prioritized pairings
@@ -9,6 +9,7 @@
 ### Changes
 * Upgraded the Codesize tool to version 1.2, which support newer versions of Java (9 experimental) and Java 8 lambdas.
 * The Robocode site is now using HTTPS instead of HTTP, and have been moved permanently to https://robocode.sourceforge.io (".io" instead of ".net")
+* Changed the Maven build files to use the Maven Wrapper (mvnw).
 
 ## Version 1.9.3.3 (10-09-2018)
 
