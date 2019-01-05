@@ -1,4 +1,4 @@
-## Version 1.9.3.4 (29-12-2018)
+## Version 1.9.3.4 (05-01-2019)
 
 ### Bugfix
 * [Bug-401][]: RoboRumble client: Biased Melee prioritized pairings
