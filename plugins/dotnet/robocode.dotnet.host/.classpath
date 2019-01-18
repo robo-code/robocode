@@ -22,7 +22,7 @@
 	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.core/1.9.3.0/robocode.core-1.9.3.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.14.2/picocontainer-2.14.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/robocode.repository/1.9.3.0/robocode.repository-1.9.3.0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.2/codesize-1.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/net/sf/jni4net/jni4net.j/0.8.7.0/jni4net.j-0.8.7.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/junit/junit/4.11/junit-4.11.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"/>

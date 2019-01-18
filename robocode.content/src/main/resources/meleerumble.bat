@@ -6,4 +6,4 @@
 @REM https://robocode.sourceforge.io/license/epl-v10.html
 @REM
 
-java -Xmx1024M -cp libs/robocode.jar;libs/roborumble.jar;libs/codesize-1.1.jar -XX:+IgnoreUnrecognizedVMOptions "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" roborumble.RoboRumbleAtHome ./roborumble/meleerumble.txt
+java -Xmx1024M -cp libs/robocode.jar;libs/roborumble.jar;libs/codesize-1.2.jar -XX:+IgnoreUnrecognizedVMOptions "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" roborumble.RoboRumbleAtHome ./roborumble/meleerumble.txt

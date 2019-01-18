@@ -12,7 +12,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="/robocode.api"/>
-	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.2/codesize-1.2.jar"/>
 	<classpathentry kind="src" path="/robocode.battle"/>
 	<classpathentry kind="src" path="/robocode.core"/>
 	<classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.14.2/picocontainer-2.14.2.jar"/>
