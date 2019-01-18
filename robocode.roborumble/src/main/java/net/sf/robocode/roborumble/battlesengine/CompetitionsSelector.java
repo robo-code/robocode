@@ -40,7 +40,7 @@ public class CompetitionsSelector {
 		sizes = getProperties(sizesfile);
 	}
 
-	public boolean checkCompetitorForSize(String botName, long maxSize) {
+	public Boolean checkCompetitorForSize(String botName, long maxSize) {
 		String name = botName.replace(' ', '_');
 
 		// Read sizes
@@ -62,13 +62,17 @@ public class CompetitionsSelector {
 			}
 		}
 
-		// If the file needs update, then save the file
-		if (fileNeedsUpdate && codeSize > 0) {
-			storeProperties(sizes, sizesfile, "Bots code size");
-		}
+		if (codeSize > 0) {
+			// If the file needs update, then save the file
+			if (fileNeedsUpdate) {
+				storeProperties(sizes, sizesfile, "Bots code size");
+			}
 
-		// Check the code size
-		return (codeSize < maxSize); // Bug-362
+			// Check the code size
+			return (codeSize < maxSize); // Bug-362
+		} else {
+			return null;
+		}
 	}
 
 	public boolean checkCompetitorsForSize(String bot1, String bot2, long maxsize) {
