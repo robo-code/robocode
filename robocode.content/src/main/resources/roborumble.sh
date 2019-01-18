@@ -9,5 +9,5 @@
 
 pwd=`pwd`
 cd "${0%/*}"
-java -Xmx512M -cp libs/robocode.jar:libs/roborumble.jar:libs/codesize-1.2.jar -XX:+IgnoreUnrecognizedVMOptions "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" roborumble.RoboRumbleAtHome ./roborumble/roborumble.txt
+java -Xmx512M -cp libs/robocode.jar:libs/roborumble.jar:libs/bcel-6.2.jar:libs/codesize-1.2.jar -XX:+IgnoreUnrecognizedVMOptions "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" roborumble.RoboRumbleAtHome ./roborumble/roborumble.txt
 cd "${pwd}"
