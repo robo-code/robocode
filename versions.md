@@ -1,6 +1,14 @@
+## Version 1.9.3.5 (20-01-2019)
+
+### Bugfixes
+* [Bug-402][]: roborumble.sh etc. has incorrect class path
+	* This was causing codesize utility not being able to work with roborumble. And unfortunately, this error was silenced so the user wouldn't notice that at all.
+* [Bug-403][]: MouseEvent returning wrong position
+	* All credits goes to Xor for these fixes. :-)
+
 ## Version 1.9.3.4 (05-01-2019)
 
-### Bugfix
+### Bugfixes
 * [Bug-401][]: RoboRumble client: Biased Melee prioritized pairings
 	* All credits goes to Xor for this fix. :-)
 * An error was thrown every time Robocode checked for a new version. The reason being that the Robocode web page has been moved.
@@ -13,7 +21,7 @@
 
 ## Version 1.9.3.3 (10-09-2018)
 
-### Bug fix
+### Bug fixes
 * Fixed issue with the RobocodeEngine, which could not read robots in "developer mode" (marked with a asterix '*' character)
 * [Bug-395][]: Roborumble client duplicates battle results on network error.
 * [Bug-397][]: Robocode UI cannot remember battle settings upon restart.
@@ -3081,6 +3089,8 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-399]: http://sourceforge.net/p/robocode/bugs/399/  (RANDOMSEED option does not support Java 8)
 [Bug-400]: http://sourceforge.net/p/robocode/bugs/400/  (Problem to compile Robot)
 [Bug-401]: http://sourceforge.net/p/robocode/bugs/401/  (RoboRumble client: Biased Melee prioritized pairings)
+[Bug-402]: http://sourceforge.net/p/robocode/bugs/402/  (roborumble.sh etc. has incorrect class path)
+[Bug-403]: http://sourceforge.net/p/robocode/bugs/403/  (MouseEvent returning wrong position)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
