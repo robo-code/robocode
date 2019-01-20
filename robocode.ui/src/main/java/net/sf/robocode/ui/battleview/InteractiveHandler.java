@@ -110,7 +110,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		int fHeight = battleProps.getBattlefieldHeight();
 
 		if (vWidth < fWidth || vHeight < fHeight) {
-			scale = min((double) vWidth / fWidth, (double) fHeight / fHeight);
+			scale = min((double) vWidth / fWidth, (double) vHeight / fHeight);
 		} else {
 			scale = 1;
 		}
@@ -136,7 +136,7 @@ public final class InteractiveHandler implements KeyEventDispatcher, MouseListen
 		int fHeight = battleProps.getBattlefieldHeight();
 
 		if (vWidth < fWidth || vHeight < fHeight) {
-			scale = min((double) vWidth / fWidth, (double) fHeight / fHeight);
+			scale = min((double) vWidth / fWidth, (double) vHeight / fHeight);
 		} else {
 			scale = 1;
 		}
