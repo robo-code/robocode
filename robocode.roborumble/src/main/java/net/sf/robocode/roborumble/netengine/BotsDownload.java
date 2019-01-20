@@ -9,6 +9,7 @@ package net.sf.robocode.roborumble.netengine;
 
 
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.repository.CodeSizeCalculator;
 import net.sf.robocode.roborumble.battlesengine.CompetitionsSelector;
 import static net.sf.robocode.roborumble.netengine.FileTransfer.DownloadStatus;
 import static net.sf.robocode.roborumble.util.ExcludesUtil.*;
@@ -350,7 +351,15 @@ public class BotsDownload {
 
 		// Check the bot and save it into the repository
 
+		Integer codeSize;
+
 		if (checkJarFile(tempFileName, botname)) {
+			codeSize = CodeSizeCalculator.getJarFileCodeSize(new File(tempFileName));
+			if (codeSize == null) {
+				System.out.println("Unable to calc codesize for " + tempFileName);
+				return false;
+			}
+
 			if (!FileTransfer.copy(tempFileName, repositoryFileName)) {
 				System.out.println("Unable to copy " + tempFileName + " into the repository");
 				return false;
@@ -360,7 +369,7 @@ public class BotsDownload {
 			return false;
 		}
 
-		System.out.println("Downloaded " + botname + " into " + repositoryFileName);
+		System.out.println("Downloaded " + botname + " into " + repositoryFileName + " (Codesize: " + codeSize + ")");
 		return true;
 	}
 

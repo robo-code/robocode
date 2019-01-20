@@ -27,7 +27,7 @@
 	<classpathentry kind="src" path="/robocode.host"/>
 	<classpathentry kind="src" path="/robocode.battle"/>
 	<classpathentry kind="src" path="/robocode.repository"/>
-	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.2/codesize-1.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

@@ -16,7 +16,7 @@
 	<classpathentry kind="var" path="M2_REPO/org/picocontainer/picocontainer/2.14.2/picocontainer-2.14.2.jar"/>
 	<classpathentry kind="src" path="/robocode.host"/>
 	<classpathentry kind="src" path="/robocode.repository"/>
-	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.1/codesize-1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/robocode/codesize/1.2/codesize-1.2.jar"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
