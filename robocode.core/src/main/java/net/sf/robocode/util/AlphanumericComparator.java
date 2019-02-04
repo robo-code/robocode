@@ -58,19 +58,7 @@ public class AlphanumericComparator implements Comparator<String>, java.io.Seria
 			return 0;
 		}
 
-		// Main loop where we keep read tokens from both input strings until the tokens differ 
-
-		String tok1;
-		int result = 0;
-
-		for (int index = 0;; index += tok1.length()) {
-			tok1 = readToken(str1, index);
-
-			result = compareTokens(tok1, readToken(str2, index));
-			if (result != 0) {
-				return result;
-			}
-		}
+		return str1.compareTo(str2);
 	}
 
 	/**
