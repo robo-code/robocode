@@ -157,19 +157,23 @@ public class HiddenAccess {
 		if (files != null) {
 			for (File file : files) {
 				final String name = file.toString().toLowerCase();
-
-				if (name.contains("robocode.core")) {
+				final URL url = file.toURI().toURL();
+				
+				if (name.contains("robocode.core")) { // Robocode core
 					foundCore = true;
-					urls.add(file.toURI().toURL());
+					urls.add(url);
 				}
-				if (name.contains("picocontainer")) {
-					urls.add(file.toURI().toURL());
+				if (name.contains("picocontainer")) { // Picocontainer used for modularization
+					urls.add(url);
 				}
-				if (name.contains("codesize")) {
-					urls.add(file.toURI().toURL());
+				if (name.contains("codesize")) { // Codesize tool
+					urls.add(url);
 				}
-				if (name.contains("bcel")) {
-					urls.add(file.toURI().toURL());
+				if (name.contains("bcel")) { // BCEL used by Codesize
+					urls.add(url);
+				}
+				if (name.contains("kotlin-stdlib")) { // Kotlin standard library
+					urls.add(url);
 				}
 				classPath.append(File.pathSeparator);
 				classPath.append(file.toString());

@@ -87,8 +87,8 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	}
 
 	public synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-		if (name.startsWith("java.lang")) {
-			// we always delegate java.lang stuff to parent loader
+		if (name.startsWith("java.lang") || name.startsWith("kotlin.")) {
+			// we always delegate java.lang and Kotlin stuff to parent loader
 			return super.loadClass(name, resolve);
 		}
 		if (RobocodeProperties.isSecurityOn()) {
