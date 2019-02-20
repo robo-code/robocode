@@ -438,9 +438,9 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 					URL u = urls[i];
 					if (u != null) {
 						try {
-							url = new URL(u.getProtocol(), u.getHost(), u.getPort(), u.getPath() + name);
-							if (u.openConnection() != null) {							
-								break;
+							URL tmp = new URL(u.getProtocol(), u.getHost(), u.getPort(), u.getPath() + name);
+							if (u.openConnection() != null) {
+								return tmp;
 							}
 						} catch (MalformedURLException ignore) {
 						} catch (IOException ignore) {
