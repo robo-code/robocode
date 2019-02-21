@@ -11,22 +11,16 @@ package net.sf.robocode.host.security;
 import net.sf.robocode.core.Container;
 import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IRobotClassLoader;
-import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.RobocodeProperties;
-import net.sf.robocode.io.URLJarCollector;
 import robocode.robotinterfaces.IBasicRobot;
 
-import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.security.*;
 import java.security.cert.Certificate;
@@ -156,47 +150,8 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 				// this is URL, don't change to File.pathSeparator
 				String path = name.replace('.', '/').concat(".class");
 				URL url = findResource(path);
-				ByteBuffer result = null;
-				InputStream is = null;
-				BufferedInputStream bis = null;
 
-				if (url != null) {
-					try {
-						URLConnection connection = URLJarCollector.openConnection(url);
-
-						is = connection.getInputStream();
-						bis = new BufferedInputStream(is);
-
-						result = ByteBuffer.allocate(1024 * 8);
-						boolean done = false;
-
-						do {
-							do {
-								int res = bis.read(result.array(), result.position(), result.remaining());
-
-								if (res == -1) {
-									done = true;
-									break;
-								}
-								result.position(result.position() + res);
-							} while (result.remaining() != 0);
-							result.flip();
-							if (!done) {
-								result = ByteBuffer.allocate(result.capacity() * 2).put(result);
-							}
-						} while (!done);
-
-					} catch (FileNotFoundException ignore) {
-						return null;
-					} catch (IOException e) {
-						Logger.logError(e);
-						return null;
-					} finally {
-						FileUtil.cleanupStream(bis);
-						FileUtil.cleanupStream(is);
-					}
-				}
-				return result;
+				return ClassFileReader.readClassFileFromURL(url);
 			}
 		});
 	}
@@ -219,6 +174,9 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 	}
 
 	public synchronized Class<?> loadRobotMainClass(boolean resolve) throws ClassNotFoundException {
+		if (fullClassName == null) return null;
+
+
 		try {
 			if (robotClass == null) {
 				robotClass = loadClass(fullClassName, resolve);

@@ -8,6 +8,8 @@
 package net.sf.robocode.repository.root;
 
 
+import net.sf.robocode.host.security.ClassAnalyzer;
+import net.sf.robocode.host.security.ClassFileReader;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
@@ -25,8 +27,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
@@ -71,7 +72,7 @@ public final class JarRoot extends BaseRoot implements IRepositoryRoot {
 			repository.removeItemsFromRoot(this);
 			this.lastModified = lastModified;
 
-			List<IRepositoryItem> repositoryItems = new ArrayList<IRepositoryItem>();
+			Set<IRepositoryItem> repositoryItems = new LinkedHashSet<IRepositoryItem>();
 
 			visitItems(repositoryItems);
 			for (IRepositoryItem repositoryItem : repositoryItems) {
@@ -80,7 +81,7 @@ public final class JarRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void visitItems(List<IRepositoryItem> repositoryItems) {
+	private void visitItems(Collection<IRepositoryItem> repositoryItems) {
 		String root = jarPath;
 		InputStream is = null;
 		BufferedInputStream bis = null;
@@ -103,11 +104,15 @@ public final class JarRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void readJarStream(List<IRepositoryItem> repositoryItems, String root, JarInputStream jarIS) throws IOException {
-		JarEntry entry = jarIS.getNextJarEntry();
+	private void readJarStream(Collection<IRepositoryItem> repositoryItems, String root, JarInputStream jarIS) throws IOException {
+		final URL rootURL = new URL(root + "!/");
 
+		ClassAnalyzer.RobotMainClassPredicate mainClassPredicate = ClassFileReader.createMainClassPredicate(rootURL);
+
+		JarEntry entry = jarIS.getNextJarEntry();
 		while (entry != null) {
-			String name = entry.getName().toLowerCase();
+			String fullName = entry.getName();
+			String name = fullName.toLowerCase();
 
 			if (!entry.isDirectory()) {
 				if (name.contains(".data/") && !name.contains(".robotcache/")) {
@@ -118,14 +123,18 @@ public final class JarRoot extends BaseRoot implements IRepositoryRoot {
 
 						try {
 							inner = new JarInputStream(jarIS);
-							readJarStream(repositoryItems, "jar:jar" + root + JarJar.SEPARATOR + entry.getName(), inner);
+							readJarStream(repositoryItems, "jar:jar" + root + JarJar.SEPARATOR + fullName, inner);
 						} finally {
 							if (inner != null) {
 								inner.closeEntry();								
 							}
 						}
+					} else if (name.endsWith(".class")) {
+						if (mainClassPredicate.isMainClassBinary(fullName.substring(0, fullName.length() - 6))) {
+							createItem(repositoryItems, rootURL, entry);
+						}
 					} else {
-						createItem(repositoryItems, new URL(root + "!/"), entry);
+						createItem(repositoryItems, rootURL, entry);
 					}
 				}
 			}
@@ -133,7 +142,7 @@ public final class JarRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void createItem(List<IRepositoryItem> repositoryItems, URL root, JarEntry entry) {
+	private void createItem(Collection<IRepositoryItem> repositoryItems, URL root, JarEntry entry) {
 		try {
 			String pUrl = root.toString() + entry.getName();
 			IRepositoryItem repositoryItem = ItemHandler.registerItem(new URL(pUrl), JarRoot.this, repository);
@@ -174,4 +183,5 @@ public final class JarRoot extends BaseRoot implements IRepositoryRoot {
 	public void extractJAR() {
 		JarExtractor.extractJar(rootURL);
 	}
+
 }
