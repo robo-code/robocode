@@ -1,11 +1,12 @@
-## Version 1.9.3.5 Beta (12-02-2019)
+## Version 1.9.3.5 (25-02-2019)
 
 ### Bugfixes
 * [Bug-402][]: roborumble.sh etc. has incorrect class path
 	* This was causing codesize utility not being able to work with roborumble. And unfortunately, this error was silenced so the user wouldn't notice that at all.
 * [Bug-403][]: MouseEvent returning wrong position''
 * [Bug-405][]: Fix #405 unnecessary FileNotFound exception
-* All credits goes to Xor and Bumfo for all these fixes. :-)
+* Rumble: skip bots that fails to download when calc code size
+* Credits to Xor and Bumfo for all these fixes. :-)
 
 ### Changes
 * Added support for Kotlin. Just put the kotlin-stdlib-1.x.xx.jar into the /libs folder to allow robots coded in Kotlin.
