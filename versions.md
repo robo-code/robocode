@@ -11,7 +11,7 @@
 ### Changes
 * Added support for Kotlin. Just put the kotlin-stdlib-1.x.xx.jar into the /libs folder to allow robots coded in Kotlin.
 
-## Version 1.9.3.5 (05-01-2019)
+## Version 1.9.3.4 (05-01-2019)
 
 ### Bugfixes
 * [Bug-401][]: RoboRumble client: Biased Melee prioritized pairings
