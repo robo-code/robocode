@@ -18,6 +18,7 @@ import net.sf.robocode.io.URLJarCollector;
 import robocode.robotinterfaces.IBasicRobot;
 
 import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -185,6 +186,8 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 							}
 						} while (!done);
 
+					} catch (FileNotFoundException ignore) {
+						return null;
 					} catch (IOException e) {
 						Logger.logError(e);
 						return null;
@@ -438,9 +441,9 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 					URL u = urls[i];
 					if (u != null) {
 						try {
-							url = new URL(u.getProtocol(), u.getHost(), u.getPort(), u.getPath() + name);
-							if (u.openConnection() != null) {							
-								break;
+							URL tmp = new URL(u.getProtocol(), u.getHost(), u.getPort(), u.getPath() + name);
+							if (u.openConnection() != null) {
+								return tmp;
 							}
 						} catch (MalformedURLException ignore) {
 						} catch (IOException ignore) {
