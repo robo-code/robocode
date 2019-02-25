@@ -475,6 +475,8 @@ public class BotsDownload {
 		Set<String> namesMicro = new HashSet<String>();
 		Set<String> namesNano = new HashSet<String>();
 
+		Set<String> notFound = new HashSet<String>();
+
 		BufferedReader br = null;
 		try {
 			FileReader fr = new FileReader(participantsfile);
@@ -484,15 +486,20 @@ public class BotsDownload {
 				if (record.indexOf(",") != -1) {
 					String name = record.substring(0, record.indexOf(",")).replace(' ', '_');
 
-					namesAll.add(name);
-					if (size.checkCompetitorForSize(name, 1500)) {
-						namesMini.add(name);
-					}
-					if (size.checkCompetitorForSize(name, 750)) {
-						namesMicro.add(name);
-					}
-					if (size.checkCompetitorForSize(name, 250)) {
-						namesNano.add(name);
+					File f = new File(botsrepository + name + ".jar");
+					if (f.exists()) {
+						namesAll.add(name);
+						if (size.checkCompetitorForSize(name, 1500)) {
+							namesMini.add(name);
+						}
+						if (size.checkCompetitorForSize(name, 750)) {
+							namesMicro.add(name);
+						}
+						if (size.checkCompetitorForSize(name, 250)) {
+							namesNano.add(name);
+						}
+					} else {
+						notFound.add(name);
 					}
 				}
 			}
@@ -518,7 +525,7 @@ public class BotsDownload {
 		for (Enumeration<?> e = generalRatings.propertyNames(); e.hasMoreElements();) {
 			String bot = (String) e.nextElement();
 
-			if (!(isExcluded(bot) || namesAll.contains(bot))) {
+			if (!(isExcluded(bot) || notFound.contains(bot) || namesAll.contains(bot))) {
 				// Remove the bot from the ratings file
 				System.out.println("Removing entry ... " + bot + " from " + generalBots);
 				removeBot(generalBots, bot);
@@ -528,7 +535,7 @@ public class BotsDownload {
 		for (Enumeration<?> e = miniRatings.propertyNames(); e.hasMoreElements();) {
 			String bot = (String) e.nextElement();
 
-			if (!(isExcluded(bot) || namesMini.contains(bot))) {
+			if (!(isExcluded(bot) || notFound.contains(bot) || namesMini.contains(bot))) {
 				// Remove the bot from the ratings file
 				System.out.println("Removing entry ... " + bot + " from " + miniBots);
 				removeBot(miniBots, bot);
@@ -539,7 +546,7 @@ public class BotsDownload {
 		for (Enumeration<?> e = microRatings.propertyNames(); e.hasMoreElements();) {
 			String bot = (String) e.nextElement();
 
-			if (!(isExcluded(bot) || namesMicro.contains(bot))) {
+			if (!(isExcluded(bot) || notFound.contains(bot) || namesMicro.contains(bot))) {
 				// Remove the bot from the ratings file
 				System.out.println("Removing entry ... " + bot + " from " + microBots);
 				removeBot(microBots, bot);
@@ -550,7 +557,7 @@ public class BotsDownload {
 		for (Enumeration<?> e = nanoRatings.propertyNames(); e.hasMoreElements();) {
 			String bot = (String) e.nextElement();
 
-			if (!(isExcluded(bot) || namesNano.contains(bot))) {
+			if (!(isExcluded(bot) || notFound.contains(bot) || namesNano.contains(bot))) {
 				// Remove the bot from the ratings file
 				System.out.println("Removing entry ... " + bot + " from " + nanoBots);
 				removeBot(nanoBots, bot);
