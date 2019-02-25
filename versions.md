@@ -3,8 +3,9 @@
 ### Bugfixes
 * [Bug-402][]: roborumble.sh etc. has incorrect class path
 	* This was causing codesize utility not being able to work with roborumble. And unfortunately, this error was silenced so the user wouldn't notice that at all.
-* [Bug-403][]: MouseEvent returning wrong position
-	* All credits goes to Xor for these fixes. :-)
+* [Bug-403][]: MouseEvent returning wrong position''
+* [Bug-405][]: Fix #405 unnecessary FileNotFound exception
+* All credits goes to Xor and Bumfo for all these fixes. :-)
 
 ### Changes
 * Added support for Kotlin. Just put the kotlin-stdlib-1.x.xx.jar into the /libs folder to allow robots coded in Kotlin.
@@ -3094,6 +3095,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-401]: http://sourceforge.net/p/robocode/bugs/401/  (RoboRumble client: Biased Melee prioritized pairings)
 [Bug-402]: http://sourceforge.net/p/robocode/bugs/402/  (roborumble.sh etc. has incorrect class path)
 [Bug-403]: http://sourceforge.net/p/robocode/bugs/403/  (MouseEvent returning wrong position)
+[Bug-405]: http://sourceforge.net/p/robocode/bugs/403/	(Fix #405 unnecessary FileNotFound exception)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
