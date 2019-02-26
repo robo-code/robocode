@@ -11,6 +11,3 @@ ucdetector_reports
 .recommenders
 .sonarlint
 RemoteSystemsTempFiles
-/mvnw
-/mvnw.cmd
-/.mvn
