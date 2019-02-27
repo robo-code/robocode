@@ -245,13 +245,13 @@ public class AutoExtract implements ActionListener {
 					if (!skipEntry) {
 						status.setText(entryName + " " + SPINNER[spin++]);
 	
-						File out = new File(installDir, entryName);
+						File outputFile = new File(installDir, entryName);
 
-						File parentDirectory = new File(out.getParent());
+						File parentDirectory = new File(outputFile.getParent());
 						if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
 							System.err.println("Can't create dir: " + parentDirectory);
 						}
-						fos = new FileOutputStream(out);
+						fos = new FileOutputStream(outputFile);
 
 						int bytes = 0;
 						int count = 0;
@@ -271,15 +271,20 @@ public class AutoExtract implements ActionListener {
 						}
 						fos.close();						
 
-						// Set file permissions for .sh and .command files under Unix and Mac OS X
-						if (File.separatorChar == '/') {
-							if (isShFile || isCommandFile) {
+						status.setText(entryName + " " + SPINNER[spin++] + " (" + bytes + " bytes)");
+
+						if (isShFile || isCommandFile) {
+							String filePath = outputFile.getAbsolutePath();
+							
+							// Remove ^M (MS DOS) characters, if they exists
+							dos2unix(filePath);
+
+							// Set file permissions for .sh and .command files under Unix and Mac OS X
+							if (File.separatorChar == '/') {
 								// Grant read and execute access for everyone and also write access for the owner of the file
-								Runtime.getRuntime().exec("chmod 755 " + out.toString());
+								Runtime.getRuntime().exec("chmod 755 " + filePath);
 							}
 						}
-
-						status.setText(entryName + " " + SPINNER[spin++] + " (" + bytes + " bytes)");
 					}
 				}
 			}
@@ -732,4 +737,50 @@ public class AutoExtract implements ActionListener {
 		}
 		return Integer.parseInt(major);
 	}
+
+    private static void dos2unix(String filepath) throws IOException {
+
+        File tempFile = File.createTempFile("robocode", null);
+        FileWriter fileWriter = null;
+
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+        try {
+            fileWriter = new FileWriter(tempFile);
+
+            fileReader = new FileReader(filepath);
+            bufferedReader = new BufferedReader(fileReader);
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                line = line.replaceAll("\r", "");
+
+                fileWriter.write(line);
+                fileWriter.write('\n');
+            }
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException ignore) {
+                }
+            }
+            if (fileReader != null) {
+                try {
+                    fileReader.close();
+                } catch (IOException ignore) {
+                }
+            }
+            if (fileWriter != null) {
+                try {
+                    fileWriter.close();
+                } catch (IOException ignore) {
+                }
+            }
+        }
+
+        if (new File(filepath).delete()) {
+            tempFile.renameTo(new File(filepath));
+        }
+    }
 }
