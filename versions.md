@@ -1,4 +1,4 @@
-## Version 1.9.3.5 (25-02-2019)
+## Version 1.9.3.5 (02-03-2019)
 
 ### Bugfixes
 * [Bug-402][]: roborumble.sh etc. has incorrect class path
@@ -9,7 +9,7 @@
 * Credits to Xor and Bumfo for all these fixes. :-)
 
 ### Changes
-* Added support for Kotlin. Just put the kotlin-stdlib-1.x.xx.jar into the /libs folder to allow robots coded in Kotlin.
+* Added support for Kotlin. Just put the kotlin-stdlib-1.xxx.jar into the /libs folder to allow robots coded in Kotlin.
 
 ## Version 1.9.3.4 (05-01-2019)
 
