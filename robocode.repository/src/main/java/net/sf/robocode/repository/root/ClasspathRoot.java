@@ -8,6 +8,8 @@
 package net.sf.robocode.repository.root;
 
 
+import net.sf.robocode.host.security.ClassAnalyzer;
+import net.sf.robocode.host.security.ClassFileReader;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepository;
 import net.sf.robocode.repository.items.IRepositoryItem;
@@ -17,8 +19,10 @@ import net.sf.robocode.util.UrlUtil;
 import java.io.File;
 import java.io.FileFilter;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -53,7 +57,9 @@ public final class ClasspathRoot extends BaseRoot implements IRepositoryRoot {
 		List<IRepositoryItem> items = new ArrayList<IRepositoryItem>();
 		List<Long> itemsLastModification = new ArrayList<Long>();
 
-		visitDirectory(rootPath, items, itemsLastModification);
+		ClassAnalyzer.RobotMainClassPredicate mainClassPredicate = ClassFileReader.createMainClassPredicate(rootURL);
+
+		visitDirectory(rootPath.toURI(), rootPath, items, itemsLastModification, mainClassPredicate);
 
 		// Run thru all found repository items and update these according to their 'last modified' date
 		for (int i = 0; i < items.size(); i++) {
@@ -62,23 +68,24 @@ public final class ClasspathRoot extends BaseRoot implements IRepositoryRoot {
 		}
 	}
 
-	private void visitDirectory(File path, final List<IRepositoryItem> items, final List<Long> itemsLastModification) {
-		
+	private void visitDirectory(final URI rootURI, final File path, final List<IRepositoryItem> items, final List<Long> itemsLastModification, final ClassAnalyzer.RobotMainClassPredicate mainClassPredicate) {
+		final HashMap<IRepositoryItem, Integer> map = new HashMap<IRepositoryItem, Integer>();
+
 		path.listFiles(
 				new FileFilter() {
 			public boolean accept(File pathname) {
+				boolean accept = false;
+
 				if (pathname.isFile()) {
-					try {
-						IRepositoryItem repositoryItem = ItemHandler.registerItem(pathname.toURI().toURL(),
-								ClasspathRoot.this, repository);
-						if (repositoryItem != null) {
-							items.add(repositoryItem);
-							itemsLastModification.add(pathname.lastModified());
-						}
-					} catch (MalformedURLException e) {
-						Logger.logError(e);
+					String fullName = rootURI.relativize(pathname.toURI()).toString();
+					if (fullName.toLowerCase().endsWith(".class")) {
+						accept = mainClassPredicate.isMainClassBinary(fullName.substring(0, fullName.length() - 6));
+					} else {
+						accept = true;
 					}
 				}
+
+				if (accept) visitFile(pathname, map, items, itemsLastModification);
 				return false;
 			}
 		});
@@ -94,8 +101,33 @@ public final class ClasspathRoot extends BaseRoot implements IRepositoryRoot {
 
 		if (subDirs != null) {
 			for (File subDir : subDirs) {
-				visitDirectory(subDir, items, itemsLastModification);
+				visitDirectory(rootURI, subDir, items, itemsLastModification, mainClassPredicate);
 			}
+		}
+	}
+
+	private void visitFile(File pathname, HashMap<IRepositoryItem, Integer> map, List<IRepositoryItem> items, List<Long> itemsLastModification) {
+		try {
+			IRepositoryItem repositoryItem = ItemHandler.registerItem(pathname.toURI().toURL(),
+					ClasspathRoot.this, repository);
+			if (repositoryItem != null) {
+				Integer indice = map.get(repositoryItem);
+				long lastModified = pathname.lastModified();
+
+				if (indice == null) {
+					map.put(repositoryItem, itemsLastModification.size());
+					items.add(repositoryItem);
+					itemsLastModification.add(lastModified);
+				} else {
+					int index = indice;
+					long v = itemsLastModification.get(index);
+					if (lastModified > v) {
+						itemsLastModification.set(index, lastModified);
+					}
+				}
+			}
+		} catch (MalformedURLException e) {
+			Logger.logError(e);
 		}
 	}
 
