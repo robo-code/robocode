@@ -1,3 +1,8 @@
+## Version 1.9.3.6 Alpha (02-03-2019)
+
+### Changes
+* Fix by Bumfo, which makes Robocode faster at detecting robots in the robot folder, which is crucial for the RoboRumble, when installing or updating a huge amount of robots.
+
 ## Version 1.9.3.5 (02-03-2019)
 
 ### Bugfixes
@@ -3096,7 +3101,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-401]: http://sourceforge.net/p/robocode/bugs/401/  (RoboRumble client: Biased Melee prioritized pairings)
 [Bug-402]: http://sourceforge.net/p/robocode/bugs/402/  (roborumble.sh etc. has incorrect class path)
 [Bug-403]: http://sourceforge.net/p/robocode/bugs/403/  (MouseEvent returning wrong position)
-[Bug-405]: http://sourceforge.net/p/robocode/bugs/403/	(Fix #405 unnecessary FileNotFound exception)
+[Bug-405]: http://sourceforge.net/p/robocode/bugs/405/	(Fix #405 unnecessary FileNotFound exception)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
