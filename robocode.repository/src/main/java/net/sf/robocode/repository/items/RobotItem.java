@@ -33,7 +33,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 
@@ -280,19 +279,7 @@ public class RobotItem extends RobotSpecItem implements IRobotItem {
 				urls.add(friendly);
 			}
 		}
-	
-		// Friendly urls containing ending asterix like "test.Robot* must be changed into "test.Robot".
-		// That is, contain no ending asterix.
-		Set<String> updatedUrls = new HashSet<String>();
-		
-		for (String furl : urls) {
-			if (furl.endsWith("*")) {
-				furl = furl.substring(0, furl.length() - 1);
-			}
-			updatedUrls.add(furl);
-		}
-		
-		return updatedUrls;
+		return urls;
 	}
 
 	/**

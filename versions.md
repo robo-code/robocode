@@ -1,4 +1,8 @@
-## Version 1.9.3.6 Alpha (02-03-2019)
+## Version 1.9.3.6 Alpha (07-03-2019)
+
+### Bugfixes
+* [Bug-404][]: Confusion between development/non-development versions of bots
+	* Rollback of previous attempt to fix issues with the RobocodeEngine, which could not read robots in "developer mode" (marked with a asterix character). Hence the old bug [Bug-398][] is back.
 
 ### Changes
 * Fix by Bumfo, which makes Robocode faster at detecting robots in the robot folder, which is crucial for the RoboRumble, when installing or updating a huge amount of robots.
@@ -3101,6 +3105,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-401]: http://sourceforge.net/p/robocode/bugs/401/  (RoboRumble client: Biased Melee prioritized pairings)
 [Bug-402]: http://sourceforge.net/p/robocode/bugs/402/  (roborumble.sh etc. has incorrect class path)
 [Bug-403]: http://sourceforge.net/p/robocode/bugs/403/  (MouseEvent returning wrong position)
+[Bug-404]: http://sourceforge.net/p/robocode/bugs/404/  (Confusion between development/non-development versions of bots)
 [Bug-405]: http://sourceforge.net/p/robocode/bugs/405/	(Fix #405 unnecessary FileNotFound exception)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
