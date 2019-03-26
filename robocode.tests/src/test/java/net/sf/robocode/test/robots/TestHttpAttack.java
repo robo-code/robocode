@@ -18,7 +18,7 @@ import robocode.control.events.TurnEndedEvent;
  */
 public class TestHttpAttack extends RobocodeTestBed {
 
-	private boolean messagedAccessDenied;
+	private boolean securityExceptionOccurred;
 	
 	@Override
 	public String getRobotNames() {
@@ -31,19 +31,18 @@ public class TestHttpAttack extends RobocodeTestBed {
 
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-		if (out.contains("access denied (java.net.SocketPermission")
-				|| out.contains("access denied (\"java.net.SocketPermission\"")) {
-			messagedAccessDenied = true;	
+		if (out.contains("java.lang.SecurityException:")) {
+			securityExceptionOccurred = true;	
 		}	
 	}
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue("HTTP connection is not allowed", messagedAccessDenied);
+		Assert.assertTrue("Socket connection is not allowed", securityExceptionOccurred);
 	}
 
 	@Override
 	protected int getExpectedErrors() {
-		return hasJavaNetURLPermission ? 2 : 1; // Security error must be reported as an error. Java 8 reports two errors.
+		return 1;
 	}
 }

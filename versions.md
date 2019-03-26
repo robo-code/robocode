@@ -2,7 +2,7 @@
 
 ### Bugfixes
 * [Bug-404][]: Confusion between development/non-development versions of bots
-	* Rollback of previous attempt to fix issues with the RobocodeEngine, which could not read robots in "developer mode" (marked with a asterix character). Hence the old bug [Bug-398][] is back.
+	* Rollback of previous attempt to fix issues with the RobocodeEngine, which could not read robots in "developer mode" (marked with a asterix character). Hence the old bug [Bug-398][] has been reintroduced.
 
 ### Changes
 * Fix by Bumfo, which makes Robocode faster at detecting robots in the robot folder, which is crucial for the RoboRumble, when installing or updating a huge amount of robots.

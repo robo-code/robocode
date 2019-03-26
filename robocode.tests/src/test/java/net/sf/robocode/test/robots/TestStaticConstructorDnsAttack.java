@@ -7,23 +7,20 @@
  */
 package net.sf.robocode.test.robots;
 
-
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Assert;
 import robocode.control.events.TurnEndedEvent;
 
-
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestConstructorHttpAttack extends RobocodeTestBed {
+public class TestStaticConstructorDnsAttack extends RobocodeTestBed {
 
-	private boolean messagedInitialization;
 	private boolean securityExceptionOccurred;
 	
 	@Override
 	public String getRobotNames() {
-		return "tested.robots.ConstructorHttpAttack,sample.Target";
+		return "tested.robots.DnsAttack,sample.Target";
 	}
 
 	@Override
@@ -32,23 +29,18 @@ public class TestConstructorHttpAttack extends RobocodeTestBed {
 
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-		if (out.contains("An error occurred during initialization")) {
-			messagedInitialization = true;	
-		}	
-
-		if (out.contains("java.lang.SecurityException:")) {
+		if (out.contains("SYSTEM: Using socket is not allowed")) {
 			securityExceptionOccurred = true;	
 		}	
 	}
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue("Error during initialization", messagedInitialization);
 		Assert.assertTrue("Socket connection is not allowed", securityExceptionOccurred);
 	}
 
 	@Override
 	protected int getExpectedErrors() {
-		return 2;
+		return 1;
 	}
 }

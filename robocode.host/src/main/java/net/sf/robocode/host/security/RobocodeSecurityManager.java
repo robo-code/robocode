@@ -12,7 +12,9 @@ import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
 import net.sf.robocode.io.RobocodeProperties;
 
+import java.net.SocketPermission;
 import java.security.AccessControlException;
+import java.security.Permission;
 
 
 /**
@@ -49,7 +51,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 		}
 
 		Thread c = Thread.currentThread();
-
 		if (isSafeThread(c)) {
 			return;
 		}
@@ -84,7 +85,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 			if (robotProxy != null) {
 				robotProxy.punishSecurityViolation(message);
 			}
-			throw new AccessControlException(message);
+			throw new SecurityException(message);
 		}
 	}
 
@@ -94,7 +95,6 @@ public class RobocodeSecurityManager extends SecurityManager {
 			return;
 		}
 		Thread c = Thread.currentThread();
-
 		if (isSafeThread(c)) {
 			return;
 		}
@@ -123,9 +123,27 @@ public class RobocodeSecurityManager extends SecurityManager {
 			String message = "Robots are only allowed to create up to 5 threads!";
 
 			robotProxy.punishSecurityViolation(message);
-			throw new AccessControlException(message);
+			throw new SecurityException(message);
 		}
 	}
+	
+    public void checkPermission(Permission perm) {
+		if (RobocodeProperties.isSecurityOff()) {
+			return;
+		}
+		Thread c = Thread.currentThread();
+		if (isSafeThread(c)) {
+			return;
+		}
+        super.checkPermission(perm);
+
+        if (perm instanceof SocketPermission) {
+    		IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
+        	String message = "Using socket is not allowed";
+        	robotProxy.punishSecurityViolation(message);
+            throw new SecurityException(message);
+        }
+    }
 
 	private boolean isSafeThread(Thread c) {
 		return threadManager.isSafeThread(c);
