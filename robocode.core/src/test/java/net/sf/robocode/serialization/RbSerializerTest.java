@@ -242,15 +242,17 @@ public class RbSerializerTest {
 		};
 
 		d.setSize(200, 200);
+		if (!java.awt.GraphicsEnvironment.isHeadless()) {
+			JFrame f = new JFrame() {
+			};
 
-		JFrame f = new JFrame() {};
-
-		f.add(d);
-		f.pack();
-		f.setVisible(true);
-		f.setFocusable(true);
-		Thread.sleep(100);
-		f.setVisible(false);
+			f.add(d);
+			f.pack();
+			f.setVisible(true);
+			f.setFocusable(true);
+			Thread.sleep(100);
+			f.setVisible(false);
+		}
 
 		Assert.assertNull("Exception occured: " + exception, exception);
 	}
