@@ -50,6 +50,7 @@ public class TestAwtAttack extends RobocodeTestBed {
 
 	@Override
 	protected void runSetup() {
+		if (java.awt.GraphicsEnvironment.isHeadless()) return;
 		frame = new JFrame();
 		frame.setVisible(true);
 	}
@@ -66,6 +67,7 @@ public class TestAwtAttack extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
+		if (java.awt.GraphicsEnvironment.isHeadless()) return;
 
 		Runnable doCheck = new Runnable() {
 			public void run() {
