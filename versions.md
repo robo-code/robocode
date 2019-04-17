@@ -1,8 +1,10 @@
-## Version 1.9.3.6 Alpha (07-03-2019)
+## Version 1.9.3.6 Alpha (17-04-2019)
 
 ### Bugfixes
 * [Bug-404][]: Confusion between development/non-development versions of bots
 	* Rollback of previous attempt to fix issues with the RobocodeEngine, which could not read robots in "developer mode" (marked with a asterix character). Hence the old bug [Bug-398][] has been reintroduced.
+* [Bug-406][]: DNS interaction is not blocked by Robocode's security manager
+* Fixed issue where compiled robots could not be found. Added -encoding UTF-8 to the compiler options, and corrected -version option into -verbose.
 
 ### Changes
 * Fix by Bumfo, which makes Robocode faster at detecting robots in the robot folder, which is crucial for the RoboRumble, when installing or updating a huge amount of robots.
@@ -327,7 +329,7 @@
 ### New Features
 * A new config file has been added for [RoboRumble][] in the roborumble directory in the robocode directory named "roborumble.properties".
 	* With this config file it is possible to configure the *connection timeout*, *read timeout* and *session timeout* used when downloading robots and uploading results.
-* [Req-144]: Mac ... start with icon and name.
+* [Req-144][]: Mac ... start with icon and name.
 
 ### Changes
 * Upgraded Eclipse Compiler for Java (ECJ) to version 3.7.2.
@@ -1685,7 +1687,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 
 #### Codesize
 * [Req-38][]: Codesize.
-	* The codesize tool by Christian D. Schnell has been added to support the built-in [RoboRumle][] plus a new feature for getting the codesize and robot codesize class (MiniBot, MegaBot etc.) when a robot is being packaged.
+	* The codesize tool by Christian D. Schnell has been added to support the built-in [RoboRumble][] plus a new feature for getting the codesize and robot codesize class (MiniBot, MegaBot etc.) when a robot is being packaged.
 	* This tool has now been taken over by Flemming N. Larsen (agreed with Christian) and updated to version 1.1, which can handle files > 2KB, and also analyse .jar files inside .jar files.
 
 #### Start Positions
@@ -3100,6 +3102,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-394]: http://sourceforge.net/p/robocode/bugs/394/  (HiDPI scaling causes visual glitches)
 [Bug-395]: http://sourceforge.net/p/robocode/bugs/395/	(Roborumble client duplicates battle results on network error)
 [Bug-397]: http://sourceforge.net/p/robocode/bugs/397/  (Robocode UI cannot remember battle settings upon restart)
+[Bug-398]: http://sourceforge.net/p/robocode/bugs/398/  ("Fixed issue with the RobocodeEngine" breaks develope)
 [Bug-399]: http://sourceforge.net/p/robocode/bugs/399/  (RANDOMSEED option does not support Java 8)
 [Bug-400]: http://sourceforge.net/p/robocode/bugs/400/  (Problem to compile Robot)
 [Bug-401]: http://sourceforge.net/p/robocode/bugs/401/  (RoboRumble client: Biased Melee prioritized pairings)
@@ -3179,6 +3182,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Req-114]: http://sourceforge.net/p/robocode/feature-requests/114/  (RateControlRobot vs. TeamRobot)
 [Req-115]: http://sourceforge.net/p/robocode/feature-requests/115/  (Installed package should contain readme file)
 [Req-118]: http://sourceforge.net/p/robocode/feature-requests/118/  (Enable/disable development paths)
+[Req-119]: http://sourceforge.net/p/robocode/feature-requests/119/  (Provide JuniorRobot template for inexperienced user)
 [Req-121]: http://sourceforge.net/p/robocode/feature-requests/121/  (Issues with editor font)
 [Req-124]: http://sourceforge.net/p/robocode/feature-requests/124/  (Ability to save the properties file for robots in dev. path)
 [Req-128]: http://sourceforge.net/p/robocode/feature-requests/128/  (In battle name hiding)
@@ -3186,6 +3190,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Req-134]: http://sourceforge.net/p/robocode/feature-requests/134/  (Calculate codesize after compile in editor)
 [Req-135]: http://sourceforge.net/p/robocode/feature-requests/135/  (Twin Duel configuration files)
 [Req-144]: http://sourceforge.net/p/robocode/feature-requests/144/  (Mac ... start with icon and name)
+[Req-147]: http://sourceforge.net/p/robocode/feature-requests/147/  (The snapshot API is ambiguous for bullets shot by teams)
 [Req-156]: http://sourceforge.net/p/robocode/feature-requests/156/  (Codesize added to properties file)
 [Req-159]: http://sourceforge.net/p/robocode/feature-requests/159/  (Fix overkilled garbage collection on static fields)
 [Req-160]: http://sourceforge.net/p/robocode/feature-requests/160/  (Fixed width font in console)
