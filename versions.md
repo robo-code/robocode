@@ -3110,6 +3110,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-403]: http://sourceforge.net/p/robocode/bugs/403/  (MouseEvent returning wrong position)
 [Bug-404]: http://sourceforge.net/p/robocode/bugs/404/  (Confusion between development/non-development versions of bots)
 [Bug-405]: http://sourceforge.net/p/robocode/bugs/405/	(Fix #405 unnecessary FileNotFound exception)
+[Bug-406]: http://sourceforge.net/p/robocode/bugs/405/  (DNS interaction is not blocked by Robocode's security manager)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
