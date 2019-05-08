@@ -9,7 +9,7 @@
 ### Changes
 * Fix by Bumfo, which makes Robocode faster at detecting robots in the robot folder, which is crucial for the RoboRumble, when installing or updating a huge amount of robots.
 
-## Version 1.9.3.6 (02-03-2019)
+## Version 1.9.3.5 (02-03-2019)
 
 ### Bugfixes
 * [Bug-402][]: roborumble.sh etc. has incorrect class path
