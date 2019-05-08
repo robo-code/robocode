@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<groupId>net.sf.robocode</groupId>
 	<artifactId>super-pom</artifactId>
 	<name>Robocode Super POM</name>
-	<version>1.9.3.5</version>
+	<version>1.9.3.6</version>
 	<packaging>pom</packaging>
 	<organization>
 		<name>Robocode</name>
@@ -13,8 +13,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	</organization>
 	<properties>
 		<project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
-		<robocode.version>1.9.3.5</robocode.version> <!-- Any string, but no spaces (use '-' instead of space) -->
-		<robocode.dotnet.version>1.9.3.5</robocode.dotnet.version> <!-- Only X.X.X.X format -->
+		<robocode.version>1.9.3.6</robocode.version> <!-- Any string, but no spaces (use '-' instead of space) -->
+		<robocode.dotnet.version>1.9.3.6</robocode.dotnet.version> <!-- Only X.X.X.X format -->
 		<javadoc.additionalparam/>
 	</properties>
 	<distributionManagement>
