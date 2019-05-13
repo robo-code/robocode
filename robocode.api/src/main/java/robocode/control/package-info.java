@@ -100,5 +100,11 @@
  *     }
  * }
  * </pre>
+ * <h2>Notice</h2>
+ * <p>
+ * In order to avoid ClassNotFoundException with your application, you will need to add most of the .jar files
+ * located under the /libs folder of the robocode directory to the classpath of your application.
+ * That is robocode.jar, picocontainer-xxx.jar etc. You can leave out roborumble.jar and the ones for UI and
+ * sound if you don't use the UI with the RobocodeEngine.</p>
  */
 package robocode.control;
