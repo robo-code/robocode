@@ -1,3 +1,9 @@
+## Version 1.9.3.7 (14-08-2019)
+
+### Bugfixes
+* [Bug-407][]: RobocodeEngine: Can't find robocode.core-1.x.jar
+* [Bug-408][]: Parameter DNOSECURITY (no security manager) cause Robocode program startup access-error
+
 ## Version 1.9.3.6 (08-05-2019)
 
 ### Bugfixes
@@ -3110,7 +3116,9 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-403]: http://sourceforge.net/p/robocode/bugs/403/  (MouseEvent returning wrong position)
 [Bug-404]: http://sourceforge.net/p/robocode/bugs/404/  (Confusion between development/non-development versions of bots)
 [Bug-405]: http://sourceforge.net/p/robocode/bugs/405/	(Fix #405 unnecessary FileNotFound exception)
-[Bug-406]: http://sourceforge.net/p/robocode/bugs/405/  (DNS interaction is not blocked by Robocode's security manager)
+[Bug-406]: http://sourceforge.net/p/robocode/bugs/406/  (DNS interaction is not blocked by Robocode's security manager)
+[Bug-407]: http://sourceforge.net/p/robocode/bugs/407/  (RobocodeEngine: Can't find robocode.core-1.x.jar)
+[Bug-408]: http://sourceforge.net/p/robocode/bugs/408/  (Parameter DNOSECURITY (no security manager) cause Robocode program startup access-error)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
