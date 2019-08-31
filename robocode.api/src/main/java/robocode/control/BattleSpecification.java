@@ -96,7 +96,7 @@ public class BattleSpecification implements java.io.Serializable {
 	 * @param sentryBorderSize is the sentry border size for a {@link robocode.BorderSentry BorderSentry}.
 	 * @param hideEnemyNames  flag specifying if enemy names are hidden from robots.
 	 * @param robots is the robots participating in this battle.
-	 * @param initialSetup is the initial position and heading of the robots, where the indices matches the indices from the {@code robots} parameter.
+	 * @param initialSetups is the initial position and heading of the robots, where the indices matches the indices from the {@code robots} parameter.
 	 * 
 	 * @since 1.9.2.0
 	 */

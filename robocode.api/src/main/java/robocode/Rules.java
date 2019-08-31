@@ -140,7 +140,7 @@ public final class Rules {
 
 	/**
 	 * The amount of bonus damage dealt by a robot ramming an opponent by moving forward into it,
-	 * which is 2 x {@link ROBOT_HIT_DAMAGE} = 1.2 energy points.
+	 * which is 2 x {@link #ROBOT_HIT_DAMAGE} = 1.2 energy points.
 	 */
 	public static final double ROBOT_HIT_BONUS = 2 * ROBOT_HIT_DAMAGE;
 

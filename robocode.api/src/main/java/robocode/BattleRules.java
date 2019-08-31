@@ -101,7 +101,7 @@ public final class BattleRules implements java.io.Serializable {
 	/**
 	 * Returns true if the enemy names are hidden, i.e. anonymous; false otherwise.
 	 * 
-	 * @Since 1.7.3
+	 * @since 1.7.3
 	 */
 	public boolean getHideEnemyNames() {
 		return hideEnemyNames;
