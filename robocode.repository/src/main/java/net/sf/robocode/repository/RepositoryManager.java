@@ -472,7 +472,7 @@ public class RepositoryManager implements IRepositoryManager { // NO_UCD (use de
 
 				if (lastEnabledDevelPaths == null || !enabledDevelPaths.equals(lastEnabledDevelPaths)) {
 					lastEnabledDevelPaths = enabledDevelPaths;
-					reload(true);
+					reload(false);
 				}
 			}
 		}
