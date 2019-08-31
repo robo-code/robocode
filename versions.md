@@ -1,9 +1,10 @@
-## Version 1.9.3.7 (14-08-2019)
+## Version 1.9.3.7 (31-08-2019)
 
 ### Bugfixes
 * [Bug-407][]: RobocodeEngine: Can't find robocode.core-1.x.jar
-* [Bug-408][]: Parameter DNOSECURITY (no security manager) cause Robocode program startup access-error
-
+* [Bug-409][]: Robot repository is completely rebuilt whenever dev dir is changed via UI.
+	* Thanks goes to Xor for this fix. :-)
+	
 ## Version 1.9.3.6 (08-05-2019)
 
 ### Bugfixes
@@ -11,6 +12,7 @@
 	* Rollback of previous attempt to fix issues with the RobocodeEngine, which could not read robots in "developer mode" (marked with a asterix character). Hence the old bug [Bug-398][] has been reintroduced.
 * [Bug-406][]: DNS interaction is not blocked by Robocode's security manager
 * Fixed issue where compiled robots could not be found. Added -encoding UTF-8 to the compiler options, and corrected -version option into -verbose.
+* [Bug-408][]: Parameter DNOSECURITY (no security manager) cause RoboCode program startup access-error.
 
 ### Changes
 * Fix by Bumfo, which makes Robocode faster at detecting robots in the robot folder, which is crucial for the RoboRumble, when installing or updating a huge amount of robots.
@@ -3119,6 +3121,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-406]: http://sourceforge.net/p/robocode/bugs/406/  (DNS interaction is not blocked by Robocode's security manager)
 [Bug-407]: http://sourceforge.net/p/robocode/bugs/407/  (RobocodeEngine: Can't find robocode.core-1.x.jar)
 [Bug-408]: http://sourceforge.net/p/robocode/bugs/408/  (Parameter DNOSECURITY (no security manager) cause Robocode program startup access-error)
+[Bug-409]: http://sourceforge.net/p/robocode/bugs/409/  (Robot repository is completely rebuilt whenever dev dir is changed via UI)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)
