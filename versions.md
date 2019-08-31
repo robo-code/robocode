@@ -5,7 +5,7 @@
 * [Bug-409][]: Robot repository is completely rebuilt whenever dev dir is changed via UI.
 	* Thanks goes to Xor for this fix. :-)
 	
-## Version 1.9.3.6 (08-05-2019)
+## Version 1.9.3.7 (08-05-2019)
 
 ### Bugfixes
 * [Bug-404][]: Confusion between development/non-development versions of bots

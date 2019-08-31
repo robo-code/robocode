@@ -7,7 +7,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<parent>
 		<groupId>net.sf.robocode</groupId>
 		<artifactId>robocode.dotnet</artifactId>
-		<version>1.9.3.6</version>
+		<version>1.9.3.7</version>
 	</parent>
 	<dependencies>
 		<dependency>
@@ -50,7 +50,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
-					<finalName>${project.parent.artifactId}-1.9.3.6</finalName>
+					<finalName>${project.parent.artifactId}-1.9.3.7</finalName>
 					<ignoreDirFormatExtensions>true</ignoreDirFormatExtensions>
 					<descriptors>
 						<descriptor>dotnet-setup.asm.xml</descriptor>
