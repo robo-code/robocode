@@ -579,9 +579,9 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * BorderSentrys cannot leave (sentry robots robots must stay in the border area), but it also define the
 	 * distance from the border edges where BorderSentrys are allowed/able to make damage to robots entering this
 	 * border area.
-	 * 
+	 *
 	 * @return the border size in units/pixels.
-	 * 
+	 *
 	 * @since 1.9.0.0
 	 */
 	public int getSentryBorderSize() {
@@ -609,7 +609,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * Returns how many sentry robots that are left in the current round.
 	 *
 	 * @return how many sentry robots that are left in the current round.
-	 * 
+	 *
 	 * @since 1.9.1.0
 	 */
 	public int getNumSentries() {
@@ -926,8 +926,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	/**
 	 * Sets the color of the robot's body, gun, and radar in the same time.
 	 * <p>
-	 * You may only call this method one time per battle. A {@code null}
-	 * indicates the default (blue) color.
+	 * A {@code null} indicates the default (blue) color.
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -967,9 +966,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * Sets the color of the robot's body, gun, radar, bullet, and scan arc in
 	 * the same time.
 	 * <p>
-	 * You may only call this method one time per battle. A {@code null}
-	 * indicates the default (blue) color for the body, gun, radar, and scan
-	 * arc, but white for the bullet color.
+	 * A {@code null} indicates the default (blue) color for the body, gun,
+	 * radar, and scan arc, but white for the bullet color.
 	 * <p>
 	 * Example:
 	 * <pre>
@@ -1014,9 +1012,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * Sets all the robot's color to the same color in the same time, i.e. the
 	 * color of the body, gun, radar, bullet, and scan arc.
 	 * <p>
-	 * You may only call this method one time per battle. A {@code null}
-	 * indicates the default (blue) color for the body, gun, radar, and scan
-	 * arc, but white for the bullet color.
+	 * A {@code null} indicates the default (blue) color for the body, gun,
+	 * radar, and scan arc, but white for the bullet color.
 	 * <p>
 	 * <pre>
 	 * Example:
@@ -1483,7 +1480,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 *
 	 * @param key the name/key of the debug property.
 	 * @param value the new value of the debug property, where {@code null} or
-	 *              the empty string is used for removing this debug property. 
+	 *              the empty string is used for removing this debug property.
 	 * @since 1.6.2
 	 */
 	public void setDebugProperty(String key, String value) {
