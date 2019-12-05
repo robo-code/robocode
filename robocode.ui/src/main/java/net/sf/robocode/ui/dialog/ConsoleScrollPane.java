@@ -10,7 +10,8 @@ package net.sf.robocode.ui.dialog;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,14 +38,31 @@ public final class ConsoleScrollPane extends JScrollPane {
 
 	public JTable getTextPane() {
 		if (table == null) {
-			table = new JTable();
-			table.setTableHeader(null);
+			// https://stackoverflow.com/questions/15499255/jtable-with-autoresize-horizontal-scrolling-and-shrinkable-first-column
+			table = new JTable() {
+				@Override
+				public boolean getScrollableTracksViewportWidth() {
+					return hasExcessWidth();
+				}
 
+				@Override
+				public void doLayout() {
+					if (hasExcessWidth()) {
+						autoResizeMode = AUTO_RESIZE_ALL_COLUMNS;
+					}
+					super.doLayout();
+					autoResizeMode = AUTO_RESIZE_OFF;
+				}
+
+				protected boolean hasExcessWidth() {
+					return getPreferredSize().width < getViewport().getWidth();
+				}
+			};
+			table.setTableHeader(null);
 			table.setFillsViewportHeight(true);
 
 			table.setModel(new ConsoleTableModel(lines));
-			TableColumnModel tcm = table.getColumnModel();
-			tcm.getColumn(0).setPreferredWidth(700);
+			table.getColumnModel().getColumn(0).setMinWidth(0);
 
 			getViewport().setBackground(Color.DARK_GRAY);
 			table.setBackground(Color.DARK_GRAY);
@@ -52,10 +70,22 @@ public final class ConsoleScrollPane extends JScrollPane {
 			table.setShowGrid(false);
 			table.setForeground(Color.WHITE);
 
-			table.setBounds(0, 0, 1000, 1000);
 			table.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		}
 		return table;
+	}
+
+	private void fitTextWidth(int low, int high) {
+		JTable table = getTextPane();
+		TableColumn col = table.getColumnModel().getColumn(0);
+		int width = col.getMinWidth() - 2;
+		for (int r = low; r <= high; r++) {
+			TableCellRenderer renderer = table.getCellRenderer(r, 0);
+			Component comp = renderer.getTableCellRendererComponent(table, table.getValueAt(r, 0),
+				false, false, r, 0);
+			width = Math.max(width, comp.getPreferredSize().width);
+		}
+		col.setMinWidth(width + 2);
 	}
 
 	public void append(String str) {
@@ -86,6 +116,8 @@ public final class ConsoleScrollPane extends JScrollPane {
 			model.fireTableRowsUpdated(n - 1, n - 1);
 		}
 		model.fireTableRowsInserted(n, lines.size() - 1);
+
+		fitTextWidth(Math.max(0, n - 1), lines.size() - 1);
 	}
 
 	public String getSelectedText() {
@@ -110,12 +142,15 @@ public final class ConsoleScrollPane extends JScrollPane {
 	}
 
 	public void setText(String t) {
+		table.getColumnModel().getColumn(0).setMinWidth(0);
+
 		lines.clear();
 		lines.trimToSize(); // release the potentially big array
 		if (t != null && t.length() != 0) {
 			lines.addAll(Arrays.asList(t.split("\\n", -1)));
 		}
 		((AbstractTableModel) getTextPane().getModel()).fireTableDataChanged();
+		if (!lines.isEmpty()) fitTextWidth(0, lines.size() - 1);
 	}
 
 	public void processStream(InputStream input) {
