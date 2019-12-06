@@ -62,7 +62,7 @@ public final class ConsoleScrollPane extends JScrollPane {
 			table.setFillsViewportHeight(true);
 
 			table.setModel(new ConsoleTableModel(lines));
-			table.getColumnModel().getColumn(0).setMinWidth(0);
+			resetWidth();
 
 			getViewport().setBackground(Color.DARK_GRAY);
 			table.setBackground(Color.DARK_GRAY);
@@ -142,7 +142,7 @@ public final class ConsoleScrollPane extends JScrollPane {
 	}
 
 	public void setText(String t) {
-		table.getColumnModel().getColumn(0).setMinWidth(0);
+		resetWidth();
 
 		lines.clear();
 		lines.trimToSize(); // release the potentially big array
@@ -151,6 +151,12 @@ public final class ConsoleScrollPane extends JScrollPane {
 		}
 		((AbstractTableModel) getTextPane().getModel()).fireTableDataChanged();
 		if (!lines.isEmpty()) fitTextWidth(0, lines.size() - 1);
+	}
+
+	private void resetWidth() {
+		TableColumn col = table.getColumnModel().getColumn(0);
+		col.setMinWidth(0);
+		col.setPreferredWidth(0);
 	}
 
 	public void processStream(InputStream input) {
