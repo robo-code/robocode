@@ -152,27 +152,22 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 	// fast setters
 	public void setBodyColor(Color color) {
-		setCall();
 		commands.setBodyColor(color != null ? color.getRGB() : ExecCommands.defaultBodyColor);
 	}
 
 	public void setGunColor(Color color) {
-		setCall();
 		commands.setGunColor(color != null ? color.getRGB() : ExecCommands.defaultGunColor);
 	}
 
 	public void setRadarColor(Color color) {
-		setCall();
 		commands.setRadarColor(color != null ? color.getRGB() : ExecCommands.defaultRadarColor);
 	}
 
 	public void setBulletColor(Color color) {
-		setCall();
 		commands.setBulletColor(color != null ? color.getRGB() : ExecCommands.defaultBulletColor);
 	}
 
 	public void setScanColor(Color color) {
-		setCall();
 		commands.setScanColor(color != null ? color.getRGB() : ExecCommands.defaultScanColor);
 	}
 

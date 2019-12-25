@@ -4,19 +4,19 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>robocode.dotnet</artifactId>
 	<name>.NET Robocode</name>
-	<version>1.9.3.7</version>
+	<version>1.9.3.8</version>
 	<packaging>pom</packaging>
 	<parent>
 		<groupId>net.sf.robocode</groupId>
 		<artifactId>robocode</artifactId>
-		<version>1.9.3.7</version>
+		<version>1.9.3.8</version>
 		<relativePath>../..</relativePath>
 	</parent>
 	<repositories>
 		<repository>
 			<id>jni4net.repo</id>
 			<name>jni4net Repository</name>
-			<url>http://jni4net.googlecode.com/svn/mvnrepo</url>
+			<url>http://github.com/jni4net/jni4net.github.io/tree/master/mvnrepo</url>
 		</repository>
 		<repository>
 			<id>aduna.repo</id>
