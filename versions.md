@@ -1,14 +1,16 @@
-## Version 1.9.3.8 (25-12-2019)
+## Version 1.9.3.8 (10-01-2019)
 * [Bug-410][]: setColors methods warn that they can be called only once per battle, but it's not true
+* [Bug-412][]: Bug fix 388 breaks score display in robot buttons.
+	* Thank you Xor for this fix. :-)
 
-## Version 1.9.3.8 (31-08-2019)
+## Version 1.9.3.7 (31-08-2019)
 
 ### Bugfixes
 * [Bug-407][]: RobocodeEngine: Can't find robocode.core-1.x.jar
 * [Bug-409][]: Robot repository is completely rebuilt whenever dev dir is changed via UI.
 	* Thanks goes to Xor for this fix. :-)
 	
-## Version 1.9.3.8 (08-05-2019)
+## Version 1.9.3.6 (08-05-2019)
 
 ### Bugfixes
 * [Bug-404][]: Confusion between development/non-development versions of bots
@@ -3126,7 +3128,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-408]: http://sourceforge.net/p/robocode/bugs/408/  (Parameter DNOSECURITY (no security manager) cause Robocode program startup access-error)
 [Bug-409]: http://sourceforge.net/p/robocode/bugs/409/  (Robot repository is completely rebuilt whenever dev dir is changed via UI)
 [Bug-410]: http://sourceforge.net/p/robocode/bugs/410/  (setColors methods warn that they can be called only once per battle, but it's not true)
-
+[Bug-412]: http://sourceforge.net/p/robocode/bugs/412/  (Bug fix 388 breaks score display in robot buttons)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)

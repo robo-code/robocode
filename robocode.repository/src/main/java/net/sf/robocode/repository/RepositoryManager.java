@@ -231,11 +231,11 @@ public class RepositoryManager implements IRepositoryManager { // NO_UCD (use de
 	}
 
 	private boolean loadItem(Collection<RobotSpecification> battlingRobotsList, RobotSpecification spec, IRobotSpecItem item, int teamNum) {
-		String teamId = String.format("%4d", teamNum);
+		String teamName = String.format("%4d", teamNum);
 
 		if (item != null) {
 			if (item.isTeam()) {
-				teamId = item.getFullClassNameWithVersion() + "[" + teamId + "]";
+				teamName = item.getFullClassNameWithVersion() + "[" + teamName + "]";
 				final Collection<RobotItem> members = getRobotItems((TeamItem) item);
 
 				for (IRobotSpecItem member : members) {
@@ -251,7 +251,7 @@ public class RepositoryManager implements IRepositoryManager { // NO_UCD (use de
 					}
 
 					if (tested || robot.validate()) {
-						battlingRobotsList.add(robot.createRobotSpecification(null, teamId));
+						battlingRobotsList.add(robot.createRobotSpecification(null, teamName));
 					}
 				}
 			} else {

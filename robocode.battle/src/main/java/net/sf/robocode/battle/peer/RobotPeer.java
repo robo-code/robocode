@@ -77,8 +77,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	private Battle battle;
 	private RobotStatistics statistics;
-	private final TeamPeer teamPeer;
 	private final RobotSpecification robotSpecification;
+	private final TeamPeer teamPeer;
 
 	private IHostingRobotProxy robotProxy;
 	private AtomicReference<RobotStatus> status = new AtomicReference<RobotStatus>();
@@ -138,7 +138,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private final BoundingRectangle boundingBox;
 	private final RbSerializer rbSerializer;
 
-	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, int duplicate, TeamPeer team, int robotIndex) {
+	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, String suffix, TeamPeer team, int robotIndex) {
 		super();
 
 		this.battle = battle;
@@ -172,7 +172,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			teamIndex = team.getTeamIndex();
 		}
 
-		this.statics = new RobotStatics(robotSpecification, duplicate, isTeamLeader, battleRules, teamName, teamMembers,
+		this.statics = new RobotStatics(robotSpecification, suffix, isTeamLeader, battleRules, teamName, teamMembers,
 				robotIndex, teamIndex);
 		this.statistics = new RobotStatistics(this, battle.getRobotsCount());
 
@@ -268,10 +268,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public int getTeamIndex() {
 		return statics.getTeamIndex();
-	}
-
-	public int getContestantIndex() {
-		return getTeamIndex() >= 0 ? getTeamIndex() : getRobotIndex();
 	}
 
 	// -------------------
