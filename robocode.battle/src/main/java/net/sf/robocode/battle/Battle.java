@@ -106,14 +106,17 @@ public final class Battle extends BaseBattle {
 		Map<RobotSpecification, Integer /* index */> robotIndexes = new HashMap<RobotSpecification, Integer>();
 		Map<String, TeamPeer> teamPeers = new HashMap<String, TeamPeer>();
 
+		int robotIndex = 0;
 		for (RobotSpecification specification : battlingRobotsList) {
+
+			robotIndexes.put(specification, robotIndex++);
+
 			final String name = ((IRobotItem) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
 			Integer count = robotNameCount.get(name);
 			if (count == null) {
 				count = 0;
 			}
-			robotIndexes.put(specification, count++);
-			robotNameCount.put(name, count);
+			robotNameCount.put(name, ++count);
 
 			String nameIndexed = name + " (" + count + ')';
 			robotNames.put(specification, nameIndexed);
@@ -145,7 +148,7 @@ public final class Battle extends BaseBattle {
 				}
 			}
 
-			Integer robotIndex = robotIndexes.get(specification);
+			robotIndex = robotIndexes.get(specification);
 			String suffix = "";
 			final String name = ((IRobotItem) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
 			if (robotNameCount.get(name) > 1) {
