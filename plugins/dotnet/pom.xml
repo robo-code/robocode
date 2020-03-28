@@ -16,12 +16,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<repository>
 			<id>jni4net.repo</id>
 			<name>jni4net Repository</name>
-			<url>http://github.com/jni4net/jni4net.github.io/tree/master/mvnrepo</url>
+			<url>https://github.com/jni4net/jni4net.github.io/tree/master/mvnrepo</url>
 		</repository>
 		<repository>
 			<id>aduna.repo</id>
 			<name>Aduna Repository</name>
-			<url>http://repository.aduna-software.org/maven2/</url>
+			<url>https://repository.aduna-software.org/maven2/</url>
 		</repository>
 	</repositories>
 	<modules>
