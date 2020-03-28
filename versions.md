@@ -1,4 +1,4 @@
-## Version 1.9.3.8 (10-01-2019)
+## Version 1.9.3.8 (28-03-2019)
 * [Bug-410][]: setColors methods warn that they can be called only once per battle, but it's not true
 * [Bug-412][]: Bug fix 388 breaks score display in robot buttons.
 	* Thank you Xor for this fix. :-)
