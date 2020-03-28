@@ -1118,8 +1118,7 @@ namespace Robocode
         /// <summary>
         ///   Sets the color of the robot's body, gun, and radar in the same time.
         ///   <p />
-        ///   You may only call this method one time per battle. A <em>null</em>
-        ///   indicates the default (blue) color.
+        ///   A <em>null</em> indicates the default (blue) color.
         ///   <p />
         ///   <example>
         ///     <code>
@@ -1164,9 +1163,8 @@ namespace Robocode
         ///   Sets the color of the robot's body, gun, radar, bullet, and scan arc in
         ///   the same time.
         ///   <p />
-        ///   You may only call this method one time per battle. A <em>null</em>
-        ///   indicates the default (blue) color for the body, gun, radar, and scan
-        ///   arc, but white for the bullet color.
+        ///   A <em>null</em> indicates the default (blue) color for the body, gun,
+        ///   radar, and scan arc, but white for the bullet color.
         ///   <p />
         ///   <example>
         ///     <code>
@@ -1215,9 +1213,8 @@ namespace Robocode
         ///   Sets all the robot's color to the same color in the same time, i.e. the
         ///   color of the body, gun, radar, bullet, and scan arc.
         ///   <p />
-        ///   You may only call this method one time per battle. A <em>null</em>
-        ///   indicates the default (blue) color for the body, gun, radar, and scan
-        ///   arc, but white for the bullet color.
+        ///   A <em>null</em> indicates the default (blue) color for the body, gun,
+        ///   radar, and scan arc, but white for the bullet color.
         ///   <p />
         ///   <example>
         ///     <code>
