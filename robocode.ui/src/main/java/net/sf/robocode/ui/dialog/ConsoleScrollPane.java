@@ -9,13 +9,16 @@ package net.sf.robocode.ui.dialog;
 
 
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
-
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -24,36 +27,65 @@ import java.io.InputStreamReader;
  * @author Pavel Savara (contributor)
  */
 @SuppressWarnings("serial")
-public class ConsoleScrollPane extends JScrollPane {
-
-	private static final int MAX_ROWS = 500;
-	private static final String TEXT_TRUNCATED_MSG = "^^^ TEXT TRUNCATED ^^^";
-
-	private JTextArea textArea;
-	private int lines;
-	private int maxRows;
+public final class ConsoleScrollPane extends JScrollPane {
+	private final ArrayList<String> lines = new ArrayList<String>();
+	private JTable table = null;
 
 	public ConsoleScrollPane() {
 		super();
 		setViewportView(getTextPane());
 	}
 
-	public JTextArea getTextPane() {
-		if (textArea == null) {
-			textArea = new JTextArea();
+	public JTable getTextPane() {
+		if (table == null) {
+			// https://stackoverflow.com/questions/15499255/jtable-with-autoresize-horizontal-scrolling-and-shrinkable-first-column
+			table = new JTable() {
+				@Override
+				public boolean getScrollableTracksViewportWidth() {
+					return hasExcessWidth();
+				}
 
-			textArea.setEditable(false);
-			textArea.setTabSize(4);
-			textArea.setBackground(Color.DARK_GRAY);
-			textArea.setForeground(Color.WHITE);
-			textArea.setBounds(0, 0, 1000, 1000);
-			textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+				@Override
+				public void doLayout() {
+					if (hasExcessWidth()) {
+						autoResizeMode = AUTO_RESIZE_ALL_COLUMNS;
+					}
+					super.doLayout();
+					autoResizeMode = AUTO_RESIZE_OFF;
+				}
 
-			// Make sure the caret is not reset every time text is updated, meaning that
-			// the view will not reset it's position until we want it to.
-			((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+				protected boolean hasExcessWidth() {
+					return getPreferredSize().width < getViewport().getWidth();
+				}
+			};
+			table.setTableHeader(null);
+			table.setFillsViewportHeight(true);
+
+			table.setModel(new ConsoleTableModel(lines));
+			resetWidth();
+
+			getViewport().setBackground(Color.DARK_GRAY);
+			table.setBackground(Color.DARK_GRAY);
+			table.setGridColor(Color.DARK_GRAY);
+			table.setShowGrid(false);
+			table.setForeground(Color.WHITE);
+
+			table.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		}
-		return textArea;
+		return table;
+	}
+
+	private void fitTextWidth(int low, int high) {
+		JTable table = getTextPane();
+		TableColumn col = table.getColumnModel().getColumn(0);
+		int width = col.getMinWidth() - 2;
+		for (int r = low; r <= high; r++) {
+			TableCellRenderer renderer = table.getCellRenderer(r, 0);
+			Component comp = renderer.getTableCellRendererComponent(table, table.getValueAt(r, 0),
+				false, false, r, 0);
+			width = Math.max(width, comp.getPreferredSize().width);
+		}
+		col.setMinWidth(width + 2);
 	}
 
 	public void append(String str) {
@@ -61,93 +93,70 @@ public class ConsoleScrollPane extends JScrollPane {
 		if (str == null || str.length() == 0) {
 			return;
 		}
-		// Append the new string to the text pane
-		getTextPane().append(str);
 
-		// Count number of new lines, i.e. lines ended with '\n'
-		int numNewLines = str.replaceAll("[^\\n]", "").length();
+		int n = lines.size();
 
-		// Increment the current number of lines with the new lines
-		lines += numNewLines;
-
-		// Calculate number lines exceeded compared to the max. number of lines
-		int linesExceeded = lines - MAX_ROWS;
-
-		// Check if we exceeded the number of max. lines
-		if (linesExceeded > 0) {
-			// We use a rolling buffer so that the oldest lines are removed first.
-			// Remove the number of lines we are exceeding in the beginning of the contained text.
-
-			// Cut down the number of lines to max. number of lines
-			lines = MAX_ROWS;
-
-			// Find the index where to cut the number of exceeding lines in the beginning of the text
-			String text = getText();
-			int cutIndex = -1;
-
-			for (int c = 0; c < linesExceeded; c++) {
-				cutIndex = text.indexOf('\n', cutIndex + 1);
+		String[] t = str.split("\\n", -1);
+		if (lines.isEmpty()) {
+			lines.addAll(Arrays.asList(t));
+		} else {
+			int last = n - 1;
+			String lastLine = lines.get(last);
+			assert t.length > 0; // emptiness already checked
+			if (lastLine.length() > 0) {
+				lines.set(last, lastLine + t[0]);
+			} else {
+				lines.set(last, t[0]);
 			}
-			// Replace the first lines of the contained text till the cut index
-			textArea.replaceRange(null, 0, cutIndex + 1);
-
-			// Replace first line with a message that text has been truncated
-			textArea.replaceRange(TEXT_TRUNCATED_MSG, 0, getText().indexOf('\n'));
+			lines.addAll(Arrays.asList(t).subList(1, t.length));
 		}
 
-		// Set the max. number of lines text pane
-		maxRows = Math.max(maxRows, lines);
-		textArea.setRows(maxRows);
+		AbstractTableModel model = (AbstractTableModel) getTextPane().getModel();
+		if (n > 0) {
+			model.fireTableRowsUpdated(n - 1, n - 1);
+		}
+		model.fireTableRowsInserted(n, lines.size() - 1);
+
+		fitTextWidth(Math.max(0, n - 1), lines.size() - 1);
 	}
 
 	public String getSelectedText() {
-		return getTextPane().getSelectedText();
+		JTable table = getTextPane();
+		int[] rows = table.getSelectedRows();
+		StringBuilder sb = new StringBuilder();
+		for (int i : rows) {
+			sb.append(lines.get(i));
+			sb.append('\n');
+		}
+
+		return sb.toString();
 	}
 
 	public String getText() {
-		return getTextPane().getText();
+		StringBuilder sb = new StringBuilder();
+		for (String line : lines) {
+			sb.append(line);
+			sb.append('\n');
+		}
+		return sb.toString();
 	}
 
 	public void setText(String t) {
-		// Return if the string is null or empty
-		if (t == null || t.length() == 0) {
-			t = null;
-			lines = 0;
-			maxRows = 0;
-		} else {
-			// Calculate and set the new number of lines for the text pane
-			lines = t.replaceAll("[^\\n]", "").length();
-	
-			// Calculate number lines exceeded compared to the max. number of lines
-			int linesExceeded = lines - MAX_ROWS;
-	
-			// Check if we exceeded the number of max. lines
-			if (linesExceeded > 0) {
-				// We use a rolling buffer so that the oldest lines are removed first.
-				// Remove the number of lines we are exceeding in the beginning of the contained text.
-	
-				// Cut down the number of lines to max. number of lines
-				lines = MAX_ROWS;
-	
-				// Find the index where to cut the number of exceeding lines in the beginning of the text
-				int index = -1;
-	
-				for (int c = 0; c < linesExceeded; c++) {
-					index = t.indexOf('\n', index + 1);
-				}
-				// Replace the first lines of the contained text till the cut index
-				t = t.substring(index + 1);
-	
-				// Replace first line with a message that text has been truncated
-				t = TEXT_TRUNCATED_MSG + t.substring(t.indexOf('\n') + 1);
-			}
-		}
-		// Set the text on the text pane
-		textArea.setText(t);
+		resetWidth();
 
-		// Set the max. number of lines text pane
-		maxRows = Math.max(maxRows, lines);
-		textArea.setRows(maxRows);
+		lines.clear();
+		lines.trimToSize(); // release the potentially big array
+		if (t != null && t.length() != 0) {
+			lines.addAll(Arrays.asList(t.split("\\n", -1)));
+		}
+		((AbstractTableModel) getTextPane().getModel()).fireTableDataChanged();
+		if (!lines.isEmpty()) fitTextWidth(0, lines.size() - 1);
+	}
+
+	private void resetWidth() {
+		TableColumn col = table.getColumnModel().getColumn(0);
+		col.setMinWidth(0);
+		col.setPreferredWidth(0);
 	}
 
 	public void processStream(InputStream input) {
@@ -165,6 +174,12 @@ public class ConsoleScrollPane extends JScrollPane {
 	}
 
 	public void scrollToBottom() {
-		textArea.setCaretPosition(textArea.getDocument().getLength());
+		final JTable table = getTextPane();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				table.scrollRectToVisible(table.getCellRect(table.getRowCount() - 1, 0, true));
+			}
+		});
 	}
 }
