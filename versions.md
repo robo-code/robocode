@@ -1,8 +1,12 @@
-## Version 1.9.3.8 (28-03-2019)
+## Version 1.9.3.8 (29-03-2019)
+
+### Bugfixes
+
 * [Bug-410][]: Remove obsolete warnings regarding colors and turns.
 	* Thanks goess to Lufte for fixing this.
 * [Bug-412][]: Bug fix 388 breaks score display in robot buttons.
-	* Thank you Xor for this fix. :-)
+* Prevent robot console from trimming log.
+	* Thank you Xor for the last two fixes. :-)
 
 ## Version 1.9.3.7 (31-08-2019)
 
@@ -21,7 +25,7 @@
 * [Bug-408][]: Parameter DNOSECURITY (no security manager) cause RoboCode program startup access-error.
 
 ### Changes
-* Fix by Bumfo, which makes Robocode faster at detecting robots in the robot folder, which is crucial for the RoboRumble, when installing or updating a huge amount of robots.
+* Fix by Xor, which makes Robocode faster at detecting robots in the robot folder, which is crucial for the RoboRumble, when installing or updating a huge amount of robots.
 
 ## Version 1.9.3.5 (02-03-2019)
 
@@ -31,7 +35,7 @@
 * [Bug-403][]: MouseEvent returning wrong position''
 * [Bug-405][]: Fix #405 unnecessary FileNotFound exception
 * Rumble: skip bots that fails to download when calc code size
-* Credits to Xor and Bumfo for all these fixes. :-)
+* Credits to Xor for all these fixes. :-)
 
 ### Changes
 * Added support for Kotlin. Just put the kotlin-stdlib-1.xxx.jar into the /libs folder to allow robots coded in Kotlin.
