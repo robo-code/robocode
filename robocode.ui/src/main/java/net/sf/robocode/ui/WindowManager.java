@@ -242,11 +242,11 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showFaq() {
-		showInBrowser("http://robowiki.net/w/index.php?title=Robocode/FAQ");
+		showInBrowser("https://robowiki.net/w/index.php?title=Robocode/FAQ");
 	}
 
 	public void showOnlineHelp() {
-		showInBrowser("http://robowiki.net/w/index.php?title=Robocode/Getting_Started");
+		showInBrowser("https://robowiki.net/w/index.php?title=Robocode/Getting_Started");
 	}
 
 	public void showJavaDocumentation() {
@@ -258,7 +258,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showRoboWiki() {
-		showInBrowser("http://robowiki.net");
+		showInBrowser("https://robowiki.net");
 	}
 
 	public void showGoogleGroupRobocode() {
@@ -266,7 +266,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showRoboRumble() {
-		showInBrowser("http://robowiki.net/wiki/RoboRumble");
+		showInBrowser("https://robowiki.net/wiki/RoboRumble");
 	}
 
 	public void showOptionsPreferences() {

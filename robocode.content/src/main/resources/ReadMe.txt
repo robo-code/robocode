@@ -118,7 +118,7 @@ official Robocode version 1.1 containing lots of improvements. Since then,
 lots of new versions of Robocode have been released with more and more features
 and contributions from the community.
 
-In May 2007, the [RoboRumble](http://robowiki.net/wiki/RoboRumble) client got
+In May 2007, the [RoboRumble](https://robowiki.net/wiki/RoboRumble) client got
 built into Robocode. RoboRumble is widely used by the Robocode community for
 creating up-to-date robot ranking lists for the 1-to-1, Melee, Team, and
 Twin Dual competitions.
@@ -153,7 +153,7 @@ been set up prior to running Robocode:
 
 You can read more details from here:
 
--   [System Requirements](http://robowiki.net/wiki/Robocode/System_Requirements)
+-   [System Requirements](https://robowiki.net/wiki/Robocode/System_Requirements)
 
 If you want to program robots in .NET or control Robocode from a .NET 
 application, you need to install the Robocode .NET API plug-in on top of 
@@ -164,13 +164,13 @@ installed.
 ### 4. GETTING STARTED
 
 Most documentation about Robocode is provided thru the
-[RoboWiki](http://robowiki.net), which contains the official
+[RoboWiki](https://robowiki.net), which contains the official
 documentation about Robocode, but which also hosts the community around
 Robocode. It is highly recommended to read the articles on the RoboWiki
 for getting started with Robocode. These articles are provided from
 here:
 
--   [Getting Started](http://robowiki.net/wiki/Robocode/Getting_Started)
+-   [Getting Started](https://robowiki.net/wiki/Robocode/Getting_Started)
 
 You should read about the anatomy of a robot, the game physics, scoring
 etc.
@@ -178,8 +178,8 @@ etc.
 To learn more about developing robots for .NET, these articles are a
 good starting point:
 
--   [Create a .NET robot with Visual Studio](http://robowiki.net/wiki/Robocode/.NET/Create_a_.NET_robot_with_Visual_Studio)
--   [Debug a .NET robot with Visual Studio](http://robowiki.net/wiki/Robocode/.NET/Debug_a_.NET_robot_in_Visual_Studio)
+-   [Create a .NET robot with Visual Studio](https://robowiki.net/wiki/Robocode/.NET/Create_a_.NET_robot_with_Visual_Studio)
+-   [Debug a .NET robot with Visual Studio](https://robowiki.net/wiki/Robocode/.NET/Debug_a_.NET_robot_in_Visual_Studio)
 
 ### 5. ROBOCODE API
 
@@ -235,13 +235,13 @@ the RoboWiki as well.
 
 On the RoboWiki, these strategies are provided:
 
--   [Radar](http://robowiki.net/wiki/Radar)
--   [Movement](http://robowiki.net/wiki/Category:Movement)
--   [Targeting](http://robowiki.net/wiki/Category:Targeting)
+-   [Radar](https://robowiki.net/wiki/Radar)
+-   [Movement](https://robowiki.net/wiki/Category:Movement)
+-   [Targeting](https://robowiki.net/wiki/Category:Targeting)
 
 The code snippets are also provided on the RoboWiki:
 
--   [Code Snippets](http://robowiki.net/wiki/Category:Code_Snippets)
+-   [Code Snippets](https://robowiki.net/wiki/Category:Code_Snippets)
 
 ### 8. CHALLENGES
 
@@ -249,14 +249,14 @@ A good way to improve you self as a robot developer is to try out some
 real challenges. On the RoboWiki, two famous challenges exist for
 testing/studying a robots movement, targeting, and gun abilities:
 
--   [Movement Challenge](http://robowiki.net/wiki/Movement_Challenge_(original))
--   [Targeting Challenge](http://robowiki.net/wiki/Targeting_Challenge_(original))
--   [RoboRumble Gun Challenge](hhttp://robowiki.net/wiki/RoboRumble_Gun_Challenge)
+-   [Movement Challenge](https://robowiki.net/wiki/Movement_Challenge_(original))
+-   [Targeting Challenge](https://robowiki.net/wiki/Targeting_Challenge_(original))
+-   [RoboRumble Gun Challenge](hhttps://robowiki.net/wiki/RoboRumble_Gun_Challenge)
 
 ### 9. COMPETITION
 
 If you want to challenge your robot(s) and yourself as robot developer,
-the [RoboRumble@Home](http://robowiki.net/wiki/RoboRumble) is the best
+the [RoboRumble@Home](https://robowiki.net/wiki/RoboRumble) is the best
 way to do it. RoboRumble is the ultimate collaborative effort to have a
 live, up-to-date ranking of Robocode bots. It uses the power of
 available Robocoders' computers to distribute the effort of running
@@ -273,7 +273,7 @@ RoboRumble is actually 3 different rumbles:
 
 In order to get started with RoboRumble, you should read this page:
 
--   [Starting With RoboRumble](http://robowiki.net/wiki/RoboRumble/Starting_With_RoboRumble)
+-   [Starting With RoboRumble](https://robowiki.net/wiki/RoboRumble/Starting_With_RoboRumble)
 
 Note that the RoboRumble@Home client is built into Robocode and can
 be started using the batch/shell/command files:
@@ -286,10 +286,10 @@ be started using the batch/shell/command files:
 
 Two other competitions exists which are:
 
--   [Twin Duel](http://robowiki.net/wiki/Twin_Duel): Two teams
+-   [Twin Duel](https://robowiki.net/wiki/Twin_Duel): Two teams
     battle on an 800x800 field. Each team consists of two robots
     (twins).
--   [Hat League](http://robowiki.net/wiki/Hat_League): Two teams not
+-   [Hat League](https://robowiki.net/wiki/Hat_League): Two teams not
     knowing each other are paired together at random (like drawing
     names from a hat). Each team consists of two robots. These two
 	teams must work together and defeat two other teams that have also
@@ -315,7 +315,7 @@ For example, it is possible to:
 
 You can read more details here:
 
--   [Console Usage](http://robowiki.net/w/index.php?title=Robocode/Console_Usage)
+-   [Console Usage](https://robowiki.net/w/index.php?title=Robocode/Console_Usage)
 
 ### 11. LINKS
 
@@ -326,7 +326,7 @@ Links relevant to Robocode are provided on the home page of Robocode:
 Other links are provided from the RoboWiki - especially for challenges
 and competitions:
 
--   [RoboWiki](http://robowiki.net/)
+-   [RoboWiki](https://robowiki.net/)
 
 The is also a Wikipedia page available about Robocode, which provides
 good links to movement and targeting strategies, competitions, and other
@@ -441,7 +441,7 @@ The RoboWiki can be followed on Twitter as well:
 
 If you want to contribute to Robocode with e.g. a new feature or bug
 fix, you should read the [Developers Guide for building
-Robocode.](http://robowiki.net/wiki/Robocode/Developers_Guide_for_building_Robocode)
+Robocode.](https://robowiki.net/wiki/Robocode/Developers_Guide_for_building_Robocode)
 
 Note that we accept code changes under the terms of
 [EPL](http://www.eclipse.org/legal/epl-v10.html).

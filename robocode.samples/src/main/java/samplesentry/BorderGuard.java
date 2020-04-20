@@ -44,12 +44,12 @@ import java.util.*;
  * <p>
  * 
  * This robot makes use of the Oldest Scanned melee scanner from the RoboWiki:<br>
- * http://robowiki.net/wiki/Melee_Radar
+ * https://robowiki.net/wiki/Melee_Radar
  * <p>
  * 
  * In addition, it makes use of the Exact Non-iterative Solution for Linear Targeting from the
  * RoboWiki:<br>
- * http://robowiki.net/wiki/Linear_Targeting
+ * https://robowiki.net/wiki/Linear_Targeting
  * 
  * @author Flemming N. Larsen
  * 
@@ -409,7 +409,7 @@ public class BorderGuard extends AdvancedRobot implements BorderSentry {
 	 * Updates the target positions for all enemies. The target position is the position our robot
 	 * must fire at in order to hit the target robot. This robot uses Linear Targeting (Exact
 	 * Non-iterative Solution) as described on the RoboWiki here:
-	 * http://robowiki.net/wiki/Linear_Targeting
+	 * https://robowiki.net/wiki/Linear_Targeting
 	 */
 	private void updateEnemyTargetPositions() {
 		// Go thru all robots in the enemy map

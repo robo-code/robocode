@@ -1400,7 +1400,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	 * Updates the robots movement.
 	 *
 	 * This is Nat Pavasants method described here:
-	 *   http://robowiki.net/wiki/User:Positive/Optimal_Velocity#Nat.27s_updateMovement
+	 *   https://robowiki.net/wiki/User:Positive/Optimal_Velocity#Nat.27s_updateMovement
 	 */
 	private void updateMovement() {
 		double distance = currentCommands.getDistanceRemaining();
@@ -1456,7 +1456,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	 * @return the new velocity based on the current velocity and distance to move
 	 * 
 	 * This is Patrick Cupka (aka Voidious), Julian Kent (aka Skilgannon), and Positive's method described here:
-	 *   http://robowiki.net/wiki/User:Voidious/Optimal_Velocity#Hijack_2
+	 *   https://robowiki.net/wiki/User:Voidious/Optimal_Velocity#Hijack_2
 	 */
 	private double getNewVelocity(double velocity, double distance) {
 		if (distance < 0) {

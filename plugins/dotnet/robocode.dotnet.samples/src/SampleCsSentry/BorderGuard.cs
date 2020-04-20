@@ -40,12 +40,12 @@ namespace SampleCsSentry
     /// <p>
     ///
     /// This robot makes use of the Oldest Scanned melee scanner from the RoboWiki:<br>
-    /// http://robowiki.net/wiki/Melee_Radar
+    /// https://robowiki.net/wiki/Melee_Radar
     /// <p>
     ///
     /// In addition, it makes use of the Exact Non-iterative Solution for Linear Targeting from the
     /// RoboWiki:<br>
-    /// http://robowiki.net/wiki/Linear_Targeting
+    /// https://robowiki.net/wiki/Linear_Targeting
     /// <p> 
     ///
     /// Author: Flemming N. Larsen
@@ -443,7 +443,7 @@ namespace SampleCsSentry
         /// </summary> 
         /// <remarks>
         /// This robot uses Linear Targeting (Exact Non-iterative Solution) as described on the RoboWiki here:
-        /// http://robowiki.net/wiki/Linear_Targeting
+        /// https://robowiki.net/wiki/Linear_Targeting
         /// </remarks> 
         private void UpdateEnemyTargetPositions()
         {
