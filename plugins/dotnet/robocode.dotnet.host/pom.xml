@@ -4,27 +4,27 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>robocode.dotnet.host</artifactId>
 	<name>Robocode .NET Host</name>
-	<version>1.9.3.8</version>
+	<version>1.9.3.9</version>
 	<parent>
 		<groupId>net.sf.robocode</groupId>
 		<artifactId>robocode.dotnet</artifactId>
-		<version>1.9.3.8</version>
+		<version>1.9.3.9</version>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>net.sf.robocode</groupId>
 			<artifactId>robocode.host</artifactId>
-			<version>1.9.3.8</version>
+			<version>1.9.3.9</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.robocode</groupId>
 			<artifactId>robocode.repository</artifactId>
-			<version>1.9.3.8</version>
+			<version>1.9.3.9</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.robocode</groupId>
 			<artifactId>robocode.dotnet.nhost</artifactId>
-			<version>1.9.3.8</version>
+			<version>1.9.3.9</version>
 			<type>dotnet:library</type>
 		</dependency>
 		<dependency>
@@ -128,7 +128,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									property="robocode.dotnet.nhost"
 									groupId="net.sf.robocode"
 									artifactId="robocode.dotnet.nhost"
-									version="1.9.3.8"
+									version="1.9.3.9"
 									type="dotnet:library" />
 								<copy
 									file="${robocode.dotnet.nhost}"
@@ -137,7 +137,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									property="robocode.dotnet.api"
 									groupId="net.sf.robocode"
 									artifactId="robocode.dotnet.api"
-									version="1.9.3.8"
+									version="1.9.3.9"
 									type="dotnet:library" />
 								<copy
 									file="${robocode.dotnet.api}"
@@ -146,7 +146,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									property="robocode.dotnet.control.api"
 									groupId="net.sf.robocode"
 									artifactId="robocode.dotnet.control.api"
-									version="1.9.3.8"
+									version="1.9.3.9"
 									type="dotnet:library" />
 								<copy
 									file="${robocode.dotnet.control.api}"

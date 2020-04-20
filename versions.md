@@ -1,3 +1,9 @@
+## Version 1.9.3.9 (20-04-2020)
+
+### Changes
+* Updated RoboRumble links to use HTTPS instead of HTTP
+	* Thank you Skilgannon for this fix. :-)
+
 ## Version 1.9.3.8 (29-03-2020)
 
 ### Bugfixes
