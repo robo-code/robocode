@@ -2,7 +2,8 @@
 
 ### Changes
 * Updated RoboRumble links to use HTTPS instead of HTTP
-	* Thank you Skilgannon for this fix. :-)
+	* Thank you Skilgannon for this fix, and especially to get the RoboWiki up and running again! :-)
+* Updated all links to RoboWiki to use HTTPS.
 
 ## Version 1.9.3.8 (29-03-2020)
 
