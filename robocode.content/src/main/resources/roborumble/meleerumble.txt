@@ -21,7 +21,7 @@ USER=Put_Your_Name_Here
 #           or take part in battles. This way you can exclude participants that
 #           cannot be downloaded due to web servers that are down or hanging,
 #           the repository is down, robots/teams that crashes for some reason or
-#           cause other trouble. 
+#           cause other trouble.
 #
 #           You can use the filename wildcards * and ? in the filter. Example:
 #
@@ -125,21 +125,21 @@ TEMP=./roborumble/temp/
 #           URL used for removing old participants, which is used for updating
 #           the participants file specified with the PARTICIPANTSFILE property.
 
-PARTICIPANTSURL=http://robowiki.net/wiki/RoboRumble/Participants/Melee&action=raw
+PARTICIPANTSURL=https://robowiki.net/wiki/RoboRumble/Participants/Melee&action=raw
 PARTICIPANTSFILE=./roborumble/files/participmelee.txt
 
 STARTAG=pre
 
-UPDATEBOTSURL=http://literumble.appspot.com/RemoveOldParticipant
+UPDATEBOTSURL=https://literumble.appspot.com/RemoveOldParticipant
 
 #-------------------------------------------------------------------------------
-# Properties to control the way battles are run 
+# Properties to control the way battles are run
 #-------------------------------------------------------------------------------
 
 # RUNONLY   If left black or set to GENERAL, a new battle file is created where
 #           robots from the participants file are paired at random. The number
 #           of robot pairs will match number of battles defined the NUMBATTLES
-#           property. 
+#           property.
 #
 #           If set to MINI, a new battle file is created similar to the one
 #           for GENERAL, but it will only contains robots that are MiniBots,
@@ -184,13 +184,13 @@ PRIORITYBATTLESFILE=./roborumble/temp/prioritymelee.txt
 #-------------------------------------------------------------------------------
 
 # RESULTSURL
-#           URL used for uploading the results to the server. 
+#           URL used for uploading the results to the server.
 #
 # BATTLESNUMFILE
 #           File containing the number of battles fought by the robots, which is
 #           returned by the server when results are uploaded to the server.
 
-RESULTSURL=http://literumble.appspot.com/UploadedResults
+RESULTSURL=https://literumble.appspot.com/UploadedResults
 
 BATTLESNUMFILE=./roborumble/temp/meleebattlesnumber.txt
 
@@ -236,7 +236,7 @@ CODESIZEFILE=./roborumble/files/codesizemelee.txt
 # RATINGS.NANOBOTS:
 #           File name for the rating file of the Melee NanoRumble.
 
-RATINGS.URL=http://literumble.appspot.com/RatingsFile
+RATINGS.URL=https://literumble.appspot.com/RatingsFile
 
 RATINGS.GENERAL=./roborumble/temp/ratings_m_roborumble.txt
 RATINGS.MINIBOTS=./roborumble/temp/ratings_m_minirumble.txt
