@@ -46,6 +46,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 					<use>false</use>
 					<excludePackageNames>robocode.exception:net.sf.robocode:gl4java:robocode.robocodeGL</excludePackageNames>
 					<additionalparam>${javadoc.additionalparam}</additionalparam>
+					<source>6</source>
 				</configuration>
 			</plugin>
 			<plugin>
