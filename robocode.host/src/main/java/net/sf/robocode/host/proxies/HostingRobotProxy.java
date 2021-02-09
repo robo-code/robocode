@@ -33,8 +33,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-// XXX Remember to update the .NET version whenever a change is made to this class!
-
 /**
  * @author Pavel Savara (original)
  */

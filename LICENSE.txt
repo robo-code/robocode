@@ -8,7 +8,3 @@ Ant and Maven tools:
 - Files/tools located under the directory /tools/bin are licensed under the Apache Software Foundation (Apache-2.0):
   http://www.apache.org/licenses/LICENSE-2.0.html
   The license files for the Ant and Maven tools are provided under the /tools/licenses directory.
-
-CILReader.cs:
-- The file /plugins/dotnet/robocode.dotnet.nhost/src/mono/reflection/CILReader.cs is copyrighted (C) 2009 Novell, Inc.
- (http://www.novell.com)

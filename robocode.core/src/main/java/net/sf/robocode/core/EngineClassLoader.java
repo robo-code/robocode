@@ -31,7 +31,7 @@ public class EngineClassLoader extends URLClassLoader {
 		exclusions.add(Container.class.getName());
 		exclusions.add(RobocodeMainBase.class.getName());
 
-		// .NET proxies and their interfaces must be loaded in system class loader in order to call native methods
+		// proxies and their interfaces must be loaded in system class loader in order to call native methods
 		exclusions.add("net.sf.robocode.host.IHost");
 		exclusions.add("net.sf.robocode.host.IHostManager");
 		exclusions.add("net.sf.robocode.host.proxies.IHostingRobotProxy");
@@ -40,9 +40,6 @@ public class EngineClassLoader extends URLClassLoader {
 		exclusions.add("net.sf.robocode.repository.RobotType");
 		exclusions.add("net.sf.robocode.host.RobotStatics");
 		exclusions.add("net.sf.robocode.peer.BadBehavior");
-		exclusions.add("net.sf.robocode.dotnet.host.DotNetHost");
-		exclusions.add("net.sf.robocode.dotnet.repository.root.DllRootHelper");
-		exclusions.add("net.sf.robocode.dotnet.nhost.ModuleN");
 		exclusions.add("net.sf.robocode.host.proxies.__IHostingRobotProxy");
 	}
 

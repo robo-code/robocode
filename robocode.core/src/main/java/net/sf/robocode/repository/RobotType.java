@@ -33,7 +33,7 @@ public final class RobotType implements Serializable {
 
 	private int typeFlags;
 
-	public RobotType(int typeFlags) { // NO_UCD (use private - used by .NET plug-in)
+	private RobotType(int typeFlags) {
 		this.typeFlags = typeFlags;
 	}
 

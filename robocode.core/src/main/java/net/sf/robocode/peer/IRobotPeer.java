@@ -28,12 +28,4 @@ public interface IRobotPeer {
 	ExecResults waitForBattleEndImpl(ExecCommands newCommands);
 
 	ExecResults executeImpl(ExecCommands newCommands);
-
-	void setupBuffer(ByteBuffer bidirectionalBuffer); // NO_UCD (unused code - used by the .NET plug-in)
-
-	void executeImplSerial() throws IOException; // NO_UCD (unused code - used by the .NET plug-in)
-
-	void waitForBattleEndImplSerial() throws IOException; // NO_UCD (unused code - used by the .NET plug-in)
-
-	void setupThread(); // NO_UCD (unused code - used by the .NET plug-in)
 }

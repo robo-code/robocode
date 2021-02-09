@@ -18,8 +18,6 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
-// XXX Remember to update the .NET version whenever a change is made to this class!
-
 /**
  * This class is used for managing the event queue for a robot.
  *
