@@ -3,10 +3,7 @@ target
 build.xml
 maven-build.xml
 maven-build.properties
-/plugins/dotnet/robocode.dotnet.samples/src/robocode.dotnet.samples.sln
-/plugins/dotnet/robocode.dotnet.samples/src/robocode.dotnet.samples.suo
 ucdetector_reports
-/plugins/dotnet/*.suo
 *.class
 .recommenders
 .sonarlint
