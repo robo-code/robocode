@@ -35,8 +35,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-// XXX Remember to update the .NET version whenever a change is made to this class!
-
 /**
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)

@@ -17,8 +17,6 @@ import java.awt.*;
 import java.io.Serializable;
 
 
-// XXX Remember to update the .NET version whenever a change is made to this class!
-
 /**
  * The superclass of all Robocode events.
  *

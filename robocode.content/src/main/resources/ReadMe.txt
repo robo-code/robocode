@@ -123,11 +123,6 @@ built into Robocode. RoboRumble is widely used by the Robocode community for
 creating up-to-date robot ranking lists for the 1-to-1, Melee, Team, and
 Twin Dual competitions.
 
-Since May 2010 a **.NET plugin** is provided for Robocode using a .NET / Java
-bridge, which makes it possible to develop robots for .NET beside developing
-robots in Java. This part was made by **Pavel Savara**, who is a major Robocode
-contributor.
-
 ### 3. SYSTEM REQUIREMENTS
 
 In order to run Robocode, Java 6 Standard Edition (SE) or a newer
@@ -155,12 +150,6 @@ You can read more details from here:
 
 -   [System Requirements](https://robowiki.net/wiki/Robocode/System_Requirements)
 
-If you want to program robots in .NET or control Robocode from a .NET 
-application, you need to install the Robocode .NET API plug-in on top of 
-Robocode. The plug-in is installed by double-clicking the 
-`robocode.dotnet-xxx-setup.jar` the same way as Robocode itself is 
-installed.
-
 ### 4. GETTING STARTED
 
 Most documentation about Robocode is provided thru the
@@ -175,37 +164,29 @@ here:
 You should read about the anatomy of a robot, the game physics, scoring
 etc.
 
-To learn more about developing robots for .NET, these articles are a
-good starting point:
-
--   [Create a .NET robot with Visual Studio](https://robowiki.net/wiki/Robocode/.NET/Create_a_.NET_robot_with_Visual_Studio)
--   [Debug a .NET robot with Visual Studio](https://robowiki.net/wiki/Robocode/.NET/Debug_a_.NET_robot_in_Visual_Studio)
-
 ### 5. ROBOCODE API
 
-The Robocode API is provided as HTML pages for both the Java and .NET
+The Robocode API is provided as HTML pages for both the Java
 platform.
 
 -   [Java Robot API](https://robocode.sourceforge.io/docs/robocode/)
 -   [Java Control API](https://robocode.sourceforge.io/docs/robocode/index.html?robocode/control/package-summary.html)
--   [.NET Robot API](https://robocode.sourceforge.io/docs/robocode.dotnet/Index.html)
--   [.NET Control API](https://robocode.sourceforge.io/docs/robocode.dotnet.control/Index.html)
 
 The Robocode API actually consists of 3 different APIs.
 
--   **Robot API**: Within the Java package `robocode` and .NET namespace
+-   **Robot API**: Within the Java package `robocode` namespace
     `Robocode`.  
     The Robot API is used for developing robots, and is the only part of
 	the API that robots are allowed to access.
 
 -   **Robot Interfaces**: Within the Java package
-    `robocode.robotinterfaces` and .NET namespace
+    `robocode.robotinterfaces` namespace
 	`Robocode.RobotInterfaces`.  
     The Robot Interfaces are used for developing new robot types with a
     different API that the standard Robot API.  
     **Note:** *The game rules and robot behaviors cannot be changed.*
 
--   **Control API**: Within the Java package `robocode.control` and .NET 
+-   **Control API**: Within the Java package `robocode.control` 
     namespace `Robocode.Control`.  
 	The Control API is used for letting	another application start up
 	battles with selected robots in Robocode and retrieve the results.

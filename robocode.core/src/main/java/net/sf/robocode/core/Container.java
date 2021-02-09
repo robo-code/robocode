@@ -52,7 +52,7 @@ public final class Container extends ContainerBase {
 	public static final MutablePicoContainer cache;
 	public static final MutablePicoContainer factory;
 	public static final ClassLoader systemLoader;
-	public static final ClassLoader engineLoader; // NO_UCD (use private - used by the .NET plug-in)
+	private static final ClassLoader engineLoader;
 	private static Set<String> known = new HashSet<String>();
 	private static final List<IModule> modules = new ArrayList<IModule>();
 

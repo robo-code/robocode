@@ -57,8 +57,6 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 			String currentDirAbsolutePath = new File("").getAbsolutePath();
 			if (currentDirAbsolutePath.endsWith("robocode.tests")) {
 				robotsPath = new File("../robocode.tests.robots").getCanonicalPath();
-			} else if (currentDirAbsolutePath.endsWith("robocode.dotnet.tests")) {
-				robotsPath = new File("../../../robocode.tests.robots").getCanonicalPath();
 			} else if (new File("robocode.tests.robots").isDirectory()) {
 				robotsPath = new File("robocode.tests.robots").getCanonicalPath();
 			} else {
