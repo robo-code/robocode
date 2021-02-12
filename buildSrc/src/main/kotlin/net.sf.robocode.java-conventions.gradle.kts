@@ -20,7 +20,7 @@ repositories {
 
 group = "net.sf.robocode"
 version = "1.9.3.9"
-java.sourceCompatibility = JavaVersion.VERSION_1_6
+java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 publishing {
     publications.create<MavenPublication>("maven") {
