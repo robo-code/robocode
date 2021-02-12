@@ -8,3 +8,11 @@ ucdetector_reports
 .recommenders
 .sonarlint
 RemoteSystemsTempFiles
+
+
+  
+.gradle
+.gradletasknamecache
+gradle-app.setting
+!gradle-wrapper.jar
+**/build/
