@@ -11,3 +11,13 @@ dependencies {
 }
 
 description = "Robocode Samples"
+
+tasks.jar{
+
+    from("src/main/java") {
+        include ("**")
+    }
+    from("src/main/resources") {
+        include ("**")
+    }
+}

@@ -14,3 +14,10 @@ dependencies {
 }
 
 description = "Roborumble Client"
+
+tasks.jar {
+    manifest {
+        attributes(mapOf("Main-Class" to "roborumble.RoboRumbleAtHome"))
+    }
+    archiveFileName.set("roborumble.jar")
+}
