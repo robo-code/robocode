@@ -14,9 +14,7 @@
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/robocode.api" />
             <option value="$PROJECT_DIR$/robocode.battle" />
-            <option value="$PROJECT_DIR$/robocode.content" />
             <option value="$PROJECT_DIR$/robocode.core" />
-            <option value="$PROJECT_DIR$/robocode.distribution" />
             <option value="$PROJECT_DIR$/robocode.host" />
             <option value="$PROJECT_DIR$/robocode.installer" />
             <option value="$PROJECT_DIR$/robocode.repository" />

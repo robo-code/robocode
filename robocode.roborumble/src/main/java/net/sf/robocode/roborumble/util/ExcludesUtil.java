@@ -24,7 +24,6 @@ public class ExcludesUtil {
 	 * Read and prepared exclude filters for robots that should not be downloaded or participate in battles.
 	 *
 	 * @param properties the properties to store.
-	 * @return a string array containing the excluded robots or null if no excludes are defined.
 	 */
 	public static void setExcludes(Properties properties) {
 		if (excludes != null) {

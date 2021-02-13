@@ -34,7 +34,10 @@ tasks.javadoc{
     op.docFilesSubDirs(true)
     op.use(false)
     op.author(true)
-    op.links = listOf("http://docs.oracle.com/javase/8/docs/api/")
+    op.isNoTimestamp = false
+    op.bottom("Copyright &#169; 2020 <a href=\"http://robocode.sf.net\">Robocode</a>. All Rights Reserved.")
+    op.links = listOf("https://docs.oracle.com/javase/8/docs/api/")
+    op.charSet("UTF-8")
     op.source("1.8")
     op.excludeDocFilesSubDir("robocode.exception","net.sf.robocode","gl4java","robocode.robocodeGL")
     op.addStringsOption("exclude",":").value = listOf("gl4java", "robocode.exception","net.sf.robocode","robocode.robocodeGL")

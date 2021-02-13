@@ -30,7 +30,7 @@ tasks.jar{
         attributes(mapOf("Main-Class" to "net.sf.robocode.installer.AutoExtract"))
     }
     archiveFileName.set("robocode-${project.version}-setup.jar.zip")
-    destinationDirectory.set(file("$buildDir/../../target"))
+    destinationDirectory.set(file("$buildDir/../../build"))
 
     into("javadoc"){
         from("../robocode.api/build/docs/javadoc")

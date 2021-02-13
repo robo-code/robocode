@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <output-test url="file://$MODULE_DIR$/../../../robocode.distribution/build/classes/java/test" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../robocode.distribution/src/test" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="robocode.robocode.distribution.main" />
+    <orderEntry type="module" module-name="robocode.robocode.api.main" />
+    <orderEntry type="module" module-name="robocode.robocode.roborumble.main" />
+    <orderEntry type="module" module-name="robocode.robocode.ui.editor.main" />
+    <orderEntry type="module" module-name="robocode.robocode.installer.main" />
+    <orderEntry type="module" module-name="robocode.robocode.content.main" />
+    <orderEntry type="module" module-name="robocode.robocode.battle.main" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.robocode.core.main" scope="RUNTIME" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: net.sf.robocode:codesize:1.2" level="project" />
+    <orderEntry type="module" module-name="robocode.robocode.ui.main" scope="RUNTIME" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.picocontainer:picocontainer:2.14.2" level="project" />
+    <orderEntry type="module" module-name="robocode.robocode.samples.main" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.robocode.repository.main" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.robocode.host.main" scope="RUNTIME" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.bcel:bcel:6.2" level="project" />
+    <orderEntry type="module" module-name="robocode.robocode.sound.main" scope="RUNTIME" />
+  </component>
+</module>
