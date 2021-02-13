@@ -32,9 +32,6 @@ tasks.jar{
     archiveFileName.set("robocode-${project.version}-setup.jar.zip")
     destinationDirectory.set(file("$buildDir/../../target"))
 
-    //from(sourceSets.main.get().output,into("sss"))
-
-
     into("javadoc"){
         from("../robocode.api/build/docs/javadoc")
     }
