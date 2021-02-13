@@ -22,7 +22,7 @@ import java.util.Vector;
  * Class used for uploading results to a server.
  * Controlled by properties files.
  *
- * @author Albert Pérez (original)
+ * @author Albert Perez (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class ResultsUpload {
