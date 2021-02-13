@@ -144,17 +144,17 @@ public interface IBasicEvents {
 	 * Example:
 	 * <pre>
 	 *   void onHitRobot(HitRobotEvent event) {
-	 *       if (event.getBearing() > -90 && event.getBearing() <= 90) {
+	 *       if (event.getBearing() &gt; -90 &amp;&amp; event.getBearing() &lt;= 90) {
 	 *           back(100);
 	 *       } else {
 	 *           ahead(100);
 	 *       }
 	 *   }
-	 * <p>
+	 * </pre><p>
 	 *   -- or perhaps, for a more advanced robot --
-	 * <p>
+	 * </p><pre>
 	 *   public void onHitRobot(HitRobotEvent event) {
-	 *       if (event.getBearing() > -90 && event.getBearing() <= 90) {
+	 *       if (event.getBearing() &gt; -90 &amp;&amp; event.getBearing() &lt;= 90) {
 	 *           setBack(100);
 	 *       } else {
 	 *           setAhead(100);
@@ -220,7 +220,7 @@ public interface IBasicEvents {
 	 * <pre>
 	 *   void onScannedRobot(ScannedRobotEvent event) {
 	 *       // Assuming radar and gun are aligned...
-	 *       if (event.getDistance() < 100) {
+	 *       if (event.getDistance() &lt; 100) {
 	 *           fire(3);
 	 *       } else {
 	 *           fire(1);

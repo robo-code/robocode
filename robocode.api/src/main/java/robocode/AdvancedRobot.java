@@ -25,7 +25,7 @@ import java.util.Vector;
  * @see <a target="_top" href="https://robocode.sourceforge.io">
  *      robocode.sourceforge.net</a>
  * @see <a href="https://robocode.sourceforge.io/myfirstrobot/MyFirstRobot.html">
- *      Building your first robot<a>
+ *      Building your first robot</a>
  *
  * @see JuniorRobot
  * @see Robot
@@ -168,8 +168,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param distance the distance to move measured in pixels.
-	 *                 If {@code distance} > 0 the robot is set to move ahead.
-	 *                 If {@code distance} < 0 the robot is set to move back.
+	 *                 If {@code distance} &gt; 0 the robot is set to move ahead.
+	 *                 If {@code distance} &lt; 0 the robot is set to move back.
 	 *                 If {@code distance} = 0 the robot is set to stop its movement.
 	 * @see #ahead(double) ahead(double)
 	 * @see #back(double) back(double)
@@ -212,8 +212,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param distance the distance to move measured in pixels.
-	 *                 If {@code distance} > 0 the robot is set to move back.
-	 *                 If {@code distance} < 0 the robot is set to move ahead.
+	 *                 If {@code distance} &gt; 0 the robot is set to move back.
+	 *                 If {@code distance} &lt; 0 the robot is set to move ahead.
 	 *                 If {@code distance} = 0 the robot is set to stop its movement.
 	 * @see #back(double) back(double)
 	 * @see #ahead(double) ahead(double)
@@ -253,8 +253,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's body to the left.
-	 *                If {@code degrees} > 0 the robot is set to turn left.
-	 *                If {@code degrees} < 0 the robot is set to turn right.
+	 *                If {@code degrees} &gt; 0 the robot is set to turn left.
+	 *                If {@code degrees} &lt; 0 the robot is set to turn right.
 	 *                If {@code degrees} = 0 the robot is set to stop turning.
 	 * @see #setTurnLeftRadians(double) setTurnLeftRadians(double)
 	 * @see #turnLeft(double) turnLeft(double)
@@ -298,8 +298,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's body to the right.
-	 *                If {@code degrees} > 0 the robot is set to turn right.
-	 *                If {@code degrees} < 0 the robot is set to turn left.
+	 *                If {@code degrees} &gt; 0 the robot is set to turn right.
+	 *                If {@code degrees} &lt; 0 the robot is set to turn left.
 	 *                If {@code degrees} = 0 the robot is set to stop turning.
 	 * @see #setTurnRightRadians(double) setTurnRightRadians(double)
 	 * @see #turnRight(double) turnRight(double)
@@ -338,7 +338,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
 	 * <p>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
-	 * {@link #getGunHeat()} returns a value > 0.
+	 * {@link #getGunHeat()} returns a value &gt; 0.
 	 * <p>
 	 * An event is generated when the bullet hits a robot, wall, or another
 	 * bullet.
@@ -393,7 +393,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
 	 * <p>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
-	 * {@link #getGunHeat()} returns a value > 0.
+	 * {@link #getGunHeat()} returns a value &gt; 0.
 	 * <p>
 	 * A event is generated when the bullet hits a robot
 	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
@@ -402,7 +402,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * Example:
 	 * <pre>
 	 *   Bullet bullet = null;
-	 * <p>
+	 *
 	 *   // Fire a bullet with maximum power if the gun is ready
 	 *   if (getGunHeat() == 0) {
 	 *       bullet = setFireBullet(Rules.MAX_BULLET_POWER);
@@ -449,7 +449,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   // Create the condition for our custom event
 	 *   Condition triggerHitCondition = new Condition("triggerhit") {
 	 *       public boolean test() {
-	 *           return (getEnergy() <= trigger);
+	 *           return (getEnergy() &lt;= trigger);
 	 *       }
 	 *   }
 	 *
@@ -483,7 +483,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   // Create the condition for our custom event
 	 *   Condition triggerHitCondition = new Condition("triggerhit") {
 	 *       public boolean test() {
-	 *           return (getEnergy() <= trigger);
+	 *           return (getEnergy() &lt;= trigger);
 	 *       }
 	 *   }
 	 *
@@ -542,7 +542,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 *   setAhead(100);
 	 *   execute();
 	 *
-	 *   while (getDistanceRemaining() > 0 && getTurnRemaining() > 0) {
+	 *   while (getDistanceRemaining() &gt; 0 &amp;&amp; getTurnRemaining() &gt; 0) {
 	 *       execute();
 	 *   }
 	 * </pre>
@@ -1223,8 +1223,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's gun to the left.
-	 *                If {@code degrees} > 0 the robot's gun is set to turn left.
-	 *                If {@code degrees} < 0 the robot's gun is set to turn right.
+	 *                If {@code degrees} &gt; 0 the robot's gun is set to turn left.
+	 *                If {@code degrees} &lt; 0 the robot's gun is set to turn right.
 	 *                If {@code degrees} = 0 the robot's gun is set to stop turning.
 	 * @see #setTurnGunLeftRadians(double) setTurnGunLeftRadians(double)
 	 * @see #turnGunLeft(double) turnGunLeft(double)
@@ -1269,8 +1269,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's gun to the right.
-	 *                If {@code degrees} > 0 the robot's gun is set to turn right.
-	 *                If {@code degrees} < 0 the robot's gun is set to turn left.
+	 *                If {@code degrees} &gt; 0 the robot's gun is set to turn right.
+	 *                If {@code degrees} &lt; 0 the robot's gun is set to turn left.
 	 *                If {@code degrees} = 0 the robot's gun is set to stop turning.
 	 * @see #setTurnGunRightRadians(double) setTurnGunRightRadians(double)
 	 * @see #turnGunRight(double) turnGunRight(double)
@@ -1315,8 +1315,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's radar to the left.
-	 *                If {@code degrees} > 0 the robot's radar is set to turn left.
-	 *                If {@code degrees} < 0 the robot's radar is set to turn right.
+	 *                If {@code degrees} &gt; 0 the robot's radar is set to turn left.
+	 *                If {@code degrees} &lt; 0 the robot's radar is set to turn right.
 	 *                If {@code degrees} = 0 the robot's radar is set to stop turning.
 	 * @see #setTurnRadarLeftRadians(double) setTurnRadarLeftRadians(double)
 	 * @see #turnRadarLeft(double) turnRadarLeft(double)
@@ -1362,8 +1362,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's radar to the right.
-	 *                If {@code degrees} > 0 the robot's radar is set to turn right.
-	 *                If {@code degrees} < 0 the robot's radar is set to turn left.
+	 *                If {@code degrees} &gt; 0 the robot's radar is set to turn right.
+	 *                If {@code degrees} &lt; 0 the robot's radar is set to turn left.
 	 *                If {@code degrees} = 0 the robot's radar is set to stop turning.
 	 * @see #setTurnRadarRightRadians(double) setTurnRadarRightRadians(double)
 	 * @see #turnRadarRight(double) turnRadarRight(double)
@@ -1465,8 +1465,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the left.
-	 *                If {@code radians} > 0 the robot is set to turn left.
-	 *                If {@code radians} < 0 the robot is set to turn right.
+	 *                If {@code radians} &gt; 0 the robot is set to turn left.
+	 *                If {@code radians} &lt; 0 the robot is set to turn right.
 	 *                If {@code radians} = 0 the robot is set to stop turning.
 	 * @see AdvancedRobot#setTurnLeft(double) setTurnLeft(double)
 	 * @see #turnLeft(double)
@@ -1506,8 +1506,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the right.
-	 *                If {@code radians} > 0 the robot is set to turn right.
-	 *                If {@code radians} < 0 the robot is set to turn left.
+	 *                If {@code radians} &gt; 0 the robot is set to turn right.
+	 *                If {@code radians} &lt; 0 the robot is set to turn left.
 	 *                If {@code radians} = 0 the robot is set to stop turning.
 	 * @see AdvancedRobot#setTurnRight(double) setTurnRight(double)
 	 * @see #turnRight(double)
@@ -1541,8 +1541,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the left.
-	 *                If {@code radians} > 0 the robot will turn right.
-	 *                If {@code radians} < 0 the robot will turn left.
+	 *                If {@code radians} &gt; 0 the robot will turn right.
+	 *                If {@code radians} &lt; 0 the robot will turn left.
 	 *                If {@code radians} = 0 the robot will not turn, but execute.
 	 * @see #turnLeft(double)
 	 * @see #turnRight(double)
@@ -1580,8 +1580,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body to the right.
-	 *                If {@code radians} > 0 the robot will turn right.
-	 *                If {@code radians} < 0 the robot will turn left.
+	 *                If {@code radians} &gt; 0 the robot will turn right.
+	 *                If {@code radians} &lt; 0 the robot will turn left.
 	 *                If {@code radians} = 0 the robot will not turn, but execute.
 	 * @see #turnRight(double)
 	 * @see #turnLeft(double)
@@ -1658,8 +1658,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the left.
-	 *                If {@code radians} > 0 the robot's gun is set to turn left.
-	 *                If {@code radians} < 0 the robot's gun is set to turn right.
+	 *                If {@code radians} &gt; 0 the robot's gun is set to turn left.
+	 *                If {@code radians} &lt; 0 the robot's gun is set to turn right.
 	 *                If {@code radians} = 0 the robot's gun is set to stop turning.
 	 * @see AdvancedRobot#setTurnGunLeft(double) setTurnGunLeft(double)
 	 * @see #turnGunLeft(double)
@@ -1700,8 +1700,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the right.
-	 *                If {@code radians} > 0 the robot's gun is set to turn left.
-	 *                If {@code radians} < 0 the robot's gun is set to turn right.
+	 *                If {@code radians} &gt; 0 the robot's gun is set to turn left.
+	 *                If {@code radians} &lt; 0 the robot's gun is set to turn right.
 	 *                If {@code radians} = 0 the robot's gun is set to stop turning.
 	 * @see AdvancedRobot#setTurnGunRight(double) setTurnGunRight(double)
 	 * @see #turnGunRight(double)
@@ -1742,8 +1742,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the left.
-	 *                If {@code radians} > 0 the robot's radar is set to turn left.
-	 *                If {@code radians} < 0 the robot's radar is set to turn right.
+	 *                If {@code radians} &gt; 0 the robot's radar is set to turn left.
+	 *                If {@code radians} &lt; 0 the robot's radar is set to turn right.
 	 *                If {@code radians} = 0 the robot's radar is set to stop turning.
 	 * @see AdvancedRobot#setTurnRadarLeft(double) setTurnRadarLeft(double)
 	 * @see #turnRadarLeft(double)
@@ -1785,8 +1785,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the right.
-	 *                If {@code radians} > 0 the robot's radar is set to turn left.
-	 *                If {@code radians} < 0 the robot's radar is set to turn right.
+	 *                If {@code radians} &gt; 0 the robot's radar is set to turn left.
+	 *                If {@code radians} &lt; 0 the robot's radar is set to turn right.
 	 *                If {@code radians} = 0 the robot's radar is set to stop turning.
 	 * @see AdvancedRobot#setTurnRadarRight(double) setTurnRadarRight(double)
 	 * @see #turnRadarRight(double)
@@ -1822,8 +1822,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the left.
-	 *                If {@code radians} > 0 the robot's gun will turn left.
-	 *                If {@code radians} < 0 the robot's gun will turn right.
+	 *                If {@code radians} &gt; 0 the robot's gun will turn left.
+	 *                If {@code radians} &lt; 0 the robot's gun will turn right.
 	 *                If {@code radians} = 0 the robot's gun will not turn, but execute.
 	 * @see #turnGunLeft(double)
 	 * @see #turnGunRight(double)
@@ -1861,8 +1861,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun to the right.
-	 *                If {@code radians} > 0 the robot's gun will turn right.
-	 *                If {@code radians} < 0 the robot's gun will turn left.
+	 *                If {@code radians} &gt; 0 the robot's gun will turn right.
+	 *                If {@code radians} &lt; 0 the robot's gun will turn left.
 	 *                If {@code radians} = 0 the robot's gun will not turn, but execute.
 	 * @see #turnGunRight(double)
 	 * @see #turnGunLeft(double)
@@ -1901,8 +1901,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the left.
-	 *                If {@code radians} > 0 the robot's radar will turn left.
-	 *                If {@code radians} < 0 the robot's radar will turn right.
+	 *                If {@code radians} &gt; 0 the robot's radar will turn left.
+	 *                If {@code radians} &lt; 0 the robot's radar will turn right.
 	 *                If {@code radians} = 0 the robot's radar will not turn, but execute.
 	 * @see #turnRadarLeft(double)
 	 * @see #turnRadarRight(double)
@@ -1941,8 +1941,8 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar to the right.
-	 *                If {@code radians} > 0 the robot's radar will turn right.
-	 *                If {@code radians} < 0 the robot's radar will turn left.
+	 *                If {@code radians} &gt; 0 the robot's radar will turn right.
+	 *                If {@code radians} &lt; 0 the robot's radar will turn left.
 	 *                If {@code radians} = 0 the robot's radar will not turn, but execute.
 	 * @see #turnRadarRight(double)
 	 * @see #turnRadarLeft(double)

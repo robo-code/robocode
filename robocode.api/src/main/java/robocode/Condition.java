@@ -17,7 +17,7 @@ package robocode;
  *   addCustomEvent(
  *       new Condition("triggerhit") {
  *           public boolean test() {
- *               return (getEnergy() <= trigger);
+ *               return (getEnergy() &lt;= trigger);
  *           };
  *       }
  *   );

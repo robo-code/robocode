@@ -156,7 +156,7 @@ public class Utils {
 	 * {@code true} due to the precision of double values.
 	 * Whether or not the specified doubles are near to each other is defined by
 	 * the following expression:
-	 * {@code (Math.abs(value1 - value2) < .00001)}
+	 * {@code (Math.abs(value1 - value2) &lt; .00001)}
 	 *
 	 * @param value1 the first double value
 	 * @param value2 the second double value

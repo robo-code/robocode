@@ -68,8 +68,8 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar. If
-	 *                {@code radians} > 0 the robot's radar is set to turn right. If
-	 *                {@code radians} < 0 the robot's radar is set to turn left. If
+	 *                {@code radians} &gt; 0 the robot's radar is set to turn right. If
+	 *                {@code radians} &lt; 0 the robot's radar is set to turn left. If
 	 *                {@code radians} = 0 the robot's radar is set to stop turning.
 	 * @see #turnBody(double)
 	 * @see #turnGun(double)
@@ -117,7 +117,6 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	 * @param adjust {@code true} if the gun must adjust for the bot's turn;
 	 *               {@code false} if the gun must turn with the bot's turn.
 	 * @see #setAdjustRadarForGunTurn(boolean)
-	 * @see #isAdjustGunForBodyTurn()
 	 */
 	void setAdjustGunForBodyTurn(boolean adjust);
 
@@ -163,7 +162,6 @@ public interface IStandardRobotPeer extends IBasicRobotPeer {
 	 * @param adjust {@code true} if the radar must adjust for the gun's turn;
 	 *               {@code false} if the radar must turn with the gun's turn.
 	 * @see #setAdjustGunForBodyTurn(boolean)
-	 * @see #isAdjustRadarForGunTurn()
 	 */
 	void setAdjustRadarForGunTurn(boolean adjust);
 

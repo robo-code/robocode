@@ -91,12 +91,12 @@
  * 
  *     // Called when the game sends out an information message during the battle
  *     public void onBattleMessage(BattleMessageEvent e) {
- *         System.out.println("Msg> " + e.getMessage());
+ *         System.out.println("Msg&gt; " + e.getMessage());
  *     }
  * 
  *     // Called when the game sends out an error message during the battle
  *     public void onBattleError(BattleErrorEvent e) {
- *         System.out.println("Err> " + e.getError());
+ *         System.out.println("Err&gt; " + e.getError());
  *     }
  * }
  * </pre>

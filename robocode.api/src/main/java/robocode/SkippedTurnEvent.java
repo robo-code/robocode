@@ -38,7 +38,7 @@ import java.nio.ByteBuffer;
  * <p>
  * Instead, you should do something such as:
  * <pre>
- *     for (int i = 0; i < 30; i++) {
+ *     for (int i = 0; i &lt; 30; i++) {
  *         doNothing(); // or perhaps scan();
  *     }
  * </pre>

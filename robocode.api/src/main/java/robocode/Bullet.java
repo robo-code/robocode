@@ -83,7 +83,7 @@ public class Bullet implements Serializable {
 
 	/**
 	 * Returns the direction the bullet is/was heading, in degrees
-	 * (0 <= getHeading() < 360). This is not relative to the direction you are
+	 * (0 &lt;= getHeading() &lt; 360). This is not relative to the direction you are
 	 * facing.
 	 *
 	 * @return the direction the bullet is/was heading, in degrees
@@ -94,7 +94,7 @@ public class Bullet implements Serializable {
 
 	/**
 	 * Returns the direction the bullet is/was heading, in radians
-	 * (0 <= getHeadingRadians() < 2 * Math.PI). This is not relative to the
+	 * (0 &lt;= getHeadingRadians() &lt; 2 * Math.PI). This is not relative to the
 	 * direction you are facing.
 	 *
 	 * @return the direction the bullet is/was heading, in radians
