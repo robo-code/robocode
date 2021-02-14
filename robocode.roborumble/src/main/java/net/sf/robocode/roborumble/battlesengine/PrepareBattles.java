@@ -22,7 +22,7 @@ import java.util.Random;
  * PrepareBattles is used for preparing battles.
  * Controlled by properties files.
  *
- * @author Albert Pérez (original)
+ * @author Albert Perez (original)
  * @author Flemming N. Larsen (contributor)
  * @author Jerome Lavigne (contributor)
  */

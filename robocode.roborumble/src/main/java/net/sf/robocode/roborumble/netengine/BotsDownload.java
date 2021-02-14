@@ -34,7 +34,7 @@ import java.util.zip.ZipEntry;
  * Manages the download operations (participants and JAR files).
  * Controlled by properties files.
  *
- * @author Albert Pérez (original)
+ * @author Albert Perez (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class BotsDownload {

@@ -49,13 +49,13 @@ public interface IJuniorRobotPeer extends IBasicRobotPeer {
 	 * </ul>
 	 *
 	 * @param distance the distance to move measured in pixels.
-	 *                 If {@code distance} > 0 the robot is set to move forward.
-	 *                 If {@code distance} < 0 the robot is set to move backward.
+	 *                 If {@code distance} &gt; 0 the robot is set to move forward.
+	 *                 If {@code distance} &lt; 0 the robot is set to move backward.
 	 *                 If {@code distance} = 0 the robot will not move anywhere, but just
 	 *                 finish its turn.
 	 * @param radians  the amount of radians to turn the robot's body.
-	 *                 If {@code radians} > 0 the robot's body is set to turn right.
-	 *                 If {@code radians} < 0 the robot's body is set to turn left.
+	 *                 If {@code radians} &gt; 0 the robot's body is set to turn right.
+	 *                 If {@code radians} &lt; 0 the robot's body is set to turn left.
 	 *                 If {@code radians} = 0 the robot's body is set to stop turning.
 	 * @see IBasicRobotPeer#move(double) move(double)
 	 * @see IBasicRobotPeer#turnBody(double) turnBody(double)

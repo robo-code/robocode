@@ -297,8 +297,8 @@ public interface IBasicRobotPeer {
 	 *   setTurnBody(90);
 	 *   setMove(100);
 	 *   execute();
-	 * <p>
-	 *   while (getDistanceRemaining() > 0 && getTurnRemaining() > 0) {
+	 *
+	 *   while (getDistanceRemaining() &gt; 0 &amp;&amp; getTurnRemaining() &gt; 0) {
 	 *       execute();
 	 *   }
 	 * </pre>
@@ -324,14 +324,14 @@ public interface IBasicRobotPeer {
 	 * <pre>
 	 *   // Move the robot 100 pixels forward
 	 *   ahead(100);
-	 * <p>
+	 *
 	 *   // Afterwards, move the robot 50 pixels backward
 	 *   ahead(-50);
 	 * </pre>
 	 *
 	 * @param distance the distance to move measured in pixels.
-	 *                 If {@code distance} > 0 the robot is set to move forward.
-	 *                 If {@code distance} < 0 the robot is set to move backward.
+	 *                 If {@code distance} &gt; 0 the robot is set to move forward.
+	 *                 If {@code distance} &lt; 0 the robot is set to move backward.
 	 *                 If {@code distance} = 0 the robot will not move anywhere, but just
 	 *                 finish its turn.
 	 * @see robocode.robotinterfaces.IBasicEvents#onHitWall(robocode.HitWallEvent)
@@ -353,14 +353,14 @@ public interface IBasicRobotPeer {
 	 * <pre>
 	 *   // Turn the robot's body 180 degrees to the right
 	 *   turnBody(Math.PI);
-	 * <p>
+	 *
 	 *   // Afterwards, turn the robot's body 90 degrees to the left
 	 *   turnBody(-Math.PI / 2);
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body.
-	 *                If {@code radians} > 0 the robot's body is set to turn right.
-	 *                If {@code radians} < 0 the robot's body is set to turn left.
+	 *                If {@code radians} &gt; 0 the robot's body is set to turn right.
+	 *                If {@code radians} &lt; 0 the robot's body is set to turn left.
 	 *                If {@code radians} = 0 the robot's body is set to stop turning.
 	 * @see #turnGun(double)
 	 * @see IStandardRobotPeer#turnRadar(double) turnRadar(double)
@@ -382,14 +382,14 @@ public interface IBasicRobotPeer {
 	 * <pre>
 	 *   // Turn the robot's gun 180 degrees to the right
 	 *   turnGun(Math.PI);
-	 * <p>
+	 *
 	 *   // Afterwards, turn the robot's gun 90 degrees to the left
 	 *   turnGun(-Math.PI / 2);
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun.
-	 *                If {@code radians} > 0 the robot's gun is set to turn right.
-	 *                If {@code radians} < 0 the robot's gun is set to turn left.
+	 *                If {@code radians} &gt; 0 the robot's gun is set to turn right.
+	 *                If {@code radians} &lt; 0 the robot's gun is set to turn left.
 	 *                If {@code radians} = 0 the robot's gun is set to stop turning.
 	 * @see #turnBody(double)
 	 * @see IStandardRobotPeer#turnRadar(double) turnRadar(double)
@@ -415,7 +415,7 @@ public interface IBasicRobotPeer {
 	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
 	 * <p>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
-	 * {@link #getGunHeat()} returns a value > 0.
+	 * {@link #getGunHeat()} returns a value &gt; 0.
 	 * <p>
 	 * A event is generated when the bullet hits a robot
 	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
@@ -426,7 +426,7 @@ public interface IBasicRobotPeer {
 	 *   // Fire a bullet with maximum power if the gun is ready
 	 *   if (getGunHeat() == 0) {
 	 *       Bullet bullet = fire(Rules.MAX_BULLET_POWER);
-	 * <p>
+	 *
 	 *       // Get the velocity of the bullet
 	 *       if (bullet != null) {
 	 *           double bulletVelocity = bullet.getVelocity();
@@ -473,7 +473,7 @@ public interface IBasicRobotPeer {
 	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
 	 * <p>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
-	 * {@link #getGunHeat()} returns a value > 0.
+	 * {@link #getGunHeat()} returns a value &gt; 0.
 	 * <p>
 	 * A event is generated when the bullet hits a robot
 	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
@@ -482,7 +482,7 @@ public interface IBasicRobotPeer {
 	 * Example:
 	 * <pre>
 	 *   Bullet bullet = null;
-	 * <p>
+	 *
 	 *   // Fire a bullet with maximum power if the gun is ready
 	 *   if (getGunHeat() == 0) {
 	 *       bullet = setFireBullet(Rules.MAX_BULLET_POWER);
@@ -524,7 +524,7 @@ public interface IBasicRobotPeer {
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p>
+	 *
 	 *   public void run() {
 	 *       setBodyColor(Color.BLACK);
 	 *       ...
@@ -551,7 +551,7 @@ public interface IBasicRobotPeer {
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p>
+	 *
 	 *   public void run() {
 	 *       setGunColor(Color.RED);
 	 *       ...
@@ -578,7 +578,7 @@ public interface IBasicRobotPeer {
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p>
+	 *
 	 *   public void run() {
 	 *       setRadarColor(Color.YELLOW);
 	 *       ...
@@ -605,7 +605,7 @@ public interface IBasicRobotPeer {
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p>
+	 *
 	 *   public void run() {
 	 *       setBulletColor(Color.GREEN);
 	 *       ...
@@ -632,7 +632,7 @@ public interface IBasicRobotPeer {
 	 *   // Don't forget to import java.awt.Color at the top...
 	 *   import java.awt.Color;
 	 *   ...
-	 * <p>
+	 *
 	 *   public void run() {
 	 *       setScanColor(Color.WHITE);
 	 *       ...

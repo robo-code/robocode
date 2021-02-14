@@ -277,7 +277,7 @@ public class JavaDocument extends StyledDocument {
 	 * Sets the tabulation column size.
 	 * 
 	 * @param tabSize
-	 *            is the new tabulation column size, which must be >= 1.
+	 *            is the new tabulation column size, which must be &gt;= 1.
 	 */
 	public void setTabSize(int tabSize) {
 		this.tabSize = tabSize;

@@ -183,7 +183,7 @@ public class RateControlRobot extends TeamRobot {
 	 * 
 	 * @param turnRate angle of the clockwise rotation, in radians.
 	 *
-	 * @see #getTurnRateRadians()()
+	 * @see #getTurnRateRadians()
 	 * @see #setVelocityRate(double)
 	 * @see #setGunRotationRateRadians(double)
 	 * @see #setRadarRotationRateRadians(double)

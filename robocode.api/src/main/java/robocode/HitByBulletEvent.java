@@ -47,7 +47,7 @@ public final class HitByBulletEvent extends Event {
 
 	/**
 	 * Returns the bearing to the bullet, relative to your robot's heading,
-	 * in degrees (-180 < getBearing() <= 180).
+	 * in degrees (-180 &lt; getBearing() &lt;= 180).
 	 * <p>
 	 * If you were to turnRight(event.getBearing()), you would be facing the
 	 * direction the bullet came from. The calculation used here is:
@@ -61,7 +61,7 @@ public final class HitByBulletEvent extends Event {
 
 	/**
 	 * Returns the bearing to the bullet, relative to your robot's heading,
-	 * in radians (-Math.PI < getBearingRadians() <= Math.PI).
+	 * in radians (-Math.PI &lt; getBearingRadians() &lt;= Math.PI).
 	 * <p>
 	 * If you were to turnRightRadians(event.getBearingRadians()), you would be
 	 * facing the direction the bullet came from. The calculation used here is:
@@ -84,7 +84,7 @@ public final class HitByBulletEvent extends Event {
 
 	/**
 	 * Returns the heading of the bullet when it hit you, in degrees
-	 * (0 <= getHeading() < 360).
+	 * (0 &lt;= getHeading() &lt; 360).
 	 * <p>
 	 * Note: This is not relative to the direction you are facing. The robot
 	 * that fired the bullet was in the opposite direction of getHeading() when
@@ -107,7 +107,7 @@ public final class HitByBulletEvent extends Event {
 
 	/**
 	 * Returns the heading of the bullet when it hit you, in radians
-	 * (0 <= getHeadingRadians() < 2 * PI).
+	 * (0 &lt;= getHeadingRadians() &lt; 2 * PI).
 	 * <p>
 	 * Note: This is not relative to the direction you are facing. The robot
 	 * that fired the bullet was in the opposite direction of
@@ -130,7 +130,7 @@ public final class HitByBulletEvent extends Event {
 
 	/**
 	 * Returns the power of this bullet. The damage you take (in fact, already
-	 * took) is 4 * power, plus 2 * (power-1) if power > 1. The robot that fired
+	 * took) is 4 * power, plus 2 * (power-1) if power &gt; 1. The robot that fired
 	 * the bullet receives 3 * power back.
 	 *
 	 * @return the power of the bullet

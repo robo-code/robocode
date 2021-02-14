@@ -24,7 +24,7 @@ import net.sf.robocode.repository.CodeSizeCalculator;
  * another file.
  * Controlled by properties files.
  *
- * @author Albert Pérez (original)
+ * @author Albert Perez (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class CompetitionsSelector {
