@@ -104,6 +104,12 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	}
 
 	public RobocodeTestBed() {
+		// silent when running in maven
+		if (System.getProperty("surefire.test.class.path", null) != null) {
+			isDumpingOutput = false;
+			isDumpingErrors = false;
+			isDumpingMessages = false;
+		}
 		errors = 0;
 		messages = 0;
 	}
