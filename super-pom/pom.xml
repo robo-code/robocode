@@ -49,7 +49,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 					<configuration>
 						<source>1.8</source>
 						<target>1.8</target>
-						<encoding>8859_1</encoding>
+						<encoding>UTF-8</encoding>
 						<optimize>true</optimize>
 					</configuration>
 				</plugin>
