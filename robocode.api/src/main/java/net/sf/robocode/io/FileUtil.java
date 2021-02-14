@@ -8,9 +8,14 @@
 package net.sf.robocode.io;
 
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static net.sf.robocode.io.Logger.logError;
 
 import java.io.*;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 
 /**
@@ -109,26 +114,38 @@ public class FileUtil {
 		if (srcFile.equals(destFile)) {
 			throw new IOException("You cannot copy a file onto itself");
 		}
-
-		byte buf[] = new byte[4096];
-
-		FileInputStream in = null;
-		FileOutputStream out = null;
-
 		try {
-			in = new FileInputStream(srcFile);
-			out = new FileOutputStream(destFile);
+			Files.copy(srcFile.toPath(), destFile.toPath(), REPLACE_EXISTING);
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
 
-			while (in.available() > 0) {
-				out.write(buf, 0, in.read(buf, 0, buf.length));
-			}
-		} finally {
-			if (in != null) {
-				in.close();
-			}
-			if (out != null) {
-				out.close();
-			}
+	/**
+	 * Copies a folder recursively to another path.
+	 *
+	 * @param src  the input file to copy
+	 * @param dest the output file to copy to
+	 * @throws IOException if an I/O exception occurs
+	 */
+	public static void copyFolder(String src, String dest) throws IOException {
+		Path srcPath = new File(src).getCanonicalFile().getAbsoluteFile().toPath();
+		Path destPath= new File(dest).getCanonicalFile().getAbsoluteFile().toPath();
+		try (Stream<Path> stream = Files.walk(srcPath)) {
+			stream.forEach(source -> {
+				Path resolve = destPath.resolve(srcPath.relativize(source));
+				try {
+					if (!Files.isDirectory(source)) {
+						Files.copy(source, resolve, REPLACE_EXISTING);
+					} else if (!Files.isDirectory(resolve)) {
+						Files.createDirectory(resolve);
+					}
+				} catch (DirectoryNotEmptyException e) {
+					// no action
+				} catch (IOException e) {
+					Logger.logError(e);
+				}
+			});
 		}
 	}
 

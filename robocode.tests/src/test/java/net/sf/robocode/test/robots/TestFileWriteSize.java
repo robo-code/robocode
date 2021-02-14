@@ -45,10 +45,10 @@ public class TestFileWriteSize extends RobocodeTestBed {
 		if (out.contains("Data quota: 200000\n")) {
 			messagedDataQuota = true;
 		}
-		if (out.contains("Data directory: " + path + "/target/classes/tested/robots/FileWriteSize.data")) {
+		if (out.contains("Data directory: " + path + "/tested/robots/FileWriteSize.data")) {
 			messagedDataDirectory = true;	
 		}
-		if (out.contains("Data file: " + path + "/target/classes/tested/robots/FileWriteSize.data/test")) {
+		if (out.contains("Data file: " + path + "/tested/robots/FileWriteSize.data/test")) {
 			messagedDataFile = true;	
 		}
 		if (out.contains("You have reached your filesystem quota of: 200000 bytes")) {

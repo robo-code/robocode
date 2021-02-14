@@ -8,6 +8,7 @@
 package net.sf.robocode.test.helpers;
 
 
+import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 
 import org.junit.After;
@@ -49,23 +50,36 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		}
 	}
 
-	static {
+	public static String init(){
+		if (!new File("").getAbsolutePath().endsWith("robocode.tests")) {
+			throw new Error("Please run test with current directory in 'robocode.tests'");
+		}
+
 		System.setProperty("EXPERIMENTAL", "true");
 		System.setProperty("TESTING", "true");
-		System.setProperty("WORKINGDIRECTORY", "target/test-classes");
+
 		try {
-			String currentDirAbsolutePath = new File("").getAbsolutePath();
-			if (currentDirAbsolutePath.endsWith("robocode.tests")) {
-				robotsPath = new File("../robocode.tests.robots").getCanonicalPath();
-			} else if (new File("robocode.tests.robots").isDirectory()) {
-				robotsPath = new File("robocode.tests.robots").getCanonicalPath();
-			} else {
-				throw new Error("Unknown directory: " + currentDirAbsolutePath);
-			}
+			File robotsPathFile = new File("../build/robots").getCanonicalFile().getAbsoluteFile();
+			robotsPath = robotsPathFile.getPath();
+
+			FileUtil.createDir(new File("../build"));
+			FileUtil.createDir(robotsPathFile);
+			FileUtil.copyFolder("../robocode.tests.robots/build/classes", robotsPath);
+			FileUtil.copyFolder("../robocode.samples/build/classes", robotsPath);
+			// FileUtil.copyFolder("../robocode.tests.robots/build/classes/java/main", robotsPath);
+			// FileUtil.copyFolder("../robocode.samples/build/classes/java/main", robotsPath);
+			FileUtil.copyFolder("../robocode.tests.robots/src/main/resources", robotsPath);
+			FileUtil.copyFolder("../robocode.samples/src/main/resources", robotsPath);
 		} catch (IOException e) {
 			e.printStackTrace(Logger.realErr);
+			throw new Error(e);
 		}
-		System.setProperty("ROBOTPATH", robotsPath + "/target/classes");
+		System.setProperty("ROBOTPATH", robotsPath);
+		return robotsPath;
+	}
+
+	static {
+		init();
 
 		engine = new RobocodeEngine(new BattleAdaptor() {
 			public void onBattleMessage(BattleMessageEvent event) {
@@ -90,12 +104,6 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	}
 
 	public RobocodeTestBed() {
-		// silent when running in maven
-		if (System.getProperty("surefire.test.class.path", null) != null) {
-			isDumpingOutput = false;
-			isDumpingErrors = false;
-			isDumpingMessages = false;
-		}
 		errors = 0;
 		messages = 0;
 	}

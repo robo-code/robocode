@@ -174,7 +174,7 @@ public class RobotThreadManager {
 			if (t.isAlive()) {
 				// noinspection deprecation
 				// t.suspend();
-				logWarning("Unable to stop thread: " + runThread.getName());
+				logError("Unable to stop thread: " + runThread.getName());
 			} else {
 				logMessage(robotProxy.getStatics().getName() + " has been stopped.");
 			}

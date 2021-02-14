@@ -12,6 +12,7 @@ import net.sf.robocode.core.Container;
 import net.sf.robocode.core.EngineClassLoader;
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.security.HiddenAccess;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,13 +27,15 @@ import java.net.URL;
  */
 public class RobotClassLoaderTest {
 	static URL classPath;
+	static String robotsPath;
 	final String badRobot = "tested.robots.IncludeNamespaceAttack";
 	final String goodRobot = "tested.robots.Ahead";
 
 	@BeforeClass
 	public static void init() throws IOException {
 		HiddenAccess.initContainer();
-		classPath = new File("../robocode.tests.robots/target/classes").getCanonicalFile().toURI().toURL();
+		robotsPath = RobocodeTestBed.init();
+		classPath = new File(robotsPath).getCanonicalFile().toURI().toURL();
 	}
 
 	@Test

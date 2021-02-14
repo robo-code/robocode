@@ -175,7 +175,7 @@ public final class VersionManager implements IVersionManager {
 			File dir = FileUtil.getCwd();
 
 			if (RobocodeProperties.isTestingOn()) {
-				dir = dir.getParentFile().getParentFile().getParentFile();
+				dir = dir.getParentFile();
 			}
 			fileReader = new FileReader(new File(dir, VERSIONS_TXT));
 			in = new BufferedReader(fileReader);
