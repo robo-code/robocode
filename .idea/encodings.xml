@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/robocode.api/src/main/java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/robocode.battle/src/main/java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/robocode.api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/robocode.battle/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/robocode.content/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/robocode.core/src/main/java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/robocode.core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/robocode.core/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/robocode.host/src/main/java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/robocode.installer/src/main/java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/robocode.repository/src/main/java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/robocode.roborumble/src/main/java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/robocode.host/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/robocode.installer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/robocode.repository/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/robocode.roborumble/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/robocode.samples/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/robocode.samples/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/robocode.sound/src/main/java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/robocode.sound/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/robocode.sound/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/robocode.tests.robots/src/main/java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/robocode.tests.robots/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/robocode.tests.robots/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/robocode.tests/src/main/java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/robocode.ui.editor/src/main/java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/robocode.ui/src/main/java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/robocode.tests/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/robocode.tests/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/robocode.ui.editor/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/robocode.ui/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/robocode.ui/src/main/resources" charset="UTF-8" />
   </component>
 </project>

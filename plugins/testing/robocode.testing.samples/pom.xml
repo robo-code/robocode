@@ -41,7 +41,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 					<systemProperties>
 						<property>
 							<name>robocode.home</name>
-							<value>${project.build.directory}/../../../../robocode.tests/target/classes</value>
+							<value>${project.build.directory}/../../../../robocode.tests/build/classes</value>
 						</property>
 					</systemProperties>
 				</configuration>

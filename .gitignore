@@ -8,3 +8,4 @@ ucdetector_reports
 .recommenders
 .sonarlint
 RemoteSystemsTempFiles
+**/build/
