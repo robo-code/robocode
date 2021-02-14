@@ -167,10 +167,11 @@ public final class RobocodeMain extends RobocodeMainBase {
 				if (new File(setup.replayFilename).exists()) {
 					battleManager.replay();
 				} else {
-					System.err.println("The specified battle record file '" + setup.replayFilename + "' was not found");
+					Logger.logError("The specified battle record file '" + setup.replayFilename + "' was not found");
 					System.exit(8);
 				}
 			}
+			Logger.initialized = true;
 		} catch (Throwable e) {
 			Logger.logError(e);
 		}

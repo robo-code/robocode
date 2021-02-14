@@ -27,6 +27,7 @@ import java.io.PrintStream;
 public class Logger {
 	public static final PrintStream realOut = System.out;
 	public static final PrintStream realErr = System.err;
+	public static boolean initialized = false;
 
 	private static IBattleListener logListener;
 	
@@ -80,6 +81,10 @@ public class Logger {
 	}
 
 	public static void logError(String s) {
+		if (!initialized) {
+			s = StringUtil.toBasicLatin(s);
+			realErr.println(s);
+		}
 		if (logListener == null) {
 			if (System.getProperty("logErrors", "true").equalsIgnoreCase("true")) {
 				s = StringUtil.toBasicLatin(s);
