@@ -19,9 +19,9 @@ import java.awt.*;
  * <p>
  * <p>Please note the following standards will be used:
  * <br> heading - absolute angle in degrees with 0 facing up the screen,
- * positive clockwise. 0 <= heading < 360.
+ * positive clockwise. 0 &lt;= heading &lt; 360.
  * <br> bearing - relative angle to some object from your robot's heading,
- * positive clockwise. -180 < bearing <= 180
+ * positive clockwise. -180 &lt; bearing &lt;= 180
  * <br> All coordinates are expressed as (x,y).
  * <br> All coordinates are positive.
  * <br> The origin (0,0) is at the bottom left of the screen.
@@ -31,7 +31,7 @@ import java.awt.*;
  * @see <a target="_top" href="https://robocode.sourceforge.io">
  *      robocode.sourceforge.net</a>
  * @see <a href="https://robocode.sourceforge.io/myfirstrobot/MyFirstRobot.html">
- *      Building your first robot<a>
+ *      Building your first robot</a>
  *
  * @see JuniorRobot
  * @see AdvancedRobot
@@ -319,8 +319,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's body to the left.
-	 *                If {@code degrees} > 0 the robot will turn left.
-	 *                If {@code degrees} < 0 the robot will turn right.
+	 *                If {@code degrees} &gt; 0 the robot will turn left.
+	 *                If {@code degrees} &lt; 0 the robot will turn right.
 	 *                If {@code degrees} = 0 the robot will not turn, but execute.
 	 * @see #turnRight(double)
 	 * @see #turnGunLeft(double)
@@ -355,8 +355,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's body to the right.
-	 *                If {@code degrees} > 0 the robot will turn right.
-	 *                If {@code degrees} < 0 the robot will turn left.
+	 *                If {@code degrees} &gt; 0 the robot will turn right.
+	 *                If {@code degrees} &lt; 0 the robot will turn left.
 	 *                If {@code degrees} = 0 the robot will not turn, but execute.
 	 * @see #turnLeft(double)
 	 * @see #turnGunLeft(double)
@@ -404,7 +404,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
 	 * <p>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
-	 * {@link #getGunHeat()} returns a value > 0.
+	 * {@link #getGunHeat()} returns a value &gt; 0.
 	 * <p>
 	 * A event is generated when the bullet hits a robot
 	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
@@ -454,7 +454,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * {@link Rules#MIN_BULLET_POWER} and {@link Rules#MAX_BULLET_POWER}.
 	 * <p>
 	 * Note that the gun cannot fire if the gun is overheated, meaning that
-	 * {@link #getGunHeat()} returns a value > 0.
+	 * {@link #getGunHeat()} returns a value &gt; 0.
 	 * <p>
 	 * A event is generated when the bullet hits a robot
 	 * ({@link BulletHitEvent}), wall ({@link BulletMissedEvent}), or another
@@ -1298,8 +1298,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's gun to the left.
-	 *                If {@code degrees} > 0 the robot's gun will turn left.
-	 *                If {@code degrees} < 0 the robot's gun will turn right.
+	 *                If {@code degrees} &gt; 0 the robot's gun will turn left.
+	 *                If {@code degrees} &lt; 0 the robot's gun will turn right.
 	 *                If {@code degrees} = 0 the robot's gun will not turn, but execute.
 	 * @see #turnGunRight(double)
 	 * @see #turnLeft(double)
@@ -1335,8 +1335,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's gun to the right.
-	 *                If {@code degrees} > 0 the robot's gun will turn right.
-	 *                If {@code degrees} < 0 the robot's gun will turn left.
+	 *                If {@code degrees} &gt; 0 the robot's gun will turn right.
+	 *                If {@code degrees} &lt; 0 the robot's gun will turn left.
 	 *                If {@code degrees} = 0 the robot's gun will not turn, but execute.
 	 * @see #turnGunLeft(double)
 	 * @see #turnLeft(double)
@@ -1373,8 +1373,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's radar to the left.
-	 *                If {@code degrees} > 0 the robot's radar will turn left.
-	 *                If {@code degrees} < 0 the robot's radar will turn right.
+	 *                If {@code degrees} &gt; 0 the robot's radar will turn left.
+	 *                If {@code degrees} &lt; 0 the robot's radar will turn right.
 	 *                If {@code degrees} = 0 the robot's radar will not turn, but execute.
 	 * @see #turnRadarRight(double)
 	 * @see #turnLeft(double)
@@ -1411,8 +1411,8 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * </pre>
 	 *
 	 * @param degrees the amount of degrees to turn the robot's radar to the right.
-	 *                If {@code degrees} > 0 the robot's radar will turn right.
-	 *                If {@code degrees} < 0 the robot's radar will turn left.
+	 *                If {@code degrees} &gt; 0 the robot's radar will turn right.
+	 *                If {@code degrees} &lt; 0 the robot's radar will turn left.
 	 *                If {@code degrees} = 0 the robot's radar will not turn, but execute.
 	 * @see #turnRadarLeft(double)
 	 * @see #turnLeft(double)

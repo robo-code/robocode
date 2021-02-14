@@ -23,7 +23,7 @@ public class StyledDocument extends DefaultStyledDocument {
 	 * 
 	 * @param offset
 	 *            is the offset to retrieve the element index from.
-	 * @return the element index >= 0.
+	 * @return the element index &gt;= 0.
 	 */
 	protected int getElementIndex(int offset) {
 		return getDefaultRootElement().getElementIndex(offset);

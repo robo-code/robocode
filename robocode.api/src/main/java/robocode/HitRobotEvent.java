@@ -53,7 +53,7 @@ public final class HitRobotEvent extends Event {
 
 	/**
 	 * Returns the bearing to the robot you hit, relative to your robot's
-	 * heading, in degrees (-180 <= getBearing() < 180)
+	 * heading, in degrees (-180 &lt;= getBearing() &lt; 180)
 	 *
 	 * @return the bearing to the robot you hit, in degrees
 	 */
@@ -72,7 +72,7 @@ public final class HitRobotEvent extends Event {
 
 	/**
 	 * Returns the bearing to the robot you hit, relative to your robot's
-	 * heading, in radians (-PI <= getBearingRadians() < PI)
+	 * heading, in radians (-PI &lt;= getBearingRadians() &lt; PI)
 	 *
 	 * @return the bearing to the robot you hit, in radians
 	 */

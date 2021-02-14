@@ -145,8 +145,8 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * </pre>
 	 *
 	 * @param distance the distance to move measured in pixels.
-	 *                 If {@code distance} > 0 the robot is set to move forward.
-	 *                 If {@code distance} < 0 the robot is set to move backward.
+	 *                 If {@code distance} &gt; 0 the robot is set to move forward.
+	 *                 If {@code distance} &lt; 0 the robot is set to move backward.
 	 *                 If {@code distance} = 0 the robot is set to stop its movement.
 	 * @see IBasicRobotPeer#move(double) move(double)
 	 * @see #setMaxVelocity(double)
@@ -184,8 +184,8 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's body.
-	 *                If {@code radians} > 0 the robot's body is set to turn right.
-	 *                If {@code radians} < 0 the robot's body is set to turn left.
+	 *                If {@code radians} &gt; 0 the robot's body is set to turn right.
+	 *                If {@code radians} &lt; 0 the robot's body is set to turn left.
 	 *                If {@code radians} = 0 the robot's body is set to stop turning.
 	 * @see IBasicRobotPeer#turnBody(double) turnBody(double)
 	 * @see #setTurnGun(double)
@@ -223,8 +223,8 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's gun.
-	 *                If {@code radians} > 0 the robot's gun is set to turn right.
-	 *                If {@code radians} < 0 the robot's gun is set to turn left.
+	 *                If {@code radians} &gt; 0 the robot's gun is set to turn right.
+	 *                If {@code radians} &lt; 0 the robot's gun is set to turn left.
 	 *                If {@code radians} = 0 the robot's gun is set to stop turning.
 	 * @see IBasicRobotPeer#turnGun(double) turnGun(double)
 	 * @see #setTurnBody(double)
@@ -261,8 +261,8 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 * </pre>
 	 *
 	 * @param radians the amount of radians to turn the robot's radar.
-	 *                If {@code radians} > 0 the robot's radar is set to turn right.
-	 *                If {@code radians} < 0 the robot's radar is set to turn left.
+	 *                If {@code radians} &gt; 0 the robot's radar is set to turn right.
+	 *                If {@code radians} &lt; 0 the robot's radar is set to turn left.
 	 *                If {@code radians} = 0 the robot's radar is set to stop turning.
 	 * @see IStandardRobotPeer#turnRadar(double) turnRadar(double)
 	 * @see #setTurnBody(double)
@@ -437,7 +437,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 *   // Create the condition for our custom event
 	 *   Condition triggerHitCondition = new Condition("triggerhit") {
 	 *       public boolean test() {
-	 *           return (getEnergy() <= trigger);
+	 *           return (getEnergy() &lt;= trigger);
 	 *       };
 	 *   }
 	 *
@@ -462,7 +462,7 @@ public interface IAdvancedRobotPeer extends IStandardRobotPeer {
 	 *   // Create the condition for our custom event
 	 *   Condition triggerHitCondition = new Condition("triggerhit") {
 	 *       public boolean test() {
-	 *           return (getEnergy() <= trigger);
+	 *           return (getEnergy() &lt;= trigger);
 	 *       };
 	 *   }
 	 *

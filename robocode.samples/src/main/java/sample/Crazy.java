@@ -72,7 +72,7 @@ public class Crazy extends AdvancedRobot {
 	}
 
 	/**
-	 * reverseDirection:  Switch from ahead to back & vice versa
+	 * reverseDirection:  Switch from ahead to back &amp; vice versa
 	 */
 	public void reverseDirection() {
 		if (movingForward) {
