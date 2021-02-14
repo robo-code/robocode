@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+<module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
@@ -8,5 +8,25 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.13.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.robocode:codesize:1.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.bcel:bcel:6.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.picocontainer:picocontainer:2.14.2" level="project" />
+    <orderEntry type="module" module-name="robocode.api" exported="" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.battle" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.content" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.core" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.distribution" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.host" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.installer" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.repository" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.roborumble" exported="" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.samples" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.sound" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.tests" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.tests.robots" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.ui" scope="RUNTIME" />
+    <orderEntry type="module" module-name="robocode.ui.editor" scope="RUNTIME" />
   </component>
 </module>
