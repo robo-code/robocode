@@ -69,7 +69,7 @@
     </dependencySets>
     <fileSets>
         <fileSet>
-            <directory>../robocode.testing.api/target/site/apidocs</directory>
+            <directory>../robocode.testing.api/build/site/apidocs</directory>
             <outputDirectory>/testing/javadoc</outputDirectory>
         </fileSet>
     </fileSets>

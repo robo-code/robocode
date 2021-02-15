@@ -11,11 +11,18 @@ package net.sf.robocode.version;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
+
 
 /**
  * @author Pavel Savara (original)
  */
 public class VersionTest {
+	static {
+		if (!new File("").getAbsolutePath().endsWith("robocode.core")) {
+			throw new Error("Please run test with current directory in 'robocode.core'");
+		}
+	}
 
 	@Test
 	public void same() {

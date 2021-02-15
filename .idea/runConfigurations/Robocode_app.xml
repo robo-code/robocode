@@ -2,7 +2,7 @@
   <configuration default="false" name="Robocode app" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="robocode.Robocode" />
     <module name="robocode" />
-    <option name="VM_PARAMETERS" value="-DROBOTPATH=robocode.samples\target\classes" />
+    <option name="VM_PARAMETERS" value="-DROBOTPATH=robocode.samples\build\classes\java\main" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

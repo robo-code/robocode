@@ -11,6 +11,7 @@ package net.sf.robocode.host.jarjar;
 import org.junit.Test;
 import org.junit.Assert;
 
+import java.io.File;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLClassLoader;
@@ -28,6 +29,9 @@ import net.sf.robocode.io.JarJar;
 public class JarJarTest {
 	static {
 		JarJarURLConnection.register();
+		if (!new File("").getAbsolutePath().endsWith("robocode.host")) {
+			throw new Error("Please run test with current directory in 'robocode.host'");
+		}
 	}
 
 	@Test

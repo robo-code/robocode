@@ -82,7 +82,7 @@
 	</dependencySets>
 	<fileSets>
 		<fileSet>
-			<directory>../robocode.api/target/site/apidocs</directory>
+			<directory>../robocode.api/build/site/apidocs</directory>
 			<outputDirectory>javadoc</outputDirectory>
 			<lineEnding>lf</lineEnding> <!-- for Unix/Linux -->
 		</fileSet>
