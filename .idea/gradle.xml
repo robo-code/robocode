@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../Program Files/Gradle" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/robocode.api" />
+            <option value="$PROJECT_DIR$/robocode.battle" />
+            <option value="$PROJECT_DIR$/robocode.content" />
+            <option value="$PROJECT_DIR$/robocode.core" />
+            <option value="$PROJECT_DIR$/robocode.host" />
+            <option value="$PROJECT_DIR$/robocode.installer" />
+            <option value="$PROJECT_DIR$/robocode.main" />
+            <option value="$PROJECT_DIR$/robocode.repository" />
+            <option value="$PROJECT_DIR$/robocode.roborumble" />
+            <option value="$PROJECT_DIR$/robocode.samples" />
+            <option value="$PROJECT_DIR$/robocode.sound" />
+            <option value="$PROJECT_DIR$/robocode.tests" />
+            <option value="$PROJECT_DIR$/robocode.tests.robots" />
+            <option value="$PROJECT_DIR$/robocode.ui" />
+            <option value="$PROJECT_DIR$/robocode.ui.editor" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
