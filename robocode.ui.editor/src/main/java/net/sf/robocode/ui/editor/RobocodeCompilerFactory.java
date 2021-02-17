@@ -148,7 +148,7 @@ public class RobocodeCompilerFactory {
 			final String errorText = "Could not set up a working compiler for Robocode.\n"
 					+ "Please consult the console window for errors.\n\n"
 					+ "For help with this, please post to Help forum here:\n"
-					+ "http://sourceforge.net/projects/robocode/forums/forum/116459";
+					+ "https://sourceforge.net/p/robocode/discussion/116459/";
 			
 			console.append("\nUnable to set up a working compiler for Robocode.\n");
 
