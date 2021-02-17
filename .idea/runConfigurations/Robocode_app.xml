@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Robocode app" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="robocode.Robocode" />
-    <module name="robocode" />
-    <option name="VM_PARAMETERS" value="-DROBOTPATH=robocode.samples\build\classes\java\main" />
+    <option name="MAIN_CLASS_NAME" value="net.sf.robocode.main.Robocode" />
+    <module name="robocode.robocode.main.main" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/sandbox" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

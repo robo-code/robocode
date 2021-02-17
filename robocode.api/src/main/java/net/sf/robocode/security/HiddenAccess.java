@@ -134,7 +134,7 @@ public class HiddenAccess {
 		}
 		final int i = path.lastIndexOf("robocode.jar");
 
-		if (i > 0) {
+		if (i > 0 && !path.contains("build")) {
 			loader = createClassLoader(classPath, loader, path.substring(0, i));
 		}
 		System.setProperty("robocode.class.path", classPath.toString());

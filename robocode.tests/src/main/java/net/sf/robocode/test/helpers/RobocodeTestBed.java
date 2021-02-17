@@ -59,17 +59,8 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		System.setProperty("TESTING", "true");
 
 		try {
-			File robotsPathFile = new File("../build/robots").getCanonicalFile().getAbsoluteFile();
+			File robotsPathFile = new File("../sandbox/robots").getCanonicalFile().getAbsoluteFile();
 			robotsPath = robotsPathFile.getPath();
-
-			FileUtil.createDir(new File("../build"));
-			FileUtil.createDir(robotsPathFile);
-			FileUtil.copyFolder("../robocode.tests.robots/build/classes", robotsPath);
-			FileUtil.copyFolder("../robocode.samples/build/classes", robotsPath);
-			// FileUtil.copyFolder("../robocode.tests.robots/build/classes/java/main", robotsPath);
-			// FileUtil.copyFolder("../robocode.samples/build/classes/java/main", robotsPath);
-			FileUtil.copyFolder("../robocode.tests.robots/src/main/resources", robotsPath);
-			FileUtil.copyFolder("../robocode.samples/src/main/resources", robotsPath);
 		} catch (IOException e) {
 			e.printStackTrace(Logger.realErr);
 			throw new Error(e);
@@ -104,12 +95,6 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 	}
 
 	public RobocodeTestBed() {
-		// silent when running in maven
-		if (System.getProperty("surefire.test.class.path", null) != null) {
-			isDumpingOutput = false;
-			isDumpingErrors = false;
-			isDumpingMessages = false;
-		}
 		errors = 0;
 		messages = 0;
 	}

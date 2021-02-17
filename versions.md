@@ -1,3 +1,9 @@
+## Version 1.9.4.0 (15-02-2021)
+
+### Changes
+* Migrated from Maven to Gradle
+* Migrated from Eclipse to Idea
+
 ## Version 1.9.3.9 (20-04-2020)
 
 ### Changes
