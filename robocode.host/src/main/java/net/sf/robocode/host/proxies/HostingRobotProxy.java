@@ -102,6 +102,10 @@ abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
 		}
 	}
 
+	public IRobotItem getRobotSpecification(){
+		return robotSpecification;
+	}
+
 	public RobotOutputStream getOut() {
 		return out;
 	}

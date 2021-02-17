@@ -9,6 +9,7 @@ package net.sf.robocode.host.events;
 
 
 import net.sf.robocode.host.proxies.BasicRobotProxy;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
 import robocode.exception.EventInterruptedException;
@@ -421,6 +422,9 @@ public final class EventManager implements IEventManager {
 				}
 			} catch (Exception ex) {
 				robotProxy.println("SYSTEM: " + ex.getClass().getName() + " occurred on " + event.getClass().getName());
+				if(robotProxy.getRobotSpecification().isDevelopmentVersion()){
+					Logger.logWarning(robotProxy.getName()+": "+ ex.getClass().getName() + " occurred on " + event.getClass().getName());
+				}
 				ex.printStackTrace(robotProxy.getOut());
 			}
 		}

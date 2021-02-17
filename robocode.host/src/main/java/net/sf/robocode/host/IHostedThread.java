@@ -10,6 +10,7 @@ package net.sf.robocode.host;
 
 import net.sf.robocode.host.io.RobotFileSystemManager;
 import net.sf.robocode.host.io.RobotOutputStream;
+import net.sf.robocode.repository.IRobotItem;
 
 
 /**
@@ -29,4 +30,6 @@ public interface IHostedThread extends Runnable {
 	RobotOutputStream getOut();
 
 	ClassLoader getRobotClassloader();
+
+	IRobotItem getRobotSpecification();
 }
