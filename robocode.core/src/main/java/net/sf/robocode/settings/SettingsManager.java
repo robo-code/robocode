@@ -743,7 +743,8 @@ public class SettingsManager implements ISettingsManager {
 		optionsSoundEnableMixerVolume = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERVOLUME, "true"));
 		optionsSoundEnableMixerPan = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "true"));
 
-		optionsDevelopmentPaths = fromCommaSeparatedString(props.getProperty(OPTIONS_DEVELOPMENT_PATH, ""));
+
+		optionsDevelopmentPaths = fromCommaSeparatedString(props.getProperty(OPTIONS_DEVELOPMENT_PATH, System.getProperty(OPTIONS_DEVELOPMENT_PATH)));
 		optionsExcludedDevelopmentPaths = fromCommaSeparatedString(
 				props.getProperty(OPTIONS_DEVELOPMENT_PATH_EXCLUDED, ""));
 
