@@ -10,3 +10,18 @@ dependencies {
 }
 
 description = "Robocode Core"
+
+tasks {
+    register("copyVersion", Copy::class) {
+        from("../") {
+            include("versions.md")
+        }
+        into("build/resources/main/")
+    }
+    processResources{
+        dependsOn("copyVersion")
+
+    }
+}
+
+
