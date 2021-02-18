@@ -19,21 +19,21 @@ tasks {
         from("../") {
             include("versions.md")
         }
-        into("../sandbox")
+        into("../.sandbox")
     }
     register("copyExternalLibs", Copy::class) {
         dependsOn(configurations.runtimeClasspath)
         from({
             configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") && it.name.contains("kotlin") }.map { it }
         })
-        into("../sandbox/libs")
+        into("../.sandbox/libs")
     }
     register("copyCompilers", Copy::class) {
         dependsOn(configurations.runtimeClasspath)
         from({
             configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") && it.name.contains("eclipse") }.map { it }
         })
-        into("../sandbox/compilers")
+        into("../.sandbox/compilers")
     }
     processResources {
         dependsOn("copyContent")

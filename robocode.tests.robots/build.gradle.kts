@@ -15,13 +15,13 @@ tasks {
         from("src/main/resources") {
             include("**/*.*")
         }
-        into("../sandbox/robots")
+        into("../.sandbox/robots")
     }
     register("copyClasses", Copy::class) {
         dependsOn(configurations.runtimeClasspath)
 
         from(compileJava)
-        into("../sandbox/robots")
+        into("../.sandbox/robots")
     }
     jar {
         dependsOn("copyContent")

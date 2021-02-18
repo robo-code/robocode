@@ -59,7 +59,7 @@ public abstract class RobocodeTestBed extends BattleAdaptor {
 		System.setProperty("TESTING", "true");
 
 		try {
-			File robotsPathFile = new File("../sandbox/robots").getCanonicalFile().getAbsoluteFile();
+			File robotsPathFile = new File("../.sandbox/robots").getCanonicalFile().getAbsoluteFile();
 			robotsPath = robotsPathFile.getPath();
 		} catch (IOException e) {
 			e.printStackTrace(Logger.realErr);

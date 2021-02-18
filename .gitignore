@@ -9,4 +9,4 @@ RemoteSystemsTempFiles
 gradle-app.setting
 !gradle-wrapper.jar
 **/build/
-sandbox
+.sandbox
