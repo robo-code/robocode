@@ -28,3 +28,9 @@ tasks {
         dependsOn("copyClasses")
     }
 }
+
+tasks {
+    publishMavenJavaPublicationToSonatypeRepository {
+        enabled = false
+    }
+}

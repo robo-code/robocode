@@ -12,3 +12,9 @@ dependencies {
 }
 
 description = "Robocode UI Robot editor"
+
+tasks {
+    publishMavenJavaPublicationToSonatypeRepository {
+        enabled = false
+    }
+}

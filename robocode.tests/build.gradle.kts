@@ -16,3 +16,9 @@ dependencies {
 }
 
 description = "Robocode Tests"
+
+tasks {
+    publishMavenJavaPublicationToSonatypeRepository {
+        enabled = false
+    }
+}
