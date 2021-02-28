@@ -10,3 +10,4 @@ gradle-app.setting
 !gradle-wrapper.jar
 **/build/
 .sandbox
+.idea/uiDesigner.xml

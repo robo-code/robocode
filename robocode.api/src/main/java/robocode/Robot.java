@@ -16,7 +16,6 @@ import java.awt.*;
 
 /**
  * The basic robot class that you will extend to create your own robots.
- * <p>
  * <p>Please note the following standards will be used:
  * <br> heading - absolute angle in degrees with 0 facing up the screen,
  * positive clockwise. 0 &lt;= heading &lt; 360.
@@ -27,6 +26,7 @@ import java.awt.*;
  * <br> The origin (0,0) is at the bottom left of the screen.
  * <br> Positive x is right.
  * <br> Positive y is up.
+ * </p>
  *
  * @see <a target="_top" href="https://robocode.sourceforge.io">
  *      robocode.sourceforge.net</a>
@@ -1014,7 +1014,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * <p>
 	 * A {@code null} indicates the default (blue) color for the body, gun,
 	 * radar, and scan arc, but white for the bullet color.
-	 * <p>
+	 * </p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
@@ -1054,7 +1054,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * Sets the color of the robot's body.
 	 * <p>
 	 * A {@code null} indicates the default (blue) color.
-	 * <p>
+	 * </p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
@@ -1090,7 +1090,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * Sets the color of the robot's gun.
 	 * <p>
 	 * A {@code null} indicates the default (blue) color.
-	 * <p>
+	 * </p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
@@ -1126,7 +1126,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * Sets the color of the robot's radar.
 	 * <p>
 	 * A {@code null} indicates the default (blue) color.
-	 * <p>
+	 * </p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
@@ -1162,7 +1162,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * Sets the color of the robot's bullets.
 	 * <p>
 	 * A {@code null} indicates the default white color.
-	 * <p>
+	 * </p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
@@ -1198,7 +1198,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 * Sets the color of the robot's scan arc.
 	 * <p>
 	 * A {@code null} indicates the default (blue) color.
-	 * <p>
+	 * </p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...

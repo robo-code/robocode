@@ -41,6 +41,8 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * See {@link java.io.FileOutputStream#FileOutputStream(File)}
 	 * for documentation about this constructor.
 	 *
+	 * @param file stream
+	 * @throws IOException when file could not be created
 	 * @see java.io.FileOutputStream#FileOutputStream(File)
 	 */
 	public RobocodeFileOutputStream(File file) throws IOException {
@@ -52,8 +54,10 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * See {@link java.io.FileOutputStream#FileOutputStream(FileDescriptor)}
 	 * for documentation about this constructor.
 	 *
+	 * @param fdObj desciptor
 	 * @see java.io.FileOutputStream#FileOutputStream(FileDescriptor)
 	 */
+	@Deprecated
 	public RobocodeFileOutputStream(FileDescriptor fdObj) {
 		throw new RobotException("Creating a RobocodeFileOutputStream with a FileDescriptor is not supported.");
 	}
@@ -63,6 +67,8 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * See {@link java.io.FileOutputStream#FileOutputStream(String)}
 	 * for documentation about this constructor.
 	 *
+	 * @param fileName file name
+	 * @throws IOException when file could not be created
 	 * @see java.io.FileOutputStream#FileOutputStream(String)
 	 */
 	public RobocodeFileOutputStream(String fileName) throws java.io.IOException {
@@ -74,6 +80,9 @@ public class RobocodeFileOutputStream extends OutputStream {
 	 * See {@link java.io.FileOutputStream#FileOutputStream(String, boolean)}
 	 * for documentation about this constructor.
 	 *
+	 * @param fileName file name
+	 * @param append should append at the end of the file
+	 * @throws IOException when file could not be created
 	 * @see java.io.FileOutputStream#FileOutputStream(String, boolean)
 	 */
 	public RobocodeFileOutputStream(String fileName, boolean append) throws IOException {

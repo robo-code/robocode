@@ -1059,8 +1059,9 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	/**
 	 * Call this during an event handler to allow new events of the same
 	 * priority to restart the event handler.
-	 * <p>
+	 *
 	 * <p>Example:
+	 * </p>
 	 * <pre>
 	 *   public void onScannedRobot(ScannedRobotEvent e) {
 	 *       fire(1);

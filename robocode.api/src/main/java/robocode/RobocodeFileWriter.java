@@ -29,6 +29,7 @@ import java.io.IOException;
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
+@SuppressWarnings("deprecation")
 public class RobocodeFileWriter extends java.io.OutputStreamWriter {
 
 	/**

@@ -518,7 +518,7 @@ public interface IBasicRobotPeer {
 	 * Sets the color of the robot's body.
 	 * <p>
 	 * A {@code null} indicates the default (blue) color.
-	 * <p>
+	 * </p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
@@ -545,7 +545,7 @@ public interface IBasicRobotPeer {
 	 * Sets the color of the robot's gun.
 	 * <p>
 	 * A {@code null} indicates the default (blue) color.
-	 * <p>
+	 * </p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
@@ -572,7 +572,7 @@ public interface IBasicRobotPeer {
 	 * Sets the color of the robot's radar.
 	 * <p>
 	 * A {@code null} indicates the default (blue) color.
-	 * <p>
+	 * </p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
@@ -599,7 +599,7 @@ public interface IBasicRobotPeer {
 	 * Sets the color of the robot's bullets.
 	 * <p>
 	 * A {@code null} indicates the default white color.
-	 * <p>
+	 * </p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
@@ -626,7 +626,7 @@ public interface IBasicRobotPeer {
 	 * Sets the color of the robot's scan arc.
 	 * <p>
 	 * A {@code null} indicates the default (blue) color.
-	 * <p>
+	 * </p>
 	 * <pre>
 	 * Example:
 	 *   // Don't forget to import java.awt.Color at the top...
