@@ -89,7 +89,7 @@ public class BattleManager implements IBattleManager {
 	}
 
 	// Called from the RobocodeEngine
-	public void startNewBattle(BattleSpecification spec, String initialPositions, boolean waitTillOver, boolean enableCLIRecording) {
+	public void startNewBattle(BattleSpecification spec, String initialPositions, boolean waitTillOver, boolean enableRecording) {
 		battleProperties = new BattleProperties();
 		battleProperties.setBattlefieldWidth(spec.getBattlefield().getWidth());
 		battleProperties.setBattlefieldHeight(spec.getBattlefield().getHeight());
@@ -109,17 +109,17 @@ public class BattleManager implements IBattleManager {
 
 		final RobotSpecification[] robots = repositoryManager.loadSelectedRobots(spec.getRobots());
 
-		startNewBattleImpl(robots, waitTillOver, enableCLIRecording);
+		startNewBattleImpl(robots, waitTillOver, enableRecording);
 	}
 
-	private void startNewBattleImpl(RobotSpecification[] battlingRobotsList, boolean waitTillOver, boolean enableCLIRecording) {
+	private void startNewBattleImpl(RobotSpecification[] battlingRobotsList, boolean waitTillOver, boolean enableRecording) {
 		stop(true);
 
 		logMessage("Preparing battle...");
 
 		final boolean recording = (properties.getOptionsCommonEnableReplayRecording()
 				&& System.getProperty("TESTING", "none").equals("none"))
-						|| enableCLIRecording;
+						|| enableRecording;
 
 		if (recording) {
 			recordManager.attachRecorder(battleEventDispatcher);

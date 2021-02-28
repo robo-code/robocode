@@ -24,5 +24,5 @@ public interface IBattleManagerBase {
 
 	void stop(boolean waitTillEnd);
 
-	void startNewBattle(BattleSpecification spec, String initialPositions, boolean waitTillOver, boolean enableCLIRecording);
+	void startNewBattle(BattleSpecification spec, String initialPositions, boolean waitTillOver, boolean enableRecording);
 }

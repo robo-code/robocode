@@ -126,9 +126,12 @@ class BattleRecorder {
 					name.append('-');
 				}
 				name.setLength(name.length() - 1);
-				if (properties.getOptionsCommonAutoRecordingXML()) {
+				if (properties.getOptionsCommonRecordingFormat().equalsIgnoreCase("xml")) {
 					name.append(".xml.zip");
 					recordmanager.saveRecord(name.toString(), BattleRecordFormat.XML_ZIP, new SerializableOptions(true));
+				} else if (properties.getOptionsCommonRecordingFormat().equalsIgnoreCase("csv")) {
+					recordmanager.saveRecord(name.toString(), BattleRecordFormat.CSV,
+							new SerializableOptions(true));
 				} else {
 					name.append(".zip.br");
 					recordmanager.saveRecord(name.toString(), BattleRecordFormat.BINARY_ZIP,

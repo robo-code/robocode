@@ -97,8 +97,9 @@ public class SettingsManager implements ISettingsManager {
 			optionsCommonAppendWhenSavingResults = true,
 			optionsCommonDontHideRankings = true,
 			optionsCommonEnableAutoRecording = false,
-			optionsCommonAutoRecordingXML = false,
 			optionsCommonEnableReplayRecording = false;
+
+	private String optionsCommonRecordingFormat = "bin";
 
 	// Team Options
 	private boolean optionsTeamShowTeamRobots = false;
@@ -615,8 +616,8 @@ public class SettingsManager implements ISettingsManager {
 		return optionsCommonEnableAutoRecording;
 	}
 
-	public boolean getOptionsCommonAutoRecordingXML() {
-		return optionsCommonAutoRecordingXML;
+	public String getOptionsCommonRecordingFormat() {
+		return optionsCommonRecordingFormat;
 	}
 
 	public void setOptionsCommonEnableAutoRecording(boolean enable) {
@@ -624,9 +625,9 @@ public class SettingsManager implements ISettingsManager {
 		props.setProperty(OPTIONS_COMMON_ENABLE_AUTO_RECORDING, "" + enable);
 	}
 
-	public void setOptionsCommonEnableAutoRecordingXML(boolean enable) {
-		this.optionsCommonAutoRecordingXML = enable;
-		props.setProperty(OPTIONS_COMMON_AUTO_RECORDING_XML, "" + enable);
+	public void setOptionsCommonRecordingFormat(String value) {
+		this.optionsCommonRecordingFormat = value;
+		props.setProperty(OPTIONS_COMMON_RECORDING_FORMAT, value);
 	}
 
 	public void setOptionsCommonNotifyAboutNewBetaVersions(boolean enable) {
@@ -744,7 +745,7 @@ public class SettingsManager implements ISettingsManager {
 		optionsSoundEnableMixerPan = Boolean.valueOf(props.getProperty(OPTIONS_SOUND_ENABLEMIXERPAN, "true"));
 
 
-		optionsDevelopmentPaths = fromCommaSeparatedString(props.getProperty(OPTIONS_DEVELOPMENT_PATH, System.getProperty(OPTIONS_DEVELOPMENT_PATH)));
+		optionsDevelopmentPaths = fromCommaSeparatedString(System.getProperty(OPTIONS_DEVELOPMENT_PATH, props.getProperty(OPTIONS_DEVELOPMENT_PATH)));
 		optionsExcludedDevelopmentPaths = fromCommaSeparatedString(
 				props.getProperty(OPTIONS_DEVELOPMENT_PATH_EXCLUDED, ""));
 
@@ -755,10 +756,10 @@ public class SettingsManager implements ISettingsManager {
 				props.getProperty(OPTIONS_COMMON_APPEND_WHEN_SAVING_RESULTS, "true"));
 		optionsCommonDontHideRankings = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_DONT_HIDE_RANKINGS, "true"));
 		optionsCommonEnableReplayRecording = Boolean.valueOf(
-				props.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "false"));
+				System.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, props.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "false")));
 		optionsCommonEnableAutoRecording = Boolean.valueOf(
-				props.getProperty(OPTIONS_COMMON_ENABLE_AUTO_RECORDING, "false"));
-		optionsCommonAutoRecordingXML = Boolean.valueOf(props.getProperty(OPTIONS_COMMON_AUTO_RECORDING_XML, "false"));
+				System.getProperty(OPTIONS_COMMON_ENABLE_AUTO_RECORDING, props.getProperty(OPTIONS_COMMON_ENABLE_AUTO_RECORDING, "false")));
+		optionsCommonRecordingFormat = System.getProperty(OPTIONS_COMMON_RECORDING_FORMAT, props.getProperty(OPTIONS_COMMON_RECORDING_FORMAT, "bin"));
 
 		optionsTeamShowTeamRobots = Boolean.valueOf(props.getProperty(OPTIONS_TEAM_SHOWTEAMROBOTS, "false"));
 

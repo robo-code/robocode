@@ -12,10 +12,7 @@ import net.sf.robocode.battle.peer.BulletPeer;
 import net.sf.robocode.battle.peer.ExplosionPeer;
 import net.sf.robocode.battle.peer.RobotPeer;
 import net.sf.robocode.peer.ExecCommands;
-import net.sf.robocode.serialization.IXmlSerializable;
-import net.sf.robocode.serialization.XmlReader;
-import net.sf.robocode.serialization.SerializableOptions;
-import net.sf.robocode.serialization.XmlWriter;
+import net.sf.robocode.serialization.*;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.IBulletSnapshot;
 
@@ -31,7 +28,7 @@ import java.io.IOException;
  *
  * @since 1.6.1
  */
-final class BulletSnapshot implements java.io.Serializable, IXmlSerializable, IBulletSnapshot {
+public final class BulletSnapshot implements java.io.Serializable, IXmlSerializable, ICsvSerializable, IBulletSnapshot {
 
 	private static final long serialVersionUID = 2L;
 
@@ -264,6 +261,15 @@ final class BulletSnapshot implements java.io.Serializable, IXmlSerializable, IB
 			}
 		}
 		writer.endElement();
+	}
+
+	@Override
+	public void writeCsv(CsvWriter writer, SerializableOptions options) throws IOException {
+		writer.writeValue(state.toString());
+		writer.writeValue(heading, options.trimPrecision);
+		writer.writeValue(paintX, options.trimPrecision);
+		writer.writeValue(paintY, options.trimPrecision);
+		writer.writeValue(victimIndex);
 	}
 
 	/**

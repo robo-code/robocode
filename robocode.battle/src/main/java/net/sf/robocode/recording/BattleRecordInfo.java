@@ -10,10 +10,7 @@ package net.sf.robocode.recording;
 
 import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.serialization.IXmlSerializable;
-import net.sf.robocode.serialization.SerializableOptions;
-import net.sf.robocode.serialization.XmlReader;
-import net.sf.robocode.serialization.XmlWriter;
+import net.sf.robocode.serialization.*;
 import robocode.BattleResults;
 import robocode.BattleRules;
 
@@ -21,6 +18,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -28,13 +26,14 @@ import java.util.List;
  * @author Flemming N. Larsen (original)
  */
 class BattleRecordInfo implements Serializable, IXmlSerializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	int robotCount;
 	int roundsCount;
 	BattleRules battleRules;
 	Integer[] turnsInRounds;
 	List<BattleResults> results;
+	UUID battleId = UUID.randomUUID();
 
 	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
 		writer.startElement("recordInfo"); {
@@ -163,7 +162,7 @@ class BattleRecordInfo implements Serializable, IXmlSerializable {
 	 *
 	 * @author Flemming N. Larsen (original)
 	 */
-	private class BattleResultsWrapper extends BattleResults implements IXmlSerializable {
+	static class BattleResultsWrapper extends BattleResults implements IXmlSerializable,ICsvSerializable {
 
 		private static final long serialVersionUID = BattleResults.serialVersionUID;
 
@@ -171,7 +170,7 @@ class BattleRecordInfo implements Serializable, IXmlSerializable {
 			super(null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		}
 
-		private BattleResultsWrapper(BattleResults results) {
+		BattleResultsWrapper(BattleResults results) {
 			super(results.getTeamLeaderName(), results.getRank(), results.getScore(), results.getSurvival(),
 					results.getLastSurvivorBonus(), results.getBulletDamage(), results.getBulletDamageBonus(),
 					results.getRamDamage(), results.getRamDamageBonus(), results.getFirsts(), results.getSeconds(),
@@ -197,6 +196,22 @@ class BattleRecordInfo implements Serializable, IXmlSerializable {
 				}
 			}
 			writer.endElement();
+		}
+
+		@Override
+		public void writeCsv(CsvWriter writer, SerializableOptions options) throws IOException {
+			writer.writeValue(teamLeaderName);
+			writer.writeValue(rank);
+			writer.writeValue(score, options.trimPrecision);
+			writer.writeValue(survival, options.trimPrecision);
+			writer.writeValue(lastSurvivorBonus, options.trimPrecision);
+			writer.writeValue(bulletDamage, options.trimPrecision);
+			writer.writeValue(bulletDamageBonus, options.trimPrecision);
+			writer.writeValue(ramDamage, options.trimPrecision);
+			writer.writeValue(ramDamageBonus, options.trimPrecision);
+			writer.writeValue(firsts);
+			writer.writeValue(seconds);
+			writer.writeValue(thirds);
 		}
 
 		public XmlReader.Element readXml(XmlReader reader) {
