@@ -9,17 +9,21 @@ package net.sf.robocode.recording;
 
 
 import net.sf.robocode.battle.events.BattleEventDispatcher;
+import net.sf.robocode.battle.snapshot.BulletSnapshot;
+import net.sf.robocode.battle.snapshot.RobotSnapshot;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import static net.sf.robocode.io.Logger.logError;
-import net.sf.robocode.serialization.IXmlSerializable;
-import net.sf.robocode.serialization.SerializableOptions;
-import net.sf.robocode.serialization.XmlReader;
-import net.sf.robocode.serialization.XmlWriter;
+
+import net.sf.robocode.serialization.*;
 import net.sf.robocode.settings.ISettingsManager;
+import net.sf.robocode.version.IVersionManager;
+import net.sf.robocode.version.VersionManager;
 import robocode.BattleResults;
 import robocode.BattleRules;
+import robocode.control.snapshot.IBulletSnapshot;
+import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
 
 import java.io.*;
@@ -42,6 +46,7 @@ public class RecordManager implements IRecordManager {
 
 	private File tempFile;
 	private BattleRecorder recorder;
+	private final IVersionManager versionManager;
 
 	BattleRecordInfo recordInfo;
 	private FileOutputStream fileWriteStream;
@@ -52,9 +57,10 @@ public class RecordManager implements IRecordManager {
 	private BufferedInputStream bufferedReadStream;
 	private ObjectInputStream objectReadStream;
 
-	public RecordManager(ISettingsManager properties) { // NO_UCD (unused code)
+	public RecordManager(ISettingsManager properties, IVersionManager versionManager) { // NO_UCD (unused code)
 		this.properties = properties;
 		recorder = new BattleRecorder(this, properties);
+		this.versionManager = versionManager;
 	}
 
 	protected void finalize() throws Throwable {
@@ -290,6 +296,10 @@ public class RecordManager implements IRecordManager {
 	}
 
 	public void saveRecord(String recordFilename, BattleRecordFormat format, SerializableOptions options) {
+		if(format == BattleRecordFormat.CSV){
+			saveRecordCSV(recordFilename, options);
+			return;
+		}
 		FileOutputStream fos = null;
 		BufferedOutputStream bos = null;
 		ZipOutputStream zos = null;
@@ -399,6 +409,176 @@ public class RecordManager implements IRecordManager {
 			FileUtil.cleanupStream(bos);
 			FileUtil.cleanupStream(fos);
 			FileUtil.cleanupStream(osw);
+		}
+	}
+
+	private void saveRecordCSV(String recordFilename, SerializableOptions options) {
+		FileOutputStream foss = null;
+		BufferedOutputStream boss = null;
+		OutputStreamWriter osws = null;
+		CsvWriter cwrResults = null;
+
+		FileOutputStream fosr = null;
+		BufferedOutputStream bosr = null;
+		OutputStreamWriter oswr = null;
+		CsvWriter cwrRounds = null;
+
+		FileOutputStream fosb = null;
+		BufferedOutputStream bosb = null;
+		OutputStreamWriter oswb = null;
+		CsvWriter cwrBullets = null;
+
+		FileOutputStream fosm = null;
+		BufferedOutputStream bosm = null;
+		OutputStreamWriter oswm = null;
+		CsvWriter cwrRobots = null;
+
+		FileInputStream fis = null;
+		BufferedInputStream bis = null;
+		ObjectInputStream ois = null;
+
+		final Charset utf8 = Charset.forName("UTF-8");
+
+		try {
+			String version = versionManager.getVersion();
+			foss = new FileOutputStream(recordFilename+".results.csv");
+			boss = new BufferedOutputStream(foss, 1024 * 1024);
+			osws = new OutputStreamWriter(boss, utf8);
+			cwrResults = new CsvWriter(osws,false);
+			cwrResults.startDocument("version,battleId,roundsCount,robotCount,battlefieldWidth,battlefieldHeight,gunCoolingRate,inactivityTime,teamLeaderName,rank,score,survival,lastSurvivorBonus,bulletDamage,bulletDamageBonus,ramDamage,ramDamageBonus,firsts,seconds,thirds");
+
+			fosr = new FileOutputStream(recordFilename+".rounds.csv");
+			bosr = new BufferedOutputStream(fosr, 1024 * 1024);
+			oswr = new OutputStreamWriter(bosr, utf8);
+			cwrRounds = new CsvWriter(oswr,false);
+			cwrRounds.startDocument("version,battleId,roundIndex,robotCount,battlefieldWidth,battlefieldHeight,gunCoolingRate,inactivityTime,turnsInRound");
+
+			fosm = new FileOutputStream(recordFilename+".robots.csv");
+			bosm = new BufferedOutputStream(fosm, 1024 * 1024);
+			oswm = new OutputStreamWriter(bosm, utf8);
+			cwrRobots = new CsvWriter(oswm, false);
+			cwrRobots.startDocument("version,battleId,roundIndex,turnIndex,robotIndex,robotName,energy,x,y,bodyHeading,gunHeading,radarHeading,gunHeat,velocity,score,survivalScore,bulletDamageScore,bulletKillBonus,rammingDamageScore,rammingKillBonus");
+
+			fosb = new FileOutputStream(recordFilename+".bullets.csv");
+			bosb = new BufferedOutputStream(fosb, 1024 * 1024);
+			oswb = new OutputStreamWriter(bosb, utf8);
+			cwrBullets = new CsvWriter(oswb, false);
+			cwrBullets.startDocument("version,battleId,roundIndex,turnIndex,bulletId,ownerIndex,ownerName,state,heading,x,y,victimIndex,victimName");
+			int roundsCount = recordInfo.turnsInRounds.length;
+
+			if (recordInfo.turnsInRounds != null) {
+				fis = new FileInputStream(tempFile);
+				bis = new BufferedInputStream(fis, 1024 * 1024);
+				ois = new ObjectInputStream(bis);
+
+				if (recordInfo.results != null) {
+					// loop over robots
+					for (BattleResults result : recordInfo.results) {
+						BattleRecordInfo.BattleResultsWrapper wrapper = new BattleRecordInfo.BattleResultsWrapper(result);
+						cwrResults.writeValue(version);
+						cwrResults.writeValue(recordInfo.battleId.toString());
+						cwrResults.writeValue(roundsCount);
+						cwrResults.writeValue(recordInfo.robotCount);
+						cwrResults.writeValue(recordInfo.battleRules.getBattlefieldWidth());
+						cwrResults.writeValue(recordInfo.battleRules.getBattlefieldHeight());
+						cwrResults.writeValue(recordInfo.battleRules.getGunCoolingRate(), options.trimPrecision);
+						cwrResults.writeValue(recordInfo.battleRules.getInactivityTime());
+						// results
+						wrapper.writeCsv(cwrResults,options);
+						cwrResults.endLine();
+					}
+				}
+
+				// loop over rounds
+				for (int round = 0; round < roundsCount; round++) {
+					int turnsInRound = recordInfo.turnsInRounds[round];
+					if (turnsInRound > 0) {
+						cwrRounds.writeValue(version);
+						cwrRounds.writeValue(recordInfo.battleId.toString());
+						cwrRounds.writeValue(round);
+						cwrRounds.writeValue(recordInfo.robotCount);
+						cwrRounds.writeValue(recordInfo.battleRules.getBattlefieldWidth());
+						cwrRounds.writeValue(recordInfo.battleRules.getBattlefieldHeight());
+						cwrRounds.writeValue(recordInfo.battleRules.getGunCoolingRate(), options.trimPrecision);
+						cwrRounds.writeValue(recordInfo.battleRules.getInactivityTime());
+						cwrRounds.writeValue(turnsInRound);
+						cwrRounds.endLine();
+
+						// loop over turns
+						for (int trn = 0; trn <= turnsInRound - 1; trn++) {
+							try {
+								TurnSnapshot turn = (TurnSnapshot) ois.readObject();
+
+								if (trn != turn.getTurn()) {
+									throw new Error("Something rotten");
+								}
+
+								IRobotSnapshot[] robots = turn.getRobots();
+								for (IRobotSnapshot robot: robots) {
+									RobotSnapshot robotSnapshot = (RobotSnapshot) robot;
+									cwrRobots.writeValue(version);
+									cwrRobots.writeValue(recordInfo.battleId.toString());
+									cwrRobots.writeValue(round);
+									cwrRobots.writeValue(trn);
+									robotSnapshot.writeCsv(cwrRobots,options);
+									cwrRobots.endLine();
+								}
+								for (IBulletSnapshot bullet:turn.getBullets()) {
+									BulletSnapshot bulletSnapshot = (BulletSnapshot) bullet;
+									IRobotSnapshot owner =robots[bulletSnapshot.getOwnerIndex()];
+									cwrBullets.writeValue(version);
+									cwrBullets.writeValue(recordInfo.battleId.toString());
+									cwrBullets.writeValue(round);
+									cwrBullets.writeValue(trn);
+									cwrBullets.writeValue(bulletSnapshot.getBulletId());
+									cwrBullets.writeValue(bulletSnapshot.getOwnerIndex());
+									cwrBullets.writeValue(owner.getName());
+									bulletSnapshot.writeCsv(cwrBullets,options);
+									cwrBullets.writeValue(bulletSnapshot.getVictimIndex() != -1 ? robots[bulletSnapshot.getVictimIndex()].getName() : null);
+									cwrBullets.endLine();
+								}
+							} catch (ClassNotFoundException e) {
+								logError(e);
+							}
+						}
+					}
+				}
+				osws.flush();
+				boss.flush();
+				foss.flush();
+
+				oswr.flush();
+				bosr.flush();
+				fosr.flush();
+
+				oswb.flush();
+				bosb.flush();
+				fosb.flush();
+
+				oswm.flush();
+				bosm.flush();
+				fosm.flush();
+			}
+		} catch (IOException e) {
+			logError(e);
+			recorder = new BattleRecorder(this, properties);
+			createTempFile();
+		} finally {
+			FileUtil.cleanupStream(ois);
+			FileUtil.cleanupStream(bis);
+			FileUtil.cleanupStream(fis);
+
+			FileUtil.cleanupStream(bosr);
+			FileUtil.cleanupStream(fosr);
+			FileUtil.cleanupStream(oswr);
+
+			FileUtil.cleanupStream(bosb);
+			FileUtil.cleanupStream(fosb);
+			FileUtil.cleanupStream(oswb);
+
+			FileUtil.cleanupStream(bosm);
+			FileUtil.cleanupStream(fosm);
+			FileUtil.cleanupStream(oswm);
 		}
 	}
 

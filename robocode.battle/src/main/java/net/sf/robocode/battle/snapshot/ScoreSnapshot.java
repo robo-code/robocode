@@ -9,10 +9,7 @@ package net.sf.robocode.battle.snapshot;
 
 
 import net.sf.robocode.battle.peer.RobotStatistics;
-import net.sf.robocode.serialization.IXmlSerializable;
-import net.sf.robocode.serialization.XmlReader;
-import net.sf.robocode.serialization.SerializableOptions;
-import net.sf.robocode.serialization.XmlWriter;
+import net.sf.robocode.serialization.*;
 import robocode.control.snapshot.IScoreSnapshot;
 
 import java.io.IOException;
@@ -28,7 +25,7 @@ import java.io.Serializable;
  *
  * @since 1.6.1
  */
-final class ScoreSnapshot implements Serializable, IXmlSerializable, IScoreSnapshot {
+public final class ScoreSnapshot implements Serializable, IXmlSerializable, IScoreSnapshot, ICsvSerializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -340,6 +337,17 @@ final class ScoreSnapshot implements Serializable, IXmlSerializable, IScoreSnaps
 		}
 		writer.endElement();
 	}
+
+	@Override
+	public void writeCsv(CsvWriter writer, SerializableOptions options) throws IOException {
+		writer.writeValue(currentScore, options.trimPrecision);
+		writer.writeValue(currentSurvivalScore, options.trimPrecision);
+		writer.writeValue(currentBulletDamageScore, options.trimPrecision);
+		writer.writeValue(currentBulletKillBonus, options.trimPrecision);
+		writer.writeValue(currentRammingDamageScore, options.trimPrecision);
+		writer.writeValue(currentRammingKillBonus, options.trimPrecision);
+	}
+
 
 	// allows loading of minimalistic XML
 	ScoreSnapshot(String contestantName) {

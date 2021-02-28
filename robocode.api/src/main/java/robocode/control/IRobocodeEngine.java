@@ -132,6 +132,7 @@ public interface IRobocodeEngine {
 	 * @since 1.7.1.2
 	 */
 	void runBattle(BattleSpecification battleSpecification, String initialPositions, boolean waitTillOver);
+	void runBattle(BattleSpecification battleSpecification, String initialPositions, boolean waitTillOver, boolean enableRecording);
 
 	/**
 	 * Will block caller until current battle is over.

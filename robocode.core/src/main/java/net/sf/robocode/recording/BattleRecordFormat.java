@@ -15,5 +15,6 @@ public enum BattleRecordFormat {
 	BINARY,
 	BINARY_ZIP,
 	XML,
-	XML_ZIP
+	XML_ZIP,
+	CSV
 }
