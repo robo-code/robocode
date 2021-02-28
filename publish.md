@@ -28,4 +28,4 @@ gradle publishToSonatype closeAndReleaseSonatypeStagingRepository
 ```
 This typically occurs within 10 minutes, though updates to search can take up to two hours.
 
-You should be able to see the binaries uploaded to [public Repository]()
+You should be able to see the binaries uploaded to [public Repository](https://repo1.maven.org/maven2/net/sf/robocode/robocode.api/)
