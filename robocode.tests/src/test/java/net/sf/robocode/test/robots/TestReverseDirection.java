@@ -11,6 +11,7 @@ package net.sf.robocode.test.robots;
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 
+import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
 import robocode.util.Utils;
 
@@ -20,9 +21,14 @@ import robocode.util.Utils;
  */
 public class TestReverseDirection extends RobocodeTestBed {
 
+	@Test
+	public void run() {
+		super.run();
+	}
+
 	@Override
-	public String getRobotNames() {
-		return "tested.robots.ReverseDirection,sample.Target";        
+	public String getRobotName() {
+		return "tested.robots.ReverseDirection";        
 	}
 
 	@Override

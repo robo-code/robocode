@@ -32,7 +32,12 @@ public class TestNames extends RobocodeTestBed {
 	}
 
 	@Override
-	public String getRobotNames() {
-		return "sample.Fire,robocode.BadNamespace,tested.robots.TooLongNameThisIsReallyTooLongName,tooLongNamespaceThisIsReallyTooLongNamespace.TooLongNamespace,NoPackageButReallyLongNameIWouldSayTooLongMaybeEventLonger,NoPackageShortName";
+	public String getRobotName() {
+		return "sample.Fire";
+	}
+
+	@Override
+	public String getEnemyName() {
+		return "robocode.BadNamespace,tested.robots.TooLongNameThisIsReallyTooLongName,tooLongNamespaceThisIsReallyTooLongNamespace.TooLongNamespace,NoPackageButReallyLongNameIWouldSayTooLongMaybeEventLonger,NoPackageShortName";
 	}
 }

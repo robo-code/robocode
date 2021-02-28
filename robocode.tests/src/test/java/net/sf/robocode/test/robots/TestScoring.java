@@ -10,6 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
+import org.junit.Test;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.RoundEndedEvent;
 import robocode.control.events.TurnEndedEvent;
@@ -28,8 +29,13 @@ public class TestScoring extends RobocodeTestBed {
 
 	ITurnSnapshot lastTurnSnapshot;
 
+	@Test
+	public void run() {
+		super.run();
+	}
+
 	@Override
-	public String getRobotNames() {
+	public String getRobotName() {
 		return "sample.Corners,sample.Crazy,sample.Fire,sample.RamFire,sample.SittingDuck,sample.SpinBot,sample.Tracker,sample.TrackFire,sample.Walls";
 	}
 

@@ -9,6 +9,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Assert;
+import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
 
 /**
@@ -17,10 +18,15 @@ import robocode.control.events.TurnEndedEvent;
 public class TestStaticConstructorDnsAttack extends RobocodeTestBed {
 
 	private boolean securityExceptionOccurred;
-	
+
+	@Test
+	public void run() {
+		super.run();
+	}
+
 	@Override
-	public String getRobotNames() {
-		return "tested.robots.DnsAttack,sample.Target";
+	public String getRobotName() {
+		return "tested.robots.DnsAttack";
 	}
 
 	@Override

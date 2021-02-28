@@ -11,6 +11,7 @@ package net.sf.robocode.test.robots;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
+import org.junit.Test;
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IScoreSnapshot;
@@ -30,9 +31,14 @@ public class TestRankingsWithTargetRobots extends RobocodeTestBed {
 
 	ITurnSnapshot lastTurnSnapshot;
 
+	@Test
+	public void run() {
+		super.run();
+	}
+
 	@Override
-	public String getRobotNames() {
-		return "sample.Target,sample.Target";
+	public String getRobotName() {
+		return "sample.Target";
 	}
 
 	@Override

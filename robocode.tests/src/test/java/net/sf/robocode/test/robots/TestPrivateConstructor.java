@@ -28,7 +28,7 @@ public class TestPrivateConstructor extends RobocodeTestBed {
 
 	public void onTurnEnded(final TurnEndedEvent event) {
 		super.onTurnEnded(event);                          
-		final IRobotSnapshot robot = event.getTurnSnapshot().getRobots()[1];
+		final IRobotSnapshot robot = event.getTurnSnapshot().getRobots()[0];
 
 		if (robot.getOutputStreamSnapshot().contains("SYSTEM: Is your constructor marked public?")) {
 			messaged = true;
@@ -37,8 +37,8 @@ public class TestPrivateConstructor extends RobocodeTestBed {
 	}
 
 	@Override
-	public String getRobotNames() {
-		return "sample.Fire,tested.robots.PrivateConstructor";
+	public String getRobotName() {
+		return "tested.robots.PrivateConstructor";
 	}
 
 	@Override

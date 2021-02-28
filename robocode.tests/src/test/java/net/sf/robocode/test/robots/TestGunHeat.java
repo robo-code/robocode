@@ -24,14 +24,15 @@ public class TestGunHeat extends RobocodeTestBed {
 		super.run();
 	}
 
-	public String getRobotNames() {
-		return "sample.Target,tested.robots.GunHeat";
+	@Override
+	public String getRobotName() {
+		return "tested.robots.GunHeat";
 	}
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		IRobotSnapshot gh = event.getTurnSnapshot().getRobots()[1];
+		IRobotSnapshot gh = event.getTurnSnapshot().getRobots()[0];
 
 		switch (event.getTurnSnapshot().getTurn()) {
 		case 1:

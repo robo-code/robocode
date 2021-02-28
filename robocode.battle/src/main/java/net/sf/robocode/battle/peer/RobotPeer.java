@@ -30,6 +30,8 @@ import robocode.control.snapshot.RobotState;
 import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.WinException;
+import robocode.robotinterfaces.IBasicRobot;
+
 import static robocode.util.Utils.*;
 
 import java.awt.geom.Arc2D;
@@ -264,6 +266,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public int getRobotIndex() {
 		return statics.getRobotIndex();
+	}
+
+	public IBasicRobot getRobotObject() {
+		return robotProxy.getRobotObject();
 	}
 
 	public int getTeamIndex() {

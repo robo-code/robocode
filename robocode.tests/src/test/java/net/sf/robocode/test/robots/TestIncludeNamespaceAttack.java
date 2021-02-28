@@ -32,7 +32,7 @@ public class TestIncludeNamespaceAttack extends RobocodeTestBed {
 	}
 
 	@Override
-	public String getRobotNames() {
-		return "tested.robots.DieFast,tested.robots.IncludeNamespaceAttack";
+	public String getRobotName() {
+		return "tested.robots.IncludeNamespaceAttack";
 	}
 }

@@ -26,8 +26,8 @@ public class TestEnvAttack extends RobocodeTestBed {
 	}
 
 	@Override
-	public String getRobotNames() {
-		return "tested.robots.BattleLost,tested.robots.EnvAttack";
+	public String getRobotName() {
+		return "tested.robots.EnvAttack";
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class TestEnvAttack extends RobocodeTestBed {
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
+		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
 		if (out.contains("AccessControlException: access denied")) {
 			messagedAttack = true;

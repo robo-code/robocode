@@ -10,6 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Assert;
+import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
 
 
@@ -19,10 +20,15 @@ import robocode.control.events.TurnEndedEvent;
 public class TestReflectionAttack extends RobocodeTestBed {
 
 	private boolean messagedAccessDenied;
-	
+
+	@Test
+	public void run() {
+		super.run();
+	}
+
 	@Override
-	public String getRobotNames() {
-		return "tested.robots.ReflectionAttack,sample.Target";
+	public String getRobotName() {
+		return "tested.robots.ReflectionAttack";
 	}
 
 	@Override

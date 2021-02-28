@@ -26,6 +26,16 @@ public class TestCustomEvents extends RobocodeTestBed {
 	}
 
 	@Override
+	public String getRobotName() {
+		return "sample.Target";
+	}
+
+	@Override
+	public String getEnemyName() {
+		return "tested.robots.CustomEvents";
+	}
+
+	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
 		IRobotSnapshot gh = event.getTurnSnapshot().getRobots()[1];
@@ -47,10 +57,5 @@ public class TestCustomEvents extends RobocodeTestBed {
 	private void test(IRobotSnapshot gh, String s) {
 		Assert.assertTrue("got: " + gh.getOutputStreamSnapshot() + ", expected: " + s,
 				gh.getOutputStreamSnapshot().contains(s));
-	}
-
-	@Override
-	public String getRobotNames() {
-		return "sample.Target,tested.robots.CustomEvents";
 	}
 }

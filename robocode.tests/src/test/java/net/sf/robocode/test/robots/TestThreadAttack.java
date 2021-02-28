@@ -12,6 +12,7 @@ import org.junit.Ignore;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
+import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
 
 
@@ -23,9 +24,14 @@ public class TestThreadAttack extends RobocodeTestBed {
 	boolean messagedMax;
 	boolean messagedUnknown;
 
+	@Test
+	public void run() {
+		super.run();
+	}
+
 	@Override
-	public String getRobotNames() {
-		return "tested.robots.ThreadAttack,sample.SittingDuck";
+	public String getRobotName() {
+		return "tested.robots.ThreadAttack";
 	}
 
 	@Override

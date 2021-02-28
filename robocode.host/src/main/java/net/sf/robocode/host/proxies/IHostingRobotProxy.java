@@ -10,6 +10,7 @@ package net.sf.robocode.host.proxies;
 
 import net.sf.robocode.peer.ExecCommands;
 import robocode.RobotStatus;
+import robocode.robotinterfaces.IBasicRobot;
 
 
 /**
@@ -25,4 +26,5 @@ public interface IHostingRobotProxy {
 
 	void cleanup();
 
+	IBasicRobot getRobotObject();
 }

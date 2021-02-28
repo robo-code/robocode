@@ -25,8 +25,8 @@ public class TestWatchBullet extends RobocodeTestBed {
 		super.run();
 	}
 
-	public String getRobotNames() {
-		return "tested.robots.WatchBullets,sample.SittingDuck";
+	public String getRobotName() {
+		return "tested.robots.WatchBullets";
 	}
 
 	public void onTurnEnded(TurnEndedEvent event) {

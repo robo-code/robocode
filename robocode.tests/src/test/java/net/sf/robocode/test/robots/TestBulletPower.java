@@ -24,14 +24,20 @@ public class TestBulletPower extends RobocodeTestBed {
 		super.run();
 	}
 
-	public String getRobotNames() {
-		return "sample.Target,tested.robots.BadFirePower";
+	@Override
+	public String getRobotName() {
+		return "tested.robots.BadFirePower";
+	}
+
+	@Override
+	public String getEnemyName() {
+		return "sample.Target";
 	}
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		IRobotSnapshot bp = event.getTurnSnapshot().getRobots()[1];
+		IRobotSnapshot bp = event.getTurnSnapshot().getRobots()[0];
 
 		final int time = event.getTurnSnapshot().getTurn();
 

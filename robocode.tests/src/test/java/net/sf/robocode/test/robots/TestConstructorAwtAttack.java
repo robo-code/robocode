@@ -11,6 +11,7 @@ package net.sf.robocode.test.robots;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
+import org.junit.Test;
 
 import javax.swing.*;
 
@@ -24,9 +25,19 @@ public class TestConstructorAwtAttack extends RobocodeTestBed {
 
 	JFrame frame;
 
+	@Test
+	public void run() {
+		super.run();
+	}
+
 	@Override
-	public String getRobotNames() {
-		return "tested.robots.ConstructorAwtAttack,tested.robots.BattleLost";
+	public String getRobotName() {
+		return "tested.robots.ConstructorAwtAttack";
+	}
+
+	@Override
+	public String getEnemyName() {
+		return "sample.Target";
 	}
 
 	/* in case that we don't block JFrame by classloader

@@ -29,9 +29,7 @@ public class TestWin extends RobocodeTestBed {
 	private StringBuffer outputBuf = new StringBuffer();
 	
 	@Test
-	public void run() {
-		super.run();
-	}
+	public void run() { super.run(); }
 
 	@Override
 	public int getNumRounds() {
@@ -39,8 +37,13 @@ public class TestWin extends RobocodeTestBed {
 	}
 
 	@Override
-	public String getRobotNames() {
-		return "sample.MyFirstRobot,tested.robots.BattleWin";        
+	public String getRobotName() {
+		return "sample.MyFirstRobot";
+	}
+
+	@Override
+	public String getEnemyName() {
+		return "tested.robots.BattleWin";
 	}
 
 	@Override

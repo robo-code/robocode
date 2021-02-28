@@ -30,8 +30,9 @@ public class TestPosition extends RobocodeTestBed {
 		super.run();
 	}
 
-	public String getRobotNames() {
-		return "sample.Crazy,sample.Target";
+	@Override
+	public String getRobotName() {
+		return "sample.Crazy";
 	}
 
 	@Override

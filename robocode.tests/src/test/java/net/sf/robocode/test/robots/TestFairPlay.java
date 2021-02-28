@@ -31,8 +31,14 @@ public class TestFairPlay extends RobocodeTestBed {
 		super.run();
 	}
 
-	public String getRobotNames() {
-		return "tested.robots.FairPlay,tested.robots.FairPlay";
+	@Override
+	public String getRobotName() {
+		return "tested.robots.FairPlay";
+	}
+
+	@Override
+	public String getEnemyName() {
+		return "tested.robots.FairPlay";
 	}
 
 	@Override

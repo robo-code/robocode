@@ -25,8 +25,14 @@ public class TestJunior extends RobocodeTestBed {
 		super.run();
 	}
 
-	public String getRobotNames() {
-		return "tested.robots.JuniorEvents,sample.SittingDuck";
+	@Override
+	public String getRobotName() {
+		return "tested.robots.JuniorEvents";
+	}
+
+	@Override
+	public String getEnemyName() {
+		return "sample.SittingDuck";
 	}
 
 	public void onTurnEnded(TurnEndedEvent event) {
