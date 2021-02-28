@@ -9,13 +9,9 @@ dependencies {
 
 description = "Robocode Samples"
 
-tasks.jar {
-    from("src/main/java") {
-        include("**")
-    }
-    from("src/main/resources") {
-        include("**")
-    }
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 tasks {
@@ -34,8 +30,19 @@ tasks {
         from(compileJava)
         into("../.sandbox/robots")
     }
+    javadoc {
+        source = sourceSets["main"].java
+        include("**/*.java")
+    }
     jar {
         dependsOn("copyContent")
         dependsOn("copyClasses")
+        dependsOn("javadoc")
+        from("src/main/java") {
+            include("**")
+        }
+        from("src/main/resources") {
+            include("**")
+        }
     }
 }

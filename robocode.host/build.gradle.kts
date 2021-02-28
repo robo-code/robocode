@@ -11,3 +11,18 @@ dependencies {
 }
 
 description = "Robocode Host"
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks {
+    javadoc {
+        source = sourceSets["main"].java
+        include("net/sf/robocode/host/Module.java")
+    }
+    jar {
+        dependsOn("javadoc")
+    }
+}

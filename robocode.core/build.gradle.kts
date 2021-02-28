@@ -11,6 +11,11 @@ dependencies {
 
 description = "Robocode Core"
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 tasks {
     register("copyVersion", Copy::class) {
         from("../") {
@@ -22,6 +27,8 @@ tasks {
         dependsOn("copyVersion")
 
     }
+    javadoc {
+        source = sourceSets["main"].java
+        include("net/sf/robocode/core/Module.java")
+    }
 }
-
-

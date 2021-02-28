@@ -10,3 +10,18 @@ dependencies {
 }
 
 description = "Robocode Sound"
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks {
+    javadoc {
+        source = sourceSets["main"].java
+        include("net/sf/robocode/sound/Module.java")
+    }
+    jar {
+        dependsOn("javadoc")
+    }
+}

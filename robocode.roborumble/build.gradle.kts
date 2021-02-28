@@ -18,3 +18,18 @@ tasks.jar {
     }
     archiveFileName.set("roborumble.jar")
 }
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks {
+    javadoc {
+        source = sourceSets["main"].java
+        include("roborumble/RoboRumbleAtHome.java")
+    }
+    jar {
+        dependsOn("javadoc")
+    }
+}

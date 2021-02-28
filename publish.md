@@ -1,3 +1,4 @@
+# Dev setup
 In order to publish new version to Maven repository
 You need GPG key. 
 ```
@@ -14,7 +15,17 @@ ossrhUsername=<user-at-issues.sonatype.org>
 ossrhPassword=<password-at-issues.sonatype.org>
 ```
 
+# Just staging
+```
+gradle publishToSonatype
+```
+When you log in , you should be able to see the binaries uploaded to [staging Repository](https://oss.sonatype.org/#stagingRepositories)
 
+
+# Release to public repos
 ```
 gradle publishToSonatype closeAndReleaseSonatypeStagingRepository
 ```
+This typically occurs within 10 minutes, though updates to search can take up to two hours.
+
+You should be able to see the binaries uploaded to [public Repository]()
