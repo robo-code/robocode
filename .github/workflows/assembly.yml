@@ -18,18 +18,21 @@ jobs:
       run: ./gradlew build
 
     - name: robocode.core test artifacts
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: robocode.core-test-result
         path: robocode.core/build/reports/tests/test
 
     - name: robocode.host test artifacts
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: robocode.host-test-result
         path: robocode.host/build/reports/tests/test
 
     - name: robocode.tests test artifacts
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: robocode.tests-result
