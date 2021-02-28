@@ -18,3 +18,9 @@ dependencies {
     implementation(project(":robocode.ui.editor"))
     implementation(project(":robocode.tests"))
 }
+
+tasks {
+    publishMavenJavaPublicationToSonatypeRepository {
+        enabled = false
+    }
+}

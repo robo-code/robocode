@@ -40,4 +40,7 @@ tasks {
         dependsOn("copyExternalLibs")
         dependsOn("copyCompilers")
     }
+    publishMavenJavaPublicationToSonatypeRepository {
+        enabled = false
+    }
 }

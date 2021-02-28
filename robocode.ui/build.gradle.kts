@@ -12,3 +12,18 @@ dependencies {
 }
 
 description = "Robocode UI"
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks {
+    javadoc {
+        source = sourceSets["main"].java
+        include("net/sf/robocode/ui/Module.java")
+    }
+    jar {
+        dependsOn("javadoc")
+    }
+}

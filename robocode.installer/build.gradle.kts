@@ -21,45 +21,57 @@ dependencies {
     runtimeOnly("org.eclipse.jdt:org.eclipse.jdt.core:3.24.0")
 }
 
-tasks.jar {
-    dependsOn(configurations.runtimeClasspath)
+tasks {
+    jar {
+        dependsOn(configurations.runtimeClasspath)
 
-    manifest {
-        attributes(mapOf("Main-Class" to "net.sf.robocode.installer.AutoExtract"))
-    }
-    archiveFileName.set("robocode-${project.version}-setup.jar")
-    destinationDirectory.set(file("$buildDir/../../build"))
+        manifest {
+            attributes(mapOf("Main-Class" to "net.sf.robocode.installer.AutoExtract"))
+        }
+        archiveFileName.set("robocode-${project.version}-setup.jar")
+        destinationDirectory.set(file("$buildDir/../../build"))
 
-    into("javadoc") {
-        from("../robocode.api/build/docs/javadoc")
-    }
+        into("javadoc") {
+            from("../robocode.api/build/docs/javadoc")
+        }
 
-    into("libs") {
-        from({
-            configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") && !it.name.contains("eclipse") && !it.name.contains("robocode.samples") && !it.name.contains("robocode.content") }.map { it }
-        })
-    }
-    into("compilers") {
-        from({
-            configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") && it.name.contains("eclipse") }.map { it }
-        })
-    }
-    into("robots") {
-        from({
-            configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") && it.name.contains("robocode.samples") }.map {
-                zipTree(it)
+        into("libs") {
+            from({
+                configurations.runtimeClasspath.get().filter {
+                    it.name.endsWith("jar") && !it.name.contains("eclipse") && !it.name.contains("robocode.samples") && !it.name.contains(
+                        "robocode.content"
+                    )
+                }.map { it }
+            })
+        }
+        into("compilers") {
+            from({
+                configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") && it.name.contains("eclipse") }
+                    .map { it }
+            })
+        }
+        into("robots") {
+            from({
+                configurations.runtimeClasspath.get()
+                    .filter { it.name.endsWith("jar") && it.name.contains("robocode.samples") }.map {
+                        zipTree(it)
+                    }
+            }) {
+                exclude("META-INF")
+                exclude("META-INF/**")
             }
-        }){
-            exclude("META-INF")
-            exclude("META-INF/**")
+        }
+        into("") {
+            from({
+                configurations.runtimeClasspath.get()
+                    .filter { it.name.endsWith("jar") && it.name.contains("robocode.content") }.map {
+                        zipTree(it)
+                    }
+            })
+            from("../versions.md")
         }
     }
-    into("") {
-        from({
-            configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") && it.name.contains("robocode.content") }.map {
-                zipTree(it)
-            }
-        })
-        from("../versions.md")
+    publishMavenJavaPublicationToSonatypeRepository {
+        enabled = false
     }
 }

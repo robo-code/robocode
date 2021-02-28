@@ -12,3 +12,18 @@ dependencies {
 }
 
 description = "Robocode Battle"
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks {
+    javadoc {
+        source = sourceSets["main"].java
+        include("net/sf/robocode/battle/Module.java")
+    }
+    jar {
+        dependsOn("javadoc")
+    }
+}
