@@ -19,7 +19,6 @@ import static net.sf.robocode.io.Logger.logError;
 import net.sf.robocode.serialization.*;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.version.IVersionManager;
-import net.sf.robocode.version.VersionManager;
 import robocode.BattleResults;
 import robocode.BattleRules;
 import robocode.control.snapshot.IBulletSnapshot;
@@ -414,21 +413,46 @@ public class RecordManager implements IRecordManager {
 
 	private void saveRecordCSV(String recordFilename, SerializableOptions options) {
 		FileOutputStream foss = null;
+
+		FileOutputStream fosr = null;
+
+		FileOutputStream fosb = null;
+
+		FileOutputStream fosm = null;
+
+
+		try {
+			foss = new FileOutputStream(recordFilename+".results.csv");
+			fosr = new FileOutputStream(recordFilename+".rounds.csv");
+			fosm = new FileOutputStream(recordFilename+".robots.csv");
+			fosb = new FileOutputStream(recordFilename+".bullets.csv");
+
+			generateRecordCSV(foss,fosr,fosm,fosb,options);
+		} catch (IOException e) {
+			logError(e);
+			recorder = new BattleRecorder(this, properties);
+			createTempFile();
+		} finally {
+
+			FileUtil.cleanupStream(fosr);
+			FileUtil.cleanupStream(fosb);
+			FileUtil.cleanupStream(fosm);
+		}
+	}
+
+	public void generateRecordCSV(OutputStream foss, OutputStream fosr, OutputStream fosb, OutputStream fosm, SerializableOptions options) throws IOException {
 		BufferedOutputStream boss = null;
 		OutputStreamWriter osws = null;
 		CsvWriter cwrResults = null;
 
-		FileOutputStream fosr = null;
 		BufferedOutputStream bosr = null;
 		OutputStreamWriter oswr = null;
 		CsvWriter cwrRounds = null;
 
-		FileOutputStream fosb = null;
 		BufferedOutputStream bosb = null;
 		OutputStreamWriter oswb = null;
 		CsvWriter cwrBullets = null;
 
-		FileOutputStream fosm = null;
 		BufferedOutputStream bosm = null;
 		OutputStreamWriter oswm = null;
 		CsvWriter cwrRobots = null;
@@ -438,28 +462,24 @@ public class RecordManager implements IRecordManager {
 		ObjectInputStream ois = null;
 
 		final Charset utf8 = Charset.forName("UTF-8");
+		String version = versionManager.getVersion();
 
 		try {
-			String version = versionManager.getVersion();
-			foss = new FileOutputStream(recordFilename+".results.csv");
 			boss = new BufferedOutputStream(foss, 1024 * 1024);
 			osws = new OutputStreamWriter(boss, utf8);
-			cwrResults = new CsvWriter(osws,false);
+			cwrResults = new CsvWriter(osws, false);
 			cwrResults.startDocument("version,battleId,roundsCount,robotCount,battlefieldWidth,battlefieldHeight,gunCoolingRate,inactivityTime,teamLeaderName,rank,score,survival,lastSurvivorBonus,bulletDamage,bulletDamageBonus,ramDamage,ramDamageBonus,firsts,seconds,thirds");
 
-			fosr = new FileOutputStream(recordFilename+".rounds.csv");
 			bosr = new BufferedOutputStream(fosr, 1024 * 1024);
 			oswr = new OutputStreamWriter(bosr, utf8);
-			cwrRounds = new CsvWriter(oswr,false);
+			cwrRounds = new CsvWriter(oswr, false);
 			cwrRounds.startDocument("version,battleId,roundIndex,robotCount,battlefieldWidth,battlefieldHeight,gunCoolingRate,inactivityTime,turnsInRound");
 
-			fosm = new FileOutputStream(recordFilename+".robots.csv");
 			bosm = new BufferedOutputStream(fosm, 1024 * 1024);
 			oswm = new OutputStreamWriter(bosm, utf8);
 			cwrRobots = new CsvWriter(oswm, false);
 			cwrRobots.startDocument("version,battleId,roundIndex,turnIndex,robotIndex,robotName,energy,x,y,bodyHeading,gunHeading,radarHeading,gunHeat,velocity,score,survivalScore,bulletDamageScore,bulletKillBonus,rammingDamageScore,rammingKillBonus");
 
-			fosb = new FileOutputStream(recordFilename+".bullets.csv");
 			bosb = new BufferedOutputStream(fosb, 1024 * 1024);
 			oswb = new OutputStreamWriter(bosb, utf8);
 			cwrBullets = new CsvWriter(oswb, false);
@@ -484,7 +504,7 @@ public class RecordManager implements IRecordManager {
 						cwrResults.writeValue(recordInfo.battleRules.getGunCoolingRate(), options.trimPrecision);
 						cwrResults.writeValue(recordInfo.battleRules.getInactivityTime());
 						// results
-						wrapper.writeCsv(cwrResults,options);
+						wrapper.writeCsv(cwrResults, options);
 						cwrResults.endLine();
 					}
 				}
@@ -514,18 +534,18 @@ public class RecordManager implements IRecordManager {
 								}
 
 								IRobotSnapshot[] robots = turn.getRobots();
-								for (IRobotSnapshot robot: robots) {
+								for (IRobotSnapshot robot : robots) {
 									RobotSnapshot robotSnapshot = (RobotSnapshot) robot;
 									cwrRobots.writeValue(version);
 									cwrRobots.writeValue(recordInfo.battleId.toString());
 									cwrRobots.writeValue(round);
 									cwrRobots.writeValue(trn);
-									robotSnapshot.writeCsv(cwrRobots,options);
+									robotSnapshot.writeCsv(cwrRobots, options);
 									cwrRobots.endLine();
 								}
-								for (IBulletSnapshot bullet:turn.getBullets()) {
+								for (IBulletSnapshot bullet : turn.getBullets()) {
 									BulletSnapshot bulletSnapshot = (BulletSnapshot) bullet;
-									IRobotSnapshot owner =robots[bulletSnapshot.getOwnerIndex()];
+									IRobotSnapshot owner = robots[bulletSnapshot.getOwnerIndex()];
 									cwrBullets.writeValue(version);
 									cwrBullets.writeValue(recordInfo.battleId.toString());
 									cwrBullets.writeValue(round);
@@ -533,7 +553,7 @@ public class RecordManager implements IRecordManager {
 									cwrBullets.writeValue(bulletSnapshot.getBulletId());
 									cwrBullets.writeValue(bulletSnapshot.getOwnerIndex());
 									cwrBullets.writeValue(owner.getName());
-									bulletSnapshot.writeCsv(cwrBullets,options);
+									bulletSnapshot.writeCsv(cwrBullets, options);
 									cwrBullets.writeValue(bulletSnapshot.getVictimIndex() != -1 ? robots[bulletSnapshot.getVictimIndex()].getName() : null);
 									cwrBullets.endLine();
 								}
@@ -545,39 +565,29 @@ public class RecordManager implements IRecordManager {
 				}
 				osws.flush();
 				boss.flush();
-				foss.flush();
 
 				oswr.flush();
 				bosr.flush();
-				fosr.flush();
 
 				oswb.flush();
 				bosb.flush();
-				fosb.flush();
 
 				oswm.flush();
 				bosm.flush();
-				fosm.flush();
 			}
-		} catch (IOException e) {
-			logError(e);
-			recorder = new BattleRecorder(this, properties);
-			createTempFile();
+
 		} finally {
 			FileUtil.cleanupStream(ois);
 			FileUtil.cleanupStream(bis);
 			FileUtil.cleanupStream(fis);
 
 			FileUtil.cleanupStream(bosr);
-			FileUtil.cleanupStream(fosr);
 			FileUtil.cleanupStream(oswr);
 
 			FileUtil.cleanupStream(bosb);
-			FileUtil.cleanupStream(fosb);
 			FileUtil.cleanupStream(oswb);
 
 			FileUtil.cleanupStream(bosm);
-			FileUtil.cleanupStream(fosm);
 			FileUtil.cleanupStream(oswm);
 		}
 	}
