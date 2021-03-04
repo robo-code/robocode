@@ -26,8 +26,9 @@ public class TestFileWrite extends RobocodeTestBed {
 		super.run();
 	}
 
-	public String getRobotNames() {
-		return "sample.Walls,sample.SittingDuck";
+	@Override
+	public String getRobotName() {
+		return "sample.SittingDuck";
 	}
 
 	File file = new File(robotsPath, "sample/SittingDuck.data/count.dat");

@@ -110,6 +110,10 @@ abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
 		return out;
 	}
 
+	public IBasicRobot getRobotObject() {
+		return robot;
+	}
+
 	public void println(String s) {
 		out.println(s);
 	}

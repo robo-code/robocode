@@ -27,7 +27,7 @@ public class TestEventPriorityFilter extends RobocodeTestBed {
 
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
+		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
 		if (out.contains("Scanned!!!")) {
 			messagedScanned = true;
@@ -35,8 +35,8 @@ public class TestEventPriorityFilter extends RobocodeTestBed {
 	}
 
 	@Override
-	public String getRobotNames() {
-		return "tested.robots.EventPriorityFilter,tested.robots.EventPriorityFilter";
+	public String getRobotName() {
+		return "tested.robots.EventPriorityFilter";
 	}
 
 	@Override

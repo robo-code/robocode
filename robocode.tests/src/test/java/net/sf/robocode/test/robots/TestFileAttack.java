@@ -31,7 +31,7 @@ public class TestFileAttack extends RobocodeTestBed {
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
+		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
 		if (out.contains("Preventing tested.robots.FileAttack from access: (java.io.FilePermission C:\\MSDOS.SYS read)")
 				|| out.contains(
@@ -47,8 +47,8 @@ public class TestFileAttack extends RobocodeTestBed {
 	}
 
 	@Override
-	public String getRobotNames() {
-		return "sample.Fire,tested.robots.FileAttack";
+	public String getRobotName() {
+		return "tested.robots.FileAttack";
 	}
 
 	@Override

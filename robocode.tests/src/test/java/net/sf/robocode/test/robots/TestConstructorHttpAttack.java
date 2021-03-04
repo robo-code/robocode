@@ -10,6 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Assert;
+import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
 
 
@@ -20,10 +21,20 @@ public class TestConstructorHttpAttack extends RobocodeTestBed {
 
 	private boolean messagedInitialization;
 	private boolean securityExceptionOccurred;
-	
+
+	@Test
+	public void run() {
+		super.run();
+	}
+
 	@Override
-	public String getRobotNames() {
-		return "tested.robots.ConstructorHttpAttack,sample.Target";
+	public String getRobotName() {
+		return "tested.robots.ConstructorHttpAttack";
+	}
+
+	@Override
+	public String getEnemyName() {
+		return "sample.Target";
 	}
 
 	@Override

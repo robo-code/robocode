@@ -88,6 +88,13 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		}
 		if (RobocodeProperties.isSecurityOn()) {
 			testPackages(name);
+		} else {
+			// try if the class is available in parent classLoader
+			Class<?> result = parent.loadClass(name);
+			if (result != null) {
+				// yes, it is in system class path
+				return result;
+			}
 		}
 		if (!name.startsWith("robocode")) {
 			Class<?> result = loadRobotClassLocaly(name, resolve);
@@ -100,7 +107,6 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 
 		// it is robot API
 		// or java class
-		// or security is off
 		// so we delegate to parent class loader
 		return parent.loadClass(name);
 	}

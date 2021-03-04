@@ -27,18 +27,18 @@ public class TestInteruptibleEvent extends RobocodeTestBed {
 		super.run();
 	}
 
+	@Override
+	public String getRobotName() {
+		return "tested.robots.InteruptibleEvent";
+	}
+
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots()[1].getOutputStreamSnapshot();
+		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
 		if (out.contains("Scanned!!!")) {
 			messagedScanned = true;
 		}
-	}
-
-	@Override
-	public String getRobotNames() {
-		return "tested.robots.InteruptibleEvent,tested.robots.InteruptibleEvent";
 	}
 
 	@Override

@@ -34,14 +34,19 @@ public class TestLost extends RobocodeTestBed {
 	}
 
 	@Override
-	public String getRobotNames() {
-		return "sample.Fire,tested.robots.BattleLost";
+	public String getRobotName() {
+		return "tested.robots.BattleLost";
+	}
+
+	@Override
+	public String getEnemyName() {
+		return "sample.Fire";
 	}
 
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		IRobotSnapshot robot = event.getTurnSnapshot().getRobots()[1];
+		IRobotSnapshot robot = event.getTurnSnapshot().getRobots()[0];
 		final String streamSnapshot = robot.getOutputStreamSnapshot();
 
 		if (streamSnapshot.contains("Death!")) {
@@ -54,8 +59,8 @@ public class TestLost extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertThat("always should loose", lost, is(getNumRounds()));
-		Assert.assertThat("should get BattleEnded event", end, is(1));
+		Assert.assertEquals("always should loose", lost, getNumRounds());
+		Assert.assertEquals("should get BattleEnded event", end, 1);
 	}
 
 }

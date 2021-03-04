@@ -10,6 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
+import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
 
 
@@ -27,9 +28,12 @@ public class TestThreadGroupAttack extends RobocodeTestBed {
 	boolean messagedInterrupted;
 	boolean messagedPreventing;
 
+	@Test
+	public void run() { super.run(); }
+
 	@Override
-	public String getRobotNames() {
-		return "tested.robots.ThreadGroupAttack,sample.SittingDuck";
+	public String getRobotName() {
+		return "tested.robots.ThreadGroupAttack";
 	}
 
 	@Override
@@ -37,11 +41,11 @@ public class TestThreadGroupAttack extends RobocodeTestBed {
 		super.onTurnEnded(event);
 		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
 
-		if (out.contains("Interrupted: sample.SittingDuck")) {
+		if (out.contains("Interrupted: sample.Target")) {
 			messagedInterrupted = true;
 		}
 
-		if (out.contains("Preventing tested.robots.ThreadGroupAttack from access to sample.SittingDuck")) {
+		if (out.contains("Preventing tested.robots.ThreadGroupAttack from access to sample.Target")) {
 			messagedPreventing = true;
 		}
 	}

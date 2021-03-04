@@ -39,8 +39,13 @@ public class TestDuplicatesAndScore extends RobocodeTestBed {
 	}
 
 	@Override
-	public String getRobotNames() {
-		return "sample.Fire,tested.robots.TestTeam,tested.robots.TestTeam,sample.Crazy";
+	public String getRobotName() {
+		return "sample.Fire";
+	}
+
+	@Override
+	public String getEnemyName() {
+		return "tested.robots.TestTeam,tested.robots.TestTeam,sample.Crazy";
 	}
 
 	@Override

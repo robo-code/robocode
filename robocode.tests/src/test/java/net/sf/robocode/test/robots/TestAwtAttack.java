@@ -20,13 +20,13 @@ import javax.swing.*;
  * @author Pavel Savara (original)
  */
 public class TestAwtAttack extends RobocodeTestBed {
-	// in case: boolean messagedAttack;
-	boolean messagedBreakthru;
+    // in case: boolean messagedAttack;
+    boolean messagedBreakthru;
 
-	@Test
-	public void run() {
-		super.run();
-	}
+    @Test
+    public void run() {
+        super.run();
+    }
 
 	/* in case that we don't block JFrame by classloader
 	 public void onTurnEnded(TurnEndedEvent event) {
@@ -41,44 +41,44 @@ public class TestAwtAttack extends RobocodeTestBed {
 	 }
 	 } */
 
-	@Override
-	public String getRobotNames() {
-		return "tested.robots.BattleLost,tested.robots.AwtAttack";
-	}
+    @Override
+    public String getRobotName() {
+        return "tested.robots.AwtAttack";
+    }
 
-	JFrame frame;
+    JFrame frame;
 
-	@Override
-	protected void runSetup() {
-		if (java.awt.GraphicsEnvironment.isHeadless()) return;
-		frame = new JFrame();
-		frame.setVisible(true);
-	}
+    @Override
+    protected void runSetup() {
+        if (java.awt.GraphicsEnvironment.isHeadless()) return;
+        frame = new JFrame();
+        frame.setVisible(true);
+    }
 
-	@Override
-	protected int getExpectedErrors() {
-		return 2;
-	}
+    @Override
+    protected int getExpectedErrors() {
+        return 2;
+    }
 
-	@Override
-	public int getExpectedRobotCount(String list) {
-		return 1;
-	}
+    @Override
+    public int getExpectedRobotCount(String list) {
+        return 1;
+    }
 
-	@Override
-	protected void runTeardown() {
-		if (java.awt.GraphicsEnvironment.isHeadless()) return;
+    @Override
+    protected void runTeardown() {
+        if (java.awt.GraphicsEnvironment.isHeadless()) return;
 
-		Runnable doCheck = new Runnable() {
-			public void run() {
-				Logger.logMessage("works still!!!");
-			}
-		};
+        Runnable doCheck = new Runnable() {
+            public void run() {
+                Logger.logMessage("works still!!!");
+            }
+        };
 
-		javax.swing.SwingUtilities.invokeLater(doCheck);
+        javax.swing.SwingUtilities.invokeLater(doCheck);
 
-		frame.setVisible(false);
-		Assert.assertFalse(messagedBreakthru);
-		// in case: Assert.assertTrue(messagedAttack);
-	}
+        frame.setVisible(false);
+        Assert.assertFalse(messagedBreakthru);
+        // in case: Assert.assertTrue(messagedAttack);
+    }
 }

@@ -30,6 +30,7 @@ import robocode.control.events.*;
 import robocode.control.events.RoundEndedEvent;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.ITurnSnapshot;
+import robocode.robotinterfaces.IBasicRobot;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -327,11 +328,18 @@ public final class Battle extends BaseBattle {
 			robotPeer.startRound(waitMillis, waitNanos);
 		}
 
+		List<IBasicRobot> robotObjects = null;
+		if (RobocodeProperties.isTestingOn() && RobocodeProperties.isSecurityOff()) {
+			robotObjects = new ArrayList<>();
+			for (RobotPeer robotPeer : robots) {
+				robotObjects.add(robotPeer.getRobotObject());
+			}
+		}
+
 		Logger.logMessage(""); // puts in a new-line in the log message
 
 		final ITurnSnapshot snapshot = new TurnSnapshot(this, robots, bullets, false);
-
-		eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum()));
+		eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum(), robotObjects));
 	}
 
 	@Override

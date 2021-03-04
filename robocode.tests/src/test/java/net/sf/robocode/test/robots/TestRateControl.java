@@ -34,10 +34,10 @@ public class TestRateControl extends RobocodeTestBed {
 	public void run() {
 		super.run();
 	}
-	
+
 	@Override
-	public String getRobotNames() {
-		return "tested.robots.RateControl,sample.Target";
+	public String getRobotName() {
+		return "tested.robots.RateControl";
 	}
 	
 	@Override

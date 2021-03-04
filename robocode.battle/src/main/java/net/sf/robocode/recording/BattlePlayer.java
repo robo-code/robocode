@@ -75,7 +75,7 @@ public final class BattlePlayer extends BaseBattle {
 		final ITurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
 
 		if (snapshot != null) {
-			eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum()));
+			eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum(), null));
 		}
 	}
 

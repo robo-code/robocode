@@ -20,40 +20,40 @@ import robocode.control.events.BattleErrorEvent;
  */
 @Ignore("is very time consuming test, please run explicitly if you did something to security or timing")
 public class TestUndeadThread extends RobocodeTestBed {
-	boolean messagedStop;
-	boolean messagedForcing;
+    boolean messagedStop;
+    boolean messagedForcing;
 
-	@Test
-	public void run() {
-		super.run();
-	}
+    @Test
+    public void run() {
+        super.run();
+    }
 
-	public void onBattleError(BattleErrorEvent event) {
-		super.onBattleError(event);
-		final String error = event.getError();
+    public void onBattleError(BattleErrorEvent event) {
+        super.onBattleError(event);
+        final String error = event.getError();
 
-		if (error.contains("is not stopping.  Forcing a stop.")) {
-			messagedForcing = true;
-		}
-		if (error.contains("Unable to stop thread")) {
-			messagedStop = true;
-		}
-	}
+        if (error.contains("is not stopping.  Forcing a stop.")) {
+            messagedForcing = true;
+        }
+        if (error.contains("Unable to stop thread")) {
+            messagedStop = true;
+        }
+    }
 
-	@Override
-	protected int getExpectedErrors() {
-		return 2;
-	}
+    @Override
+    protected int getExpectedErrors() {
+        return 2;
+    }
 
-	@Override
-	public String getRobotNames() {
-		return "sample.SittingDuck,tested.robots.UndeadThread";
-	}
+    @Override
+    public String getRobotName() {
+        return "tested.robots.UndeadThread";
+    }
 
-	@Override
-	protected void runTeardown() {
-		Assert.assertTrue(messagedForcing);
-		Assert.assertTrue(messagedStop);
-	}
+    @Override
+    protected void runTeardown() {
+        Assert.assertTrue(messagedForcing);
+        Assert.assertTrue(messagedStop);
+    }
 
 }
