@@ -1007,37 +1007,38 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * Higher priority events can interrupt lower priority events.
 	 * For events with the same priority, newer events are always sent first.
 	 * Valid priorities are 0 - 99, where 100 is reserved and 80 is the default
-	 * priority.
+	 * event priority. Note that lower values means higher priority.
 	 * <p>
 	 * Example:
 	 * <pre>
 	 *   setEventPriority("RobotDeathEvent", 15);
 	 * </pre>
 	 * <p>
-	 * The default priorities are, from highest to lowest:
+	 * The default event priorities are listed here, where the events with
+	 * highest priority are listed first:
 	 * <pre>
-	 * 	 {@link WinEvent}:             100 (reserved)
-	 * 	 {@link SkippedTurnEvent}:     100 (reserved)
-	 *   {@link StatusEvent}:           99
-	 * 	 {@link CustomEvent}:           80
-	 * 	 {@link MessageEvent}:          75
-	 * 	 {@link RobotDeathEvent}:       70
-	 * 	 {@link BulletMissedEvent}:     60
-	 * 	 {@link BulletHitBulletEvent}:  55
-	 * 	 {@link BulletHitEvent}:        50
-	 * 	 {@link HitByBulletEvent}:      40
-	 * 	 {@link HitWallEvent}:          30
-	 * 	 {@link HitRobotEvent}:         20
-	 * 	 {@link ScannedRobotEvent}:     10
+	 * 	 {@link DeathEvent}:            -1 (cannot be changed)
 	 *   {@link PaintEvent}:             5
-	 * 	 {@link DeathEvent}:            -1 (reserved)
+	 * 	 {@link ScannedRobotEvent}:     10
+	 * 	 {@link HitRobotEvent}:         20
+	 * 	 {@link HitWallEvent}:          30
+	 * 	 {@link HitByBulletEvent}:      40
+	 * 	 {@link BulletHitEvent}:        50
+	 * 	 {@link BulletHitBulletEvent}:  55
+	 * 	 {@link BulletMissedEvent}:     60
+	 * 	 {@link RobotDeathEvent}:       70
+	 * 	 {@link MessageEvent}:          75
+	 * 	 {@link CustomEvent}:           80
+	 *   {@link StatusEvent}:           99
+	 * 	 {@link SkippedTurnEvent}:     100 (cannot be changed)
+	 * 	 {@link WinEvent}:             100 (cannot be changed)
 	 * </pre>
+	 * Hence, DeathEvent has the highest priority, and the WinEvent the lowest priority.
 	 * <p>
 	 * Note that you cannot change the priority for events with the special
-	 * priority value -1 or 100 (reserved) as these event are system events.
+	 * priority value -1 and priority value 100 as these event are reserved system events.
 	 * Also note that you cannot change the priority of CustomEvent.
-	 * Instead you must change the priority of the condition(s) for your custom
-	 * event(s).
+	 * Instead you must change the priority of the condition(s) for your custom event(s).
 	 *
 	 * @param eventClass the name of the event class (string) to set the
 	 *                   priority for
