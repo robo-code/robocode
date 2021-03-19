@@ -25,7 +25,7 @@ import java.io.Serializable;
  *
  * @since 1.6.1
  */
-public final class ScoreSnapshot implements Serializable, IXmlSerializable, IScoreSnapshot, ICsvSerializable {
+public final class ScoreSnapshot implements Serializable, IXmlSerializable, IScoreSnapshot {
 
 	private static final long serialVersionUID = 1L;
 
@@ -337,17 +337,6 @@ public final class ScoreSnapshot implements Serializable, IXmlSerializable, ISco
 		}
 		writer.endElement();
 	}
-
-	@Override
-	public void writeCsv(CsvWriter writer, SerializableOptions options) throws IOException {
-		writer.writeValue(currentScore, options.trimPrecision);
-		writer.writeValue(currentSurvivalScore, options.trimPrecision);
-		writer.writeValue(currentBulletDamageScore, options.trimPrecision);
-		writer.writeValue(currentBulletKillBonus, options.trimPrecision);
-		writer.writeValue(currentRammingDamageScore, options.trimPrecision);
-		writer.writeValue(currentRammingKillBonus, options.trimPrecision);
-	}
-
 
 	// allows loading of minimalistic XML
 	ScoreSnapshot(String contestantName) {

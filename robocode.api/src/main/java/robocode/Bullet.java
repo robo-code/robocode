@@ -73,6 +73,7 @@ public class Bullet implements Serializable {
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
+		// This is slightly wrong as bulletId is only unique to single owner robot
 		return bulletId == ((Bullet) obj).bulletId;
 	}
 

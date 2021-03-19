@@ -10,6 +10,7 @@ package net.sf.robocode.recording;
 
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.serialization.SerializableOptions;
+import robocode.control.snapshot.ITurnSnapshot;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,6 +22,12 @@ import java.io.OutputStream;
  */
 public interface IRecordManager {
 
+    @FunctionalInterface
+    interface CheckedConsumer<T> {
+        void accept(T t) throws IOException, ClassNotFoundException;
+    }
+
+
     void attachRecorder(BattleEventDispatcher battleEventDispatcher);
 
     void detachRecorder();
@@ -29,7 +36,9 @@ public interface IRecordManager {
 
     void loadRecord(String fileName, BattleRecordFormat format);
 
-    void generateRecordCSV(OutputStream foss, OutputStream fosr, OutputStream fosb, OutputStream fosm, SerializableOptions options) throws IOException;
+    void provideTurns(CheckedConsumer<ITurnSnapshot> writeTurn) throws IOException, ClassNotFoundException;
+
+    void generateCsvRecord(OutputStream fosResults, OutputStream fosRounds, OutputStream fosRobots, OutputStream fosBullets, SerializableOptions options, CheckedConsumer<ITurnSnapshot> extension) throws IOException, ClassNotFoundException;
 
     boolean hasRecord();
 }

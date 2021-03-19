@@ -32,7 +32,7 @@ import java.util.Map;
  *
  * @since 1.6.1
  */
-public final class RobotSnapshot implements Serializable, IXmlSerializable, ICsvSerializable, IRobotSnapshot {
+public final class RobotSnapshot implements Serializable, IXmlSerializable, IRobotSnapshot {
 
 	private static final long serialVersionUID = 2L;
 
@@ -502,21 +502,6 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, ICsv
 		}
 		writer.endElement();
 
-	}
-
-	@Override
-	public void writeCsv(CsvWriter writer, SerializableOptions options) throws IOException {
-		writer.writeValue(robotIndex);
-		writer.writeValue(name);
-		writer.writeValue(energy, options.trimPrecision);
-		writer.writeValue(x, options.trimPrecision);
-		writer.writeValue(y, options.trimPrecision);
-		writer.writeValue(bodyHeading, options.trimPrecision);
-		writer.writeValue(gunHeading, options.trimPrecision);
-		writer.writeValue(radarHeading, options.trimPrecision);
-		writer.writeValue(gunHeat, options.trimPrecision);
-		writer.writeValue(velocity, options.trimPrecision);
-		((ScoreSnapshot) robotScoreSnapshot).writeCsv(writer, options);
 	}
 
 	// allows loading of minimalistic XML

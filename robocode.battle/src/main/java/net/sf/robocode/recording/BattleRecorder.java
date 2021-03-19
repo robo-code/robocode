@@ -71,7 +71,7 @@ class BattleRecorder {
 		@Override
 		public void onBattleStarted(BattleStartedEvent event) {
 			recordmanager.cleanupStreams();
-			recordmanager.createRecordInfo(event.getBattleRules(), event.getRobotsCount());
+			recordmanager.createRecordInfo(event.getBattleRules(), event.getRobotsCount(), event.getBattleId());
 
 			currentRound = 0;
 			currentTurn = 0;

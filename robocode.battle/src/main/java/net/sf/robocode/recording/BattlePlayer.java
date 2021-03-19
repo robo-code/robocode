@@ -44,7 +44,7 @@ public final class BattlePlayer extends BaseBattle {
 
 		battleRules = recordManager.recordInfo.battleRules;
 		paint = new boolean[recordManager.recordInfo.robotCount];
-		eventDispatcher.onBattleStarted(new BattleStartedEvent(battleRules, recordManager.recordInfo.robotCount, true));
+		eventDispatcher.onBattleStarted(new BattleStartedEvent(battleRules, recordManager.recordInfo.robotCount, true, recordManager.recordInfo.battleId));
 		if (isPaused) {
 			eventDispatcher.onBattlePaused(new BattlePausedEvent());
 		}
@@ -72,7 +72,7 @@ public final class BattlePlayer extends BaseBattle {
 	protected void initializeRound() {
 		super.initializeRound();
 
-		final ITurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
+		final ITurnSnapshot snapshot = recordManager.readSnapshot();
 
 		if (snapshot != null) {
 			eventDispatcher.onRoundStarted(new RoundStartedEvent(snapshot, getRoundNum(), null));
@@ -95,7 +95,7 @@ public final class BattlePlayer extends BaseBattle {
 
 	@Override
 	protected void finalizeTurn() {
-		final ITurnSnapshot snapshot = recordManager.readSnapshot(currentTime);
+		final ITurnSnapshot snapshot = recordManager.readSnapshot();
 
 		if (snapshot != null) {
 			final IRobotSnapshot[] robots = snapshot.getRobots();

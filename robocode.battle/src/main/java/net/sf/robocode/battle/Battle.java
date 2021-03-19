@@ -294,7 +294,7 @@ public final class Battle extends BaseBattle {
 		}
 
 		if (getRoundNum() == 0) {
-			eventDispatcher.onBattleStarted(new BattleStartedEvent(battleRules, robots.size(), false));
+			eventDispatcher.onBattleStarted(new BattleStartedEvent(battleRules, robots.size(), false, UUID.randomUUID()));
 			if (isPaused) {
 				eventDispatcher.onBattlePaused(new BattlePausedEvent());
 			}
