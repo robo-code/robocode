@@ -10,6 +10,8 @@ package robocode.control.events;
 
 import robocode.BattleRules;
 
+import java.util.UUID;
+
 
 /**
  * A BattleStartedEvent is sent to {@link IBattleListener#onBattleStarted(BattleStartedEvent)
@@ -27,6 +29,7 @@ import robocode.BattleRules;
 public class BattleStartedEvent extends BattleEvent {
 	private final BattleRules battleRules;
 	private final boolean isReplay;
+	private final UUID battleId;
 	private final int robotsCount;
 
 	/**
@@ -37,12 +40,14 @@ public class BattleStartedEvent extends BattleEvent {
 	 * @param robotsCount the number of robots participating in the battle.
 	 * @param isReplay a flag specifying if this battle is a replay or real battle:
 	 *                 {@code true} if the battle is a replay; {@code false} otherwise.
+	 * @param battleId unique id of the battle
 	 */
-	public BattleStartedEvent(BattleRules battleRules, int robotsCount, boolean isReplay) {
+	public BattleStartedEvent(BattleRules battleRules, int robotsCount, boolean isReplay, UUID battleId) {
 		super();
 		this.battleRules = battleRules;
 		this.isReplay = isReplay;
 		this.robotsCount = robotsCount;
+		this.battleId = battleId;
 	}
 
 	/**
@@ -70,5 +75,14 @@ public class BattleStartedEvent extends BattleEvent {
 	 */
 	public boolean isReplay() {
 		return isReplay;
+	}
+
+	/**
+	 * Unique ID of the battle
+	 *
+	 * @return Unique ID of the battle
+	 */
+	public UUID getBattleId() {
+		return battleId;
 	}
 }

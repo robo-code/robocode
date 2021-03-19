@@ -28,7 +28,7 @@ import java.io.IOException;
  *
  * @since 1.6.1
  */
-public final class BulletSnapshot implements java.io.Serializable, IXmlSerializable, ICsvSerializable, IBulletSnapshot {
+public final class BulletSnapshot implements java.io.Serializable, IXmlSerializable, IBulletSnapshot {
 
 	private static final long serialVersionUID = 2L;
 
@@ -261,15 +261,6 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 			}
 		}
 		writer.endElement();
-	}
-
-	@Override
-	public void writeCsv(CsvWriter writer, SerializableOptions options) throws IOException {
-		writer.writeValue(state.toString());
-		writer.writeValue(heading, options.trimPrecision);
-		writer.writeValue(paintX, options.trimPrecision);
-		writer.writeValue(paintY, options.trimPrecision);
-		writer.writeValue(victimIndex);
 	}
 
 	/**

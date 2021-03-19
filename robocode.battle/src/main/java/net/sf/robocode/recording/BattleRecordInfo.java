@@ -25,15 +25,15 @@ import java.util.UUID;
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (original)
  */
-class BattleRecordInfo implements Serializable, IXmlSerializable {
+public class BattleRecordInfo implements Serializable, IXmlSerializable {
 	private static final long serialVersionUID = 2L;
 
-	int robotCount;
-	int roundsCount;
-	BattleRules battleRules;
-	Integer[] turnsInRounds;
-	List<BattleResults> results;
-	UUID battleId = UUID.randomUUID();
+	public int robotCount;
+	public int roundsCount;
+	public BattleRules battleRules;
+	public Integer[] turnsInRounds;
+	public List<BattleResults> results;
+	public UUID battleId;
 
 	public void writeXml(XmlWriter writer, SerializableOptions options) throws IOException {
 		writer.startElement("recordInfo"); {
@@ -162,7 +162,7 @@ class BattleRecordInfo implements Serializable, IXmlSerializable {
 	 *
 	 * @author Flemming N. Larsen (original)
 	 */
-	static class BattleResultsWrapper extends BattleResults implements IXmlSerializable,ICsvSerializable {
+	static class BattleResultsWrapper extends BattleResults implements IXmlSerializable {
 
 		private static final long serialVersionUID = BattleResults.serialVersionUID;
 
@@ -196,22 +196,6 @@ class BattleRecordInfo implements Serializable, IXmlSerializable {
 				}
 			}
 			writer.endElement();
-		}
-
-		@Override
-		public void writeCsv(CsvWriter writer, SerializableOptions options) throws IOException {
-			writer.writeValue(teamLeaderName);
-			writer.writeValue(rank);
-			writer.writeValue(score, options.trimPrecision);
-			writer.writeValue(survival, options.trimPrecision);
-			writer.writeValue(lastSurvivorBonus, options.trimPrecision);
-			writer.writeValue(bulletDamage, options.trimPrecision);
-			writer.writeValue(bulletDamageBonus, options.trimPrecision);
-			writer.writeValue(ramDamage, options.trimPrecision);
-			writer.writeValue(ramDamageBonus, options.trimPrecision);
-			writer.writeValue(firsts);
-			writer.writeValue(seconds);
-			writer.writeValue(thirds);
 		}
 
 		public XmlReader.Element readXml(XmlReader reader) {

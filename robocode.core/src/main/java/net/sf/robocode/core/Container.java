@@ -79,8 +79,17 @@ public final class Container extends ContainerBase {
 				loadFromPath(path);
 			}
 		}
+		// load normal modules
 		for (String path : cp) {
-			loadFromPath(path);
+			if (!path.toLowerCase().contains("robocode.plugin")) {
+				loadFromPath(path);
+			}
+		}
+		// load extensions modules
+		for (String path : cp) {
+			if (path.toLowerCase().contains("robocode.plugin")) {
+				loadFromPath(path);
+			}
 		}
 
 		if (known.size() < 2) {
