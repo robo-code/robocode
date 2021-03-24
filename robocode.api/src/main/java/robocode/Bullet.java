@@ -11,6 +11,7 @@ package robocode;
 import net.sf.robocode.security.IHiddenBulletHelper;
 import net.sf.robocode.serialization.ISerializableHelper;
 import net.sf.robocode.serialization.RbSerializer;
+import robocode.util.Utils;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
@@ -258,5 +259,12 @@ public class Bullet implements Serializable {
 
 			return new Bullet(headingRadians, x, y, power, ownerName, victimName, isActive, bulletId);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return ownerName + "-" + bulletId + " (" + (int) power + ") X" + (int) x + " Y" + (int) y
+				+ " ~" + Utils.angleToApproximateDirection(headingRadians)
+				+ " " + victimName;
 	}
 }

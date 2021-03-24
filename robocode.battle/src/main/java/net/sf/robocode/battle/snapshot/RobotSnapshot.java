@@ -15,6 +15,7 @@ import net.sf.robocode.serialization.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.IScoreSnapshot;
 import robocode.control.snapshot.RobotState;
+import robocode.util.Utils;
 
 import java.awt.geom.Arc2D;
 import java.io.IOException;
@@ -186,7 +187,9 @@ public final class RobotSnapshot implements Serializable, IXmlSerializable, IRob
 
 	@Override
 	public String toString() {
-		return shortName + " (" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString();
+		return shortName + " (" + (int) energy + ") X" + (int) x + " Y" + (int) y
+				+ " ~" + Utils.angleToApproximateDirection(bodyHeading)
+				+ " " + state.toString();
 	}
 
 	/**
