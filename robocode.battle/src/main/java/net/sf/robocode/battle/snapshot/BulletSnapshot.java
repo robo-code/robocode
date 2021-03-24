@@ -15,6 +15,7 @@ import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.serialization.*;
 import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.IBulletSnapshot;
+import robocode.util.Utils;
 
 import java.io.IOException;
 
@@ -118,10 +119,14 @@ public final class BulletSnapshot implements java.io.Serializable, IXmlSerializa
 		heading = bullet.getHeading();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
-		return ownerIndex + "-" + bulletId + " (" + (int) power + ") X" + (int) x + " Y" + (int) y + " "
-				+ state.toString();
+		return ownerIndex + "-" + bulletId + " (" + (int) power + ") X" + (int) x + " Y" + (int) y
+				+ " ~" + Utils.angleToApproximateDirection(heading)
+				+ " " + state.toString();
 	}
 
 	/**

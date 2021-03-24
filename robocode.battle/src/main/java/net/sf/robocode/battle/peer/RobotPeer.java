@@ -31,6 +31,7 @@ import robocode.exception.AbortedException;
 import robocode.exception.DeathException;
 import robocode.exception.WinException;
 import robocode.robotinterfaces.IBasicRobot;
+import robocode.util.Utils;
 
 import static robocode.util.Utils.*;
 
@@ -1765,7 +1766,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	@Override
 	public String toString() {
-		return statics.getShortName() + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y + " " + state.toString()
+		return statics.getShortName() + "(" + (int) energy + ") X" + (int) x + " Y" + (int) y
+				+ " ~" + Utils.angleToApproximateDirection(bodyHeading)
+				+ " " + state.toString()
 				+ (isSleeping() ? " sleeping " : "") + (isRunning() ? " running" : "") + (isHalt() ? " halted" : "");
 	}
 }

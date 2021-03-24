@@ -11,6 +11,7 @@ package robocode;
 import robocode.exception.RobotException;
 import robocode.robotinterfaces.IBasicRobot;
 import robocode.robotinterfaces.peer.IBasicRobotPeer;
+import robocode.util.Utils;
 
 
 /**
@@ -88,5 +89,15 @@ public abstract class _RobotBase implements IBasicRobot, Runnable {
 		throw new RobotException(
 				"You cannot call the " + methodName
 				+ "() method before your run() method is called, or you are using a Robot object that the game doesn't know about.");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		if (peer == null) return null;
+		return peer.getName() + " (" + (int) peer.getEnergy() + ") X" + (int) peer.getX() + " Y" + (int) peer.getY()
+				+ " ~" + Utils.angleToApproximateDirection(peer.getBodyHeading());
 	}
 }

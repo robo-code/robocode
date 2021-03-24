@@ -25,7 +25,18 @@ public class Utils {
 	private final static double TWO_PI = 2 * PI;
 	private final static double THREE_PI_OVER_TWO = 3 * PI / 2;
 	private final static double PI_OVER_TWO = PI / 2;
+    private final static double PI_OVER_FOUR = PI / 4;
+    private final static double PI_OVER_EIGHT = PI / 8;
 	public static final double NEAR_DELTA = .00001;
+
+    private final static double NORTH = 0 * PI_OVER_FOUR;
+    private final static double NORTH_EAST = 1 * PI_OVER_FOUR;
+    private final static double EAST = 2 * PI_OVER_FOUR;
+    private final static double SOUTH_EAST = 3 * PI_OVER_FOUR;
+    private final static double SOUTH = 4 * PI_OVER_FOUR;
+    private final static double SOUTH_WEST = 5 * PI_OVER_FOUR;
+    private final static double WEST = 6 * PI_OVER_FOUR;
+    private final static double NORTH_WEST = 7 * PI_OVER_FOUR;
 
 	// Hide the default constructor as this class only provides static method
 	private Utils() {}
@@ -174,5 +185,74 @@ public class Utils {
 	 */
 	public static Random getRandom() {
 		return RandomFactory.getRandom();
+	}
+
+	/**
+	 * Throws AssertionError when the param value is null. It could be used to express validation of invariant.
+	 * @param message of the eventual error
+	 * @param value tested value
+	 */
+    public static void assertNotNull(String message, Object value) {
+        if (value == null) {
+            throw new AssertionError(message);
+        }
+    }
+
+	/**
+	 * Throws AssertionError when the params expected and actual do not equal each other. It could be used to express validation of invariant.
+	 * @param message of the eventual error
+	 * @param expected expected value
+	 * @param actual tested value
+	 */
+    public static void assertEquals(String message, Object expected, Object actual) {
+        if (expected == null && actual == null) {
+            return;
+        }
+        if (expected == null || actual == null) {
+            throw new AssertionError(message);
+        }
+        if (!expected.equals(actual)) {
+            throw new AssertionError(message);
+        }
+    }
+
+	/**
+	 * Throws AssertionError when the params expected and actual do not within .00001 difference. It could be used to express validation of invariant.
+	 * @param message of the eventual error
+	 * @param expected expected value
+	 * @param actual tested value
+	 */
+    public static void assertNear(String message, double expected, double actual) {
+        if (!isNear(expected, actual)) {
+            throw new AssertionError(message + " expected:" + expected + " actual:" + actual);
+        }
+    }
+
+	/**
+	 * Returns approximate cardinal direction for absolute angle in radians, like N,NE,E,SE,S,SW,W,NW
+	 * @param angle absolute angle in radians
+	 * @return N,NE,E,SE,S,SW,W,NW
+	 */
+	public static String angleToApproximateDirection(double angle) {
+		double absoluteAngle = normalAbsoluteAngle(angle);
+		if (absoluteAngle < NORTH + PI_OVER_EIGHT) {
+			return "N";
+		} else if (absoluteAngle < NORTH_EAST + PI_OVER_EIGHT) {
+			return "NE";
+		} else if (absoluteAngle < EAST + PI_OVER_EIGHT) {
+			return "E";
+		} else if (absoluteAngle < SOUTH_EAST + PI_OVER_EIGHT) {
+			return "SE";
+		} else if (absoluteAngle < SOUTH + PI_OVER_EIGHT) {
+			return "S";
+		} else if (absoluteAngle < SOUTH_WEST + PI_OVER_EIGHT) {
+			return "SW";
+		} else if (absoluteAngle < WEST + PI_OVER_EIGHT) {
+			return "W";
+		} else if (absoluteAngle < NORTH_WEST + PI_OVER_EIGHT) {
+			return "NW";
+		} else {
+			return "N";
+		}
 	}
 }

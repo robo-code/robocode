@@ -4,6 +4,7 @@
 * Improve testability: 
 * RoundStartedEvent.getRobotObjects()
 * moved robocode.control.RobotTestBed
+	* improved Robot and Bullet toString() so that it displays approximate cardinal direction, like N,NE,E,SE,S,SW,W,NW
 
 ## Version 1.9.4.0 (15-02-2021)
 
