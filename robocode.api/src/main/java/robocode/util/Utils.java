@@ -187,12 +187,23 @@ public class Utils {
 		return RandomFactory.getRandom();
 	}
 
+	/**
+	 * Throws AssertionError when the param value is null. It could be used to express validation of invariant.
+	 * @param message of the eventual error
+	 * @param value tested value
+	 */
     public static void assertNotNull(String message, Object value) {
         if (value == null) {
             throw new AssertionError(message);
         }
     }
 
+	/**
+	 * Throws AssertionError when the params expected and actual do not equal each other. It could be used to express validation of invariant.
+	 * @param message of the eventual error
+	 * @param expected expected value
+	 * @param actual tested value
+	 */
     public static void assertEquals(String message, Object expected, Object actual) {
         if (expected == null && actual == null) {
             return;
@@ -205,12 +216,23 @@ public class Utils {
         }
     }
 
+	/**
+	 * Throws AssertionError when the params expected and actual do not within .00001 difference. It could be used to express validation of invariant.
+	 * @param message of the eventual error
+	 * @param expected expected value
+	 * @param actual tested value
+	 */
     public static void assertNear(String message, double expected, double actual) {
         if (!isNear(expected, actual)) {
             throw new AssertionError(message + " expected:" + expected + " actual:" + actual);
         }
     }
 
+	/**
+	 * Returns approximate cardinal direction for absolute angle in radians, like N,NE,E,SE,S,SW,W,NW
+	 * @param angle absolute angle in radians
+	 * @return N,NE,E,SE,S,SW,W,NW
+	 */
 	public static String angleToApproximateDirection(double angle) {
 		double absoluteAngle = normalAbsoluteAngle(angle);
 		if (absoluteAngle < NORTH + PI_OVER_EIGHT) {
