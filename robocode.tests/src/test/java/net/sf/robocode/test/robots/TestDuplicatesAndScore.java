@@ -141,24 +141,24 @@ public class TestDuplicatesAndScore extends RobocodeTestBed {
 
 		Assert.assertThat(results[0].getRamDamage(), is(0));
 		Assert.assertThat(results[1].getRamDamage(), is(11));
-		Assert.assertThat(results[2].getRamDamage(), is(19));
+		Assert.assertThat(results[2].getRamDamage(), is(24));
 		Assert.assertThat(results[3].getRamDamage(), is(1));
 
 		Assert.assertThat(results[0].getBulletDamageBonus(), is(67));
 		Assert.assertThat(results[1].getBulletDamageBonus(), is(0));
-		Assert.assertThat(results[2].getBulletDamageBonus(), is(0));
+		Assert.assertThat(results[2].getBulletDamageBonus(), is(28));
 		Assert.assertThat(results[3].getBulletDamageBonus(), is(2));
 
 		Assert.assertThat(results[0].getBulletDamage(), is(434));
 		Assert.assertThat(results[1].getBulletDamage(), is(300));
-		Assert.assertThat(results[2].getBulletDamage(), is(220));
+		Assert.assertThat(results[2].getBulletDamage(), is(266));
 		Assert.assertThat(results[3].getBulletDamage(), is(103));
 
-		Assert.assertThat(results[0].getScore(), is(901));
+		Assert.assertThat(results[0].getScore(), is(851));
 		Assert.assertThat(results[1].getScore(), is(661));
-		Assert.assertThat(results[2].getScore(), is(489));
+		Assert.assertThat(results[2].getScore(), is(618));
 		Assert.assertThat(results[3].getScore(), is(257));
 
-		Assert.assertThat(lastTurn, is(4574));
+		Assert.assertThat(lastTurn, is(4809));
 	}
 }
