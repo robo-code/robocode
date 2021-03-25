@@ -1,9 +1,10 @@
-## Version 1.9.4.1 (28-02-2021)
+## Version 1.9.4.1 (24-03-2021)
 
 ### Changes
-* Improve testability: 
+* [Bug-414][] Fixed bug in ramming: when robots collide, they should and do change position. But the bullets were still hitting original place in the next turn, as if the robot was not moved by collision.
 * RoundStartedEvent.getRobotObjects()
-* moved robocode.control.RobotTestBed
+* Improve testability: 
+	* moved robocode.control.RobotTestBed
 	* improved Robot and Bullet toString() so that it displays approximate cardinal direction, like N,NE,E,SE,S,SW,W,NW
 
 ## Version 1.9.4.0 (15-02-2021)
@@ -3156,6 +3157,7 @@ Currently, there is one known issue, which will be fixed with the next Beta or i
 [Bug-409]: http://sourceforge.net/p/robocode/bugs/409/  (Robot repository is completely rebuilt whenever dev dir is changed via UI)
 [Bug-410]: http://sourceforge.net/p/robocode/bugs/410/  (setColors methods warn that they can be called only once per battle, but it's not true)
 [Bug-412]: http://sourceforge.net/p/robocode/bugs/412/  (Bug fix 388 breaks score display in robot buttons)
+[Bug-414]:https://sourceforge.net/p/robocode/bugs/414/  (when robots collide they change position, but the bullets are hitting original place in the next turn)
 
 [Req-1]:   http://sourceforge.net/p/robocode/feature-requests/1/    (Multiple or hyperthreading CPUs (most P4s) hangs Robocode)
 [Req-2]:   http://sourceforge.net/p/robocode/feature-requests/2/    (Keep window size of "New battle" window)

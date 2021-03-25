@@ -1029,6 +1029,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					currentCommands.setDistanceRemaining(0);
 					x -= movedx;
 					y -= movedy;
+					updateBoundingBox();
 
 					boolean teamFire = (teamPeer != null && teamPeer == otherRobot.teamPeer);
 
