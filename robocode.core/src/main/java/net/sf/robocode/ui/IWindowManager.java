@@ -52,4 +52,6 @@ public interface IWindowManager extends IWindowManagerBase {
 	void removeBattleListener(IBattleListener listener);
 
 	void runIntroBattle();
+
+	void takeScreenshot();
 }

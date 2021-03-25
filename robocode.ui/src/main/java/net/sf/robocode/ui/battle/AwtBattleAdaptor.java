@@ -90,7 +90,7 @@ public final class AwtBattleAdaptor {
 	}
 
 	// this is always dispatched on AWT thread
-	private void awtOnTurnEnded(boolean forceRepaint, boolean readoutText) {
+	public void awtOnTurnEnded(boolean forceRepaint, boolean readoutText) {
 		try {
 			ITurnSnapshot current = snapshot.get();
 

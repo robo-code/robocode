@@ -167,6 +167,10 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         return false;
     }
 
+    public boolean isEnableScreenshots() {
+        return false;
+    }
+
     protected void beforeInit() {
         System.setProperty("EXPERIMENTAL", "true");
         System.setProperty("TESTING", "true");
@@ -180,9 +184,15 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
             throw new Error(e);
         }
         System.setProperty("ROBOTPATH", robotsPath);
+        if (isEnableScreenshots()) {
+            System.setProperty("PAINTING", "true");
+        }
     }
 
     protected void afterInit() {
+        if (isEnableScreenshots()) {
+            engine.setVisible(true);
+        }
     }
 
     /**
@@ -311,6 +321,9 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         protected void handleError(Throwable ex) {
             if (RobotTestBed.this.lastError == null) {
                 RobotTestBed.this.lastError = ex;
+                if (isEnableScreenshots()) {
+                    RobotTestBed.engine.takeScreenshot();
+                }
                 RobotTestBed.engine.abortCurrentBattle(false);
             }
         }

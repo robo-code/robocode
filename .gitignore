@@ -11,3 +11,4 @@ gradle-app.setting
 **/build/
 .sandbox
 .idea/uiDesigner.xml
+robocode.tests/screenshots/
