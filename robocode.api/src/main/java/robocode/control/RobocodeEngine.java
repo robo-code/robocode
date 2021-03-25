@@ -286,6 +286,13 @@ public class RobocodeEngine implements IRobocodeEngine {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public void takeScreenshot() {
+		ContainerBase.getComponent(IBattleManagerBase.class).takeScreenshot();
+	}
+
+	/**
 	 * Prints out all running threads to standard system out.
 	 *
 	 * @since 1.6.2

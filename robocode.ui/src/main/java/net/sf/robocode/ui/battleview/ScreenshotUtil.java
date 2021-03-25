@@ -22,6 +22,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
 
 import net.sf.robocode.io.FileUtil;
+import net.sf.robocode.io.Logger;
 
 
 /**
@@ -44,6 +45,8 @@ public class ScreenshotUtil {
 		FileUtil.createDir(screenshotDir);
 
 		File file = new File(screenshotDir, DATE_FORMAT.format(new Date()) + '.' + format.toLowerCase());
+
+		Logger.logMessage("Saved screenshot to "+file.getAbsolutePath());
 
 		try {
 			// Instantiate an ImageWriteParam object with default compression options

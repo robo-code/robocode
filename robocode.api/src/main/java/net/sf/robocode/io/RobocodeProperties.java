@@ -76,4 +76,8 @@ public final class RobocodeProperties {
 	public static boolean isTestingOn() {
 		return System.getProperty("TESTING", "false").equals("true");
 	}
+
+	public static boolean isPaintingOn() {
+		return System.getProperty("PAINTING", "false").equals("true");
+	}
 }

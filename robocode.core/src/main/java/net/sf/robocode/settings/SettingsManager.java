@@ -720,7 +720,7 @@ public class SettingsManager implements ISettingsManager {
 		optionsViewPreventSpeedupWhenMinimized = Boolean.valueOf(
 				props.getProperty(OPTIONS_VIEW_PREVENT_SPEEDUP_WHEN_MINIMIZED, "false"));
 
-		optionsBattleDesiredTPS = Integer.parseInt(props.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30"));
+		optionsBattleDesiredTPS = Integer.parseInt(System.getProperty(OPTIONS_BATTLE_DESIREDTPS, props.getProperty(OPTIONS_BATTLE_DESIREDTPS, "30")));
 
 		// set methods are used here in order to set the rendering hints, which must be rebuild
 		setOptionsRenderingAntialiasing(Integer.parseInt(props.getProperty(OPTIONS_RENDERING_ANTIALIASING, "0")));

@@ -155,4 +155,9 @@ public interface IRobocodeEngine {
 	 * @see #runBattle(robocode.control.BattleSpecification)
 	 */
 	void abortCurrentBattle(boolean waitTillEnd);
+
+	/**
+	 * Saves screenshot to disk, if the UI is initialized
+	 */
+	void takeScreenshot();
 }
