@@ -29,6 +29,7 @@ public class BattleErrorEvent extends BattleEvent {
 	 * Please don't use this constructor as it might change.
 	 *
 	 * @param error the error message from the game.
+	 * @param throwable instance of the error
 	 */
 	public BattleErrorEvent(String error,Throwable throwable) {
 		super();

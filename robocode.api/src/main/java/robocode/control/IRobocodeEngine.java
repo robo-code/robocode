@@ -153,6 +153,7 @@ public interface IRobocodeEngine {
 	 * Aborts the current battle if it is running.
 	 *
 	 * @see #runBattle(robocode.control.BattleSpecification)
+	 * @param waitTillEnd will block caller until the battle is over
 	 */
 	void abortCurrentBattle(boolean waitTillEnd);
 
