@@ -9,9 +9,9 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Assert;
 import org.junit.Test;
-import robocode.control.events.TurnEndedEvent;
+
+import java.security.AccessControlException;
 
 
 /**
@@ -19,37 +19,14 @@ import robocode.control.events.TurnEndedEvent;
  */
 public class TestSocketAttack extends RobocodeTestBed {
 
-	private boolean messagedAccessDenied;
+    @Test(expected = AccessControlException.class)
+    public void run() {
+        super.run();
+    }
 
-	@Test
-	public void run() {
-		super.run();
-	}
+    @Override
+    public String getRobotName() {
+        return "tested.robots.SocketAttack";
+    }
 
-	@Override
-	public String getRobotName() {
-		return "tested.robots.SocketAttack";
-	}
-
-	@Override
-	public void onTurnEnded(TurnEndedEvent event) {
-		super.onTurnEnded(event);
-
-		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
-
-		if (out.contains("access denied (java.net.SocketPermission")
-				|| out.contains("access denied (\"java.net.SocketPermission\"")) {
-			messagedAccessDenied = true;	
-		}	
-	}
-
-	@Override
-	protected void runTeardown() {
-		Assert.assertTrue("Socket connection is not allowed", messagedAccessDenied);
-	}
-
-	@Override
-	protected int getExpectedErrors() {
-		return 1; // Security error must be reported as an error
-	}
 }

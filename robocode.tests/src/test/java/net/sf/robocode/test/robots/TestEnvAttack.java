@@ -13,6 +13,8 @@ import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
 
+import java.security.AccessControlException;
+
 
 /**
  * @author Pavel Savara (original)
@@ -20,7 +22,7 @@ import robocode.control.events.TurnEndedEvent;
 public class TestEnvAttack extends RobocodeTestBed {
 	boolean messagedAttack;
 
-	@Test
+	@Test(expected = AccessControlException.class)
 	public void run() {
 		super.run();
 	}
@@ -30,23 +32,5 @@ public class TestEnvAttack extends RobocodeTestBed {
 		return "tested.robots.EnvAttack";
 	}
 
-	@Override
-	protected int getExpectedErrors() {
-		return 1;
-	}
 
-	@Override
-	public void onTurnEnded(TurnEndedEvent event) {
-		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
-
-		if (out.contains("AccessControlException: access denied")) {
-			messagedAttack = true;
-		}
-	}
-
-	@Override
-	protected void runTeardown() {
-		Assert.assertTrue(messagedAttack);
-	}
 }

@@ -143,9 +143,16 @@ public interface IRobocodeEngine {
 	void waitTillBattleOver();
 
 	/**
-	 * Aborts the current battle if it is running.
+	 * Aborts the current battle if it is running and waits for the end.
 	 *
 	 * @see #runBattle(robocode.control.BattleSpecification)
 	 */
 	void abortCurrentBattle();
+
+	/**
+	 * Aborts the current battle if it is running.
+	 *
+	 * @see #runBattle(robocode.control.BattleSpecification)
+	 */
+	void abortCurrentBattle(boolean waitTillEnd);
 }

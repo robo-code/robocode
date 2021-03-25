@@ -9,9 +9,9 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Assert;
 import org.junit.Test;
-import robocode.control.events.TurnEndedEvent;
+
+import java.security.AccessControlException;
 
 
 /**
@@ -19,9 +19,7 @@ import robocode.control.events.TurnEndedEvent;
  */
 public class TestFileOutputStreamAttack extends RobocodeTestBed {
 
-	private boolean messagedAccessDenied;
-
-	@Test
+	@Test(expected = AccessControlException.class)
 	public void run() {
 		super.run();
 	}
@@ -31,25 +29,5 @@ public class TestFileOutputStreamAttack extends RobocodeTestBed {
 		return "tested.robots.FileOutputStreamAttack";
 	}
 
-	@Override
-	public void onTurnEnded(TurnEndedEvent event) {
-		super.onTurnEnded(event);
 
-		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
-
-		if (out.contains("access denied (java.io.FilePermission")
-				|| out.contains("access denied (\"java.io.FilePermission\"")) {
-			messagedAccessDenied = true;	
-		}	
-	}
-
-	@Override
-	protected void runTeardown() {
-		Assert.assertTrue("FileOutputStream is not allowed", messagedAccessDenied);
-	}
-
-	@Override
-	protected int getExpectedErrors() {
-		return 1; // Security error must be reported as an error
-	}
 }

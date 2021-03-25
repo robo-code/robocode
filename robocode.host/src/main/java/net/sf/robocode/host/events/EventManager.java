@@ -10,6 +10,7 @@ package net.sf.robocode.host.events;
 
 import net.sf.robocode.host.proxies.BasicRobotProxy;
 import net.sf.robocode.io.Logger;
+import net.sf.robocode.io.RobocodeProperties;
 import net.sf.robocode.security.HiddenAccess;
 import robocode.*;
 import robocode.exception.EventInterruptedException;
@@ -17,6 +18,8 @@ import robocode.robotinterfaces.IBasicRobot;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import static net.sf.robocode.io.Logger.logError;
 
 
 /**
@@ -421,11 +424,15 @@ public final class EventManager implements IEventManager {
 					HiddenAccess.dispatch(event, robot, robotProxy.getStatics(), robotProxy.getGraphicsImpl());
 				}
 			} catch (Exception ex) {
-				robotProxy.println("SYSTEM: " + ex.getClass().getName() + " occurred on " + event.getClass().getName());
-				if(robotProxy.getRobotSpecification().isDevelopmentVersion()){
-					Logger.logWarning(robotProxy.getName()+": "+ ex.getClass().getName() + " occurred on " + event.getClass().getName());
+				if (RobocodeProperties.isTestingOn()) {
+					logError(robotProxy.getName() + ": Exception: " + ex, ex);
+				} else {
+					robotProxy.println("SYSTEM: " + ex.getClass().getName() + " occurred on " + event.getClass().getName());
+					if (robotProxy.getRobotSpecification().isDevelopmentVersion()) {
+						Logger.logWarning(robotProxy.getName() + ": " + ex.getClass().getName() + " occurred on " + event.getClass().getName());
+					}
+					ex.printStackTrace(robotProxy.getOut());
 				}
-				ex.printStackTrace(robotProxy.getOut());
 			}
 		}
 	}

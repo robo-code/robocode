@@ -15,6 +15,8 @@ import net.sf.robocode.host.security.RobotThreadManager;
 import net.sf.robocode.host.*;
 import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
+
+import net.sf.robocode.io.RobocodeProperties;
 import net.sf.robocode.peer.BadBehavior;
 import net.sf.robocode.peer.ExecCommands;
 import net.sf.robocode.peer.IRobotPeer;
@@ -247,7 +249,11 @@ abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
 			} catch (Exception e) {
 				drainEnergy();
 				println(e);
-				logMessage(statics.getName() + ": Exception: " + e); // without stack here
+				if (RobocodeProperties.isTestingOn()) {
+					logError(statics.getName() + ": Exception: " + e, e);
+				} else {
+					logMessage(statics.getName() + ": Exception: " + e); // without stack here
+				}
 			} catch (ThreadDeath e) {
 				drainEnergy();
 				println(e);
@@ -256,7 +262,11 @@ abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
 			} catch (Throwable t) {
 				drainEnergy();
 				println(t);
-				logMessage(statics.getName() + ": Throwable: " + t); // without stack here
+				if (RobocodeProperties.isTestingOn()) {
+					logError(statics.getName() + ": Throwable: " + t, t);
+				} else {
+					logMessage(statics.getName() + ": Throwable: " + t); // without stack here
+				}
 			} finally {
 				waitForBattleEndImpl();
 			}
