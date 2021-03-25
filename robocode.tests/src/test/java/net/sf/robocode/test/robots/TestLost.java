@@ -9,7 +9,6 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Test;
 import robocode.control.events.TurnEndedEvent;
@@ -22,6 +21,7 @@ import robocode.control.snapshot.IRobotSnapshot;
 public class TestLost extends RobocodeTestBed {
 	private int lost = 0;
 	private int end = 0;
+	private int skip = 0;
 
 	@Test
 	public void run() {
@@ -55,12 +55,15 @@ public class TestLost extends RobocodeTestBed {
 		if (streamSnapshot.contains("BattleEnded!")) {
 			end++;
 		}
+		if (streamSnapshot.contains("Skipped!")) {
+			skip++;
+		}
 	}
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertEquals("always should loose", lost, getNumRounds());
-		Assert.assertEquals("should get BattleEnded event", end, 1);
+		Assert.assertEquals("should not get SkippedTurn event", 0, skip);
+		Assert.assertEquals("always should loose", getNumRounds(), lost);
+		Assert.assertEquals("should get BattleEnded event", 1, end);
 	}
-
 }

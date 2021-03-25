@@ -8,16 +8,13 @@
 package tested.robots;
 
 
-import robocode.BattleEndedEvent;
-import robocode.DeathEvent;
-import robocode.Robot;
-import robocode.WinEvent;
+import robocode.*;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class BattleLost extends Robot {
+public class BattleLost extends AdvancedRobot {
 	@Override
 	public void run() {
 		while (true) {
@@ -41,5 +38,10 @@ public class BattleLost extends Robot {
 	@Override
 	public void onBattleEnded(BattleEndedEvent event) {
 		out.println("BattleEnded!");
+	}
+
+	@Override
+	public void onSkippedTurn(SkippedTurnEvent event) {
+		out.println("Skipped!");
 	}
 }
