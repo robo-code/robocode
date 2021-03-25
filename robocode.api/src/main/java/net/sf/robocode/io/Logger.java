@@ -73,26 +73,27 @@ public class Logger {
 	}
 
 	public static void logError(String message, Throwable t) {
-		logError(message + ":\n" + toStackTraceString(t));
+		String msg = t == null ? message : message + ":\n" + toStackTraceString(t);
+		if (!initialized) {
+			msg = StringUtil.toBasicLatin(msg);
+			realErr.println(msg);
+		}
+		if (logListener == null) {
+			if (System.getProperty("logErrors", "true").equalsIgnoreCase("true")) {
+				msg = StringUtil.toBasicLatin(msg);
+				realErr.println(msg);
+			}
+		} else {
+			logListener.onBattleError(new BattleErrorEvent(msg, t));
+		}
 	}
 
 	public static void logError(Throwable t) {
 		logError(toStackTraceString(t));
 	}
 
-	public static void logError(String s) {
-		if (!initialized) {
-			s = StringUtil.toBasicLatin(s);
-			realErr.println(s);
-		}
-		if (logListener == null) {
-			if (System.getProperty("logErrors", "true").equalsIgnoreCase("true")) {
-				s = StringUtil.toBasicLatin(s);
-				realErr.println(s);
-			}
-		} else {
-			logListener.onBattleError(new BattleErrorEvent(s));
-		}
+	public static void logError(String message) {
+		logError(message, null);
 	}
 
 	private static String toStackTraceString(Throwable t) {

@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static robocode.util.Utils.isNear;
+import static robocode.util.Utils.*;
 
 
 /**
@@ -44,8 +44,12 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
     /**
      * The number of errors generated during this battle so far.
      */
-    protected static int errors = 0;
-    protected static StringBuilder errorText = new StringBuilder();
+    protected int errors = 0;
+    protected StringBuilder errorText = new StringBuilder();
+    protected Throwable lastError = null;
+    protected EngineErrorsListener engineErrorsListener = new EngineErrorsListener();
+    protected TestErrorListener testErrorListener = new TestErrorListener();
+
     /**
      * The number of messages generated during this battle so far.
      */
@@ -79,78 +83,15 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
      */
     protected R robotObject;
 
-    protected void beforeInit() {
-        System.setProperty("EXPERIMENTAL", "true");
-        System.setProperty("TESTING", "true");
-
-        try {
-            File robotsPathFile = new File("../.sandbox/robots").getCanonicalFile().getAbsoluteFile();
-            robotsPath = robotsPathFile.getPath();
-        } catch (IOException e) {
-            e.printStackTrace(Logger.realErr);
-            throw new Error(e);
-        }
-        System.setProperty("ROBOTPATH", robotsPath);
-    }
-
     public RobotTestBed() {
         if (engine == null) {
             beforeInit();
-            engine = new RobocodeEngine(new BattleAdaptor() {
-                public void onBattleMessage(BattleMessageEvent event) {
-                    if (isDumpingMessages) {
-                        Logger.realOut.println(event.getMessage());
-                    }
-                    messages++;
-                }
-
-                public void onBattleError(BattleErrorEvent event) {
-                    if (isDumpingErrors) {
-                        Logger.realErr.println(event.getError());
-                    }
-                    errorText.append("----------err #");
-                    errorText.append(errors);
-                    errorText.append("--------------------------------------------------\n");
-                    errorText.append(event.getError());
-                    errorText.append("\n");
-                    errors++;
-                }
-            });
+            engine = new RobocodeEngine();
+            afterInit();
         }
 
         errors = 0;
         messages = 0;
-    }
-
-    @Override
-    public void onRoundStarted(RoundStartedEvent event) {
-        List<IBasicRobot> robotObjects = event.getRobotObjects();
-        if (robotObjects != null && !robotObjects.isEmpty()) {
-            this.robotObject = (R) robotObjects.get(0);
-        }
-        super.onRoundStarted(event);
-    }
-
-    @Override
-    public void onTurnEnded(TurnEndedEvent event) {
-        if (isDumpingTurns) {
-            Logger.realOut.println("turn " + event.getTurnSnapshot().getTurn());
-        }
-        for (IRobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
-            if (isDumpingPositions) {
-                Logger.realOut.print(robot.getVeryShortName());
-                Logger.realOut.print(" X:");
-                Logger.realOut.print(robot.getX());
-                Logger.realOut.print(" Y:");
-                Logger.realOut.print(robot.getY());
-                Logger.realOut.print(" V:");
-                Logger.realOut.print(robot.getVelocity());
-                Logger.realOut.println();
-            }
-            if (isDumpingOutput) {
-                Logger.realOut.print(robot.getOutputStreamSnapshot());
-            }
-        }
     }
 
     /**
@@ -226,31 +167,62 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         return false;
     }
 
+    protected void beforeInit() {
+        System.setProperty("EXPERIMENTAL", "true");
+        System.setProperty("TESTING", "true");
+        System.setProperty("robocode.options.battle.desiredTPS", "10000");
+
+        try {
+            File robotsPathFile = new File("../.sandbox/robots").getCanonicalFile().getAbsoluteFile();
+            robotsPath = robotsPathFile.getPath();
+        } catch (IOException e) {
+            e.printStackTrace(Logger.realErr);
+            throw new Error(e);
+        }
+        System.setProperty("ROBOTPATH", robotsPath);
+    }
+
+    protected void afterInit() {
+    }
+
     /**
      * The setup method run before each test, which sets up the listener on the engine for testing.
      * Don't override this method; instead, override runSetup to add behavior before the test
      * battle starts.
      */
     protected void before() {
-        engine.addBattleListener(this);
+        engine.addBattleListener(engineErrorsListener);
+        engine.addBattleListener(testErrorListener);
         if (isDeterministic()) {
             RandomFactory.resetDeterministic(0);
         }
         errors = 0;
         errorText = new StringBuilder();
         messages = 0;
+        lastError = null;
     }
 
     protected void after() {
-        engine.removeBattleListener(this);
+        engine.removeBattleListener(engineErrorsListener);
+        engine.removeBattleListener(testErrorListener);
     }
 
     protected void run() {
         runSetup();
-		runBattle(getRobotName() + "," + getEnemyName(), getNumRounds(), getInitialPositions());
+        runBattle(getRobotName() + "," + getEnemyName(), getNumRounds(), getInitialPositions());
         runTeardown();
         final int expectedErrors = getExpectedErrors();
 
+        if (lastError != null) {
+            Class errorClass = lastError.getClass();
+            if (RuntimeException.class.isAssignableFrom(errorClass)) {
+                throw (RuntimeException) lastError;
+            } else if (Error.class.isAssignableFrom(errorClass)) {
+                throw (Error) lastError;
+            } else {
+                throw new Error(lastError);
+            }
+        }
         if (errors != expectedErrors) {
             throw new AssertionError(
                     "Number of errors " + errors + " is different than expected " + expectedErrors + "\n" + errorText
@@ -279,27 +251,173 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         }
     }
 
-    public static void assertNotNull(String message, Object value) {
-        if (value == null) {
-            throw new AssertionError(message);
+    class EngineErrorsListener extends BattleAdaptor {
+        public void onBattleMessage(BattleMessageEvent event) {
+            if (isDumpingMessages) {
+                Logger.realOut.println(event.getMessage());
+            }
+            messages++;
+        }
+
+        @Override
+        public void onRoundStarted(RoundStartedEvent event) {
+            List<IBasicRobot> robotObjects = event.getRobotObjects();
+            if (robotObjects != null && !robotObjects.isEmpty()) {
+                RobotTestBed.this.robotObject = (R) robotObjects.get(0);
+            }
+        }
+
+        @Override
+        public void onBattleError(BattleErrorEvent event) {
+            String error = event.getError();
+            if (isDumpingErrors) {
+                Logger.realErr.println(error);
+            }
+            errorText.append("----------err #");
+            errorText.append(errors);
+            errorText.append("--------------------------------------------------\n");
+            errorText.append(error);
+            errorText.append("\n");
+            errors++;
+        }
+
+        @Override
+        public void onTurnEnded(TurnEndedEvent event) {
+            if (isDumpingTurns) {
+                Logger.realOut.println("turn " + event.getTurnSnapshot().getTurn());
+            }
+            for (IRobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
+                if (isDumpingPositions) {
+                    Logger.realOut.print(robot.getVeryShortName());
+                    Logger.realOut.print(" X:");
+                    Logger.realOut.print(robot.getX());
+                    Logger.realOut.print(" Y:");
+                    Logger.realOut.print(robot.getY());
+                    Logger.realOut.print(" V:");
+                    Logger.realOut.print(robot.getVelocity());
+                    Logger.realOut.println();
+                }
+                if (isDumpingOutput) {
+                    String outputSnapshot = robot.getOutputStreamSnapshot();
+                    if (outputSnapshot != null) {
+                        Logger.realOut.print(outputSnapshot);
+                    }
+                }
+            }
         }
     }
 
-    public static void assertEquals(String message, Object expected, Object actual) {
-        if (expected == null && actual == null) {
-            return;
+    class TestErrorListener implements IBattleListener {
+        protected void handleError(Throwable ex) {
+            if (RobotTestBed.this.lastError == null) {
+                RobotTestBed.this.lastError = ex;
+                RobotTestBed.engine.abortCurrentBattle(false);
+            }
         }
-        if (expected == null || actual == null) {
-            throw new AssertionError(message);
-        }
-        if (!expected.equals(actual)) {
-            throw new AssertionError(message);
-        }
-    }
 
-    public static void assertNear(String message, double expected, double actual) {
-        if (!isNear(expected, actual)) {
-            throw new AssertionError(message);
+        @Override
+        public void onBattleStarted(BattleStartedEvent event) {
+            try {
+                RobotTestBed.this.onBattleStarted(event);
+            } catch (Error ex) {
+                handleError(ex);
+            }
+        }
+
+        @Override
+        public void onBattleFinished(BattleFinishedEvent event) {
+            try {
+                RobotTestBed.this.onBattleFinished(event);
+            } catch (Error ex) {
+                handleError(ex);
+            }
+        }
+
+        @Override
+        public void onBattleCompleted(BattleCompletedEvent event) {
+            try {
+                RobotTestBed.this.onBattleCompleted(event);
+            } catch (Error ex) {
+                handleError(ex);
+            }
+        }
+
+        @Override
+        public void onBattlePaused(BattlePausedEvent event) {
+            try {
+                RobotTestBed.this.onBattlePaused(event);
+            } catch (Error ex) {
+                handleError(ex);
+            }
+        }
+
+        @Override
+        public void onBattleResumed(BattleResumedEvent event) {
+            try {
+                RobotTestBed.this.onBattleResumed(event);
+            } catch (Error ex) {
+                handleError(ex);
+            }
+        }
+
+        @Override
+        public void onRoundStarted(RoundStartedEvent event) {
+            try {
+                RobotTestBed.this.onRoundStarted(event);
+            } catch (Error ex) {
+                handleError(ex);
+            }
+        }
+
+        @Override
+        public void onRoundEnded(RoundEndedEvent event) {
+            try {
+                RobotTestBed.this.onRoundEnded(event);
+            } catch (Error ex) {
+                handleError(ex);
+            }
+        }
+
+        @Override
+        public void onTurnStarted(TurnStartedEvent event) {
+            try {
+                RobotTestBed.this.onTurnStarted(event);
+            } catch (Error ex) {
+                handleError(ex);
+            }
+        }
+
+        @Override
+        public void onTurnEnded(TurnEndedEvent event) {
+            try {
+                if (RobotTestBed.this.lastError == null) {
+                    RobotTestBed.this.onTurnEnded(event);
+                }
+            } catch (Error ex) {
+                handleError(ex);
+            }
+        }
+
+        @Override
+        public void onBattleMessage(BattleMessageEvent event) {
+            try {
+                RobotTestBed.this.onBattleMessage(event);
+            } catch (Error ex) {
+                handleError(ex);
+            }
+        }
+
+        @Override
+        public void onBattleError(BattleErrorEvent event) {
+            try {
+                RobotTestBed.this.onBattleError(event);
+                Throwable errorInstance = event.getErrorInstance();
+                if (errorInstance != null) {
+                    handleError(errorInstance);
+                }
+            } catch (Error ex) {
+                handleError(ex);
+            }
         }
     }
 }

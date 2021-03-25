@@ -22,6 +22,7 @@ package robocode.control.events;
  */
 public class BattleErrorEvent extends BattleEvent {
 	private final String error;
+	private final Throwable throwable;
 
 	/**
 	 * Called by the game to create a new BattleErrorEvent.
@@ -29,9 +30,10 @@ public class BattleErrorEvent extends BattleEvent {
 	 *
 	 * @param error the error message from the game.
 	 */
-	public BattleErrorEvent(String error) {
+	public BattleErrorEvent(String error,Throwable throwable) {
 		super();
 		this.error = error;
+		this.throwable = throwable;
 	}
 
 	/**
@@ -41,5 +43,14 @@ public class BattleErrorEvent extends BattleEvent {
 	 */
 	public String getError() {
 		return error;
+	}
+
+	/**
+	 * Returns the error instance when available.
+	 *
+	 * @return the error instance that was sent from the game during the battle. Could be null.
+	 */
+	public Throwable getErrorInstance() {
+		return throwable;
 	}
 }

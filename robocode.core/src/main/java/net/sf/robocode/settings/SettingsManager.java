@@ -28,7 +28,6 @@ import java.util.List;
  * @author Flemming N. Larsen (contributor)
  * @author Nathaniel Troutman (contributor)
  */
-// TODO ZAMO, refactor, split by modules
 public class SettingsManager implements ISettingsManager {
 	// Default SFX files
 	private final static String

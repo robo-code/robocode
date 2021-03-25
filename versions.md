@@ -2,10 +2,14 @@
 
 ### Changes
 * [Bug-414][] Fixed bug in ramming: when robots collide, they should and do change position. But the bullets were still hitting original place in the next turn, as if the robot was not moved by collision.
-* RoundStartedEvent.getRobotObjects()
 * Improve testability: 
 	* moved robocode.control.RobotTestBed
+	* RoundStartedEvent.getRobotObjects() is available on Control API. Useful for white-box testing of robot state.
+	* exceptions in the robot are now propagated to unit test. See test.robots.TestThrowing
+	* exceptions in the robot are now propagated to BattleErrorEvent of control API when -DTESTING=true
 	* improved Robot and Bullet toString() so that it displays approximate cardinal direction, like N,NE,E,SE,S,SW,W,NW
+	* bullet IDs are now more unique
+	* unit test is aborted on robot exception
 
 ## Version 1.9.4.0 (15-02-2021)
 
