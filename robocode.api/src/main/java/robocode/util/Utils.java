@@ -217,6 +217,17 @@ public class Utils {
     }
 
 	/**
+	 * Throws AssertionError when the assertion is false. It could be used to express validation of invariant.
+	 * @param message of the eventual error
+	 * @param assertion expected to be true
+	 */
+	public static void assertTrue(String message, boolean assertion) {
+		if (!assertion) {
+			throw new AssertionError(message);
+		}
+	}
+
+	/**
 	 * Throws AssertionError when the params expected and actual do not within .00001 difference. It could be used to express validation of invariant.
 	 * @param message of the eventual error
 	 * @param expected expected value

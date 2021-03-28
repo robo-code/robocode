@@ -9,6 +9,7 @@
 	* exceptions in the robot are now propagated to unit test. See test.robots.TestThrowing
 	* exceptions in the robot are now propagated to BattleErrorEvent of control API when -DTESTING=true
 	* improved Robot and Bullet toString() so that it displays approximate cardinal direction, like N,NE,E,SE,S,SW,W,NW
+	* added Utils.assertNotNull(), Utils.assertEquals(), Utils.assertTrue(), Utils.assertNear() for testing comfort
 	* bullet IDs are now more unique
 	* unit test is aborted on robot exception
 	* control API could now take screenshots
