@@ -542,6 +542,11 @@ public final class Battle extends BaseBattle {
 			robotPeer.performMove(getRobotsAtRandom(), zapEnergy);
 		}
 
+		// Correct bounding box after collisions
+		for (RobotPeer robotPeer : robots) {
+			robotPeer.updateAfterCollision();
+		}
+
 		// Scan after moved all
 		for (RobotPeer robotPeer : getRobotsAtRandom()) {
 			robotPeer.performScan(getRobotsAtRandom());

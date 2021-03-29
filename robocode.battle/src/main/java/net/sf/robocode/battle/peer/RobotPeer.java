@@ -1032,7 +1032,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					currentCommands.setDistanceRemaining(0);
 					x -= movedx;
 					y -= movedy;
-					updateBoundingBox();
 
 					boolean teamFire = (teamPeer != null && teamPeer == otherRobot.teamPeer);
 
@@ -1068,6 +1067,12 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 		if (inCollision) {
 			setState(RobotState.HIT_ROBOT);
+		}
+	}
+
+	public void updateAfterCollision() {
+		if (state == RobotState.HIT_ROBOT) {
+			updateBoundingBox();
 		}
 	}
 
