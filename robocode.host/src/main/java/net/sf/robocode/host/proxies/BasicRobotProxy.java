@@ -86,7 +86,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 		setGetCallCount(0);
 
 		// make bulletId unique for entire battle and across all robots
-		nextBulletId = 1 + this.statics.getRobotIndex() * 100000 + status.getRoundNum() * 100000000;
+		nextBulletId = 1 + this.statics.getRobotIndex() * 10000 + status.getRoundNum() * 1000000;
 	}
 
 	@Override
