@@ -26,7 +26,7 @@ import net.sf.robocode.util.StringUtil;
 import net.sf.robocode.version.IVersionManager;
 import robocode.control.events.*;
 
-import java.awt.Toolkit;
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -192,6 +192,16 @@ public final class RobocodeMain extends RobocodeMainBase {
 		}
 
 		setup.tps = properties.getOptionsBattleDesiredTPS();
+
+		if (GraphicsEnvironment.isHeadless()) {
+			if (windowManager != null) {
+				windowManager.setEnableGUI(false);
+				Logger.logWarning("Disabled GUI on headless system");
+			}
+			if (soundManager != null) {
+				soundManager.setEnableSound(false);
+			}
+		}
 
 		// Disable canonical file path cache under Windows as it causes trouble when returning
 		// paths with differently-capitalized file names.
