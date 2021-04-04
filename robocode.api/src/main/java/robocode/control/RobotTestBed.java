@@ -217,9 +217,9 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         engine.removeBattleListener(testErrorListener);
     }
 
-    protected void run() {
+    protected void run(String robotName, String enemyName) {
         runSetup();
-        runBattle(getRobotName() + "," + getEnemyName(), getNumRounds(), getInitialPositions());
+        runBattle(robotName + "," + enemyName, getNumRounds(), getInitialPositions());
         runTeardown();
         final int expectedErrors = getExpectedErrors();
 
@@ -238,6 +238,14 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
                     "Number of errors " + errors + " is different than expected " + expectedErrors + "\n" + errorText
                             + "======================================================================");
         }
+    }
+
+    protected void run(String enemyName) {
+        run(getRobotName(), enemyName);
+    }
+
+    protected void run() {
+        run(getRobotName(), getEnemyName());
     }
 
     protected int getExpectedErrors() {

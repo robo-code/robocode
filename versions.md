@@ -14,6 +14,7 @@
 	* unit test is aborted on robot exception
 	* control API could now take screenshots
 	* unit test could enable taking screenshots when exception or asset occurs. See RobotTestBed.isEnableScreenshots()
+	* robots could be statistically tested against multiple opponents. For example see net.sf.robocode.test.robots.TestScore
 
 ## Version 1.9.4.0 (15-02-2021)
 
