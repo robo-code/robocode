@@ -23,6 +23,7 @@ import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
  * Utility class for downloading files from the net and copying files.
  * 
  * @author Flemming N. Larsen (original)
+ * @author Pavel Savara (contributor)
  */
 public class FileTransfer {
 
@@ -71,58 +72,6 @@ public class FileTransfer {
 		}
 	}
 
-	/*
-	 * Returns a session id for keeping a session on a HTTP site.
-	 *
-	 * @param url is the url of the HTTP site.
-	 *
-	 * @return a session id for keeping a session on a HTTP site or null if no session is available.
-	 */
-	public static String getSessionId(String url) {
-		HttpURLConnection conn = null;
-
-		try {
-			// Open connection
-			conn = FileTransfer.connectToHttpInputConnection(new URL(url));
-			if (conn == null) {
-				throw new IOException("Could not open connection to '" + url + "'");
-			}
-
-			// Get a session id if available
-			final GetSessionIdThread sessionIdThread = new GetSessionIdThread(conn);
-
-			sessionIdThread.start();
-
-			// Wait for the session id
-			synchronized (sessionIdThread.monitor) {
-				while (!sessionIdThread.isFinished) {
-					try {
-						sessionIdThread.monitor.wait(sessionTimeout);
-						sessionIdThread.interrupt();
-					} catch (InterruptedException e) {
-						// Immediately reasserts the exception by interrupting the caller thread itself
-						Thread.currentThread().interrupt();
-
-						return null;
-					}
-				}
-			}
-
-			// Return the session id
-			return sessionIdThread.sessionId;
-
-		} catch (final IOException e) {
-			return null;
-		} finally {
-			// Make sure the connection is disconnected.
-			// This will cause threads using the connection to throw an exception
-			// and thereby terminate if they were hanging.
-			if (conn != null) {
-				conn.disconnect();
-			}
-		}
-	}
-
 	/**
 	 * Worker thread used for getting the session id of an already open HTTP connection.
 	 */
@@ -161,16 +110,15 @@ public class FileTransfer {
 	 * 
 	 * @param url is the url of the HTTP site to download the file from.
 	 * @param filename is the filename of the destination file.
-	 * @param sessionId is an optional session id if the download is session based.
 	 * @return the download status, which is DownloadStatus.OK if the download completed successfully; otherwise an
 	 * 	       error occurred.
 	 */
-	public static DownloadStatus download(String url, String filename, String sessionId) {
+	public static DownloadStatus download(String url, String filename) {
 		HttpURLConnection conn = null;
 
 		try {
 			// Create connection
-			conn = connectToHttpInputConnection(new URL(url), sessionId);
+			conn = connectToHttpInputConnection(new URL(url));
 			if (conn == null) {
 				throw new IOException("Could not open connection to: " + url);
 			}
@@ -512,25 +460,9 @@ public class FileTransfer {
 	 * @throws IOException if an I/O exception occurs.
 	 */
 	public static HttpURLConnection connectToHttpInputConnection(URL url) throws IOException {
-		return connectToHttpInputConnection(url, null);
-	}
-
-	/**
-	 * Opens and connects to a {@link java.net.HttpURLConnection} for input only, and where the connection timeout and
-	 * read timeout are controlled by properties.
-	 * 
-	 * @param url is the URL to open a connection to.
-	 * @param sessionId is a optional session id.
-	 * @return a HttpURLConnection intended for reading input only.
-	 * @throws IOException if an I/O exception occurs.
-	 */
-	public static HttpURLConnection connectToHttpInputConnection(URL url, String sessionId) throws IOException {
 		HttpURLConnection conn = (HttpURLConnection) openURLConnection(url, false); // not for output
 
 		conn.setRequestMethod("GET");
-		if (sessionId != null) {
-			conn.setRequestProperty("Cookie", sessionId);
-		}
 		conn.connect();
 		return conn;
 	}

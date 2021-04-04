@@ -24,6 +24,7 @@ import java.util.Vector;
  *
  * @author Albert Perez (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class ResultsUpload {
 
@@ -43,21 +44,15 @@ public class ResultsUpload {
 	private final String teams;
 	private final String melee;
 
-	public ResultsUpload(String propertiesfile, String clientVersion) {
-		// Read parameters
-		Properties parameters = getProperties(propertiesfile);
+	public ResultsUpload(String game, Properties parameters, String clientVersion) {
 
 		resultsfile = parameters.getProperty("OUTPUT", "");
 		resultsurl = parameters.getProperty("RESULTSURL", "");
 		tempdir = parameters.getProperty("TEMP", "");
 		user = parameters.getProperty("USER", "");
-		game = propertiesfile;
+		this.game = game;
 		String botsrepository = parameters.getProperty("BOTSREP", "");
 
-		while (game.indexOf("/") != -1) {
-			game = game.substring(game.indexOf("/") + 1);
-		}
-		game = game.substring(0, game.indexOf("."));
 		sizesfile = parameters.getProperty("CODESIZEFILE", "");
 		minibots = parameters.getProperty("MINIBOTS", "");
 		microbots = parameters.getProperty("MICROBOTS", "");
@@ -248,6 +243,7 @@ public class ResultsUpload {
 		BufferedReader bufferedReader = null;
 
 		try {
+			System.out.println("Uploading results to " + resultsurl + " as " + user);
 			// Send data
 			URLConnection conn = FileTransfer.openOutputURLConnection(new URL(resultsurl));
 

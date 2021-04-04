@@ -24,6 +24,7 @@ import java.util.Vector;
  *
  * @author Albert Perez (original)
  * @author Flemming N. Larsen (contributor)
+ * @author Pavel Savara (contributor)
  */
 public class UpdateRatingFiles {
 
@@ -37,15 +38,8 @@ public class UpdateRatingFiles {
 	private final String microratings;
 	private final String nanoratings;
 
-	public UpdateRatingFiles(String propertiesfile) {
-		// Read parameters
-		Properties parameters = getProperties(propertiesfile);
-
-		game = propertiesfile;
-		while (game.indexOf("/") != -1) {
-			game = game.substring(game.indexOf("/") + 1);
-		}
-		game = game.substring(0, game.indexOf("."));
+	public UpdateRatingFiles(String game, Properties parameters) {
+		this.game = game;
 		minibots = parameters.getProperty("MINIBOTS", "");
 		microbots = parameters.getProperty("MICROBOTS", "");
 		nanobots = parameters.getProperty("NANOBOTS", "");

@@ -16,6 +16,8 @@
 	* control API could now take screenshots
 	* unit test could enable taking screenshots when exception or asset occurs. See RobotTestBed.isEnableScreenshots()
 	* robots could be statistically tested against multiple opponents. For example see net.sf.robocode.test.robots.TestScore
+* Roborumble could now override USER, PARTICIPANTSURL, UPDATEBOTSURL, RESULTSURL, RATINGSURL via environment variable
+* Published Roborumble client as docker image to https://hub.docker.com/r/zamboch/roborumble with the above env variables available
 
 ## Version 1.9.4.0 (15-02-2021)
 
