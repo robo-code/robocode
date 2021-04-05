@@ -2,7 +2,7 @@
 
 ### Changes
 * [Bug-414][] Fixed bug in ramming: when robots collide, they should and do change position. But the bullets were still hitting original place in the next turn, as if the robot was not moved by collision.
-* Robot painting to screen could be enabled by -DPAINTING=true
+* Robot painting to screen per default could be enabled by -DPAINTING=true
 * Made installer compatible with headless systems. Made default classPath lib/* for startup scripts.
 * Improve testability: 
 	* moved robocode.control.RobotTestBed

@@ -105,12 +105,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 	}
 
 	public void run() {
-		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {			
-			@Override
-			public void uncaughtException(Thread thread, Throwable t) {
-				t.printStackTrace();
-			}
-		});
+		Thread.setDefaultUncaughtExceptionHandler((thread, t) -> t.printStackTrace());
 
 		try {
 			hostManager.initSecurity();
@@ -303,7 +298,9 @@ public final class RobocodeMain extends RobocodeMainBase {
 		System.out.print(
 				"Usage: robocode [-?] [-help] [-cwd path] [-battle filename [-results filename]\n"
 						+ "                [-record filename] [-recordXML filename] [-replay filename]\n"
-						+ "                [-tps tps] [-minimize] [-nodisplay] [-nosound]\n\n" + "where options include:\n"
+						+ "                [-tps tps] [-minimize] [-nodisplay] [-nosound]\n"
+						+ "\n"
+						+ "where options include:\n"
 						+ "  -? or -help                Prints out the command line usage of Robocode\n"
 						+ "  -cwd <path>                Change the current working directory\n"
 						+ "  -battle <battle file>      Run the battle specified in a battle file\n"
@@ -322,6 +319,8 @@ public final class RobocodeMain extends RobocodeMainBase {
 						+ "  -Ddebug=true|false         Enable/disable debugging used for preventing\n"
 						+ "                             robot timeouts and skipped turns, and allows an\n"
 						+ "                             an unlimited painting buffer when debugging robots\n"
+						+ "  -DPAINTING=true|false      Enable/disable painting all robot painting on the\n"
+						+ "                             screen per default.\n"
 						+ "  -DlogMessages=true|false   Log messages and warnings will be disabled\n"
 						+ "  -DlogErrors=true|false     Log errors will be disabled\n"
 						+ "  -DEXPERIMENTAL=true|false  Enable/disable access to peer in robot interfaces\n"

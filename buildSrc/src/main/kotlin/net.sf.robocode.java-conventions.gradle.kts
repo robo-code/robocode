@@ -50,7 +50,7 @@ publishing {
                         name.set("Mathew A. Nelson")
                     }
                     developer {
-                        id.set("fln")
+                        id.set("flemming-n-larsen")
                         name.set("Flemming N. Larsen")
                         email.set("flemming.n.larsen@gmail.com")
                     }
