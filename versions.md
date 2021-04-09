@@ -1,30 +1,30 @@
-## Version 1.9.4.1 (24-03-2021)
+## Version 1.9.4.1 (09-04-2021)
 
 ### Changes
 * [Bug-414][] Fixed bug in ramming: when robots collide, they should and do change position. But the bullets were still hitting original place in the next turn, as if the robot was not moved by collision.
 * Robot painting to screen per default could be enabled by -DPAINTING=true
 * Made installer compatible with headless systems. Made default classPath lib/* for startup scripts.
 * Improve testability: 
-	* moved robocode.control.RobotTestBed
+	* Moved robocode.control.RobotTestBed.
 	* RoundStartedEvent.getRobotObjects() is available on Control API. Useful for white-box testing of robot state.
-	* exceptions in the robot are now propagated to unit test. See test.robots.TestThrowing
-	* exceptions in the robot are now propagated to BattleErrorEvent of control API when -DTESTING=true
-	* improved Robot and Bullet toString() so that it displays approximate cardinal direction, like N,NE,E,SE,S,SW,W,NW
-	* added Utils.assertNotNull(), Utils.assertEquals(), Utils.assertTrue(), Utils.assertNear() for testing comfort
-	* bullet IDs are now more unique
-	* unit test is aborted on robot exception
-	* control API could now take screenshots
-	* unit test could enable taking screenshots when exception or asset occurs. See RobotTestBed.isEnableScreenshots()
-	* robots could be statistically tested against multiple opponents. For example see net.sf.robocode.test.robots.TestScore
-* Roborumble could now override USER, PARTICIPANTSURL, UPDATEBOTSURL, RESULTSURL, RATINGSURL via environment variable
-* Published Roborumble client as docker image to https://hub.docker.com/r/zamboch/roborumble with the above env variables available
+	* Exceptions in the robot are now propagated to unit test. See test.robots.TestThrowing.
+	* Exceptions in the robot are now propagated to BattleErrorEvent of control API when -DTESTING=true
+	* Improved Robot and Bullet toString() so that it displays approximate cardinal direction, like N,NE,E,SE,S,SW,W,NW
+	* Added Utils.assertNotNull(), Utils.assertEquals(), Utils.assertTrue(), Utils.assertNear() for testing comfort.
+	* Bullet IDs are now more unique.
+	* Unit test is aborted on robot exception.
+	* Control API could now take screenshots.
+	* Unit test could enable taking screenshots when exception or asset occurs. See RobotTestBed.isEnableScreenshots()
+	* Robots could be statistically tested against multiple opponents. For example see net.sf.robocode.test.robots.TestScore
+* Roborumble could now override USER, PARTICIPANTSURL, UPDATEBOTSURL, RESULTSURL, RATINGSURL via environment variables.
+* Published Roborumble client as docker image to https://hub.docker.com/r/zamboch/roborumble with the above environment variables available.
 
 ## Version 1.9.4.0 (15-02-2021)
 
 ### Changes
-* Migrated from Maven to Gradle
-* Migrated from Eclipse to Idea
-* Published to Maven Central
+* Migrated from Maven to Gradle.
+* Migrated from Eclipse to Idea.
+* Published to Maven Central.
 
 ## Version 1.9.3.9 (20-04-2020)
 
