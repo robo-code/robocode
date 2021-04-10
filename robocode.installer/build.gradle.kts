@@ -84,15 +84,20 @@ tasks {
         commandLine("docker", "push", "zamboch/roborumble", "--all-tags")
     }
 
+    task<Delete>("chocoClean") {
+        delete("build/choco")
+    }
+
     task<Copy>("chocoCopy") {
+        dependsOn("chocoClean")
         dependsOn("jar")
         from("../") {
             include("versions.md")
             into("tools")
         }
         from("../build/") {
-            include("robocode-*-setup.jar")
-            include("robocode-*-setup.jar.asc")
+            include("robocode-${project.version}-setup.jar")
+            include("robocode-${project.version}-setup.jar.asc")
             into("tools")
         }
         from("src/chocolatey/") {
@@ -104,7 +109,7 @@ tasks {
     task<Exec>("chocoBuild") {
         dependsOn("chocoCopy")
         workingDir = file("build/choco")
-        commandLine("choco", "pack")
+        commandLine("choco", "pack", "--version", "${project.version}")
     }
 
     task<Exec>("chocoPush") {

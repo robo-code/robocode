@@ -1,3 +1,8 @@
+## Version 1.9.4.2 (10-04-2021)
+
+### Changes
+* Chocolate installer for Windows
+
 ## Version 1.9.4.1 (09-04-2021)
 
 ### Changes

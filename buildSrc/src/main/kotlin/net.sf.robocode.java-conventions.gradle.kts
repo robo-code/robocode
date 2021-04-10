@@ -15,7 +15,7 @@ repositories {
 }
 
 group = "net.sf.robocode"
-version = "1.9.4.1"
+version = "1.9.4.2"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 tasks.withType<JavaCompile>() {
