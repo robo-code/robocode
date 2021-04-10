@@ -1,0 +1,3 @@
+﻿
+VERIFICATION
+Pavel Savara is maintainer/owner of the Robocode project. The software is distributed under Eclipse Public License - v 1.0

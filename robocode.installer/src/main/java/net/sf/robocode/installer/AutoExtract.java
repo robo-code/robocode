@@ -79,7 +79,7 @@ public class AutoExtract implements ActionListener {
                 }
             }
         }
-        if (is == null || GraphicsEnvironment.isHeadless()) {
+        if (is == null || isSilent) {
             return true;
         }
 
@@ -185,7 +185,7 @@ public class AutoExtract implements ActionListener {
 
         JDialog statusDialog = null;
         JLabel status = null;
-        if (!GraphicsEnvironment.isHeadless()) {
+        if (!isSilent) {
             statusDialog = new JDialog();
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -317,15 +317,22 @@ public class AutoExtract implements ActionListener {
         }
     }
 
+    private static boolean isSilent = false;
+
     public static void main(String argv[]) {
         String suggestedDirName;
-
         if (argv.length == 1) {
             suggestedDirName = argv[0];
         } else if (isWindowsOS()) {
             suggestedDirName = "C:\\robocode\\";
         } else {
             suggestedDirName = System.getProperty("user.home") + File.separator + "robocode" + File.separator;
+        }
+        if (argv.length >= 1 && "silent".equals(argv[1])) {
+            isSilent = true;
+        }
+        else if (GraphicsEnvironment.isHeadless()) {
+            isSilent = true;
         }
 
         String message;
@@ -343,7 +350,7 @@ public class AutoExtract implements ActionListener {
             deleteFileAndParentDirsIfEmpty(new File(installDir, installerPath));
         }
 
-        if (!GraphicsEnvironment.isHeadless()) {
+        if (!isSilent) {
             JOptionPane.showMessageDialog(null, message);
         }
     }
@@ -355,7 +362,7 @@ public class AutoExtract implements ActionListener {
                     + "Your system is currently running Java " + JAVA_MAJOR_VERSION + ".\n"
                     + "If you have not installed (or activated) at least\n" + "JRE 6 or JDK 6, please do so.";
 
-            if (!GraphicsEnvironment.isHeadless()) {
+            if (!isSilent) {
                 JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
             }
             System.err.println(message);
@@ -363,7 +370,7 @@ public class AutoExtract implements ActionListener {
         }
 
         // Set native look and feel
-        if (!GraphicsEnvironment.isHeadless()) {
+        if (!isSilent) {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Throwable t) {// For some reason Ubuntu 7 can cause a NullPointerException when trying to getting the LAF
@@ -378,7 +385,7 @@ public class AutoExtract implements ActionListener {
             boolean done = false;
 
             while (!done) {
-                int rc = GraphicsEnvironment.isHeadless()
+                int rc = isSilent
                         ? JOptionPane.YES_OPTION
                         : JOptionPane.showConfirmDialog(null,
                         "Robocode will be installed in:\n" + suggestedDir + "\nIs this ok?", "Installing Robocode",
@@ -432,9 +439,11 @@ public class AutoExtract implements ActionListener {
             }
 
             // Create shortcuts and file associations
-            if (extractor.extract(installDir) && !GraphicsEnvironment.isHeadless()) {
+            if (extractor.extract(installDir)) {
                 extractor.createShortcuts(installDir, "robocode.bat", "Robocode", "Robocode");
-                extractor.createFileAssociations(installDir);
+                if(!isSilent){
+                    extractor.createFileAssociations(installDir);
+                }
                 return true;
             }
         }
@@ -520,7 +529,8 @@ public class AutoExtract implements ActionListener {
     }
 
     private boolean createWindowsShortcuts(File installDir, String runnable, String folder, String name) {
-        int rc = JOptionPane.showConfirmDialog(null,
+        int rc = isSilent ? JOptionPane.YES_NO_OPTION
+                : JOptionPane.showConfirmDialog(null,
                 "Would you like to install a shortcut to Robocode in the Start menu? (Recommended)", "Create Shortcuts",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
@@ -571,9 +581,11 @@ public class AutoExtract implements ActionListener {
                 System.err.println("Can't create shortcut: " + shortcutMaker);
                 return false;
             }
-            JOptionPane.showMessageDialog(null,
-                    message + "\n" + "A Robocode program group has been added to your Start menu\n"
-                            + "A Robocode icon has been added to your desktop.");
+            if (!isSilent) {
+                JOptionPane.showMessageDialog(null,
+                        message + "\n" + "A Robocode program group has been added to your Start menu\n"
+                                + "A Robocode icon has been added to your desktop.");
+            }
             if (!shortcutMaker.delete()) {
                 System.err.println("Can't delete: " + shortcutMaker);
             }
