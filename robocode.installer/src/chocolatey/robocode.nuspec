@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Read this before creating packages: https://chocolatey.org/docs/create-packages -->
+<!-- It is especially important to read the above link to understand additional requirements when publishing packages to the community feed aka dot org (https://chocolatey.org/packages). -->
+
+<!-- Test your packages in a test environment: https://github.com/chocolatey/chocolatey-test-environment -->
+
+<!--
+This is a nuspec. It mostly adheres to https://docs.nuget.org/create/Nuspec-Reference. Chocolatey uses a special version of NuGet.Core that allows us to do more than was initially possible. As such there are certain things to be aware of:
+
+* the package xmlns schema url may cause issues with nuget.exe
+* Any of the following elements can ONLY be used by choco tools - projectSourceUrl, docsUrl, mailingListUrl, bugTrackerUrl, packageSourceUrl, provides, conflicts, replaces 
+* nuget.exe can still install packages with those elements but they are ignored. Any authoring tools or commands will error on those elements 
+-->
+
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>robocode</id>
+    <version>1.9.4.1</version>
+    <packageSourceUrl>https://github.com/robo-code/robocode/tree/master/robocode.chocolatey/</packageSourceUrl>
+    <owners>Pavel Savara, Flemming N. Larsen</owners>
+    <title>robocode (Install)</title>
+    <authors>Mathew A. Nelson, Flemming N. Larsen, Pavel Savara</authors>
+    <projectUrl>https://robocode.sourceforge.io/</projectUrl>
+    <iconUrl>https://robocode.sourceforge.io/robocode.ico</iconUrl>
+    <copyright>Copyright (c) 2001-2021 Mathew A. Nelson and Robocode contributors</copyright>
+    <licenseUrl>https://robocode.sourceforge.io/license/epl-v10.html</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/robo-code/robocode</projectSourceUrl>
+    <tags>robocode</tags>
+    <summary>Build the best - destroy the rest!</summary>
+    <description>Robocode is a programming game, where the goal is to develop a robot battle tank to battle against other tanks in Java. The robot battles are running in real-time and on-screen.</description>
+    <dependencies>
+      <dependency id="jdk8"/>
+      <dependency id="gradle"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
