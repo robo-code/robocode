@@ -43,7 +43,7 @@ import java.util.Set;
  */
 public class RobotClassLoader extends URLClassLoader implements IRobotClassLoader {
 
-	static final String UNTRUSTED_URL = "http://robocode.sf.net/untrusted";
+	static final String UNTRUSTED_URL = "https://robocode.sourceforge.io/untrusted";
 
 	private static final PermissionCollection EMPTY_PERMISSIONS = new Permissions();
 

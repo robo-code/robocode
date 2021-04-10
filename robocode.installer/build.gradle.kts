@@ -85,7 +85,7 @@ tasks {
     }
 
     build {
-        dependsOn("dockerBuild")
+//        dependsOn("dockerBuild")
     }
 
     publishMavenJavaPublicationToSonatypeRepository {

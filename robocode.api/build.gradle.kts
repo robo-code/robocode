@@ -28,7 +28,7 @@ tasks {
         op.use(false)
         op.author(true)
         op.isNoTimestamp = false
-        op.bottom("Copyright &#169; 2021 <a href=\"http://robocode.sf.net\">Robocode</a>. All Rights Reserved.")
+        op.bottom("Copyright &#169; 2021 <a href=\"https://robocode.sourceforge.io\">Robocode</a>. All Rights Reserved.")
         op.links = listOf("https://docs.oracle.com/javase/8/docs/api/")
         op.charSet("UTF-8")
         op.source("1.8")
