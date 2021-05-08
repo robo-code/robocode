@@ -119,7 +119,7 @@ public final class Battle extends BaseBattle {
 			}
 			robotNameCount.put(name, ++count);
 
-			String nameIndexed = name + " (" + count + ')';
+			String nameIndexed = name + " (" + robotIndex + ')';
 			robotNames.put(specification, nameIndexed);
 
 			final String teamName = HiddenAccess.getRobotTeamName(specification);
@@ -138,7 +138,7 @@ public final class Battle extends BaseBattle {
 			if (teamName != null) {
 				if (!teamPeers.containsKey(teamName)) {
 					String teamNameIndexed = teamName.substring(0, teamName.length() - 6) + " (" + (teamNames.indexOf(teamName) + 1) + ')';
-	
+
 					int teamIndex = teamNames.indexOf(teamName);
 					team = new TeamPeer(teamNameIndexed, teamMembers.get(teamName), teamIndex);
 	

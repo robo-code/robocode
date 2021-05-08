@@ -1,7 +1,14 @@
+## Version 1.9.4.2 (09-05-2021)
+
+### Bugfix
+* Fixed getTeammates() that returned the wrong names and isTeammate() that returned false for teammates.
+
 ## Version 1.9.4.1 (09-04-2021)
 
-### Changes
+### Bugfix
 * [Bug-414][] Fixed bug in ramming: when robots collide, they should and do change position. But the bullets were still hitting original place in the next turn, as if the robot was not moved by collision.
+
+### Changes
 * Robot painting to screen per default could be enabled by -DPAINTING=true
 * Made installer compatible with headless systems. Made default classPath lib/* for startup scripts.
 * Improve testability: 
