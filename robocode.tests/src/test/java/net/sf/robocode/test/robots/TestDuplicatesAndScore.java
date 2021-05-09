@@ -127,12 +127,12 @@ public class TestDuplicatesAndScore extends RobocodeTestBed {
 		Assert.assertThat(robots[4].getName(), is("sampleteam.MyFirstLeader (5)"));
 		Assert.assertThat(robots[5].getName(), is("sampleteam.MyFirstDroid (6)"));
 		Assert.assertThat(robots[6].getName(), is("sample.Fire (7)"));
-		Assert.assertThat(robots[7].getName(), is("sample.Crazy"));
+		Assert.assertThat(robots[7].getName(), is("sample.Crazy (8)"));
 
 		Assert.assertThat(results[0].getTeamLeaderName(), is("tested.robots.TestTeam (2)"));
 		Assert.assertThat(results[1].getTeamLeaderName(), is("tested.robots.TestTeam (1)"));
 		Assert.assertThat(results[2].getTeamLeaderName(), is("sample.Fire (1)"));
-		Assert.assertThat(results[3].getTeamLeaderName(), is("sample.Crazy"));
+		Assert.assertThat(results[3].getTeamLeaderName(), is("sample.Crazy (8)"));
 
 		Assert.assertThat(results[0].getLastSurvivorBonus(), is(100));
 		Assert.assertThat(results[1].getLastSurvivorBonus(), is(0));
