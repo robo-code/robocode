@@ -102,33 +102,23 @@ public final class Battle extends BaseBattle {
 
 		List<String> teamNames = new ArrayList<String>();
 		Map<String, List<String>> teamMembers = new HashMap<String, List<String>>();
-		Map<String /* name */, Integer /* count */> robotNameCount = new HashMap<String, Integer>();
-		Map<RobotSpecification, String /* name */> robotNames = new HashMap<RobotSpecification, String>();
 		Map<RobotSpecification, Integer /* index */> robotIndexes = new HashMap<RobotSpecification, Integer>();
 		Map<String, TeamPeer> teamPeers = new HashMap<String, TeamPeer>();
 
 		int robotIndex = 0;
 		for (RobotSpecification specification : battlingRobotsList) {
-
 			robotIndexes.put(specification, robotIndex++);
 
 			final String name = ((IRobotItem) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
-			Integer count = robotNameCount.get(name);
-			if (count == null) {
-				count = 0;
-			}
-			robotNameCount.put(name, ++count);
-
-			String nameIndexed = name + " (" + robotIndex + ')';
-			robotNames.put(specification, nameIndexed);
+			String nameAndIndex = name + " (" + robotIndex + ')';
 
 			final String teamName = HiddenAccess.getRobotTeamName(specification);
 			if (teamName != null) {
 				if (!teamNames.contains(teamName)) {
 					teamNames.add(teamName);
-					teamMembers.put(teamName, new ArrayList<String>());
+					teamMembers.put(teamName, new ArrayList<>());
 				}
-				teamMembers.get(teamName).add(nameIndexed);
+				teamMembers.get(teamName).add(nameAndIndex);
 			}
 		}
 		
@@ -150,13 +140,8 @@ public final class Battle extends BaseBattle {
 			}
 
 			robotIndex = robotIndexes.get(specification);
-			String suffix = "";
-			final String name = ((IRobotItem) HiddenAccess.getFileSpecification(specification)).getUniqueFullClassNameWithVersion();
-			if (robotNameCount.get(name) > 1) {
-				suffix = " (" + (robotIndex + 1) + ')';
-			}
 
-			RobotPeer robotPeer = new RobotPeer(this, hostManager, specification, suffix, team, robotIndex);
+			RobotPeer robotPeer = new RobotPeer(this, hostManager, specification, team, robotIndex);
 			robots.add(robotPeer);
 			if (team == null) {
 				contestants.add(robotPeer);

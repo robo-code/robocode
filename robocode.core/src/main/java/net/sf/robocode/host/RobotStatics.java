@@ -56,7 +56,8 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 	private final int robotIndex;
 	private final int teamIndex;
 
-	public RobotStatics(RobotSpecification robotSpecification, String suffix, boolean isLeader, BattleRules rules, String teamName, List<String> teamMembers, int robotIndex, int teamIndex) {
+	public RobotStatics(RobotSpecification robotSpecification, boolean isLeader, BattleRules rules, String teamName,
+			List<String> teamMembers, int robotIndex, int teamIndex) {
 		IRobotItem robotItem = (IRobotItem) HiddenAccess.getFileSpecification(robotSpecification);
 
 		this.robotIndex = robotIndex;
@@ -65,6 +66,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 		this.shortClassName = robotItem.getShortClassName();
 		this.fullClassName = robotItem.getFullClassName();
 
+		String suffix = " (" + (robotIndex + 1) + ")";
 		this.name = robotItem.getUniqueFullClassNameWithVersion() + suffix;
 		this.shortName = robotItem.getUniqueShortClassNameWithVersion() + suffix;
 		this.veryShortName = robotItem.getUniqueVeryShortClassNameWithVersion() + suffix;
