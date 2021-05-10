@@ -27,7 +27,7 @@ import java.util.Vector;
  * that is a Java property file. The filename must be the name of the team
  * like e.g. {@code MyFirstTeam.team}. And the .team file and team robots must
  * exist in the same folder (package name). But you can let the Robocode UI
- * help you create the team from the menu: Robot -> 'Create a robot team'.
+ * help you create the team from the menu: Robot -&lt; 'Create a robot team'.
  * <p>
  * The .team file contains a comma-separated list of the full name of the team
  * members:
