@@ -1,7 +1,8 @@
-## Version 1.9.4.2 (09-05-2021)
+## Version 1.9.4.2 (10-05-2021)
 
 ### Changes
 * A robot index has been added to all robot in the format ``name + (index)``. This is change was made to fix various issues in e.g. team bots and make the internal logic simpler.
+* Improved the API documentation for the TeamRobot and Droid team robots.
 
 ### Bugfix
 * Fixed getTeammates() that returned the wrong names and isTeammate() that returned false for teammates.
