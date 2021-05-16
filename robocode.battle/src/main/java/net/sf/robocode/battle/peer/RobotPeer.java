@@ -1096,7 +1096,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			adjustX = maxX - x;
 			angle = normalRelativeAngle(PI / 2 - bodyHeading);
 
-		} else if (y < minY) {
+		}
+		if (y < minY) {
 			hitWall = true;
 			adjustY = minY - y;
 			angle = normalRelativeAngle(PI - bodyHeading);
