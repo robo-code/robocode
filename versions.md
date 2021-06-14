@@ -1,3 +1,7 @@
+## Version 1.9.4.3 (14-06-2021)
+
+* Roborumble could now override RUMBLE_USER, RUMBLE_PARTICIPANTSURL, RUMBLE_UPDATEBOTSURL, RUMBLE_RESULTSURL, RUMBLE_RATINGSURL via environment variables. Fixed to not clash with system USER env variable.
+
 ## Version 1.9.4.2 (10-05-2021)
 
 ### Changes
@@ -27,7 +31,7 @@
 	* Control API could now take screenshots.
 	* Unit test could enable taking screenshots when exception or asset occurs. See RobotTestBed.isEnableScreenshots()
 	* Robots could be statistically tested against multiple opponents. For example see net.sf.robocode.test.robots.TestScore
-* Roborumble could now override USER, PARTICIPANTSURL, UPDATEBOTSURL, RESULTSURL, RATINGSURL via environment variables.
+* Roborumble could now override ~~USER, PARTICIPANTSURL, UPDATEBOTSURL, RESULTSURL, RATINGSURL~~ via environment variables.
 * Published Roborumble client as docker image to https://hub.docker.com/r/zamboch/roborumble with the above environment variables available.
 
 ## Version 1.9.4.0 (15-02-2021)
