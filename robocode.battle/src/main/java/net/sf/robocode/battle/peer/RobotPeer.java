@@ -142,7 +142,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private final BoundingRectangle boundingBox;
 	private final RbSerializer rbSerializer;
 
-	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, TeamPeer team, int robotIndex) {
+	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, String name, String suffix, TeamPeer team, int robotIndex) {
 		super();
 
 		this.battle = battle;
@@ -176,7 +176,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			teamIndex = team.getTeamIndex();
 		}
 
-		this.statics = new RobotStatics(robotSpecification, isTeamLeader, battleRules, teamName, teamMembers,
+		this.statics = new RobotStatics(robotSpecification, name, suffix, isTeamLeader, battleRules, teamName, teamMembers,
 				robotIndex, teamIndex);
 		this.statistics = new RobotStatistics(this, battle.getRobotsCount());
 
