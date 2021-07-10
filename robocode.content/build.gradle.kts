@@ -7,8 +7,8 @@ description = "Robocode Content"
 
 dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
-    runtimeOnly("org.eclipse.jdt:org.eclipse.jdt.core:3.24.0")
-    runtimeOnly("org.jetbrains.kotlin:kotlin-stdlib:1.4.30")
+    runtimeOnly("org.eclipse.jdt:org.eclipse.jdt.core:3.26.0")
+    runtimeOnly("org.jetbrains.kotlin:kotlin-stdlib:1.5.20")
 }
 
 tasks {
