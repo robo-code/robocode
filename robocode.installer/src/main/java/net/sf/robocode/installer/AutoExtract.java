@@ -801,8 +801,6 @@ public class AutoExtract implements ActionListener {
             }
         }
 
-        if (new File(filepath).delete()) {
-            tempFile.renameTo(new File(filepath));
-        }
+        Files.move(tempFile.toPath(), Paths.get(filepath), StandardCopyOption.REPLACE_EXISTING);
     }
 }
