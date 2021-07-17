@@ -1,4 +1,4 @@
-## Version 1.9.4.3 (14-06-2021)
+## Version 1.9.4.3 (17-07-2021)
 
 ### Changes
 * Roborumble could now override RUMBLE_USER, RUMBLE_PARTICIPANTSURL, RUMBLE_UPDATEBOTSURL, RUMBLE_RESULTSURL, RUMBLE_RATINGSURL via environment variables. Fixed to not clash with system USER env variable.
@@ -7,6 +7,8 @@
 * [Bug-415][] Loading pre-loaded data 1.9.4.2
     * Fixed robot naming to be compatible with existing robots
 	* Thanks go to Alex Schultz (Rednaxela) for fixing this issue. :)
+* Installer (dos2unix): more reliable way to move files
+    * Thank you dshatov (GitHub) for this fix. :)
 
 ## Version 1.9.4.2 (10-05-2021)
 
