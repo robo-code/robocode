@@ -15,6 +15,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
@@ -812,9 +815,6 @@ public class AutoExtract implements ActionListener {
                 }
             }
         }
-
-        if (new File(filepath).delete()) {
-            tempFile.renameTo(new File(filepath));
-        }
+        Files.move(tempFile.toPath(), Paths.get(filepath), StandardCopyOption.REPLACE_EXISTING);
     }
 }

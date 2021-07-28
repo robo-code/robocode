@@ -18,17 +18,33 @@ import java.util.Vector;
 
 
 /**
- * An advanced type of robot that supports sending messages between team
- * mates in a robot team.
+ * A TeamRobot is a robot that is made for battles between teams of robots.
+ * A robot team consists of one to several robots that are all a TeamRobot.
+ * A TeamRobot is an extension to the {@link AdvancedRobot} and provides
+ * support for sending messages between team members.
  * <p>
- * If you have not done already, you should create a {@link Robot} or
- * {@link AdvancedRobot} first.
+ * Besides the robots, a robot team is put together by defining a .team file
+ * that is a Java property file. The filename must be the name of the team
+ * like e.g. {@code MyFirstTeam.team}. And the .team file and team robots must
+ * exist in the same folder (package name). But you can let the Robocode UI
+ * help you create the team from the menu: Robot -&lt; 'Create a robot team'.
+ * <p>
+ * The .team file contains a comma-separated list of the full name of the team
+ * members:
+ * <pre>
+ * team.members=sampleteam.MyFirstLeader,sampleteam.MyFirstDroid
+ * </pre>
+ * With this example, two different robots are members (MyFirstLeader and
+ * MyFirstDroid). But you can include any TeamRobot you want.
+ * <p>
+ * If you have not done already, you should start by creating a {@link Robot} or
+ * {@link AdvancedRobot} before you make your first TeamRobot.
  *
- * @see JuniorRobot
- * @see Robot
- * @see AdvancedRobot
- * @see RateControlRobot
  * @see Droid
+ * @see AdvancedRobot
+ * @see Robot
+ * @see JuniorRobot
+ * @see RateControlRobot
  * @see BorderSentry
  *
  * @author Mathew A. Nelson (original)

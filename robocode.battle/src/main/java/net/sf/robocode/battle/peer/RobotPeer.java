@@ -142,7 +142,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private final BoundingRectangle boundingBox;
 	private final RbSerializer rbSerializer;
 
-	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, String suffix, TeamPeer team, int robotIndex) {
+	public RobotPeer(Battle battle, IHostManager hostManager, RobotSpecification robotSpecification, String name, String suffix, TeamPeer team, int robotIndex) {
 		super();
 
 		this.battle = battle;
@@ -176,7 +176,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			teamIndex = team.getTeamIndex();
 		}
 
-		this.statics = new RobotStatics(robotSpecification, suffix, isTeamLeader, battleRules, teamName, teamMembers,
+		this.statics = new RobotStatics(robotSpecification, name, suffix, isTeamLeader, battleRules, teamName, teamMembers,
 				robotIndex, teamIndex);
 		this.statistics = new RobotStatistics(this, battle.getRobotsCount());
 
@@ -1096,7 +1096,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			adjustX = maxX - x;
 			angle = normalRelativeAngle(PI / 2 - bodyHeading);
 
-		} else if (y < minY) {
+		}
+		if (y < minY) {
 			hitWall = true;
 			adjustY = minY - y;
 			angle = normalRelativeAngle(PI - bodyHeading);

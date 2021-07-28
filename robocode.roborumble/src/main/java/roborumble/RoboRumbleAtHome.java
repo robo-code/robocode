@@ -48,23 +48,23 @@ public class RoboRumbleAtHome {
         // Read parameters for running the app
         Properties properties = getProperties(paramsFileName);
 
-        String envUser = System.getenv("USER");
+        String envUser = System.getenv("RUMBLE_USER");
         if (envUser != null) {
             properties.setProperty("USER", envUser);
         }
-        String envParticipantsUrl = System.getenv("PARTICIPANTSURL");
+        String envParticipantsUrl = System.getenv("RUMBLE_PARTICIPANTSURL");
         if (envParticipantsUrl != null && !envParticipantsUrl.equals("null")) {
             properties.setProperty("PARTICIPANTSURL", envParticipantsUrl);
         }
-        String envUpdateBotsUrl = System.getenv("UPDATEBOTSURL");
+        String envUpdateBotsUrl = System.getenv("RUMBLE_UPDATEBOTSURL");
         if (envUpdateBotsUrl != null && !envUpdateBotsUrl.equals("null")) {
             properties.setProperty("UPDATEBOTSURL", envUpdateBotsUrl);
         }
-        String envResultsUrl = System.getenv("RESULTSURL");
+        String envResultsUrl = System.getenv("RUMBLE_RESULTSURL");
         if (envResultsUrl != null && !envResultsUrl.equals("null")) {
             properties.setProperty("RESULTSURL", envResultsUrl);
         }
-        String envRatingsUrl = System.getenv("RATINGSURL");
+        String envRatingsUrl = System.getenv("RUMBLE_RATINGSURL");
         if (envRatingsUrl != null && !envRatingsUrl.equals("null")) {
             properties.setProperty("RATINGS.URL", envRatingsUrl);
         }
