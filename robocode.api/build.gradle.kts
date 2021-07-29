@@ -1,7 +1,6 @@
 plugins {
     id("net.sf.robocode.java-conventions")
     java
-    maven
     signing
     `maven-publish`
 }
