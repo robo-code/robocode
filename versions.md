@@ -1,7 +1,12 @@
-## Version 1.9.4.3 (17-07-2021)
+## Version 1.9.4.3 (29-07-2021)
 
 ### Changes
+* Chocolatey installer is now provided for Windows.
+    * https://community.chocolatey.org/packages/robocode
+    * Install by `choco install robocode`
 * Roborumble could now override RUMBLE_USER, RUMBLE_PARTICIPANTSURL, RUMBLE_UPDATEBOTSURL, RUMBLE_RESULTSURL, RUMBLE_RATINGSURL via environment variables. Fixed to not clash with system USER env variable.
+* Updated ReadMe file.
+* Updated link to Java API.
 
 ### Bugfix
 * [Bug-415][] Loading pre-loaded data 1.9.4.2
