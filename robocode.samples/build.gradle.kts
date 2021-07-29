@@ -35,6 +35,7 @@ tasks {
         include("**/*.java")
     }
     jar {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
         dependsOn("copyContent")
         dependsOn("copyClasses")
         dependsOn("javadoc")
