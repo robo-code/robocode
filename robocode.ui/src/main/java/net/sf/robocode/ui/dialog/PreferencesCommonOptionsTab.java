@@ -119,7 +119,7 @@ public class PreferencesCommonOptionsTab extends WizardPanel {
 
 					enableReplayRecordingCheckBox.setEnabled(!isSelected);
 					enableReplayRecordingCheckBox.setSelected(
-							isSelected ? true : properties.getOptionsCommonEnableReplayRecording());
+							isSelected || properties.getOptionsCommonEnableReplayRecording());
 				}
 			});
 		}

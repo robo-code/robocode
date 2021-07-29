@@ -32,7 +32,7 @@ public class ResultsUpload {
 	private final String resultsfile;
 	private final String resultsurl;
 	private final String tempdir;
-	private String game;
+	private final String game;
 	private final String user;
 	private final String sizesfile;
 	private final String minibots;

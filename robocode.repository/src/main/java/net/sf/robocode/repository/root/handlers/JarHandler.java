@@ -43,7 +43,7 @@ public class JarHandler extends RootHandler {
 				String key;
 
 				try {
-					key = "jar:" + jar.toURI().toURL().toString() + "!/";
+					key = "jar:" + jar.toURI().toURL() + "!/";
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 					continue;

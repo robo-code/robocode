@@ -31,7 +31,7 @@ public enum RobotState {
 
 	private final int value;
 
-	private RobotState(int value) {
+	RobotState(int value) {
 		this.value = value;
 	}
 

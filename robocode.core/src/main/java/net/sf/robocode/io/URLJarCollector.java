@@ -35,7 +35,7 @@ public class URLJarCollector {
 	private static Field jarFileURL;
 	private static final boolean sunJVM;
 	private static boolean enabled;
-	private static Set<URL> urlsToClean = new HashSet<URL>();
+	private static final Set<URL> urlsToClean = new HashSet<URL>();
 
 	static {
 		boolean localSunJVM = false;

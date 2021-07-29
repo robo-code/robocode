@@ -180,9 +180,6 @@ public class RobotResults extends BattleResults {
 		} else if (!teamLeaderName.equals(other.teamLeaderName)) {
 			return false;
 		}
-		if (thirds != other.thirds) {
-			return false;
-		}
-		return true;
+		return thirds == other.thirds;
 	}
 }

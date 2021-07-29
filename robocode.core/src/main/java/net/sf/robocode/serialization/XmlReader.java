@@ -27,7 +27,7 @@ import java.util.Stack;
  */
 public class XmlReader {
 
-	private SAXParser parser;
+	private final SAXParser parser;
 
 	private final InputStream input;
 	private final Stack<Element> elements = new Stack<Element>();
@@ -35,7 +35,7 @@ public class XmlReader {
 	private final Stack<Map<String, Element>> elementNames = new Stack<Map<String, Element>>();
 	private final Stack<Map<String, Attribute>> attributeNames = new Stack<Map<String, Attribute>>();
 	private IXmlSerializable result;
-	private Map<String, Object> context = new HashMap<String, Object>();
+	private final Map<String, Object> context = new HashMap<String, Object>();
 
 	private XmlReader(InputStream input) throws SAXException, ParserConfigurationException {
 		this.input = input;

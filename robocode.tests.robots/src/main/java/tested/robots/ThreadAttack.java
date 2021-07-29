@@ -63,7 +63,7 @@ public class ThreadAttack extends AdvancedRobot {
 		}
 	}
 
-	private AtomicInteger counter = new AtomicInteger();
+	private final AtomicInteger counter = new AtomicInteger();
 
 	private class Attacker implements Runnable {
 

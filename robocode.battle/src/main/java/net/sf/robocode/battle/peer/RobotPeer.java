@@ -200,7 +200,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 	public String readOutText() {
 		synchronized (proxyText) {
-			final String robotText = battleText.toString() + proxyText.toString();
+			final String robotText = battleText.toString() + proxyText;
 
 			battleText.setLength(0);
 			proxyText.setLength(0);
@@ -979,9 +979,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	private boolean checkDispatchToMember(RobotPeer member, String recipient) {
 		if (member.isAlive()) {
 			if (recipient == null) {
-				if (member != this) {
-					return true;
-				}
+				return member != this;
 			} else {
 				final int nl = recipient.length();
 				final String currentName = member.statics.getName();
@@ -992,9 +990,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 
 				final String currentClassName = member.statics.getFullClassName();
 
-				if ((currentClassName.length() >= nl && currentClassName.substring(0, nl).equals(recipient))) {
-					return true;
-				}
+				return currentClassName.length() >= nl && currentClassName.substring(0, nl).equals(recipient);
 
 			}
 		}
@@ -1439,11 +1435,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		// If we are moving normally and the breaking distance is more
 		// than remaining distance, enabled the overdrive flag.
 		if (Math.signum(distance * velocity) != -1) {
-			if (getDistanceTraveledUntilStop(velocity) > Math.abs(distance)) {
-				isOverDriving = true;
-			} else {
-				isOverDriving = false;
-			}
+			isOverDriving = getDistanceTraveledUntilStop(velocity) > Math.abs(distance);
 		}
 
 		currentCommands.setDistanceRemaining(distance - velocity);

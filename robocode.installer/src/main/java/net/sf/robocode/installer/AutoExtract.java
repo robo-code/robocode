@@ -173,7 +173,7 @@ public class AutoExtract implements ActionListener {
         FileOutputStream fos;
         String entryName;
 
-        byte buf[] = new byte[2048];
+        byte[] buf = new byte[2048];
 
         String name = AutoExtract.class.getName().replaceAll("\\.", "/") + ".class";
         String urlJar = AutoExtract.class.getClassLoader().getResource(name).toString();
@@ -322,7 +322,7 @@ public class AutoExtract implements ActionListener {
 
     private static boolean isSilent = false;
 
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
         String suggestedDirName;
         if (argv.length == 1) {
             suggestedDirName = argv[0];

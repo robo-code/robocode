@@ -285,7 +285,7 @@ public class RobotOutputStream extends java.io.PrintStream {
 
 					int origLen = text.length();
 
-					text.append(sw.toString());
+					text.append(sw);
 					count += text.length() - origLen;
 				}
 			}

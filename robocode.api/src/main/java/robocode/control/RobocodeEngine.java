@@ -45,7 +45,7 @@ public class RobocodeEngine implements IRobocodeEngine {
 
 	private BattleObserver battleObserver;
 	private BattleSpecification battleSpecification;
-	private List<IBattleListener> listeners = new ArrayList<IBattleListener>();
+	private final List<IBattleListener> listeners = new ArrayList<IBattleListener>();
 
 	/**
 	 * Creates a new RobocodeEngine for controlling Robocode.
@@ -308,8 +308,8 @@ public class RobocodeEngine implements IRobocodeEngine {
 			currentGroup = currentGroup.getParent();
 		}
 
-		ThreadGroup groups[] = new ThreadGroup[256];
-		Thread threads[] = new Thread[256];
+		ThreadGroup[] groups = new ThreadGroup[256];
+		Thread[] threads = new Thread[256];
 
 		int numGroups = currentGroup.enumerate(groups, true);
 

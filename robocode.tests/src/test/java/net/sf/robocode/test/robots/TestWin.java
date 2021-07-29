@@ -26,7 +26,7 @@ import robocode.control.snapshot.IRobotSnapshot;
 @Ignore
 public class TestWin extends RobocodeTestBed {
 	private BattleResults[] results; 
-	private StringBuffer outputBuf = new StringBuffer();
+	private final StringBuffer outputBuf = new StringBuffer();
 	
 	@Test
 	public void run() { super.run(); }

@@ -2023,7 +2023,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 		} else {
 			put((byte) 5);
 
-			double coords[] = new double[6];
+			double[] coords = new double[6];
 			int count = 0;
 
 			// count them first

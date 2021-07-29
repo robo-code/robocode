@@ -20,7 +20,7 @@ import java.io.ObjectStreamClass;
  */
 public class RobocodeObjectInputStream extends ObjectInputStream {
 
-	private ClassLoader classLoader;
+	private final ClassLoader classLoader;
 
 	public RobocodeObjectInputStream(InputStream in, ClassLoader classLoader) throws IOException {
 		super(in);

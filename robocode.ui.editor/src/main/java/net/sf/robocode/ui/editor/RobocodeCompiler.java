@@ -76,7 +76,7 @@ public class RobocodeCompiler {
 			}
 		} catch (IOException e) {
 			console.append("Unable to compile!\n");
-			console.append("Exception was: " + e.toString() + "\n");
+			console.append("Exception was: " + e + "\n");
 			console.append("Does " + compilerBinary + " exist?\n");
 			console.setTitle("Exception while compiling");
 		} catch (InterruptedException e) {

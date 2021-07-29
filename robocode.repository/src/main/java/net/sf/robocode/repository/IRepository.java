@@ -34,7 +34,7 @@ public interface IRepository {
 	 * 
 	 * @see #save(OutputStream)
 	 */
-	public void load(InputStream in);
+    void load(InputStream in);
 
 	/**
 	 * Saves the data in this repository to an output stream.
@@ -43,7 +43,7 @@ public interface IRepository {
 	 * 
 	 * @see #load(InputStream)
 	 */
-	public void save(OutputStream out);
+    void save(OutputStream out);
 
 	/**
 	 * Adds or updates an item.<p>

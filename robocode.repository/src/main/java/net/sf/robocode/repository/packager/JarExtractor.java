@@ -73,7 +73,7 @@ public class JarExtractor {
 		}
 		FileOutputStream fos = null;
 		BufferedOutputStream bos = null;
-		byte buf[] = new byte[2048];
+		byte[] buf = new byte[2048];
 
 		try {
 			fos = new FileOutputStream(out);

@@ -182,9 +182,7 @@ public class JavaHost implements IHost {
 			} catch (NoSuchMethodException e) {
 				return false;
 			}
-			if (getInteractiveEventListener.getDeclaringClass().equals(knownBase)) {
-				return false;
-			}
+			return !getInteractiveEventListener.getDeclaringClass().equals(knownBase);
 		}
 		return true;
 	}

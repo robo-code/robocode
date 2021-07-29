@@ -773,7 +773,7 @@ public class Robot extends _Robot implements IInteractiveRobot, IPaintRobot, IBa
 	 */
 	public void scan() {
 		if (peer != null) {
-			((IStandardRobotPeer) peer).rescan();
+			peer.rescan();
 		} else {
 			uninitializedException();
 		}

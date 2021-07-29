@@ -24,7 +24,7 @@ import net.sf.robocode.io.RobocodeProperties;
  */
 public class EngineClassLoader extends URLClassLoader {
 
-	private static Set<String> exclusions = new HashSet<String>();
+	private static final Set<String> exclusions = new HashSet<String>();
 	static {
 		// this will be loaded on system classloader
 		exclusions.add(EngineClassLoader.class.getName());

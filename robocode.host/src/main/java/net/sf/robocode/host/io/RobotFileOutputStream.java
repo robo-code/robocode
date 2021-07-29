@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public class RobotFileOutputStream extends FileOutputStream {
 
-	private RobotFileSystemManager fileSystemManager;
+	private final RobotFileSystemManager fileSystemManager;
 
 	public RobotFileOutputStream(String filename, boolean append, RobotFileSystemManager fileSystemManager) throws IOException {
 		super(filename, append);

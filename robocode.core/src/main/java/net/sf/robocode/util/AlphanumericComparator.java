@@ -93,12 +93,10 @@ public class AlphanumericComparator implements Comparator<String>, java.io.Seria
 		if (isDigit(input.charAt(startIndex))) {
 			// Handle numeric token, which contains only digits in one continuous sequence
 			for (; index < input.length() && isDigit(input.charAt(index)); index++) {
-				;
 			}
 		} else {
 			// Handle all other tokens that does not contain any digits
 			for (; index < input.length() && !isDigit(input.charAt(index)); index++) {
-				;
 			}
 		}
 

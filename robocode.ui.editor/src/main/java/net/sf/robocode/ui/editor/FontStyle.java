@@ -27,7 +27,7 @@ public enum FontStyle {
 	private final int fontStyleFlags;
 	private final String name;
 
-	private FontStyle(int fontStyleFlags, String name) {
+	FontStyle(int fontStyleFlags, String name) {
 		this.fontStyleFlags = fontStyleFlags;
 		this.name = name;
 	}

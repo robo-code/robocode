@@ -41,7 +41,7 @@ public enum BulletState {
 
 	private final int value;
 
-	private BulletState(int value) {
+	BulletState(int value) {
 		this.value = value;
 	}
 

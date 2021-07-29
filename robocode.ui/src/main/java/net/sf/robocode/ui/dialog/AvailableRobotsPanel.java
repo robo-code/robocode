@@ -208,7 +208,7 @@ public class AvailableRobotsPanel extends JPanel {
 	}
 
 	private void availablePackagesListSelectionChanged() {
-		int sel[] = getAvailablePackagesList().getSelectedIndices();
+		int[] sel = getAvailablePackagesList().getSelectedIndices();
 
 		boolean useShortName = false;
 
@@ -248,7 +248,7 @@ public class AvailableRobotsPanel extends JPanel {
 	}
 
 	private void availableRobotsListSelectionChanged() {
-		int sel[] = getAvailableRobotsList().getSelectedIndices();
+		int[] sel = getAvailableRobotsList().getSelectedIndices();
 
 		if (sel.length == 1) {
 			if (actionList != null) {

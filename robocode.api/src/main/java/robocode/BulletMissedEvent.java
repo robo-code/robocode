@@ -30,7 +30,7 @@ public final class BulletMissedEvent extends Event {
 	private static final long serialVersionUID = 1L;
 	private final static int DEFAULT_PRIORITY = 60;
 
-	private Bullet bullet;
+	private final Bullet bullet;
 
 	/**
 	 * Called by the game to create a new {@code BulletMissedEvent}.

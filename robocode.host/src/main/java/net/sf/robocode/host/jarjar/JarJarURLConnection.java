@@ -29,7 +29,7 @@ public class JarJarURLConnection extends URLConnection {
 	private final static char SEPARATOR_CHAR = JarJar.SEPARATOR_CHAR; // this is '^' now
 	private final static String SEPARATOR = SEPARATOR_CHAR + "/";
 
-	private URLConnection connection;
+	private final URLConnection connection;
 	private static boolean registered;
 
 	private JarJarURLConnection(URL url)
@@ -102,7 +102,7 @@ public class JarJarURLConnection extends URLConnection {
 			boolean refOnly = refPos == start;
 
 			if (refPos > -1) {
-				ref = spec.substring(refPos + 1, spec.length());
+				ref = spec.substring(refPos + 1);
 				if (refOnly) {
 					file = url.getFile();
 				}

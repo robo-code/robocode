@@ -42,7 +42,7 @@ public class RobotExtractor extends JDialog implements WizardListener {
 	private WizardController buttonsPanel;
 	private RobotSelectionPanel robotSelectionPanel;
 
-	public byte buf[] = new byte[4096];
+	public byte[] buf = new byte[4096];
 	private StringWriter output;
 	private final IWindowManager windowManager;
 	private final IRepositoryManager repositoryManager;

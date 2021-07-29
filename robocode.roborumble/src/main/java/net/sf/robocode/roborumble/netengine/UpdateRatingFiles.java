@@ -28,7 +28,7 @@ import java.util.Vector;
  */
 public class UpdateRatingFiles {
 
-	private String game;
+	private final String game;
 	private final String minibots;
 	private final String microbots;
 	private final String nanobots;
@@ -118,7 +118,7 @@ public class UpdateRatingFiles {
 
 		String[] value = values.split(",");
 
-		values = value[0] + "," + Double.toString(battles) + "," + value[2];
+		values = value[0] + "," + battles + "," + value[2];
 		ratings.setProperty(bot, values);
 	}
 }

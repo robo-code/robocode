@@ -551,9 +551,6 @@ public final class ScoreSnapshot implements Serializable, IXmlSerializable, ISco
 		if (Double.doubleToLongBits(totalSurvivalScore) != Double.doubleToLongBits(other.totalSurvivalScore)) {
 			return false;
 		}
-		if (totalThirds != other.totalThirds) {
-			return false;
-		}
-		return true;
+		return totalThirds == other.totalThirds;
 	}
 }

@@ -52,7 +52,7 @@ public class ScreenshotUtil {
 			// Instantiate an ImageWriteParam object with default compression options
 			Iterator<ImageWriter> it = ImageIO.getImageWritersByFormatName(format);
 
-			writer = (ImageWriter) it.next();	
+			writer = it.next();
 			ImageWriteParam iwp = writer.getDefaultWriteParam();
 
 			// If compression is supported, then set the compression mode

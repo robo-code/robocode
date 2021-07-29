@@ -40,7 +40,7 @@ public class TestReverseDirection extends RobocodeTestBed {
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
 
-		final int time = (int) event.getTurnSnapshot().getTurn();
+		final int time = event.getTurnSnapshot().getTurn();
 		final double velocity = event.getTurnSnapshot().getRobots()[0].getVelocity();
 
 		switch (time) {

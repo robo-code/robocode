@@ -40,7 +40,7 @@ public class NewBattleRulesTab extends JPanel {
 
 	private final EventHandler eventHandler = new EventHandler();
 
-	private SizeButton[] predefinedSizeButtons = {
+	private final SizeButton[] predefinedSizeButtons = {
 		new SizeButton(400, 400), new SizeButton(600, 400), new SizeButton(600, 600), new SizeButton(800, 600),
 		new SizeButton(800, 800), new SizeButton(1000, 800), new SizeButton(1000, 1000), new SizeButton(1200, 1200),
 		new SizeButton(2000, 2000), new SizeButton(5000, 5000)

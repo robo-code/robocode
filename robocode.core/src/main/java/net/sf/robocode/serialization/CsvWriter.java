@@ -11,8 +11,8 @@ import java.util.Locale;
 // https://tools.ietf.org/html/rfc4180
 public class CsvWriter {
     private static final DecimalFormat decimalFormat = new DecimalFormat("#.####", new DecimalFormatSymbols(Locale.US));
-    private Writer writer;
-    private boolean header;
+    private final Writer writer;
+    private final boolean header;
     private boolean isStartLine;
 
     public CsvWriter(Writer writer, boolean header) {

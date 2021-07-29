@@ -91,9 +91,8 @@ class BufferedPipedOutputStream extends OutputStream {
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
 
-					IOException ioException = new IOException("read interrupted");
+					IOException ioException = new IOException("read interrupted", e);
 
-					ioException.initCause(e);
 					throw ioException;
 				}
 			}
@@ -107,7 +106,7 @@ class BufferedPipedOutputStream extends OutputStream {
 		}
 	}
 
-	int read(byte b[], int off, int len) throws IOException {
+	int read(byte[] b, int off, int len) throws IOException {
 		if (b == null) {
 			throw new NullPointerException();
 		} else if (off < 0 || len < 0 || off >= b.length || (off + len) > b.length) {

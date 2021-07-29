@@ -31,7 +31,7 @@ public final class BulletHitEvent extends Event {
 
 	private final String name;
 	private final double energy;
-	private Bullet bullet;
+	private final Bullet bullet;
 
 	/**
 	 * Called by the game to create a new {@code BulletHitEvent}.

@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
 
@@ -283,7 +284,7 @@ public class EditWindow extends JInternalFrame {
 
 		try {
 			fileOutputStream = new FileOutputStream(fileName);
-			outputStreamWriter = new OutputStreamWriter(fileOutputStream, "UTF8");
+			outputStreamWriter = new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8);
 			bufferedWriter = new BufferedWriter(outputStreamWriter);
 
 			getEditorPane().write(bufferedWriter);

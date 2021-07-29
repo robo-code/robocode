@@ -51,7 +51,7 @@ public class BotsDownload {
     private final String sizesfile;
     private final CompetitionsSelector size;
     private final String ratingsurl;
-    private String game;
+    private final String game;
     private final String miniBots;
     private final String microBots;
     private final String nanoBots;

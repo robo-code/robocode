@@ -74,7 +74,7 @@ public final class RbSerializer {
 	public final static byte RoundEndedEvent_TYPE = 55;
 
 	private final static ISerializableHelper[] typeToHelper = new ISerializableHelper[256];
-	private static Map<Class<?>, Byte> classToType = new HashMap<Class<?>, Byte>();
+	private static final Map<Class<?>, Byte> classToType = new HashMap<Class<?>, Byte>();
 	private final static Charset charset;
 	private final CharsetEncoder encoder;
 	private final CharsetDecoder decoder;
@@ -83,7 +83,7 @@ public final class RbSerializer {
 	private final int currentVersion;
 
 	static {
-		charset = Charset.forName("UTF8"); // we will use it as UCS-2
+		charset = StandardCharsets.UTF_8; // we will use it as UCS-2
 		register(null, TERMINATOR_TYPE); // reserved for end of (list) element
 	}
 

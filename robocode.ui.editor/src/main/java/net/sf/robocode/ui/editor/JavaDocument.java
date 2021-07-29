@@ -59,7 +59,7 @@ public class JavaDocument extends StyledDocument {
 	private boolean isAutoIndentEnabled = true;
 
 	/** Flag defining if spaces must be used for indentation; otherwise tabulation characters are being used */
-	private boolean useSpacesForIndentation = false;
+	private final boolean useSpacesForIndentation = false;
 
 	/** Tab size (column width) */
 	private int tabSize = 4; // Default is every 4th column
@@ -70,16 +70,15 @@ public class JavaDocument extends StyledDocument {
 	/** Java keywords */
 	private static final Set<String> KEYWORDS = new HashSet<String>(
 			Arrays.asList(
-					new String[] {
-		"abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue",
-		"default", "do", "double", "else", "enum", "extends", "final", "finally", "float", "for", "goto", "if",
-		"implements", "import", "instanceof", "int", "interface", "long", "native", "new", "package", "private",
-		"protected", "public", "return", "short", "static", "strictfp", "super", "switch", "synchronized", "this",
-		"throw", "throws", "transient", "try", "void", "volatile", "while" }));
+					"abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue",
+					"default", "do", "double", "else", "enum", "extends", "final", "finally", "float", "for", "goto", "if",
+					"implements", "import", "instanceof", "int", "interface", "long", "native", "new", "package", "private",
+					"protected", "public", "return", "short", "static", "strictfp", "super", "switch", "synchronized", "this",
+					"throw", "throws", "transient", "try", "void", "volatile", "while"));
 
 	/** Predefined Java literals */
 	private static final Set<String> PREDEFINED_LITERALS = new HashSet<String>(
-			Arrays.asList(new String[] { "false", "true", "null" }));
+			Arrays.asList("false", "true", "null"));
 
 	/** Normal text attribute set */
 	private final SimpleAttributeSet normalAttrSet = new SimpleAttributeSet();
@@ -97,7 +96,7 @@ public class JavaDocument extends StyledDocument {
 	private final SimpleAttributeSet annotationAttrSet = new SimpleAttributeSet();
 
 	/** Comment attribute set */
-	private SimpleAttributeSet commentAttrSet = new SimpleAttributeSet();
+	private final SimpleAttributeSet commentAttrSet = new SimpleAttributeSet();
 
 	/** String buffer holding only space characters for fast replacement of tabulator characters */
 	private String spaceBuffer;
@@ -228,7 +227,7 @@ public class JavaDocument extends StyledDocument {
 	 * @return true if auto indentation is enabled; false otherwise.
 	 */
 	public boolean isAutoIndentEnabled() {
-		return isReplacingText ? false : isAutoIndentEnabled;
+		return !isReplacingText && isAutoIndentEnabled;
 	}
 
 	/**
@@ -432,7 +431,7 @@ public class JavaDocument extends StyledDocument {
 			// Run loop as long as we find a tabulator character from the start index
 			while ((tabIndex = str.indexOf('\t', startIndex)) >= 0) {
 				// Put the current text (non tabulator characters) into the string buffer
-				sb.append(str.substring(startIndex, tabIndex));
+				sb.append(str, startIndex, tabIndex);
 
 				// Calculate the number of spaces that remain before the next tabulator column
 				int numSpaces = tabSize - (sb.length() % tabSize);
@@ -1024,7 +1023,7 @@ public class JavaDocument extends StyledDocument {
 
 		int prevLine = lineIndex - 1;
 
-		return (prevLine >= 0) ? isInMultilineComment(prevLine, offset) : false;
+		return prevLine >= 0 && isInMultilineComment(prevLine, offset);
 	}
 
 	/**

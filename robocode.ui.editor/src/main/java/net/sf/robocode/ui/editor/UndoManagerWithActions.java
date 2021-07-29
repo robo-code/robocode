@@ -26,8 +26,8 @@ import javax.swing.undo.UndoManager;
 @SuppressWarnings("serial")
 public class UndoManagerWithActions extends UndoManager {
 
-	private Action undoAction = new UndoAction();
-	private Action redoAction = new RedoAction();
+	private final Action undoAction = new UndoAction();
+	private final Action redoAction = new RedoAction();
 
 	public UndoManagerWithActions() {
 		super();

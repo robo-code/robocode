@@ -312,7 +312,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	private void removeButtonActionPerformed() {
 		JList selectedList = getSelectedRobotsList();
 		SelectedRobotsModel selectedModel = (SelectedRobotsModel) selectedList.getModel();
-		int sel[] = selectedList.getSelectedIndices();
+		int[] sel = selectedList.getSelectedIndices();
 
 		for (int i = 0; i < sel.length; i++) {
 			selectedRobots.remove(sel[i] - i);
@@ -437,7 +437,7 @@ public class RobotSelectionPanel extends WizardPanel {
 	}
 
 	private void selectedRobotsListSelectionChanged() {
-		int sel[] = getSelectedRobotsList().getSelectedIndices();
+		int[] sel = getSelectedRobotsList().getSelectedIndices();
 
 		if (sel.length == 1) {
 			availableRobotsPanel.clearSelection();

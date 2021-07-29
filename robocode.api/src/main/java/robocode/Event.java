@@ -70,15 +70,10 @@ public abstract class Event implements Comparable<Event>, Serializable {
 		// Same time -> Compare the difference in priority
 		int priorityDiff = event.getPriority() - getPriority();
 
-		if (priorityDiff != 0) {
-			return priorityDiff; // Priority differ
-		}
+		return priorityDiff; // Priority differ
 
 		// Same time and priority -> Compare specific event types
 		// look at overrides in ScannedRobotEvent and HitRobotEvent
-
-		// No difference found
-		return 0;
 	}
 
 	/**

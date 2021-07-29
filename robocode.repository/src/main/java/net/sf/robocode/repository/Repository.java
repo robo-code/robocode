@@ -38,8 +38,8 @@ import java.util.concurrent.ConcurrentHashMap;
 class Repository implements IRepository {
 
 	private Map<String, IRepositoryRoot> roots = new ConcurrentHashMap<String, IRepositoryRoot>();
-	private Map<String, IRepositoryItem> repositoryItems = new ConcurrentHashMap<String, IRepositoryItem>();
-	private Map<String, IRepositoryItem> removedItems = new ConcurrentHashMap<String, IRepositoryItem>();
+	private final Map<String, IRepositoryItem> repositoryItems = new ConcurrentHashMap<String, IRepositoryItem>();
+	private final Map<String, IRepositoryItem> removedItems = new ConcurrentHashMap<String, IRepositoryItem>();
 
 	/**
 	 * {@inheritDoc}

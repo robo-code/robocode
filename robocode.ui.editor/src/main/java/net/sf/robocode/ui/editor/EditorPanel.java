@@ -38,7 +38,7 @@ import net.sf.robocode.ui.editor.theme.EditorThemePropertyChangeAdapter;
 @SuppressWarnings("serial")
 public class EditorPanel extends JPanel {
 
-	private JTextField statusTextField;
+	private final JTextField statusTextField;
 	private final JScrollPane scrollPane;
 	private final EditorPane editorPane;
 	private final LineNumberArea lineNumberArea;

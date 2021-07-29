@@ -29,7 +29,7 @@ class BufferedPipedInputStream extends InputStream {
 	}
 
 	@Override
-	public int read(byte b[], int off, int len) throws IOException {
+	public int read(byte[] b, int off, int len) throws IOException {
 		return out.read(b, off, len);
 	}
 

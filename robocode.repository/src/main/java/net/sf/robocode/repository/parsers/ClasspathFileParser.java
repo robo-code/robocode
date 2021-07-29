@@ -28,7 +28,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class ClasspathFileParser {
 
-	private ClasspathHandler classpathHandler = new ClasspathHandler();
+	private final ClasspathHandler classpathHandler = new ClasspathHandler();
 
 	public void parse(URL url) {
 		try {

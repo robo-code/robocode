@@ -312,9 +312,7 @@ public class RobocodeSecurityPolicy extends Policy {
 				String u = new File(tokenizer.nextToken()).getCanonicalFile().toURI().toString();
 
 				if (robots.contains(u)) {
-					if (!untrustedCodeUrls.contains(u)) {
-						untrustedCodeUrls.add(u);
-					}
+					untrustedCodeUrls.add(u);
 				}
 			}
 		} catch (MalformedURLException e) {

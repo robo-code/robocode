@@ -30,7 +30,7 @@ import java.io.PrintStream;
  */
 public class HostManager implements IHostManager {
 	private final ISettingsManager properties;
-	private IThreadManager threadManager;
+	private final IThreadManager threadManager;
 
 	public HostManager(ISettingsManager properties, IThreadManager threadManager) { // NO_UCD (unused code)
 		this.properties = properties;

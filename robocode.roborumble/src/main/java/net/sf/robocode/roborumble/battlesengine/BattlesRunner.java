@@ -35,7 +35,7 @@ public class BattlesRunner {
 	private final int fieldhei;
 	private final String outfile;
 	private final String user;
-	private String game;
+	private final String game;
 	private static RobotResults[] lastResults;
 	private static IRobocodeEngine engine;
 

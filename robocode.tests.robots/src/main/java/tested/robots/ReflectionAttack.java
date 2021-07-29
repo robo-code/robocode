@@ -22,10 +22,10 @@ public class ReflectionAttack extends robocode.AdvancedRobot {
 
 			field.setAccessible(true);
 			Object obj = field.get(null);
-			Method method = obj.getClass().getMethod("print", new Class[] { String.class });
+			Method method = obj.getClass().getMethod("print", String.class);
 
 			method.setAccessible(true);
-			method.invoke(obj, new Object[] { "Hello World" });
+			method.invoke(obj, "Hello World");
 
 		} catch (Exception e) {
 			e.printStackTrace(out);

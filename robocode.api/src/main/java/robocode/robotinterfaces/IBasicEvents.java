@@ -116,7 +116,7 @@ public interface IBasicEvents {
 	 * @see BattleEndedEvent
 	 * @see Event
 	 */
-	public void onDeath(DeathEvent event);
+    void onDeath(DeathEvent event);
 
 	/**
 	 * This method is called when your robot is hit by a bullet.

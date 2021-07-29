@@ -139,7 +139,7 @@ public class ThreadManager implements IThreadManager {
 				public Object run() {
 					outputStreamThreads.add(c);
 					if (!dir.exists() && !dir.mkdirs()) {
-						syserr.println("Can't create dir " + dir.toString());
+						syserr.println("Can't create dir " + dir);
 					}
 					return null;
 				}

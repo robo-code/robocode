@@ -248,9 +248,7 @@ public class RobotFileSystemManager {
 		if (s == null) {
 			throw new SecurityException("You may not remove a null stream.");
 		}
-		if (streams.contains(s)) {
-			streams.remove(s);
-		}
+		streams.remove(s);
 	}
 
 	private void updateDataFiles() {

@@ -27,7 +27,7 @@ import robocode.*;
  * @author Flemming N. Larsen (original)
  */
 public class ThreadGroupAttack extends Robot {
-	private Thread[] threads = new Thread[100];
+	private final Thread[] threads = new Thread[100];
 
 	public void run() {
 		runAttack();

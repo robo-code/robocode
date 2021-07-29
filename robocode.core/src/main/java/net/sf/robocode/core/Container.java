@@ -53,7 +53,7 @@ public final class Container extends ContainerBase {
 	public static final MutablePicoContainer factory;
 	public static final ClassLoader systemLoader;
 	private static final ClassLoader engineLoader;
-	private static Set<String> known = new HashSet<String>();
+	private static final Set<String> known = new HashSet<String>();
 	private static final List<IModule> modules = new ArrayList<IModule>();
 
 	static {
@@ -125,7 +125,7 @@ public final class Container extends ContainerBase {
 					// load other .jar files in location
 					final File dir = new File(path.substring(0, i));
 
-					Logger.logMessage("Loading plugins from " + dir.toString());
+					Logger.logMessage("Loading plugins from " + dir);
 					loadJars(dir);
 				} else {
 					String name = getModuleName(path);

@@ -226,10 +226,7 @@ public class BattleResults implements java.io.Serializable, Comparable<BattleRes
 		}
 		BattleResults other = (BattleResults) obj;
 
-		if (Double.doubleToLongBits(score) != Double.doubleToLongBits(other.score)) {
-			return false;
-		}
-		return true;
+		return Double.doubleToLongBits(score) == Double.doubleToLongBits(other.score);
 	}
 
 	static ISerializableHelper createHiddenSerializer() {

@@ -23,8 +23,8 @@ import robocode.control.snapshot.ITurnSnapshot;
  */
 public class TestAcceleration extends RobocodeTestBed {
 
-    private double[] startX = new double[3];
-    private double[] startY = new double[3];
+    private final double[] startX = new double[3];
+    private final double[] startY = new double[3];
 
 	@Test
 	public void run() {

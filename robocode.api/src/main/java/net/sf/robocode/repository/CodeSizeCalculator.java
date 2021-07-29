@@ -34,7 +34,7 @@ public final class CodeSizeCalculator {
 			// Call the code size utility using reflection
 			Class<?> classType = Class.forName("codesize.Codesize");
 
-			Method method = classType.getMethod(invokeMethod, new Class[] { File.class });
+			Method method = classType.getMethod(invokeMethod, File.class);
 			Object item = method.invoke(null/* static method */, jarFile);
 
 			// Calls Codesize.Item.getCodeSize()

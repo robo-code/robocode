@@ -51,7 +51,7 @@ public final class JarRoot extends BaseRoot implements IRepositoryRoot {
 		String jarPath = null;
 		URL jarUrl = null;
 		try {
-			jarPath = "jar:" + rootPath.toURI().toString();
+			jarPath = "jar:" + rootPath.toURI();
 			jarUrl = new URL(jarPath + "!/");
 		} catch (MalformedURLException e) {
 			Logger.logError(e);

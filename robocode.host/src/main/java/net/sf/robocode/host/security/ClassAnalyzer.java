@@ -65,7 +65,7 @@ public final class ClassAnalyzer {
 		for (Integer classNameIndex : classNameIndexes) {
 			String className = info.utf8s[classNameIndex].replace('\\', '.').replace('/', '.');
 
-			if (className.indexOf("[") != 0 && !collection.contains(className)) {
+			if (className.indexOf("[") != 0) {
 				collection.add(className);
 			}
 		}

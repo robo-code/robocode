@@ -176,7 +176,7 @@ public class HiddenAccess {
 					urls.add(url);
 				}
 				classPath.append(File.pathSeparator);
-				classPath.append(file.toString());
+				classPath.append(file);
 			}
 		}
 		return new URLClassLoader(urls.toArray(new URL[urls.size()]), loader);
