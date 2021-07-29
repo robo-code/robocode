@@ -29,6 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 
@@ -128,7 +129,7 @@ public class HiddenAccess {
 		String path = HiddenAccess.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
 		try {
-			path = URLDecoder.decode(path, "UCS2");
+			path = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
 		} catch (UnsupportedEncodingException e) {
 			path = new File(".", "libs/robocode.jar").toString();
 		}
