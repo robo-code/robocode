@@ -16,10 +16,10 @@ import static net.sf.robocode.io.Logger.logError;
 import static net.sf.robocode.io.Logger.logMessage;
 import net.sf.robocode.ui.dialog.ConsoleDialog;
 import net.sf.robocode.ui.dialog.WindowUtil;
-import net.sf.robocode.util.JavaVersion;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.Objects;
 
 
 /**
@@ -76,31 +76,11 @@ public class RobocodeCompilerFactory {
 	}
 
 	private static String getClassPath() {
-		StringBuilder sb = new StringBuilder("-classpath ");
-
-		if (JavaVersion.getJavaMajorVersion() < 9) {
-			// rt.jar is not supported by Java 9+ anymore
-			sb.append(getJavaLib()).append(File.pathSeparator);
-		}
-		sb.append("libs").append(File.separator);
-		sb.append("robocode.jar").append(File.pathSeparator);
-		sb.append(FileUtil.quoteFileName(FileUtil.getRobotsDir().toString()));
-
-		return sb.toString();
+		return "-classpath libs" + File.separator +
+				"robocode.jar" + File.pathSeparator +
+				FileUtil.quoteFileName(FileUtil.getRobotsDir().toString());
 	}
 	
-	private static String getJavaLib() {
-		String javahome = System.getProperty("java.home");
-		String javalib;
-		if (System.getProperty("os.name").indexOf("Mac") == 0) {
-			javalib = new File(javahome).getParentFile().getPath() + "/Classes/classes.jar";
-		} else {
-			javalib = javahome + "/lib/rt.jar";
-		}
-
-		return FileUtil.quoteFileName(javalib);
-	}
-
 	public boolean configureCompiler(RobocodeEditor editor) {
 		ConsoleDialog console = new ConsoleDialog(editor, "Setting up compiler", false);
 
@@ -136,7 +116,7 @@ public class RobocodeCompilerFactory {
 			compilerName = "Eclipse Compiler for Java (ECJ)";
 			compilerBinary = "java -cp compilers/* org.eclipse.jdt.internal.compiler.batch.Main";
 
-			ecjOK = testCompiler("Eclipse Compiler for Java (ECJ)", compilerBinary, console);
+			ecjOK = testCompiler(compilerName, compilerBinary, console);
 		}
 
 		boolean compilerOK = javacOK || ecjOK;
@@ -158,7 +138,7 @@ public class RobocodeCompilerFactory {
 			compilerOptions = "";
 		}
 
-		getCompilerProperties().setRobocodeVersion(ContainerBase.getComponent(IVersionManagerBase.class).getVersion());
+		getCompilerProperties().setRobocodeVersion(Objects.requireNonNull(ContainerBase.getComponent(IVersionManagerBase.class)).getVersion());
 		getCompilerProperties().setCompilerBinary(compilerBinary);
 		getCompilerProperties().setCompilerOptions(compilerOptions);
 		getCompilerProperties().setCompilerClasspath(getClassPath());

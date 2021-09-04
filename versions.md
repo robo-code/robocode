@@ -1,4 +1,4 @@
-## Version 1.9.4.3 (29-07-2021)
+## Version 1.9.4.3 (04-09-2021)
 
 ### Changes
 * Chocolatey installer is now provided for Windows.
@@ -11,9 +11,10 @@
 ### Bugfix
 * [Bug-415][] Loading pre-loaded data 1.9.4.2
     * Fixed robot naming to be compatible with existing robots
-	* Thanks go to Alex Schultz (Rednaxela) for fixing this issue. :)
+    * Thanks go to Alex Schultz (Rednaxela) for fixing this issue. :)
 * Installer (dos2unix): more reliable way to move files
     * Thank you dshatov (GitHub) for this fix. :)
+* The classpath in the compiler setting does not include the path to rt.jar anymore, which caused compiler errors.
 
 ## Version 1.9.4.2 (10-05-2021)
 
