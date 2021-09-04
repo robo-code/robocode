@@ -714,7 +714,7 @@ public class AutoExtract implements ActionListener {
     private static String getWindowsCmd() {
         String os = System.getProperty("os.name");
 
-        return ((os.equals("Windows 95") || os.equals("Windows 95") || os.equals("Windows ME"))
+        return ((os.equals("Windows 95") || os.equals("Windows 98") || os.equals("Windows ME"))
                 ? "command.com"
                 : "cmd.exe")
                 + " /C ";
