@@ -1,4 +1,4 @@
-## Version 1.9.4.3 (04-09-2021)
+## Version 1.9.4.3 (05-09-2021)
 
 ### Changes
 * Chocolatey installer is now provided for Windows.
@@ -9,7 +9,7 @@
 * Updated link to Java API documentation.
 
 ### Bugfix
-* [Bug-415][] Loading pre-loaded data 1.9.4.2
+* [Bug-415][]: Loading pre-loaded data 1.9.4.2
     * Fixed robot naming to be compatible with existing robots
     * Thanks go to Alex Schultz (Rednaxela) for fixing this issue. :)
 * Installer (dos2unix): more reliable way to move files
