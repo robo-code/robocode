@@ -16,6 +16,9 @@
     <tags>robocode</tags>
     <summary>Build the best - destroy the rest!</summary>
     <description>Robocode is a programming game, where the goal is to develop a robot battle tank to battle against other tanks in Java. The robot battles are running in real-time and on-screen.</description>
+    <dependencies>
+      <dependency id="openjdk"/>
+    </dependencies>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />

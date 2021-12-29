@@ -1,3 +1,8 @@
+## Version 1.9.4.4 (29-12-2021)
+
+### Changes
+* Chocolatey installer dependency on openjdk so that it could pass package validation.
+
 ## Version 1.9.4.3 (05-09-2021)
 
 ### Changes
