@@ -127,7 +127,7 @@ public class Corners extends Robot {
 		}
 
 		// If 75% of the robots are still alive when we die, we'll switch corners.
-		if ((others - getOthers()) / (double) others < .75) {
+		if (getOthers() / (double) others >= .75) {
 			corner += 90;
 			if (corner == 270) {
 				corner = -90;
