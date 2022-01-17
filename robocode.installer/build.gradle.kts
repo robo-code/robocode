@@ -109,7 +109,12 @@ tasks {
     task<Exec>("chocoBuild") {
         dependsOn("chocoCopy")
         workingDir = file("build/choco")
-        commandLine("choco", "pack", "--version", "${project.version}")
+        doFirst {
+            commandLine("choco", "pack", "--version", "${project.version}", "--skipautouninstaller")
+        }
+        doLast {
+            delete("build/choco/tools/chocolateyuninstall.ps1") // should be omitted from the package (moderation)
+        }
     }
 
     task<Exec>("chocoPush") {
