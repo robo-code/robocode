@@ -19,6 +19,7 @@
     <dependencies>
       <dependency id="openjdk"/>
     </dependencies>
+    <releaseNotes>Release notes per Robocode version can be found here: https://github.com/robo-code/robocode/blob/master/versions.md</releaseNotes>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />

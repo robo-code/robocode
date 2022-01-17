@@ -91,10 +91,6 @@ tasks {
     task<Copy>("chocoCopy") {
         dependsOn("chocoClean")
         dependsOn("jar")
-        from("../") {
-            include("versions.md")
-            into("tools")
-        }
         from("../build/") {
             include("robocode-${project.version}-setup.jar")
             include("robocode-${project.version}-setup.jar.asc")
