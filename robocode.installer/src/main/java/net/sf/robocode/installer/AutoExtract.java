@@ -324,17 +324,16 @@ public class AutoExtract implements ActionListener {
 
     public static void main(String[] argv) {
         String suggestedDirName;
-        if (argv.length == 1) {
+        if (argv.length >= 1) {
             suggestedDirName = argv[0];
         } else if (isWindowsOS()) {
-            suggestedDirName = "C:\\robocode\\";
+            suggestedDirName = System.getenv("SystemDrive") + ":\\robocode";
         } else {
             suggestedDirName = System.getProperty("user.home") + File.separator + "robocode" + File.separator;
         }
-        if (argv.length >= 1 && "silent".equals(argv[1])) {
+        if (argv.length >= 2 && "silent".equals(argv[1])) {
             isSilent = true;
-        }
-        else if (GraphicsEnvironment.isHeadless()) {
+        } else if (GraphicsEnvironment.isHeadless()) {
             isSilent = true;
         }
 
