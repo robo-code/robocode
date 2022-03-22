@@ -1,3 +1,6 @@
+### Bugfix
+* The world `on` was sometimes written to the console for no reason.
+
 ## Version 1.9.4.4 (29-12-2021)
 
 ### Changes

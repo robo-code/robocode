@@ -141,7 +141,6 @@ public final class AboutBox extends JDialog {
 
 			if (aaFontSettings != null) {
 				mainPanel = new JEditorPane("text/html; charset=ISO-8859-1", getHtmlText());
-				System.out.println(aaFontSettings);
 			} else {
 				mainPanel = new JEditorPane("text/html; charset=ISO-8859-1", getHtmlText()) {
 					@Override
