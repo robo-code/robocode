@@ -1,4 +1,5 @@
 ### Bugfix
+* Fixed _java.io.IOException: Stream Closed_ when auto-recording is enabled.
 * The world `on` was sometimes written to the console for no reason.
 
 ## Version 1.9.4.4 (29-12-2021)

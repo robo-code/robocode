@@ -307,17 +307,12 @@ public class RecordManager implements IRecordManager {
 
     private void saveBinRecord(String recordFilename, BattleRecordFormat format, SerializableOptions options) {
 
-        ArrayList<Object> streamsToClean = new ArrayList<>();
-
+        FileOutputStream fos = null;
         try {
-            FileOutputStream fos;
-            BufferedOutputStream bos;
-            ZipOutputStream zos = null;
-
             fos = new FileOutputStream(recordFilename);
-            streamsToClean.add(fos);
-            bos = new BufferedOutputStream(fos, 1024 * 1024);
-            streamsToClean.add(bos);
+
+            BufferedOutputStream bos = new BufferedOutputStream(fos, 1024 * 1024);
+            ZipOutputStream zos = null;
 
             boolean isZip = format == BattleRecordFormat.BINARY_ZIP;
             if (isZip) {
@@ -345,7 +340,7 @@ public class RecordManager implements IRecordManager {
             recorder = new BattleRecorder(this, properties);
             createTempFile();
         } finally {
-            for (Object stream : streamsToClean) FileUtil.cleanupStream(stream);
+            FileUtil.cleanupStream(fos);
         }
     }
 
@@ -354,28 +349,21 @@ public class RecordManager implements IRecordManager {
             return;
         }
 
-        ArrayList<Object> streamsToClean = new ArrayList<>();
-
+        FileOutputStream fos = null;
         try {
-            FileOutputStream fos;
-            BufferedOutputStream bos;
+            fos = new FileOutputStream(recordFilename);
+            BufferedOutputStream bos = new BufferedOutputStream(fos, 1024 * 1024);
+
             ZipOutputStream zos = null;
 
-            fos = new FileOutputStream(recordFilename);
-            streamsToClean.add(fos);
-            bos = new BufferedOutputStream(fos, 1024 * 1024);
-            streamsToClean.add(bos);
             boolean isZip = format == BattleRecordFormat.XML_ZIP;
-
             if (isZip) {
                 zos = new ZipOutputStream(bos);
-                streamsToClean.add(zos);
                 zos.putNextEntry(new ZipEntry(dateFormat.format(calendar.getTime()) + "-robocode.xml"));
             }
             OutputStreamWriter osw = isZip
                     ? new OutputStreamWriter(zos, utf8)
                     : new OutputStreamWriter(bos, utf8);
-            streamsToClean.add(osw);
             XmlWriter xwr = isZip
                     ? new XmlWriter(osw, false)
                     : new XmlWriter(osw, true);
@@ -411,7 +399,7 @@ public class RecordManager implements IRecordManager {
             recorder = new BattleRecorder(this, properties);
             createTempFile();
         } finally {
-            for (Object stream : streamsToClean) FileUtil.cleanupStream(stream);
+            FileUtil.cleanupStream(fos);
         }
     }
 
