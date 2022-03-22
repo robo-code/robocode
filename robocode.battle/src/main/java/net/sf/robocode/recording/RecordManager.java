@@ -30,7 +30,6 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -301,27 +300,18 @@ public class RecordManager implements IRecordManager {
         } else if (format == BattleRecordFormat.XML_ZIP || format == BattleRecordFormat.XML) {
             saveXmlRecord(recordFilename, format, options);
         } else if (format == BattleRecordFormat.CSV) {
-            saveCsvRecord(recordFilename, format, options);
+            saveCsvRecord(recordFilename, options);
         }
     }
 
     private void saveBinRecord(String recordFilename, BattleRecordFormat format, SerializableOptions options) {
 
-        ArrayList<Object> streamsToClean = new ArrayList<>();
-
-        try {
-            FileOutputStream fos;
-            BufferedOutputStream bos;
-            ZipOutputStream zos = null;
-
-            fos = new FileOutputStream(recordFilename);
-            streamsToClean.add(fos);
-            bos = new BufferedOutputStream(fos, 1024 * 1024);
-            streamsToClean.add(bos);
+        try (FileOutputStream fos = new FileOutputStream(recordFilename);
+            BufferedOutputStream bos = new BufferedOutputStream(fos, 1024 * 1024);
+            ZipOutputStream zos = new ZipOutputStream(bos)) {
 
             boolean isZip = format == BattleRecordFormat.BINARY_ZIP;
             if (isZip) {
-                zos = new ZipOutputStream(bos);
                 zos.putNextEntry(new ZipEntry(dateFormat.format(calendar.getTime()) + "-robocode.br"));
             }
             ObjectOutputStream oos = isZip
@@ -344,8 +334,6 @@ public class RecordManager implements IRecordManager {
             logError(e);
             recorder = new BattleRecorder(this, properties);
             createTempFile();
-        } finally {
-            for (Object stream : streamsToClean) FileUtil.cleanupStream(stream);
         }
     }
 
@@ -354,28 +342,17 @@ public class RecordManager implements IRecordManager {
             return;
         }
 
-        ArrayList<Object> streamsToClean = new ArrayList<>();
+        try (FileOutputStream fos = new FileOutputStream(recordFilename);
+            BufferedOutputStream bos = new BufferedOutputStream(fos, 1024 * 1024);
+            ZipOutputStream zos = new ZipOutputStream(bos)) {
 
-        try {
-            FileOutputStream fos;
-            BufferedOutputStream bos;
-            ZipOutputStream zos = null;
-
-            fos = new FileOutputStream(recordFilename);
-            streamsToClean.add(fos);
-            bos = new BufferedOutputStream(fos, 1024 * 1024);
-            streamsToClean.add(bos);
             boolean isZip = format == BattleRecordFormat.XML_ZIP;
-
             if (isZip) {
-                zos = new ZipOutputStream(bos);
-                streamsToClean.add(zos);
                 zos.putNextEntry(new ZipEntry(dateFormat.format(calendar.getTime()) + "-robocode.xml"));
             }
             OutputStreamWriter osw = isZip
                     ? new OutputStreamWriter(zos, utf8)
                     : new OutputStreamWriter(bos, utf8);
-            streamsToClean.add(osw);
             XmlWriter xwr = isZip
                     ? new XmlWriter(osw, false)
                     : new XmlWriter(osw, true);
@@ -410,12 +387,10 @@ public class RecordManager implements IRecordManager {
             logError(e);
             recorder = new BattleRecorder(this, properties);
             createTempFile();
-        } finally {
-            for (Object stream : streamsToClean) FileUtil.cleanupStream(stream);
         }
     }
 
-    protected void saveCsvRecord(String recordFilename, BattleRecordFormat format, SerializableOptions options) {
+    protected void saveCsvRecord(String recordFilename, SerializableOptions options) {
         FileOutputStream fosResults = null;
         FileOutputStream fosRounds = null;
         FileOutputStream fosBullets = null;
