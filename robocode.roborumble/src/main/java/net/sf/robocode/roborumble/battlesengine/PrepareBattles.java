@@ -259,7 +259,7 @@ public class PrepareBattles {
 		int count = 0;
 
 		// Add priority battles
-		while (count < numbattles && count < priorityBattles.size()) {
+		while (count < numbattles - namesNoRanking.size() && count < priorityBattles.size()) {
 			String battle = priorityBattles.get(count);
 
 			String[] items = battle.split(",");
