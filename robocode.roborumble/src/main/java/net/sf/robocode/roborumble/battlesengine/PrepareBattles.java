@@ -13,6 +13,7 @@ import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -259,7 +260,7 @@ public class PrepareBattles {
 		int count = 0;
 
 		// Add priority battles
-		while (count < numbattles && count < priorityBattles.size()) {
+		while (count < numbattles - namesNoRanking.size() && count < priorityBattles.size()) {
 			String battle = priorityBattles.get(count);
 
 			String[] items = battle.split(",");
