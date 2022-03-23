@@ -1,3 +1,6 @@
+### Bugfix
+* Give bots without rank highest priority in the LiteRumble (RoboRumble). Thank you Xor for this fix! :)
+
 ## Version 1.9.4.5 (22-03-2022)
 
 ### Bugfix
@@ -524,7 +527,7 @@
 * [Bug-297][]: x,y coords between ``BulletHitEvent`` & ``HitByBulletEvent`` differ.
 * [Bug-299][]: Custom events no longer firing after clearing event queue.
 * Fixed typo in the documentation with valid range of values for the battlefield width and height.
-	* Thanks goes to Tam�s Balog for pointing this out.
+	* Thanks goes to Tamás Balog for pointing this out.
 
 ### New Features
 * Added "Enable auto recording" option to the Common Options, which automatically generates a zipped XML record for every battle.
