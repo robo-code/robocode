@@ -202,11 +202,7 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 			throw new AccessControlException("no relative path allowed");
 		}
 
-		return AccessController.doPrivileged(new PrivilegedAction<File>() {
-			public File run() {
-				return robotFileSystemManager.getDataFile(filename);
-			}
-		});
+		return AccessController.doPrivileged((PrivilegedAction<File>) () -> robotFileSystemManager.getDataFile(filename));
 	}
 
 	public long getDataQuotaAvailable() {
