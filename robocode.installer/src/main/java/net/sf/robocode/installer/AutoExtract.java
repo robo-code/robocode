@@ -360,10 +360,10 @@ public class AutoExtract implements ActionListener {
 
     private static boolean install(File suggestedDir) {
         // Verify that the Java version is version 6 (1.6.0) or newer
-        if (JAVA_MAJOR_VERSION < 6) {
-            String message = "Robocode requires Java 6 (1.6.0) or newer.\n"
+        if (JAVA_MAJOR_VERSION < 8) {
+            String message = "Robocode requires Java 8 (1.8.0) or newer.\n"
                     + "Your system is currently running Java " + JAVA_MAJOR_VERSION + ".\n"
-                    + "If you have not installed (or activated) at least\n" + "JRE 6 or JDK 6, please do so.";
+                    + "If you have not installed (or activated) at least\n" + "Java 8, please do so.";
 
             if (!isSilent) {
                 JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
@@ -593,9 +593,7 @@ public class AutoExtract implements ActionListener {
                 System.err.println("Can't delete: " + shortcutMaker);
             }
             return true;
-        } catch (IOException e) {
-            e.printStackTrace(System.err);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         }
 
