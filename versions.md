@@ -1,18 +1,23 @@
+## Version 1.9.4.6 (15-Jun-2022) The Java 18 support release
+
 ### Bugfix
+* **Java 18 fix**: Robocode could not run on the newest Java 18 due to the terminally deprecated Security Manager.
+    * The Security Manager is now explicitly being allowed to run with the .bat, .sh, and .command files by adding setting this system property:
+      `-Djava.security.manager=allow`.
 * Give bots without rank highest priority in the LiteRumble (RoboRumble). Thank you Xor for this fix! :)
 
-## Version 1.9.4.5 (22-03-2022)
+## Version 1.9.4.5 (22-Mar-2022)
 
 ### Bugfix
 * Fixed _java.io.IOException: Stream Closed_ when auto-recording is enabled.
 * A mystic word `on` was written to the console.
 
-## Version 1.9.4.4 (29-12-2021)
+## Version 1.9.4.4 (29-Dec-2021)
 
 ### Changes
 * Chocolatey installer dependency on openjdk so that it could pass package validation.
 
-## Version 1.9.4.3 (05-09-2021)
+## Version 1.9.4.3 (05-Sep-2021)
 
 ### Changes
 * Chocolatey installer is now provided for Windows.
@@ -30,7 +35,7 @@
     * Thank you dshatov (GitHub) for this fix. :)
 * The classpath in the compiler setting does not include the path to rt.jar anymore, which caused compiler errors.
 
-## Version 1.9.4.2 (10-05-2021)
+## Version 1.9.4.2 (10-May-2021)
 
 ### Changes
 * A robot index has been added to all robot in the format ``name + (index)``. This is change was made to fix various issues in e.g. team bots and make the internal logic simpler.
@@ -39,7 +44,7 @@
 ### Bugfix
 * Fixed getTeammates() that returned the wrong names and isTeammate() that returned false for teammates.
 
-## Version 1.9.4.1 (09-04-2021)
+## Version 1.9.4.1 (09-Apr-2021)
 
 ### Bugfix
 * [Bug-414][] Fixed bug in ramming: when robots collide, they should and do change position. But the bullets were still hitting original place in the next turn, as if the robot was not moved by collision.
@@ -62,21 +67,21 @@
 * Roborumble could now override ~~USER, PARTICIPANTSURL, UPDATEBOTSURL, RESULTSURL, RATINGSURL~~ via environment variables.
 * Published Roborumble client as docker image to https://hub.docker.com/r/zamboch/roborumble with the above environment variables available.
 
-## Version 1.9.4.0 (15-02-2021)
+## Version 1.9.4.0 (15-Feb-2021)
 
 ### Changes
 * Migrated from Maven to Gradle.
 * Migrated from Eclipse to Idea.
 * Published to Maven Central.
 
-## Version 1.9.3.9 (20-04-2020)
+## Version 1.9.3.9 (20-Apr-2020)
 
 ### Changes
 * Updated RoboRumble links to use HTTPS instead of HTTP
 	* Thank you Skilgannon for this fix, and especially to get the RoboWiki up and running again! :-)
 * Updated all links to RoboWiki to use HTTPS.
 
-## Version 1.9.3.8 (29-03-2020)
+## Version 1.9.3.8 (29-Mar-2020)
 
 ### Bugfixes
 
@@ -86,14 +91,14 @@
 * Prevent robot console from trimming log.
 	* Thank you Xor for the last two fixes. :-)
 
-## Version 1.9.3.7 (31-08-2019)
+## Version 1.9.3.7 (31-Aug-2019)
 
 ### Bugfixes
 * [Bug-407][]: RobocodeEngine: Can't find robocode.core-1.x.jar
 * [Bug-409][]: Robot repository is completely rebuilt whenever dev dir is changed via UI.
 	* Thanks goes to Xor for this fix. :-)
 	
-## Version 1.9.3.6 (08-05-2019)
+## Version 1.9.3.6 (08-May-2019)
 
 ### Bugfixes
 * [Bug-404][]: Confusion between development/non-development versions of bots
@@ -105,7 +110,7 @@
 ### Changes
 * Fix by Xor, which makes Robocode faster at detecting robots in the robot folder, which is crucial for the RoboRumble, when installing or updating a huge amount of robots.
 
-## Version 1.9.3.5 (02-03-2019)
+## Version 1.9.3.5 (02-Mar-2019)
 
 ### Bugfixes
 * [Bug-402][]: roborumble.sh etc. has incorrect class path
@@ -118,7 +123,7 @@
 ### Changes
 * Added support for Kotlin. Just put the kotlin-stdlib-1.xxx.jar into the /libs folder to allow robots coded in Kotlin.
 
-## Version 1.9.3.4 (05-01-2019)
+## Version 1.9.3.4 (05-Jan-2019)
 
 ### Bugfixes
 * [Bug-401][]: RoboRumble client: Biased Melee prioritized pairings
@@ -131,7 +136,7 @@
 * The Robocode site is now using HTTPS instead of HTTP, and have been moved permanently to https://robocode.sourceforge.io (".io" instead of ".net")
 * Changed the Maven build files to use the Maven Wrapper (mvnw).
 
-## Version 1.9.3.3 (10-09-2018)
+## Version 1.9.3.3 (10-Sep-2018)
 
 ### Bug fixes
 * Fixed issue with the RobocodeEngine, which could not read robots in "developer mode" (marked with a asterix '*' character)
@@ -142,7 +147,7 @@
 * [Bug-400][]: Problem to compile Robot.
     * The compiler options have been cut down to include only the -verbose option per default.
 
-## Version 1.9.3.2 (04-04-2018) The Java 10 support release
+## Version 1.9.3.2 (04-Apr-2018) The Java 10 support release
 
 ### Bug fixes
 * Fixed problems with shell and Mac OS commands files, which contained ^M (Microsoft windows) characters.
@@ -152,7 +157,7 @@
 * Upgraded Eclipse Compiler for Java (ECJ) to newest version 3.14.0.v20180305-0940.
 	* The older version caused problems with compiling robots on Java 9 or newer.
 
-## Version 1.9.3.1 (17-03-2018)
+## Version 1.9.3.1 (17-Mar-2018)
 
 ### Bug fixes
 * [Bug-393][]: More frequent roborumble server checks.
@@ -161,7 +166,7 @@
 * [Bug-394][]: HiDPI scaling causes visual glitches.
 * Fixed issues with creating and packaging robot teams.
 
-## Version 1.9.3.0 (17-10-2017) The Java 9 support release
+## Version 1.9.3.0 (17-Oct-2017) The Java 9 support release
 
 ### Bug fixes
 * [Bug-386][]: Can't run Robocode 1.9.2.6 on Mac OS.
@@ -174,7 +179,7 @@
 * [Bug-391][]: Fix for "Illegal reflective access".
 * [Bug-392][]: Bullets of the same bot collide at low bullet powers and high gun-cooling rate.
 
-## Version 1.9.2.6 (01-01-2017)
+## Version 1.9.2.6 (01-Jan-2017)
 
 ### Bug fixes
 * [Bug-381][]: Improve feedback after entering empty package name during robot creation.
