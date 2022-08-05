@@ -1,3 +1,9 @@
+## Version 1.9.4.7 (05-Aug-2022) System.getenv support
+
+### Changes
+* [#35](https://sourceforge.net/p/robocode/support-requests/35/) `System.getenv` is now allowed and can now be called
+  without throwing a security exception. Hence, the robot will not be banned from battles when using `System.getenv`.
+
 ## Version 1.9.4.6 (15-Jun-2022) The Java 18 support release
 
 ### Bugfix

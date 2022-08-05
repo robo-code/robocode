@@ -135,6 +135,13 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if (isSafeThread(c)) {
 			return;
 		}
+		if (perm instanceof RuntimePermission) { // Check if System.getenv is called
+			RuntimePermission runtimePermission = (RuntimePermission) perm;
+			final String name = runtimePermission.getName();
+			if (name != null && name.startsWith("getenv.")) {
+				return;
+			}
+		}
         super.checkPermission(perm);
 
         if (perm instanceof SocketPermission) {
