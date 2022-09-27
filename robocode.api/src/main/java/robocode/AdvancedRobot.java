@@ -732,7 +732,7 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 
 	/**
 	 * Returns the current priority of a class of events.
-	 * An event priority is a value from 0 - 99. The higher value, the higher
+	 * An event priority is a value from 0 - 99. The lower value, the higher
 	 * priority.
 	 * <p>
 	 * Example:
@@ -742,24 +742,24 @@ public class AdvancedRobot extends _AdvancedRadiansRobot implements IAdvancedRob
 	 * <p>
 	 * The default priorities are, from highest to lowest:
 	 * <pre>
+	 *   {@link DeathEvent}:            -1 (reserved)
+	 *   {@link PaintEvent}:             5
+	 *   {@link ScannedRobotEvent}:     10
+	 *   {@link HitRobotEvent}:         20
+	 *   {@link HitWallEvent}:          30
+	 *   {@link HitByBulletEvent}:      40
+	 *   {@link BulletHitEvent}:        50
+	 *   {@link BulletHitBulletEvent}:  55
+	 *   {@link BulletMissedEvent}:     60
+	 *   {@link RobotDeathEvent}:       70
+	 *   {@link MessageEvent}:          75
+	 *   {@link CustomEvent}:           80 (default value)
+	 *   {@link StatusEvent}:           99
+	 *   Key and mouse events:  98
 	 *   {@link RoundEndedEvent}:      100 (reserved)
 	 *   {@link BattleEndedEvent}:     100 (reserved)
 	 *   {@link WinEvent}:             100 (reserved)
 	 *   {@link SkippedTurnEvent}:     100 (reserved)
-	 *   {@link StatusEvent}:           99
-	 *   Key and mouse events:  98
-	 *   {@link CustomEvent}:           80 (default value)
-	 *   {@link MessageEvent}:          75
-	 *   {@link RobotDeathEvent}:       70
-	 *   {@link BulletMissedEvent}:     60
-	 *   {@link BulletHitBulletEvent}:  55
-	 *   {@link BulletHitEvent}:        50
-	 *   {@link HitByBulletEvent}:      40
-	 *   {@link HitWallEvent}:          30
-	 *   {@link HitRobotEvent}:         20
-	 *   {@link ScannedRobotEvent}:     10
-	 *   {@link PaintEvent}:             5
-	 *   {@link DeathEvent}:            -1 (reserved)
 	 * </pre>
 	 *
 	 * @param eventClass the name of the event class (string)
