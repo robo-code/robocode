@@ -1,3 +1,11 @@
+## Version 1.9.4.8 (28-Nov-2022)
+
+### Change/bugfix
+* When setting the `NOSECURITY=true`, e.g. setting it as via the Java property as `-DNOSECURITY=true` with the java 
+  command line, then the `RobocodeSecurityManager` and `RobocodeSecurityPolicy` are now entirely disabled, meaning those
+  classes are not being used at all.
+    * This fixes issues with the class loader not being able to find classes resulting in `ClassNotFoundExceptions`. 
+
 ## Version 1.9.4.7 (05-Aug-2022) System.getenv support
 
 ### Changes
