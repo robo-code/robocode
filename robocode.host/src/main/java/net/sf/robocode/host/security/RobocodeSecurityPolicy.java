@@ -31,7 +31,7 @@ import java.util.*;
  * @author Pavel Savara (contributor)
  */
 public class RobocodeSecurityPolicy extends Policy {
-	private static final boolean isFileReadSecutityOff = System.getProperty("OVERRIDEFILEREADSECURITY", "false").equals(
+	private static final boolean isFileReadSecurityOff = System.getProperty("OVERRIDEFILEREADSECURITY", "false").equals(
 			"true");
 	private static final boolean isExperimental = System.getProperty("EXPERIMENTAL", "false").equals("true");
 	private final Set<String> allowedPackages = new HashSet<String>();
@@ -110,7 +110,7 @@ public class RobocodeSecurityPolicy extends Policy {
 		final String actions = perm.getActions();
 		final String name = perm.getName();
 
-		if (perm instanceof FilePermission && actions.equals("read") && isFileReadSecutityOff) {
+		if (perm instanceof FilePermission && actions.equals("read") && isFileReadSecurityOff) {
 			return true;
 		}
 
