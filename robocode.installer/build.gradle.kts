@@ -18,7 +18,7 @@ dependencies {
     implementation(project(":robocode.ui"))
     implementation(project(":robocode.ui.editor"))
     implementation(project(":robocode.content"))
-    runtimeOnly("org.eclipse.jdt:org.eclipse.jdt.core:3.31.0")
+    runtimeOnly("org.eclipse.jdt:org.eclipse.jdt.core:3.26.0")
 }
 
 tasks {

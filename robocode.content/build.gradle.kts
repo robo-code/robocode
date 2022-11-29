@@ -6,7 +6,7 @@ plugins {
 description = "Robocode Content"
 
 dependencies {
-    runtimeOnly("org.eclipse.jdt:org.eclipse.jdt.core:3.31.0")
+    runtimeOnly("org.eclipse.jdt:org.eclipse.jdt.core:3.26.0")
 }
 
 tasks {

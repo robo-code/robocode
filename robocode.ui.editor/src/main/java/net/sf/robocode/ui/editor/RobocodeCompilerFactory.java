@@ -115,6 +115,7 @@ public class RobocodeCompilerFactory {
 		if (!javacOK) {
 			compilerName = "Eclipse Compiler for Java (ECJ)";
 			compilerBinary = "java -cp compilers/* org.eclipse.jdt.internal.compiler.batch.Main";
+			compilerOptions = "-source 1.5 " + compilerOptions; // source 1.5 to prevent "source level 1.5 is required"
 
 			ecjOK = testCompiler(compilerName, compilerBinary, console);
 		}
