@@ -339,7 +339,11 @@ public class AutoExtract implements ActionListener {
         }
 
         if (!isSilent) {
-            // Fix issue with rendering issues on Windows and Linux, by setting sun.java2d.opengl to ´true´ by default
+            // Fix issue with rendering issues on Windows and Linux, by disabling Direct3D/DirectDraw and enabling
+            // OpenGL acceleration per default
+            System.setProperty("sun.java2d.d3d", "false");
+            System.setProperty("sun.java2d.ddoffscreen", "false");
+            System.setProperty("sun.java2d.noddraw", "true");
             System.setProperty("sun.java2d.opengl", "true");
         }
 

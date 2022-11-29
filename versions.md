@@ -1,9 +1,14 @@
 ## Version 1.9.4.8 (29-Nov-2022)
 
 ### Bugfix
-* Rendering issues on Windows using accelerated hardware, by setting `sun.java2d.opengl` to `True` per default (enable
-  OpenGL acceleration + display info about this in the console). You can override this in the `robocode.sh` and
-  `robocode.cmd` by adding `-Dsun.java2d.opengl=false` if this causes issues on your particular system.
+* Rendering issues on Windows using accelerated hardware, by setting this Java properties:
+    * `sun.java2d.d3d=false` (turn off use of Direct3D)
+    * `sun.java2d.ddoffscreen=false` (turn of Direct Draw off-screen)
+    * `sun.java2d.noddraw=true` (no use of Direct Draw)
+    * `sun.java2d.opengl=True`
+* Adding `-source 1.5` to the compiler options to prevent `"...only available if source level is 1.5 or greater"` error
+  when compiling. This option should work for both the `javac` (standard Java compiler) and `ecj` (the built-in Eclipse 
+  Compiler for Java).
 
 ### Changes
 * Security Manager: When setting the `NOSECURITY=true` (e.g. via the `-DNOSECURITY=true` property in the java
