@@ -338,6 +338,11 @@ public class AutoExtract implements ActionListener {
             isSilent = true;
         }
 
+        if (!isSilent) {
+            // Fix issue with rendering issues on Windows and Linux, by setting sun.java2d.opengl to ´true´ by default
+            System.setProperty("sun.java2d.opengl", "true");
+        }
+
         String message;
 
         if (install(new File(suggestedDirName))) {

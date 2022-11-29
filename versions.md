@@ -1,10 +1,16 @@
-## Version 1.9.4.8 (28-Nov-2022)
+## Version 1.9.4.8 (29-Nov-2022)
 
-### Change/bugfix
-* When setting the `NOSECURITY=true`, e.g. setting it as via the Java property as `-DNOSECURITY=true` with the java 
-  command line, then the `RobocodeSecurityManager` and `RobocodeSecurityPolicy` are now entirely disabled, meaning those
-  classes are not being used at all.
-    * This fixes issues with the class loader not being able to find classes resulting in `ClassNotFoundExceptions`. 
+### Bugfix
+* Rendering issues on Windows using accelerated hardware, by setting `sun.java2d.opengl` to `True` per default (enable
+  OpenGL acceleration + display info about this in the console). You can override this in the `robocode.sh` and
+  `robocode.cmd` by adding `-Dsun.java2d.opengl=false` if this causes issues on your particular system.
+
+### Changes
+* Security Manager: When setting the `NOSECURITY=true` (e.g. via the `-DNOSECURITY=true` property in the java
+  command-line), then internal security manager of Robocode is now totally disabled, and falling back on the default
+  security manager used in Java.
+    * This fixes issues with the class loader not being able to find classes resulting in `ClassNotFoundExceptions`, and
+      other issues as well.
 
 ## Version 1.9.4.7 (05-Aug-2022) System.getenv support
 

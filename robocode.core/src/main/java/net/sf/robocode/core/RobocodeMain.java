@@ -217,6 +217,10 @@ public final class RobocodeMain extends RobocodeMainBase {
 			System.setProperty("sun.java2d.uiScale", "1");
 		}
 
+		// Fix issue with rendering issues on Windows and Linux, by setting sun.java2d.opengl to ´true´ by default
+		System.setProperty("sun.java2d.opengl", "True"); // True to display a message about OpenGL acceleration
+
+
 		for (int i = 0; i < args.length; i++) {
 			String currentArg = args[i];
 			if (currentArg.equalsIgnoreCase("-cwd") && (i < args.length + 1)) {
