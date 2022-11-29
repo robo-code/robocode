@@ -7,6 +7,7 @@ description = "Robocode Content"
 
 dependencies {
     runtimeOnly("org.eclipse.jdt:org.eclipse.jdt.core:3.26.0")
+    runtimeOnly("org.jetbrains.kotlin:kotlin-stdlib:1.7.22") // Robocode supports Kotlin out of the box
 }
 
 tasks {
