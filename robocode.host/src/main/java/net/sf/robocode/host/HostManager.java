@@ -99,6 +99,7 @@ public class HostManager implements IHostManager {
 
 	public void initSecurity() {
 		JarJarURLConnection.register();
+
 		if (RobocodeProperties.isSecurityOn()) {
 			new RobocodeSecurityPolicy(threadManager);
 			new RobocodeSecurityManager(threadManager);

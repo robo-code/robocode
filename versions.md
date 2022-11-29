@@ -1,3 +1,8 @@
+## Version 1.9.4.9
+
+### Bugfixes
+- `NOSECURITY=true` could cause a `ClassNotFoundException` for the robots.
+
 ## Version 1.9.4.8 (29-Nov-2022) Reworked Disabling Security Manager
 
 ### Bugfixes
