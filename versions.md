@@ -1,22 +1,22 @@
 ## Version 1.9.4.8 (29-Nov-2022) Reworked Disabling Security Manager
 
-### Bugfix
-* Rendering issues on Windows using accelerated hardware, by setting this Java properties:
-    * `sun.java2d.d3d=false` (turn off use of Direct3D)
-    * `sun.java2d.ddoffscreen=false` (turn of Direct Draw off-screen)
-    * `sun.java2d.noddraw=true` (no use of Direct Draw)
-    * `sun.java2d.opengl=True`
+### Bugfixes
+* Rendering issues on Windows using accelerated hardware, by setting these Java properties:
+	* `sun.java2d.d3d=false` (turn off use of Direct3D)
+	* `sun.java2d.ddoffscreen=false` (turn of Direct Draw off-screen)
+	* `sun.java2d.noddraw=true` (no use of Direct Draw)
+	* `sun.java2d.opengl=True`
 * Adding `-source 1.5` to the ECJ compiler options to prevent `"...only available if source level is 1.5 or greater"`
-  error when compiling with ECJ. 
+  error when compiling with ECJ.
 
 ### Improvements
 * Security Manager: When setting the `NOSECURITY=true` (e.g. via the `-DNOSECURITY=true` property in the java
-  command-line), then internal security manager of Robocode is now totally disabled, and falling back on the default
+  command-line), then the internal security manager of Robocode is now totally disabled, and falling back on the default
   security manager used in Java.
-    * This fixes issues with the class loader not being able to find classes resulting in `ClassNotFoundExceptions`, and
-      other issues as well.
+	* This fixes issues with the class loader not being able to find classes resulting in `ClassNotFoundExceptions`, and
+	  other issues as well.
 * Updated built-in Eclipse Compiler for Java (ECJ) to version 3.26 (June 2021), which is the last version of ECJ capable
-  to run on Java 8 (newer ECJ versions requires Java 11 as minimum).
+  to run on Java 8 (newer ECJ versions require Java 11 as a minimum).
 
 ## Version 1.9.4.7 (05-Aug-2022) System.getenv support
 
