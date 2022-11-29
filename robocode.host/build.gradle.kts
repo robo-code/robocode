@@ -6,8 +6,8 @@ plugins {
 dependencies {
     implementation(project(":robocode.api"))
     implementation(project(":robocode.core"))
-    implementation("org.picocontainer:picocontainer:2.14.2")
-    testImplementation("junit:junit:4.13.1")
+    implementation("org.picocontainer:picocontainer:2.15")
+    testImplementation("junit:junit:4.13.2")
 }
 
 description = "Robocode Host"

@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     implementation(project(":robocode.api"))
-    implementation("junit:junit:4.13.1")
+    implementation("junit:junit:4.13.2")
     testImplementation(project(":robocode.core"))
     testImplementation(project(":robocode.host"))
     testImplementation(project(":robocode.battle"))

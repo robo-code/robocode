@@ -8,7 +8,7 @@ dependencies {
     implementation(project(":robocode.core"))
     implementation(project(":robocode.battle"))
     implementation(project(":robocode.ui"))
-    implementation("org.picocontainer:picocontainer:2.14.2")
+    implementation("org.picocontainer:picocontainer:2.15")
 }
 
 description = "Robocode UI Robot editor"
