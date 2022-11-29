@@ -1,4 +1,4 @@
-## Version 1.9.4.8 (29-Nov-2022)
+## Version 1.9.4.8 (29-Nov-2022) Reworked Disabling Security Manager
 
 ### Bugfix
 * Rendering issues on Windows using accelerated hardware, by setting this Java properties:
