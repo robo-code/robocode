@@ -9,7 +9,7 @@
     <authors>Mathew A. Nelson, Flemming N. Larsen, Pavel Savara</authors>
     <projectUrl>https://robocode.sourceforge.io/</projectUrl>
     <iconUrl>https://robocode.sourceforge.io/gfx/Robocode-robot.svg</iconUrl>
-    <copyright>Copyright (c) 2001-2022 Mathew A. Nelson and Robocode contributors</copyright>
+    <copyright>Copyright (c) 2001-2023 Mathew A. Nelson and Robocode contributors</copyright>
     <licenseUrl>https://robocode.sourceforge.io/license/epl-v10.html</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectSourceUrl>https://github.com/robo-code/robocode</projectSourceUrl>
