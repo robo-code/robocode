@@ -2,6 +2,7 @@
 
 ### Bugfixes
 - `NOSECURITY=true` could cause a `ClassNotFoundException` for the robots.
+- Rendering issue on Windows when setting `sun.java2d.ddoffscreen=false`. Hence, this setting has been removed.
 
 ## Version 1.9.4.8 (29-Nov-2022) Reworked Disabling Security Manager
 
