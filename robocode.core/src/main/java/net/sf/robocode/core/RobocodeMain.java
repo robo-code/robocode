@@ -203,12 +203,6 @@ public final class RobocodeMain extends RobocodeMainBase {
 		// http://java.sun.com/developer/technicalArticles/J2SE/Desktop/headless/
 		System.setProperty("java.awt.headless", "false");
 
-		// Set UI scale to 1 for HiDPI if no UI scale has been set from the command line
-		// This way HiDPI will not affect Robocode, as 1x1 pixel is not affected by HiDPI scaling
-		if (isWindows && System.getProperty("sun.java2d.uiScale") == null) {
-			System.setProperty("sun.java2d.uiScale", "1");
-		}
-
 		// Fix issue with rendering issues on Windows and Linux, by disabling Direct3D/DirectDraw and enabling
 		// OpenGL acceleration per default
 		boolean isMac = osName.startsWith("mac ");
