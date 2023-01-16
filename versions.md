@@ -4,6 +4,7 @@
 * `NOSECURITY=true` could cause a `ClassNotFoundException` for the robots.
 * Rendering issue on Windows when setting `sun.java2d.ddoffscreen=false`. Hence, this setting has been removed.
 * If the `NOSECURITY` or `EXPERIMENTAL` property has been set to true, a warning is now printed out to standard out. 
+* Re-fix [Bug-394] by actually supporting HiDPI. Thanks to Xor for this fix! :)
 
 ## Version 1.9.4.8 (29-Nov-2023) Reworked Disabling Security Manager
 
