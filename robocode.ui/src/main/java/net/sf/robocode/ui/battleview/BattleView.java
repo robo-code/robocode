@@ -98,6 +98,7 @@ public class BattleView extends Canvas {
 
 	private final GraphicsState graphicsState = new GraphicsState();
 	private IGraphicsProxy[] robotGraphics;
+	private AffineTransform identityTx = new AffineTransform();
 
 	public BattleView(ISettingsManager properties, IWindowManager windowManager, IImageManager imageManager) {
 		this.properties = properties;
@@ -133,6 +134,8 @@ public class BattleView extends Canvas {
 
 	@Override
 	public void paint(Graphics g) {
+		identityTx = ((Graphics2D) g).getTransform();
+
 		final ITurnSnapshot lastSnapshot = windowManager.getLastSnapshot();
 		if (lastSnapshot != null) {
 			update(lastSnapshot);
@@ -282,7 +285,7 @@ public class BattleView extends Canvas {
 		graphicsState.save(g);
 
 		// Reset transform
-		g.setTransform(new AffineTransform());
+		g.setTransform(identityTx);
 
 		// Reset clip
 		g.setClip(null);
@@ -296,8 +299,8 @@ public class BattleView extends Canvas {
 		double dy = (getHeight() - scale * battleField.getHeight()) / 2;
 
 		// Scale and translate the graphics
-		AffineTransform at = AffineTransform.getTranslateInstance(dx, dy);
-
+		AffineTransform at = new AffineTransform(identityTx);
+		at.concatenate(AffineTransform.getTranslateInstance(dx, dy));
 		at.concatenate(AffineTransform.getScaleInstance(scale, scale));
 		g.setTransform(at);
 
@@ -349,7 +352,7 @@ public class BattleView extends Canvas {
 
 				final AffineTransform savedTx = g.getTransform();
 
-				g.setTransform(new AffineTransform());
+				g.setTransform(identityTx);
 				g.drawImage(groundImage, dx, dy, groundWidth, groundHeight, null);
 
 				g.setTransform(savedTx);
@@ -649,14 +652,15 @@ public class BattleView extends Canvas {
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+		AffineTransform savedTx = g.getTransform();
 		g.transform(AffineTransform.getTranslateInstance((getWidth() - 320) / 2.0, (getHeight() - 46) / 2.0));
 		g.setColor(new Color(0, 0x40, 0));
 		g.fill(robocodeTextPath);
+		g.setTransform(savedTx);
 
 		Font font = new Font("Dialog", Font.BOLD, 14);
 		int width = g.getFontMetrics(font).stringWidth(ROBOCODE_SLOGAN);
 
-		g.setTransform(new AffineTransform());
 		g.setFont(font);
 		g.setColor(new Color(0, 0x50, 0));
 		g.drawString(ROBOCODE_SLOGAN, (float) ((getWidth() - width) / 2.0), (float) (getHeight() / 2.0 + 50));
