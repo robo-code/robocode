@@ -145,12 +145,15 @@ public class BattleView extends Canvas {
 	}
 
 	public BufferedImage getScreenshot() {
-		BufferedImage screenshot = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
+		BufferedImage screenshot = getGraphicsConfiguration().createCompatibleImage(
+				(int)(identityTx.getScaleX() * getWidth()), (int)(identityTx.getScaleY() * getHeight()));
 
+		Graphics2D g = (Graphics2D) screenshot.getGraphics();
+		g.setTransform(identityTx);
 		if (windowManager.getLastSnapshot() == null) {
-			paintRobocodeLogo((Graphics2D) screenshot.getGraphics());		
+			paintRobocodeLogo(g);
 		} else {
-			drawBattle((Graphics2D) screenshot.getGraphics(), windowManager.getLastSnapshot());
+			drawBattle(g, windowManager.getLastSnapshot());
 		}
 		return screenshot;
 	}
