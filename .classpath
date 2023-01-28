@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="robocode.api/src/main/java"/>
+	<classpathentry kind="src" path="robocode.battle/src/main/java"/>
+	<classpathentry kind="src" path="robocode.content/src/main/resources/compilers"/>
+	<classpathentry kind="src" path="robocode.core/src/main/java"/>
+	<classpathentry kind="src" path="robocode.core/src/test/java"/>
+	<classpathentry kind="src" path="robocode.host/src/main/java"/>
+	<classpathentry kind="src" path="robocode.host/src/test/java"/>
+	<classpathentry kind="src" path="robocode.installer/src/main/java"/>
+	<classpathentry kind="src" path="robocode.main/src/main/java"/>
+	<classpathentry kind="src" path="robocode.repository/src/main/java"/>
+	<classpathentry kind="src" path="robocode.roborumble/src/main/java"/>
+	<classpathentry kind="src" path="robocode.samples/src/main/java"/>
+	<classpathentry kind="src" path="robocode.sound/src/main/java"/>
+	<classpathentry kind="src" path="robocode.tests.robots/src/main/java"/>
+	<classpathentry kind="src" path="robocode.tests/src/main/java"/>
+	<classpathentry kind="src" path="robocode.tests/src/test/java"/>
+	<classpathentry kind="src" path="robocode.ui.editor/src/main/java"/>
+	<classpathentry kind="src" path="robocode.ui/src/main/java"/>
+	<classpathentry kind="lib" path="gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="robocode.host/src/test/resources/Outer.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
