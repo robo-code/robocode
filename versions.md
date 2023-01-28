@@ -1,4 +1,4 @@
-## Version 1.9.4.9
+## Version 1.9.4.9 (28-Jan-2023) Fixed "no security" and HiDPI
 
 ### Bugfixes
 * `NOSECURITY=true` could cause a `ClassNotFoundException` for the robots.
@@ -6,7 +6,7 @@
 * If the `NOSECURITY` or `EXPERIMENTAL` property has been set to true, a warning is now printed out to standard out. 
 * Re-fix [Bug-394] by actually supporting HiDPI. Thanks to Xor for this fix! :)
 
-## Version 1.9.4.8 (29-Nov-2023) Reworked Disabling Security Manager
+## Version 1.9.4.8 (29-Nov-2022) Reworked Disabling Security Manager
 
 ### Bugfixes
 * Rendering issues on Windows using accelerated hardware, by setting these Java properties:
@@ -26,13 +26,13 @@
 * Updated built-in Eclipse Compiler for Java (ECJ) to version 3.26 (June 2021), which is the last version of ECJ capable
   to run on Java 8 (newer ECJ versions require Java 11 as a minimum).
 
-## Version 1.9.4.7 (05-Aug-2023) System.getenv support
+## Version 1.9.4.7 (05-Aug-2022) System.getenv support
 
 ### Changes
 * [#35](https://sourceforge.net/p/robocode/support-requests/35/) `System.getenv` is now allowed and can now be called
   without throwing a security exception. Hence, the robot will not be banned from battles when using `System.getenv`.
 
-## Version 1.9.4.6 (15-Jun-2023) The Java 18 support release
+## Version 1.9.4.6 (15-Jun-2022) The Java 18 support release
 
 ### Bugfix
 * **Java 18 fix**: Robocode could not run on the newest Java 18 due to the terminally deprecated Security Manager.
@@ -40,7 +40,7 @@
       `-Djava.security.manager=allow`.
 * Give bots without rank highest priority in the LiteRumble (RoboRumble). Thank you Xor for this fix! :)
 
-## Version 1.9.4.5 (22-Mar-2023)
+## Version 1.9.4.5 (22-Mar-2022)
 
 ### Bugfix
 * Fixed _java.io.IOException: Stream Closed_ when auto-recording is enabled.
