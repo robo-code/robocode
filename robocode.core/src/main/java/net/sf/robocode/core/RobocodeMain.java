@@ -208,7 +208,6 @@ public final class RobocodeMain extends RobocodeMainBase {
 		boolean isMac = osName.startsWith("mac ");
 		if (!isMac) {
 			System.setProperty("sun.java2d.d3d", "false");
-			System.setProperty("sun.java2d.ddoffscreen", "false");
 			System.setProperty("sun.java2d.noddraw", "true");
 			System.setProperty("sun.java2d.opengl", "True"); // `True` writes a message about OpenGL acceleration in console
 		}
