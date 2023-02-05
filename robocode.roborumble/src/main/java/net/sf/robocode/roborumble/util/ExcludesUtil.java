@@ -61,6 +61,9 @@ public class ExcludesUtil {
 			return false;
 		}
 
+		// Fix bug-418, excluded bots are removed from LiteRumble
+		botNameVersion = botNameVersion.replace('_', ' ');
+
 		// Check the name against all exclude filters
 		for (int i = excludes.length - 1; i >= 0; i--) {
 			try {
