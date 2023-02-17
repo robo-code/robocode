@@ -1,4 +1,4 @@
-## Version 1.9.4.10
+## Version 1.9.5.0
 
 ### Bugfix:
 * Fix bug-418, excluded bots are removed from LiteRumble. Thanks to Xor for this fix! :)
