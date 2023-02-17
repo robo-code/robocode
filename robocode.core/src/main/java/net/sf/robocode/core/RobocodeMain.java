@@ -205,12 +205,12 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 		// Fix issue with rendering issues on Windows and Linux, by disabling Direct3D/DirectDraw and enabling
 		// OpenGL acceleration per default
-		boolean isMac = osName.startsWith("mac ");
-		if (!isMac) {
-			System.setProperty("sun.java2d.d3d", "false");
-			System.setProperty("sun.java2d.noddraw", "true");
-			System.setProperty("sun.java2d.opengl", "True"); // `True` writes a message about OpenGL acceleration in console
-		}
+//		boolean isMac = osName.startsWith("mac ");
+//		if (!isMac) {
+//			System.setProperty("sun.java2d.d3d", "false");
+//			System.setProperty("sun.java2d.noddraw", "true");
+//			System.setProperty("sun.java2d.opengl", "True"); // `True` writes a message about OpenGL acceleration in console
+//		}
 
 		for (int i = 0; i < args.length; i++) {
 			String currentArg = args[i];

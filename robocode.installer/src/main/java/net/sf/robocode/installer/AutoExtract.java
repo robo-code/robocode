@@ -339,11 +339,10 @@ public class AutoExtract implements ActionListener {
         }
 
         if (!isSilent) {
-            // Fix issue with rendering issues on Windows and Linux, by disabling Direct3D/DirectDraw and enabling
-            // OpenGL acceleration per default
-            System.setProperty("sun.java2d.d3d", "false");
-            System.setProperty("sun.java2d.noddraw", "true");
-            System.setProperty("sun.java2d.opengl", "true");
+            // Fix issue with rendering issues on Windows
+            System.setProperty("sun.java2d.noddraw", "true"); // disable DirectDraw -> all operations are performed with GDI
+            System.setProperty("sun.java2d.d3d", "false");    // disable the Direct3D pipeline
+            System.setProperty("sun.java2d.opengl", "false"); // disable the OpenGL pipeline
         }
 
         String message;
@@ -354,7 +353,7 @@ public class AutoExtract implements ActionListener {
             message = "Installation cancelled";
         }
 
-        // Delete the class file with the installer and it's parent folders in the robocode home dir
+        // Delete the class file with the installer, and it's parent folders in the robocode home dir
         if (installDir != null) {
             String installerPath = AutoExtract.class.getName().replaceAll("\\.", "/") + "$1.class";
 
