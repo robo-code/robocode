@@ -19,11 +19,11 @@ import java.io.IOException;
 
 
 /**
- * This ugly class is helping with closing of robot .jar files when used with URL, URLConnection and useCaches=true
+ * This class is helping with closing of robot .jar files when used with URL, URLConnection and useCaches=true
  * It is designed to close JarFiles opened and cached in SUN's JarFileFactory.
- * If we are not on SUN's JVM, we fallback to useCaches=false, to not lock the files.
- * Collection is now called after reposiotry refresh and after battle ended.
- * Collection is disabled/posponed during running battle.
+ * If we are not on SUN's JVM, we fall back to useCaches=false, to not lock the files.
+ * Collection is now called after repository refresh and after battle ended.
+ * Collection is disabled/postponed during running battle.
  * 
  * @author Pavel Savara (original)
  * @author Flemming N. Larsen (contributor)
@@ -35,7 +35,7 @@ public class URLJarCollector {
 	private static Field jarFileURL;
 	private static final boolean sunJVM;
 	private static boolean enabled;
-	private static final Set<URL> urlsToClean = new HashSet<URL>();
+	private static final Set<URL> urlsToClean;
 
 	static {
 		boolean localSunJVM = false;
@@ -60,14 +60,11 @@ public class URLJarCollector {
 			jarFileURL.setAccessible(true);
 
 			localSunJVM = true;
-		} catch (ClassNotFoundException ignore) {
-			Logger.logError(ignore);
-		} catch (NoSuchFieldException ignore) {
-			Logger.logError(ignore);
-		} catch (IllegalAccessException ignore) {
-			Logger.logError(ignore);
+		} catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException ignore) {
 		}
 		sunJVM = localSunJVM;
+
+		urlsToClean = Collections.newSetFromMap(new WeakHashMap<>());
 	}
 
 	public static synchronized URLConnection openConnection(URL url) throws IOException {
