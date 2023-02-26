@@ -6,9 +6,9 @@ plugins {
 description = "Robocode Content"
 
 dependencies {
-    runtimeOnly("org.eclipse.jdt:org.eclipse.jdt.core:3.26.0")
-    runtimeOnly("org.jetbrains.kotlin:kotlin-stdlib:1.7.22") // Robocode supports Kotlin out of the box
-    runtimeOnly("org.apache.bcel:bcel:6.6.1") // for Codesize
+    runtimeOnly("org.eclipse.jdt:org.eclipse.jdt.core:3.32.0")
+    runtimeOnly("org.jetbrains.kotlin:kotlin-stdlib:1.8.10") // Robocode supports Kotlin out of the box
+    runtimeOnly("org.apache.bcel:bcel:6.7.0") // for Codesize
 }
 
 tasks {

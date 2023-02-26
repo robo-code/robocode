@@ -1,4 +1,10 @@
-## Version 1.9.5.0
+## Version 1.9.5.1
+
+### Improvements
+
+* Updated dependencies 
+
+## Version 1.9.5.0 (26-02-2023) Updated script files
 
 ### Bugfix:
 
