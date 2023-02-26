@@ -10,8 +10,8 @@
   out the line containing `_JAVA_OPTIONS="-Djava.security.manager=allow"` if you run on Robocode on a Java version older
   than version 12, and you can disable Direct3D on Windows, and also set the rasterizer used in Direct3D. Have a look at
   `robocode.bat` and `robocode.sh` if you want to see the details.
-* Robocode does not touch any `sun.java2d` programmatically anymore as these gives different result on different
-  hardware (obviously). So the user need set these explicitly as options when starting up Robocode. Go to
+Fixe* Robocode does not touch any `sun.java2d` programmatically anymore as these give different results on different
+  hardware (obviously). So the user needs to set these explicitly as options when starting up Robocode. Go to
   [this page](https://docs.oracle.com/javase/7/docs/technotes/guides/2d/flags.html) if you want to experiment with  
   these settings.
 
