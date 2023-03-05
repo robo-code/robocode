@@ -31,7 +31,7 @@ java \
   "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" \
   "--add-opens=java.desktop/javax.swing.text=ALL-UNNAMED" \
   "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" \
-  robocode.Robocode "$*"
+  robocode.Robocode "$@"
 
 # Restore present work directory
 cd "${pwd}" || exit
