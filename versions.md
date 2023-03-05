@@ -2,7 +2,9 @@
 
 ### Improvements
 
-* Updated dependencies 
+* Updated all .bat, .sh, and .command files so the `_JAVA_OPTIONS` is now set automatically regardless of the Java
+  version.
+* Updated dependencies.
 
 ## Version 1.9.5.0 (26-02-2023) Updated script files
 
@@ -737,7 +739,9 @@
   every battle.
     * Works only when "Enable replay recording" is enabled (is automatically set when enabling auto recording).
 * [Req-124]: Ability to save the properties file for robots in dev. path.
-* [Req-129]: `Rules.getBulletSpeed`.
+*
+
+[Req-129]: `Rules.getBulletSpeed`.
     * It is about keeping the bullet power within 0.1 - 3.0, even when input is lesser or greater than this valid range.
 * [Req-128]: In battle name hiding.
     * A general solution has been provided. A new game rule, "hide enemy names", can be enabled or disabled.
@@ -931,7 +935,9 @@ Thanks goes to Alex Schultz for keep finding bugs, but also helping out solving 
 
 * .NET Robocode plug-in.
     * It is now possible to code robots in .NET and let them engage in Robocode battles. :-)
-* [Req-101]: `onRoundEnded()`.
+*
+
+[Req-101]: `onRoundEnded()`.
     * It is now possible for robots to get notified when a round has ended.
     * The `onRoundEnded()` event handler receives a new `RoundEndedEvent` that contains information about the number of
       turns in the round and total turns in the whole battle when the event occurred.
@@ -1037,7 +1043,9 @@ Thanks goes to Alex Schultz for keep finding bugs, but also helping out solving 
 ### Bug Fixes
 
 * [Bug-232]: `Graphics2D.getTransform()` throws NPE.
-* [Bug-233]: "Teleport"
+*
+
+[Bug-233]: "Teleport"
     * occurred when robot's distance remaining was very large.
 * [Bug-234]: Source is not included.
     * `robot.java.source.included` was not set in the robot.properties file.
@@ -2056,7 +2064,9 @@ This is critical for e.g. the TeamRumble, so please notice the known issue below
       turn" advantage over the other robot.
     * Now, the ordering does not matter anymore, as when ever the robots are checked one at a time in sequence, then
       they will be checked in random order.
-* [Bug-103]: ConcurrentModificationException.
+*
+
+[Bug-103]: ConcurrentModificationException.
     * `ConcurrentModificationException` could still occur when called one of the `getXXEvent` methods with
       an `AdvancedRobot`.
     * Now all `getXXEvent` methods like e.g. `getAllEvents()` are all synchronized directly with the internal event
@@ -2156,7 +2166,9 @@ This is critical for e.g. the TeamRumble, so please notice the known issue below
 
 ### Bug Fix
 
-* [Bug-91]: `ConcurrentModificationException`.
+*
+
+[Bug-91]: `ConcurrentModificationException`.
     * A couple of `ConcurrentModificationException` bugs were introduced with version 1.4, which are now fixed.
     * Thank goes to Helge Rhodin ("Krabb") for help with solving the bug!
 
@@ -2388,7 +2400,9 @@ This is critical for e.g. the TeamRumble, so please notice the known issue below
 
 #### Codesize
 
-* [Req-38]: Codesize.
+*
+
+[Req-38]: Codesize.
     * The codesize tool by Christian D. Schnell has been added to support the built-in [RoboRumble] plus a new feature
       for getting the codesize and robot codesize class (MiniBot, MegaBot etc.) when a robot is being packaged.
     * This tool has now been taken over by Flemming N. Larsen (agreed with Christian) and updated to version 1.1, which
@@ -2632,7 +2646,9 @@ This is critical for e.g. the TeamRumble, so please notice the known issue below
 
 ### Bug Fix
 
-* [Bug-57]: `ConcurrentModificationException`.
+*
+
+[Bug-57]: `ConcurrentModificationException`.
     * Removed a `ConcurrentModificationException` that occurred when processing robot events.
 
 ### Changes
@@ -3665,9 +3681,12 @@ This is critical for e.g. the TeamRumble, so please notice the known issue below
 
 [Markdown]: http://daringfireball.net/projects/markdown/syntax (Markdown syntax)
 
-[IRobotSnapshot.getContestantIndex()]: https://robocode.sourceforge.io/docs/robocode/robocode/control/snapshot/IRobotSnapshot.html#getContestantIndex()  (robocode.control.snapshot.IRobotSnapshot.getContestantIndex())
-[IRobotSnapshot.getRobotIndex()]: https://robocode.sourceforge.io/docs/robocode/robocode/control/snapshot/IRobotSnapshot.html#getRobotIndex() (robocode.control.snapshot.IRobotSnapshot.getRobotIndex())
-[IRobotSnapshot.getTeamIndex()]: https://robocode.sourceforge.io/docs/robocode/robocode/control/snapshot/IRobotSnapshot.html#getTeamIndex()  (robocode.control.snapshot.IRobotSnapshot.getTeamIndex())
+[IRobotSnapshot.getContestantIndex()]: https://robocode.sourceforge.io/docs/robocode/robocode/control/snapshot/IRobotSnapshot.html#getContestantIndex()  (
+robocode.control.snapshot.IRobotSnapshot.getContestantIndex())
+[IRobotSnapshot.getRobotIndex()]: https://robocode.sourceforge.io/docs/robocode/robocode/control/snapshot/IRobotSnapshot.html#getRobotIndex() (
+robocode.control.snapshot.IRobotSnapshot.getRobotIndex())
+[IRobotSnapshot.getTeamIndex()]: https://robocode.sourceforge.io/docs/robocode/robocode/control/snapshot/IRobotSnapshot.html#getTeamIndex()  (
+robocode.control.snapshot.IRobotSnapshot.getTeamIndex())
 
 [Patch-1]: https://sourceforge.net/p/robocode/patches/1/ (#1 Improved priority battle handling)
 
