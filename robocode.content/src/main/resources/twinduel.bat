@@ -6,24 +6,24 @@
 @rem https://robocode.sourceforge.io/license/epl-v10.html
 @rem
 
+@echo off
 
 @rem ------------------------------------------------------
-@rem Run Robocode
+@rem TwinDuel
 @rem ------------------------------------------------------
 
-@rem IMPORTANT: Take notice of which version of Java you are using!
-@rem
-@rem When running Robocode on Java 12 or never, the -Djava.security.manager=allow must be set by the
-@rem user explicitly to enable the Java Security Manager, which Robocode required.
-@rem
-@rem Read more about this option here:
-@rem https://openjdk.org/jeps/411
-@rem
-@rem If you are running a Java version older than Java 12, uncomment or remove the "set _JAVA_OPTIONS"
-@rem line. You find the java version by writing "java -version" in a terminal.
+@rem  Only set 'java.security.manager=allow' for Java version 12 and newer
+call java_version.bat
+if %JAVA_MAJOR_VERSION% GEQ 12 set _JAVA_OPTIONS="-Djava.security.manager=allow"
 
-@rem Uncomment or remove this line, if you run on a Java version older than version 12
-set _JAVA_OPTIONS="-Djava.security.manager=allow"
+@rem Run TwinDuel
 
-@rem Run Robocode with Java
-java -Xmx512M -cp "libs/*" -XX:+IgnoreUnrecognizedVMOptions "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" roborumble.RoboRumbleAtHome ./roborumble/twinduel.txt
+java ^
+  -cp "libs/*" ^
+  -Xmx512M ^
+  -XX:+IgnoreUnrecognizedVMOptions ^
+  "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" ^
+  "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" ^
+  "--add-opens=java.desktop/javax.swing.text=ALL-UNNAMED" ^
+  "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" ^
+  roborumble.RoboRumbleAtHome ./roborumble/twinduel.txt
