@@ -15,9 +15,8 @@
 @rem Setup Java2D
 call java2d.bat
 
-@rem  Only set 'java.security.manager=allow' for Java version 12 and newer
-call java_version.bat
-if %JAVA_MAJOR_VERSION% GEQ 12 set _JAVA_OPTIONS="-Djava.security.manager=allow"
+@rem Used for setting _JAVA_OPTIONS
+call set_java_options.bat
 
 @rem Run Robocode
 

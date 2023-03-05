@@ -7,33 +7,30 @@
 # https://robocode.sourceforge.io/license/epl-v10.html
 #
 
-
 #----------------------------------------------------------
-# Run Robocode
+# TeamRumble
 #----------------------------------------------------------
 
-# IMPORTANT: Take notice of which version of Java you are using!
-#
-# When running Robocode on Java 12 or never, the -Djava.security.manager=allow must be set by the
-# user explicitly to enable the Java Security Manager, which Robocode required.
-#
-# Read more about this option here:
-# https://openjdk.org/jeps/411
-#
-# If you are running a Java version older than Java 12, uncomment or remove the "export _JAVA_OPTIONS"
-# line. You find the java version by writing "java -version" in a terminal.
-
-# Uncomment or remove this line, if you run on a Java version older than version 12
-export _JAVA_OPTIONS="-Djava.security.manager=allow"
+# Used for setting Java options
+./set_java_options.sh
 
 # Save present work directory (pwd)
-pwd=`pwd`
+pwd=$(pwd)
 
 # Change directory to the directory where this script is located
-cd "${0%/*}"
+cd "${0%/*}" || exit
 
-# Run Robocode with Java
-java -Xmx512M -cp "libs/*" -XX:+IgnoreUnrecognizedVMOptions "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" roborumble.RoboRumbleAtHome ./roborumble/teamrumble.txt
+# Run TeamRumble
+java \
+  -cp "libs/*" \
+  -Xmx512M \
+  -Xdock:name=TeamRumble \
+  -Xdock:icon=roborumble.ico \
+  -XX:+IgnoreUnrecognizedVMOptions \
+  "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" \
+  "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" \
+  roborumble.RoboRumbleAtHome \
+  ./roborumble/teamrumble.txt
 
 # Restore present work directory
-cd "${pwd}"
+cd "${pwd}" || exit

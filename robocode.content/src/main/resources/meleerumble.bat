@@ -12,18 +12,14 @@
 @rem MeleeRumble
 @rem ------------------------------------------------------
 
-@rem  Only set 'java.security.manager=allow' for Java version 12 and newer
-call java_version.bat
-if %JAVA_MAJOR_VERSION% GEQ 12 set _JAVA_OPTIONS="-Djava.security.manager=allow"
+@rem Used for setting Java options
+call set_java_options.bat
 
 @rem Run MeleeRumble
-
 java ^
   -cp "libs/*" ^
   -Xmx1024M ^
   -XX:+IgnoreUnrecognizedVMOptions ^
   "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" ^
   "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" ^
-  "--add-opens=java.desktop/javax.swing.text=ALL-UNNAMED" ^
-  "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" ^
   roborumble.RoboRumbleAtHome ./roborumble/meleerumble.txt
