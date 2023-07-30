@@ -32,9 +32,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
 
 
 /**
@@ -284,26 +281,12 @@ public final class RobocodeMain extends RobocodeMainBase {
 				+ "  Robots have access to their IRobotPeer interfaces.\n" + "  You should only run robots which you trust!";
 
 		if (RobocodeProperties.isSecurityOff()) {
-			addRobotsDirToClassPath();
-
 			System.out.println("Warning: " + nosecMessage); // beside the log
 			Logger.logWarning(nosecMessage);
 		}
 		if (System.getProperty("EXPERIMENTAL", "false").equals("true")) {
 			System.out.println("Warning: " + exMessage); // beside the log
 			Logger.logWarning(exMessage);
-		}
-	}
-
-	public static void addRobotsDirToClassPath() {
-		File robotsDir = FileUtil.getRobotsDir();
-		URLClassLoader urlClassLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
-		try {
-			Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-			method.setAccessible(true);
-			method.invoke(urlClassLoader, robotsDir.toURI().toURL());
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
 		}
 	}
 

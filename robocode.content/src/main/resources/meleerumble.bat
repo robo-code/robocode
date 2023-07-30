@@ -17,7 +17,7 @@ call set_java_options.bat
 
 @rem Run MeleeRumble
 java ^
-  -cp "libs/*" ^
+  -cp "libs/*;robots" ^
   -Xmx1024M ^
   -XX:+IgnoreUnrecognizedVMOptions ^
   "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" ^

@@ -1,4 +1,9 @@
-## Version 1.9.5.1
+## Version 1.9.5.1 (30-07-2023)
+
+### Bugfix:
+
+* Fixed `ClassCastException` with `URLClassLoader` when accessing `ClassLoader.getSystemClassLoader()` on Java version newer
+  than Java 8 and running with `-DNOSECURITY=true`.
 
 ### Improvements
 
@@ -739,10 +744,10 @@
   every battle.
     * Works only when "Enable replay recording" is enabled (is automatically set when enabling auto recording).
 * [Req-124]: Ability to save the properties file for robots in dev. path.
-*
+* [Req-129]: `Rules.getBulletSpeed`.
 
-[Req-129]: `Rules.getBulletSpeed`.
     * It is about keeping the bullet power within 0.1 - 3.0, even when input is lesser or greater than this valid range.
+
 * [Req-128]: In battle name hiding.
     * A general solution has been provided. A new game rule, "hide enemy names", can be enabled or disabled.
 
@@ -938,11 +943,13 @@ Thanks goes to Alex Schultz for keep finding bugs, but also helping out solving 
 *
 
 [Req-101]: `onRoundEnded()`.
+
     * It is now possible for robots to get notified when a round has ended.
     * The `onRoundEnded()` event handler receives a new `RoundEndedEvent` that contains information about the number of
       turns in the round and total turns in the whole battle when the event occurred.
     * The `robocode.control.RoundEndedEvent` in the Control API has been extended with a new method
       named `getTotalTurns()` similar to the new `robocode.RoundEndedEvent` for the Robot API.
+
 * [Req-114]: RateControlRobot vs. TeamRobot.
     * The `RateControlRobot` is now a `TeamRobot` meaning that it can participate in team battles.
 * [Req-113]: Skipped turn events.
@@ -1046,7 +1053,9 @@ Thanks goes to Alex Schultz for keep finding bugs, but also helping out solving 
 *
 
 [Bug-233]: "Teleport"
+
     * occurred when robot's distance remaining was very large.
+
 * [Bug-234]: Source is not included.
     * `robot.java.source.included` was not set in the robot.properties file.
 
@@ -2067,10 +2076,12 @@ This is critical for e.g. the TeamRumble, so please notice the known issue below
 *
 
 [Bug-103]: ConcurrentModificationException.
+
     * `ConcurrentModificationException` could still occur when called one of the `getXXEvent` methods with
       an `AdvancedRobot`.
     * Now all `getXXEvent` methods like e.g. `getAllEvents()` are all synchronized directly with the internal event
       queue of the robot before reading out the events.
+
 * [Bug-105]: `testingCondition` flag not reset.
     * Test Condition flag of a robot was not reset between rounds.
     * If the robot thread was disabled while testing a condition for a custom event all following rounds will trigger an
@@ -2169,6 +2180,7 @@ This is critical for e.g. the TeamRumble, so please notice the known issue below
 *
 
 [Bug-91]: `ConcurrentModificationException`.
+
     * A couple of `ConcurrentModificationException` bugs were introduced with version 1.4, which are now fixed.
     * Thank goes to Helge Rhodin ("Krabb") for help with solving the bug!
 
@@ -2403,6 +2415,7 @@ This is critical for e.g. the TeamRumble, so please notice the known issue below
 *
 
 [Req-38]: Codesize.
+
     * The codesize tool by Christian D. Schnell has been added to support the built-in [RoboRumble] plus a new feature
       for getting the codesize and robot codesize class (MiniBot, MegaBot etc.) when a robot is being packaged.
     * This tool has now been taken over by Flemming N. Larsen (agreed with Christian) and updated to version 1.1, which
@@ -2649,6 +2662,7 @@ This is critical for e.g. the TeamRumble, so please notice the known issue below
 *
 
 [Bug-57]: `ConcurrentModificationException`.
+
     * Removed a `ConcurrentModificationException` that occurred when processing robot events.
 
 ### Changes
