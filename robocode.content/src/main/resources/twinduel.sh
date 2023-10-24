@@ -22,7 +22,7 @@ cd "${0%/*}" || exit
 
 # Run TwinDuel
 java \
-  -cp "libs/*:robots" \
+  -cp "libs/*" \
   -Xmx512M \
   -Xdock:name=TwinDuel \
   -Xdock:icon=roborumble.ico \

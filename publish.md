@@ -26,7 +26,7 @@ Make sure you are running on Java 8 before running the following commands.
 ./gradlew publishToSonatype
 ```
 
-When you log in , you should be able to see the binaries uploaded to [staging Repository].
+When you log in, you should be able to see the binaries uploaded to [staging Repository].
 
 # Release to public repos
 

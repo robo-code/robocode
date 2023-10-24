@@ -22,7 +22,7 @@ cd "${0%/*}" || exit
 
 # Run MeleeRumble
 java \
-  -cp "libs/*:robots" \
+  -cp "libs/*" \
   -Xmx1024M \
   -Xdock:name=MeleeRumble \
   -Xdock:icon=roborumble.ico \

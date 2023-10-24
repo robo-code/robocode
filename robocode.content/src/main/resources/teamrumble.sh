@@ -22,7 +22,7 @@ cd "${0%/*}" || exit
 
 # Run TeamRumble
 java \
-  -cp "libs/*:robots" \
+  -cp "libs/*" \
   -Xmx512M \
   -Xdock:name=TeamRumble \
   -Xdock:icon=roborumble.ico \

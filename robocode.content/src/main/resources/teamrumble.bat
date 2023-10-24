@@ -17,7 +17,7 @@ call set_java_options.bat
 
 @rem Run TeamRumble
 java ^
-  -cp "libs/*;robots" ^
+  -cp "libs/*" ^
   -Xmx512M ^
   -XX:+IgnoreUnrecognizedVMOptions ^
   "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" ^

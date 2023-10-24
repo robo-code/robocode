@@ -1,9 +1,16 @@
+## Version 1.9.5.2 (24-10-2023)
+
+### Bugfix:
+
+* Fixed `Throwable: java.lang.LinkageError: loader constraint violation: when resolving method` issue in the
+  `RobotClassLoader`.
+
 ## Version 1.9.5.1 (30-Jul-2023)
 
 ### Bugfix:
 
-* Fixed `ClassCastException` with `URLClassLoader` when accessing `ClassLoader.getSystemClassLoader()` on Java version newer
-  than Java 8 and running with `-DNOSECURITY=true`.
+* Fixed `ClassCastException` with `URLClassLoader` when accessing `ClassLoader.getSystemClassLoader()` on Java versions
+  newer than Java 8 and running with `-DNOSECURITY=true`.
 
 ### Improvements
 
