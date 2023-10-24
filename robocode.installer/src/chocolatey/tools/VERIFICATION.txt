@@ -8,16 +8,16 @@ VERIFYING CHECKSUM CONTENT
 
 1. Download installer from:
 
-   https://sourceforge.net/projects/robocode/files/robocode/1.9.5.1/robocode-1.9.5.1-setup.jar
+   https://sourceforge.net/projects/robocode/files/robocode/1.9.5.2/robocode-1.9.5.2-setup.jar
 
 2. You can use one of the following methods to obtain the SHA256 checksum:
-   - Using powershell function `Get-FileHash robocode-1.9.5.1-setup.jar`
-   - Using Chocolatey utility `checksum.exe robocode-1.9.5.1-setup.jar`
-   - Get-RemoteChecksum https://sourceforge.net/projects/robocode/files/robocode/1.9.5.1/robocode-1.9.5.1-setup.jar
+   - Using powershell function `Get-FileHash robocode-1.9.5.2-setup.jar`
+   - Using Chocolatey utility `checksum.exe robocode-1.9.5.2-setup.jar`
+   - Get-RemoteChecksum https://sourceforge.net/projects/robocode/files/robocode/1.9.5.2/robocode-1.9.5.2-setup.jar
 
 3. Verify that checksum is:
 
-   BBEA0245506B88DBD07653167EC019BED07D9FC5FB45EC4C7062AEAA99C3C9B3
+   42EC536DF75D05C86BFF6365966F881E0C7F259800E4E2A7DD84D1AD6B2387F2
 
 
 VERIFYING LICENCE
