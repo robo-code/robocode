@@ -6,7 +6,7 @@ plugins {
 dependencies {
     implementation(project(":robocode.api"))
     implementation(project(":robocode.core"))
-    implementation("net.sf.robocode:codesize:1.2")
+    implementation("net.sf.robocode:codesize:1.3.0")
     runtimeOnly(project(":robocode.battle"))
 }
 
