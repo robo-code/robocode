@@ -12,7 +12,7 @@
 #----------------------------------------------------------
 
 # Used for setting Java options
-./set_java_options.sh
+. ./set_java_options.sh
 
 # Save present work directory (pwd)
 pwd=$(pwd)
