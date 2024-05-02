@@ -1,3 +1,7 @@
+## Version 1.9.5.3
+
+* #66: Fixed a problem setting `_JAVA_OPTIONS` properly in shell files. Thanks goes to @scientificworld for this fix. 😊
+
 ## Version 1.9.5.2 (24-Oct-2023)
 
 ### Bugfix:
