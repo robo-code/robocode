@@ -1,12 +1,15 @@
 ## Version 1.9.5.3 (11-Sep-2024)
 
-### Bugfix:
+### Bugfix
 
-*
 * #66: Fixed an issue where Robocode would not start when executing the `robocode.sh` script for Linux and macOS due to
   this error:
   `java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release`
     * Thanks goes to @scientificworld for this fix. 😊
+
+### Improvements
+
+* Upgraded built-in Eclipse Compiler for Java to version 3.39
 
 ## Version 1.9.5.2 (24-Oct-2023)
 
