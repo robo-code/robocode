@@ -11,7 +11,7 @@ val ossrhPassword: String by project
 nexusPublishing {
     repositories {
         sonatype {
-            nexusUrl.set(uri("https://oss.sonatype.org/service/local/"))//staging/deploy/maven2/
+            nexusUrl.set(uri("https://oss.sonatype.org/service/local/"))
             snapshotRepositoryUrl.set(uri("https://oss.sonatype.org/content/repositories/snapshots/"))
             stagingProfileId.set("c7f511545ccf8")
             username.set(ossrhUsername)

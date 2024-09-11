@@ -47,7 +47,7 @@ ossrhPassword=<password-at-issues.sonatype.org>
 
 ## Just staging
 
-Make sure you are running on Java 8 before running the following commands.
+Run this command to publish to the staging repository. 
 
 ```shell
 ./gradlew publishToSonatype
