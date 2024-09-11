@@ -1,6 +1,12 @@
-## Version 1.9.5.3
+## Version 1.9.5.3 (11-Sep-2024)
 
-* #66: Fixed a problem setting `_JAVA_OPTIONS` properly in shell files. Thanks goes to @scientificworld for this fix. 😊
+### Bugfix:
+
+*
+* #66: Fixed an issue where Robocode would not start when executing the `robocode.sh` script for Linux and macOS due to
+  this error:
+  `java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release`
+    * Thanks goes to @scientificworld for this fix. 😊
 
 ## Version 1.9.5.2 (24-Oct-2023)
 
@@ -755,7 +761,9 @@
   every battle.
     * Works only when "Enable replay recording" is enabled (is automatically set when enabling auto recording).
 * [Req-124]: Ability to save the properties file for robots in dev. path.
-* [Req-129]: `Rules.getBulletSpeed`.
+*
+
+[Req-129]: `Rules.getBulletSpeed`.
 
     * It is about keeping the bullet power within 0.1 - 3.0, even when input is lesser or greater than this valid range.
 
@@ -1090,7 +1098,8 @@ Thanks goes to Alex Schultz for keep finding bugs, but also helping out solving 
       security violation or they could not be loaded or started (meaning that they will not be allowed to run).
     * In addition, ALL security violations are always written out in both the main console and robot's console. A
       message will be written out in the main console
-      like `xxx has caused a security violation. This robot has been banned and will not be allowed to participate in battles`.
+      like
+      `xxx has caused a security violation. This robot has been banned and will not be allowed to participate in battles`.
 
 #### Painting
 
@@ -4167,5 +4176,3 @@ teams)
 [Req-159]: https://sourceforge.net/p/robocode/feature-requests/159/  (Fix overkilled garbage collection on static
 fields)
 [Req-160]: https://sourceforge.net/p/robocode/feature-requests/160/  (Fixed width font in console)
-
-[#35]: https://sourceforge.net/p/robocode/support-requests/35/  (DJL API in Robocode - getenv)
