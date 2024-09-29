@@ -1,12 +1,23 @@
 plugins {
-    id("io.github.gradle-nexus.publish-plugin") version "1.0.0"
+    `java-library`
     idea
+    id("io.github.gradle-nexus.publish-plugin") version "1.0.0"
 }
 
 description = "Robocode - Build the best - destroy the rest!"
 
 val ossrhUsername: String by project
 val ossrhPassword: String by project
+
+subprojects {
+    apply(plugin = "java")
+
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(8))
+        }
+    }
+}
 
 nexusPublishing {
     repositories {
