@@ -1,5 +1,4 @@
 group = "net.sf.robocode"
-version = "1.9.5.3"
 
 plugins {
     java
