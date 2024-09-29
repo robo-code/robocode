@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 1.8
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4.4.0
         with:
           java-version: '8'
           distribution: 'temurin'
@@ -19,27 +19,27 @@ jobs:
 
       - name: robocode.core test artifacts
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: robocode.core-test-result
           path: robocode.core/build/reports/tests/test
 
       - name: robocode.host test artifacts
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: robocode.host-test-result
           path: robocode.host/build/reports/tests/test
 
       - name: robocode.tests test artifacts
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: robocode.tests-result
           path: robocode.tests/build/reports/tests/test
 
       - name: setup binary artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: robocode-setup
           path: build/robocode-*-setup.jar
