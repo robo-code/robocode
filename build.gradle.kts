@@ -2,6 +2,7 @@ plugins {
     `java-library`
     idea
     alias(libs.plugins.nexus.publish)
+    alias(libs.plugins.ben.manes.versions)
 }
 
 description = "Robocode - Build the best - destroy the rest!"
