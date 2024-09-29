@@ -15,7 +15,7 @@ java {
 }
 
 tasks {
-    register("copyContent", Copy::class) {
+    register<Copy>("copyContent") {
         from("src/main/resources") {
             include("**/*.*")
         }
@@ -24,21 +24,24 @@ tasks {
         }
         into("../.sandbox/robots")
     }
-    register("copyClasses", Copy::class) {
+
+    register<Copy>("copyClasses") {
         dependsOn(configurations.runtimeClasspath)
 
         from(compileJava)
         into("../.sandbox/robots")
     }
+
     javadoc {
         source = sourceSets["main"].java
         include("**/*.java")
     }
+
     jar {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
         dependsOn("copyContent")
         dependsOn("copyClasses")
-        dependsOn("javadoc")
+        dependsOn(javadoc)
         from("src/main/java") {
             include("**")
         }

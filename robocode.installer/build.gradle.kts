@@ -6,19 +6,22 @@ plugins {
 description = "Robocode Installer"
 
 dependencies {
-    implementation(project(":robocode.api"))
-    implementation(project(":robocode.battle"))
-    implementation(project(":robocode.core"))
-    implementation(project(":robocode.content"))
-    implementation(project(":robocode.host"))
-    implementation(project(":robocode.repository"))
-    implementation(project(":robocode.roborumble"))
-    implementation(project(":robocode.samples"))
-    implementation(project(":robocode.sound"))
-    implementation(project(":robocode.ui"))
-    implementation(project(":robocode.ui.editor"))
-    implementation(project(":robocode.content"))
-    runtimeOnly("org.eclipse.jdt:org.eclipse.jdt.core:3.39.0")
+    // These Robocode artifacts must be installed
+    runtimeOnly(project(":robocode.api"))
+    runtimeOnly(project(":robocode.battle"))
+    runtimeOnly(project(":robocode.core"))
+    runtimeOnly(project(":robocode.content"))
+    runtimeOnly(project(":robocode.host"))
+    runtimeOnly(project(":robocode.repository"))
+    runtimeOnly(project(":robocode.roborumble"))
+    runtimeOnly(project(":robocode.samples"))
+    runtimeOnly(project(":robocode.sound"))
+    runtimeOnly(project(":robocode.ui"))
+    runtimeOnly(project(":robocode.ui.editor"))
+    runtimeOnly(project(":robocode.content"))
+
+    // The built-in Eclipse Compiler for Java (ECJ) must also be installed
+    runtimeOnly(libs.eclipse.jdt)
 }
 
 tasks {
@@ -29,7 +32,7 @@ tasks {
             attributes(mapOf("Main-Class" to "net.sf.robocode.installer.AutoExtract"))
         }
         archiveFileName.set("robocode-${project.version}-setup.jar")
-        destinationDirectory.set(file("$buildDir/../../build"))
+        destinationDirectory.set(file("${layout.buildDirectory.get()}/../../build"))
 
         into("javadoc") {
             from("../robocode.api/build/docs/javadoc")
@@ -38,24 +41,28 @@ tasks {
         into("libs") {
             from({
                 configurations.runtimeClasspath.get().filter {
-                    it.name.endsWith("jar") && !it.name.contains("eclipse") && !it.name.contains("robocode.samples") && !it.name.contains(
-                            "robocode.content"
-                    )
+                    it.name.endsWith("jar") &&
+                            !it.name.contains("eclipse") &&
+                            !it.name.startsWith("ecj") &&
+                            !it.name.contains("robocode.samples") &&
+                            !it.name.contains("robocode.content")
                 }.map { it }
             })
         }
         into("compilers") {
             from({
-                configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") && it.name.contains("eclipse") }
-                        .map { it }
+                configurations.runtimeClasspath.get().filter {
+                    it.name.endsWith("jar") &&
+                            (it.name.contains("eclipse") || (it.name.startsWith("ecj")))
+                }.map { it }
             })
         }
         into("robots") {
             from({
                 configurations.runtimeClasspath.get()
-                        .filter { it.name.endsWith("jar") && it.name.contains("robocode.samples") }.map {
-                            zipTree(it)
-                        }
+                    .filter { it.name.endsWith("jar") && it.name.contains("robocode.samples") }.map {
+                        zipTree(it)
+                    }
             }) {
                 exclude("META-INF")
                 exclude("META-INF/**")
@@ -64,18 +71,26 @@ tasks {
         into("") {
             from({
                 configurations.runtimeClasspath.get()
-                        .filter { it.name.endsWith("jar") && it.name.contains("robocode.content") }.map {
-                            zipTree(it)
-                        }
+                    .filter { it.name.endsWith("jar") && it.name.contains("robocode.content") }.map {
+                        zipTree(it)
+                    }
             })
             from("../versions.md")
         }
     }
 
     task<Exec>("dockerBuild") {
-        dependsOn("jar")
+        dependsOn(jar)
         workingDir = file("../")
-        commandLine("docker", "build", "-t", "zamboch/roborumble:${project.version}", "-t", "zamboch/roborumble:latest", ".")
+        commandLine(
+            "docker",
+            "build",
+            "-t",
+            "zamboch/roborumble:${project.version}",
+            "-t",
+            "zamboch/roborumble:latest",
+            "."
+        )
     }
 
     task<Exec>("dockerPush") {
@@ -90,7 +105,7 @@ tasks {
 
     task<Copy>("chocoCopy") {
         dependsOn("chocoClean")
-        dependsOn("jar")
+        dependsOn(jar)
         from("../build/") {
             include("robocode-${project.version}-setup.jar")
             include("robocode-${project.version}-setup.jar.asc")

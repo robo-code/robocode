@@ -1,7 +1,7 @@
 plugins {
     `java-library`
     idea
-    id("io.github.gradle-nexus.publish-plugin") version "1.0.0"
+    alias(libs.plugins.nexus.publish)
 }
 
 description = "Robocode - Build the best - destroy the rest!"

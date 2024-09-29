@@ -5,9 +5,9 @@ plugins {
 
 dependencies {
     implementation(project(":robocode.api"))
-    implementation(project(":robocode.core"))
-    implementation("net.sf.robocode:codesize:1.3.0")
+    runtimeOnly(project(":robocode.core"))
     runtimeOnly(project(":robocode.battle"))
+    runtimeOnly(libs.codesize)
 }
 
 description = "Roborumble Client"
@@ -29,7 +29,8 @@ tasks {
         source = sourceSets["main"].java
         include("roborumble/RoboRumbleAtHome.java")
     }
+
     jar {
-        dependsOn("javadoc")
+        dependsOn(javadoc)
     }
 }

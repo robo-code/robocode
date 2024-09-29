@@ -7,8 +7,8 @@ dependencies {
     implementation(project(":robocode.api"))
     implementation(project(":robocode.core"))
     implementation(project(":robocode.battle"))
-    implementation("org.picocontainer:picocontainer:2.15")
     runtimeOnly(project(":robocode.sound"))
+    implementation(libs.picocontainer)
 }
 
 description = "Robocode UI"
@@ -23,7 +23,8 @@ tasks {
         source = sourceSets["main"].java
         include("net/sf/robocode/ui/Module.java")
     }
+
     jar {
-        dependsOn("javadoc")
+        dependsOn(javadoc)
     }
 }

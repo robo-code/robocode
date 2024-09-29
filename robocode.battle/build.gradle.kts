@@ -7,8 +7,9 @@ dependencies {
     implementation(project(":robocode.api"))
     implementation(project(":robocode.core"))
     implementation(project(":robocode.host"))
-    implementation("org.picocontainer:picocontainer:2.15")
     runtimeOnly(project(":robocode.repository"))
+
+    implementation(libs.picocontainer)
 }
 
 description = "Robocode Battle"
@@ -24,6 +25,6 @@ tasks {
         include("net/sf/robocode/battle/Module.java")
     }
     jar {
-        dependsOn("javadoc")
+        dependsOn(javadoc)
     }
 }

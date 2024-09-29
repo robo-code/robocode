@@ -1,3 +1,9 @@
+## Version 1.9.5.4
+
+### Bugfix
+
+* The built-in Eclipse Compiler for Java (ECJ) could not be found.
+
 ## Version 1.9.5.3 (11-Sep-2024)
 
 ### Bugfix

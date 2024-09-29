@@ -6,9 +6,8 @@ plugins {
 dependencies {
     implementation(project(":robocode.api"))
     implementation(project(":robocode.core"))
-    implementation(project(":robocode.battle"))
     implementation(project(":robocode.ui"))
-    implementation("org.picocontainer:picocontainer:2.15")
+    implementation(libs.picocontainer)
 }
 
 description = "Robocode UI Robot editor"
