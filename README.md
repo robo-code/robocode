@@ -31,6 +31,6 @@ Happy Robocoding! 🤖⌨️
 
 [Facebook group]: https://www.facebook.com/groups/129627130234/
 
-[Robocode Application Developers]: http://groups.google.com/group/robocode-developers.
+[Robocode Application Developers]: https://groups.google.com/g/robocode-developers
 
 [Robocode Guide for building Robocode]: https://robowiki.net/wiki/Robocode/Developers_Guide_for_building_Robocode
