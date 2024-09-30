@@ -1,5 +1,7 @@
 # Robocode
 
+![Robocode logo](https://robocode.sourceforge.io/gfx/robocode_logo_tanks.png)
+
 **_Build the best — destroy the rest!_**
 
 Robocode is a programming game, where the goal is to develop a robot battle tank to battle against other tanks in Java.
