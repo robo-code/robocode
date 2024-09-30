@@ -1,4 +1,4 @@
-## Version 1.9.5.4
+## Version 1.9.5.4 (30-Sep-2024)
 
 ### Bugfix
 
@@ -19,14 +19,14 @@
 
 ## Version 1.9.5.2 (24-Oct-2023)
 
-### Bugfix:
+### Bugfix
 
 * Fixed `Throwable: java.lang.LinkageError: loader constraint violation: when resolving method` issue in the
   `RobotClassLoader`.
 
 ## Version 1.9.5.1 (30-Jul-2023)
 
-### Bugfix:
+### Bugfix
 
 * Fixed `ClassCastException` with `URLClassLoader` when accessing `ClassLoader.getSystemClassLoader()` on Java versions
   newer than Java 8 and running with `-DNOSECURITY=true`.
@@ -39,7 +39,7 @@
 
 ## Version 1.9.5.0 (26-Feb-2023) Updated script files
 
-### Bugfix:
+### Bugfix
 
 * [Bug-418]: Excluded bots are removed from LiteRumble. Thanks to Xor for this fix! :)
 
