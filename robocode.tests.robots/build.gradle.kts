@@ -11,21 +11,23 @@ dependencies {
 description = "Robocode Tested Robots"
 
 tasks {
-    register("copyContent", Copy::class) {
+    val copyContent by registering(Copy::class) {
         from("src/main/resources") {
             include("**/*.*")
         }
         into("../.sandbox/robots")
     }
-    register("copyClasses", Copy::class) {
+
+    val copyClasses by registering(Copy::class) {
         dependsOn(configurations.runtimeClasspath)
 
         from(compileJava)
         into("../.sandbox/robots")
     }
+
     jar {
-        dependsOn("copyContent")
-        dependsOn("copyClasses")
+        dependsOn(copyContent)
+        dependsOn(copyClasses)
     }
 }
 

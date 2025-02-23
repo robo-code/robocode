@@ -79,7 +79,7 @@ tasks {
         }
     }
 
-    task<Exec>("dockerBuild") {
+    val dockerBuild by registering(Exec::class) {
         dependsOn(jar)
         workingDir = file("../")
         commandLine(
@@ -93,19 +93,21 @@ tasks {
         )
     }
 
-    task<Exec>("dockerPush") {
-        dependsOn("dockerBuild")
+    val dockerPush by registering(Exec::class) {
+        dependsOn(dockerBuild)
+
         workingDir = file("../")
         commandLine("docker", "push", "zamboch/roborumble", "--all-tags")
     }
 
-    task<Delete>("chocoClean") {
+    val chocoClean by registering(Delete::class) {
         delete("build/choco")
     }
 
-    task<Copy>("chocoCopy") {
-        dependsOn("chocoClean")
+    val chocoCopy by registering(Copy::class) {
+        dependsOn(chocoClean)
         dependsOn(jar)
+
         from("../build/") {
             include("robocode-${project.version}-setup.jar")
             include("robocode-${project.version}-setup.jar.asc")
@@ -117,14 +119,16 @@ tasks {
         into("build/choco")
     }
 
-    task<Exec>("chocoBuild") {
-        dependsOn("chocoCopy")
+    val chocoBuild by registering(Exec::class) {
+        dependsOn(chocoCopy)
+
         workingDir = file("build/choco")
         commandLine("choco", "pack", "--version", "${project.version}")
     }
 
-    task<Exec>("chocoPush") {
-        dependsOn("chocoBuild")
+    val chocoPush by registering(Exec::class) {
+        dependsOn(chocoBuild)
+
         workingDir = file("build/choco")
         commandLine("choco", "push", "robocode.${project.version}.nupkg", "-s", "https://push.chocolatey.org/")
     }

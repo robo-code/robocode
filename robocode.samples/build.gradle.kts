@@ -15,7 +15,7 @@ java {
 }
 
 tasks {
-    register<Copy>("copyContent") {
+    val copyContent by registering(Copy::class) {
         from("src/main/resources") {
             include("**/*.*")
         }
@@ -25,9 +25,7 @@ tasks {
         into("../.sandbox/robots")
     }
 
-    register<Copy>("copyClasses") {
-        dependsOn(configurations.runtimeClasspath)
-
+    val copyClasses by registering(Copy::class) {
         from(compileJava)
         into("../.sandbox/robots")
     }
@@ -38,10 +36,11 @@ tasks {
     }
 
     jar {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        dependsOn("copyContent")
-        dependsOn("copyClasses")
+        dependsOn(copyContent)
+        dependsOn(copyClasses)
         dependsOn(javadoc)
+
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
         from("src/main/java") {
             include("**")
         }

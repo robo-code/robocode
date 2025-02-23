@@ -38,11 +38,12 @@ tasks {
     }
 
     jar {
+        dependsOn(javadoc)
+
         manifest {
             attributes(mapOf("Main-Class" to "robocode.Robocode"))
         }
         archiveFileName.set("robocode.jar")
-        dependsOn(javadoc)
         into("") {
             from("../versions.md")
         }

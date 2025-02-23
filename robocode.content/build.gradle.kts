@@ -16,7 +16,7 @@ dependencies {
 }
 
 tasks {
-    register("copyContent", Copy::class) {
+    val copyContent by registering(Copy::class) {
         from("src/main/resources") {
             include("**/*.*")
         }
@@ -25,26 +25,28 @@ tasks {
         }
         into("../.sandbox")
     }
-    register("copyExternalLibs", Copy::class) {
-        dependsOn(configurations.runtimeClasspath)
+
+    val copyExternalLibs by registering(Copy::class) {
         from({
             configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") && it.name.contains("kotlin") }.map { it }
         })
         into("../.sandbox/libs")
     }
-    register("copyCompilers", Copy::class) {
-        dependsOn(configurations.runtimeClasspath)
+
+    val copyCompilers by registering(Copy::class) {
         from({
             configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") &&
                     (it.name.contains("eclipse") || (it.name.startsWith("ecj")))}.map { it }
         })
         into("../.sandbox/compilers")
     }
+
     processResources {
-        dependsOn("copyContent")
-        dependsOn("copyExternalLibs")
-        dependsOn("copyCompilers")
+        dependsOn(copyContent)
+        dependsOn(copyExternalLibs)
+        dependsOn(copyCompilers)
     }
+
     publishMavenJavaPublicationToSonatypeRepository {
         enabled = false
     }

@@ -18,7 +18,7 @@ java {
 }
 
 tasks {
-    register<Copy>("copyVersion") {
+    val copyVersion by registering(Copy::class) {
         from("../") {
             include("versions.md")
         }
@@ -26,7 +26,7 @@ tasks {
     }
 
     processResources{
-        dependsOn("copyVersion")
+        dependsOn(copyVersion)
     }
 
     javadoc {
