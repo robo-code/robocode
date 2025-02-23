@@ -1,3 +1,19 @@
+/**
+ * To build Robocode, you need to run this command:
+ * ./gradlew build
+ *
+ * To clean the build, to run this command:
+ * ./gradlew clean
+ *
+ * To run Robocode you need to build Robocode and do a `cd .sandbox` and write `robocode.bat` or `robocode.sh`
+ *
+ * The distribution file for Robocode is put into /build and named `robocode.x.x.x.x-setup.jar`
+ * The x.x.x.x is a version number like e.g. 1.9.5.4
+ *
+ * You can run the distribution file with hava like this:
+ * java -jar robocode.x.x.x.x-setup.jar
+ */
+
 plugins {
     `java-library`
     idea
@@ -17,6 +33,12 @@ subprojects {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(8))
         }
+    }
+}
+
+tasks {
+    named("clean") {
+        delete(".sandbox")
     }
 }
 

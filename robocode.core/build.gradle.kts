@@ -25,7 +25,7 @@ tasks {
         into("build/resources/main/")
     }
 
-    processResources{
+    compileJava {
         dependsOn(copyVersion)
     }
 
