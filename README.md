@@ -2,35 +2,53 @@
 
 ![Robocode logo](https://robocode.sourceforge.io/gfx/robocode_logo_tanks.png)
 
-**_Build the best — destroy the rest!_**
+**Motto: _Build the best — destroy the rest!_**
 
-Robocode is a programming game, where the goal is to develop a robot battle tank to battle against other tanks in Java.
-The robot battles are running in real-time and on-screen.
+**Robocode** is an engaging and educational [programming game] that allows you to code, test, and improve robot battle
+tanks. The game's primary aim is to teach programming skills in a fun and interactive environment.
 
-Read the [Introduction] for Robocode. Continue reading on [Robocode home page].
+With Robocode, you can:
 
-Learn from the community at [RoboWiki](https://robowiki.net/).
+- **Learn to Program**: Develop programming skills in languages like Java and Kotlin.
+- **Create Battle Tanks**: Design and program virtual robots that compete against each other in battles.
+- **Improve Problem-Solving**: Enhance your algorithmic thinking and problem-solving skills by writing better code to
+  outsmart opponents.
 
-Ask questions and get in touch with other Robocoders on the [Robocode group] or [Facebook group].
+Robocode is suitable for all levels—from beginners taking their first steps in coding to experienced developers looking
+for a fun challenge. Whether you are learning to program or just seeking a stimulating activity, Robocode offers a
+platform where you can have fun while honing your skills.
 
-Get in touch with the game application developers at [Robocode Application Developers].
+Get started with Robocode today and unleash your inner programmer!
 
-Instructions for how to build, test, and run the Robocode application is provided with
-the [Robocode Guide for building Robocode].
+- [Robocode home page]
+- [Introduction] to Robocode
+- [RoboWiki] is the best way to learn about Robocoding
+- [Robocode group] is where you can ask questions
+- [Facebook group] is a community for enthusiasts of the Robocode programming game
+- [Robocode Application Developers] is for people that want to develop or experiments with the Robocode application (
+  game)
+- [Robocode Guide for building Robocode], if you want to build Robocode yourself
+
+Also note that a new version of Robocode supports C# as well (and more languages in the future):
+
+- [Robocode Tank Royale] is a new platform for Robocode
 
 Happy Robocoding! 🤖⌨️
 
+[programming game]: https://x-team.com/magazine/coding-games "23 Programming Games to Level Up Your Programming Skills"
 
-[Introduction]: https://robocode.sourceforge.io/docs/ReadMe.html
+[Robocode home page]: https://robocode.sourceforge.io/ "Home page for Robocode"
 
-[Robocode home page]: https://robocode.sourceforge.io/
+[Introduction]: https://robocode.sourceforge.io/docs/ReadMe.html "Introduction into Robocode"
 
-[RoboWiki]: https://robowiki.net/
+[RoboWiki]: https://robowiki.net/ "RoboWiki - Collecting Robocode knowledge since 2003"
 
-[Robocode group]: https://groups.google.com/g/robocode
+[Robocode group]: https://groups.google.com/g/robocode "The Robocode Group"
 
-[Facebook group]: https://www.facebook.com/groups/129627130234/
+[Facebook group]: https://www.facebook.com/groups/129627130234/ "The Facebook group for Robocode"
 
-[Robocode Application Developers]: https://groups.google.com/g/robocode-developers
+[Robocode Guide for building Robocode]: https://robowiki.net/wiki/Robocode/Developers_Guide_for_building_Robocode "The guide for how to how to build Robocode (the game)"
 
-[Robocode Guide for building Robocode]: https://robowiki.net/wiki/Robocode/Developers_Guide_for_building_Robocode
+[Robocode Application Developers]: https://groups.google.com/g/robocode-developers "Group for developers of the Robocode application"
+
+[Robocode Tank Royale]: https://github.com/robocode-dev/tank-royale/blob/main/README.md "Robocode Tank Royale"
