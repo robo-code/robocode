@@ -27,6 +27,7 @@ tasks {
     }
 
     val copyExternalLibs by registering(Copy::class) {
+        dependsOn(configurations.runtimeClasspath)
         from({
             configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") && it.name.contains("kotlin") }.map { it }
         })
