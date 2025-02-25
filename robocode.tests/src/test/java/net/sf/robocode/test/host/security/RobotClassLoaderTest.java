@@ -13,7 +13,6 @@ import net.sf.robocode.core.EngineClassLoader;
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
-import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,7 +35,7 @@ public class RobotClassLoaderTest {
 	public static void init() throws IOException {
 		HiddenAccess.initContainer();
 		try {
-			File robotsPathFile = new File("../.sandbox/robots").getCanonicalFile().getAbsoluteFile();
+			File robotsPathFile = new File("../.sandbox/test-robots").getCanonicalFile().getAbsoluteFile();
 			robotsPath = robotsPathFile.getPath();
 		} catch (IOException e) {
 			e.printStackTrace(Logger.realErr);

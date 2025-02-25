@@ -10,8 +10,7 @@ package net.sf.robocode.test.helpers;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
-import robocode.control.*;
+import robocode.control.RobotTestBed;
 
 import java.io.File;
 

@@ -25,9 +25,18 @@ tasks {
         into("../.sandbox/robots")
     }
 
-    val copyClasses by registering(Copy::class) {
-        from(compileJava)
+    val copyRobotClasses by registering(Copy::class) {
+        dependsOn(compileJava)
+
+        from("build/classes/java/main")
         into("../.sandbox/robots")
+    }
+
+    val copyRobotClassesToTestRobots by registering(Copy::class) {
+        dependsOn(compileJava)
+
+        from("build/classes/java/main")
+        into("../.sandbox/test-robots")
     }
 
     javadoc {
@@ -37,7 +46,8 @@ tasks {
 
     jar {
         dependsOn(copyContent)
-        dependsOn(copyClasses)
+        dependsOn(copyRobotClasses)
+        dependsOn(copyRobotClassesToTestRobots)
         dependsOn(javadoc)
 
         duplicatesStrategy = DuplicatesStrategy.INCLUDE

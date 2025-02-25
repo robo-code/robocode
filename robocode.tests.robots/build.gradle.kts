@@ -15,19 +15,19 @@ tasks {
         from("src/main/resources") {
             include("**/*.*")
         }
-        into("../.sandbox/robots")
+        into("../.sandbox/test-robots")
     }
 
-    val copyClasses by registering(Copy::class) {
-        dependsOn(configurations.runtimeClasspath)
+    val copyRobotClasses by registering(Copy::class) {
+        dependsOn(compileJava)
 
-        from(compileJava)
-        into("../.sandbox/robots")
+        from("build/classes/java/main")
+        into("../.sandbox/test-robots")
     }
 
     jar {
         dependsOn(copyContent)
-        dependsOn(copyClasses)
+        dependsOn(copyRobotClasses)
     }
 }
 

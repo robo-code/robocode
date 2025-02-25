@@ -9,7 +9,6 @@ package robocode.control;
 
 
 import net.sf.robocode.io.Logger;
-
 import robocode.control.events.*;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.robotinterfaces.IBasicRobot;
@@ -18,7 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static robocode.util.Utils.*;
+import static robocode.util.Utils.assertEquals;
+import static robocode.util.Utils.assertNotNull;
 
 
 /**
@@ -177,7 +177,7 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         System.setProperty("robocode.options.battle.desiredTPS", "10000");
 
         try {
-            File robotsPathFile = new File("../.sandbox/robots").getCanonicalFile().getAbsoluteFile();
+            File robotsPathFile = new File("../.sandbox/test-robots").getCanonicalFile().getAbsoluteFile();
             robotsPath = robotsPathFile.getPath();
         } catch (IOException e) {
             e.printStackTrace(Logger.realErr);
