@@ -12,6 +12,7 @@ import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.RobocodeProperties;
 import net.sf.robocode.serialization.RbSerializer;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
@@ -27,8 +28,6 @@ import java.nio.ByteOrder;
 import java.text.AttributedCharacterIterator;
 import java.text.CharacterIterator;
 import java.util.Map;
-
-import javax.swing.UIManager;
 
 
 /**
@@ -249,7 +248,6 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					setPaintMode(); // Retry this method after reallocation
-					return; // Make sure we leave
 				}
 			}
 		}
@@ -265,7 +263,6 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					setXORMode(c1); // Retry this method after reallocation
-					return; // Make sure we leave
 				}
 			}
 		}
@@ -394,7 +391,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					copyArea(x, y, width, height, dx, dy); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -413,7 +410,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawLine(x1, y1, x2, y2); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -432,7 +429,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					fillRect(x, y, width, height); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -451,7 +448,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawRect(x, y, width, height); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -470,7 +467,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					clearRect(x, y, width, height); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -491,7 +488,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawRoundRect(x, y, width, height, arcWidth, arcHeight); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -512,7 +509,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					fillRoundRect(x, y, width, height, arcWidth, arcHeight); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -532,7 +529,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					draw3DRect(x, y, width, height, raised); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -552,7 +549,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					fill3DRect(x, y, width, height, raised); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -571,7 +568,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawOval(x, y, width, height); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -590,7 +587,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					fillOval(x, y, width, height); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -611,7 +608,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawArc(x, y, width, height, startAngle, arcAngle); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -632,7 +629,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					fillArc(x, y, width, height, startAngle, arcAngle); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -650,7 +647,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawPolyline(xPoints, yPoints, npoints); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -668,7 +665,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawPolygon(xPoints, yPoints, npoints); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -693,7 +690,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					fillPolygon(xPoints, yPoints, npoints); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -721,7 +718,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawString(str, x, y); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -739,7 +736,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawString(iterator, x, y); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -759,7 +756,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawChars(data, offset, length, x, y); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -779,7 +776,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawBytes(data, offset, length, x, y); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -874,7 +871,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					draw(s); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -920,7 +917,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawString(str, x, y); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -938,7 +935,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					drawString(iterator, x, y); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}
@@ -961,7 +958,7 @@ public class Graphics2DSerialized extends Graphics2D implements IGraphicsProxy {
 			} catch (BufferOverflowException e) {
 				if (recoverFromBufferOverflow()) {
 					fill(s); // Retry this method after reallocation
-					return; // Make sure we leave
+					// Make sure we leave
 				}
 			}
 		}

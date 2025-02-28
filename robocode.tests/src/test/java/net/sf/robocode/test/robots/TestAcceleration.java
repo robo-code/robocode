@@ -61,9 +61,9 @@ public class TestAcceleration extends RobocodeTestBed {
                 Assert.assertNear(1, caveat2.getVelocity());
                 Assert.assertNear(1, caveat3.getVelocity());
 
-                Assert.assertNear(1 - 1, distance(0, caveat1));
-                Assert.assertNear(1 - 1, distance(1, caveat2));
-                Assert.assertNear(1 - 1, distance(2, caveat3));
+                Assert.assertNear(0, distance(0, caveat1));
+                Assert.assertNear(0, distance(1, caveat2));
+                Assert.assertNear(0, distance(2, caveat3));
                 break;
 
             case 2:

@@ -72,7 +72,7 @@ public class RbSerializerTest {
 		ExecCommands ec2 = (ExecCommands) rbs.deserialize(in);
 
 		assertNear(ec2.getBodyTurnRemaining(), ec.getBodyTurnRemaining());
-		Assert.assertEquals(ec2.isTryingToPaint(), true);
+        Assert.assertTrue(ec2.isTryingToPaint());
 	}
 
 	@Test
@@ -93,8 +93,8 @@ public class RbSerializerTest {
 
 		assertNear(ec2.getBodyTurnRemaining(), ec.getBodyTurnRemaining());
 		assertNear(ec2.getBullets().get(0).getPower(), 1.0);
-		Assert.assertEquals(ec2.getBullets().get(1).isFireAssistValid(), false);
-		Assert.assertEquals(ec2.getBullets().get(2).isFireAssistValid(), true);
+        Assert.assertFalse(ec2.getBullets().get(1).isFireAssistValid());
+        Assert.assertTrue(ec2.getBullets().get(2).isFireAssistValid());
 		Assert.assertEquals(ec2.getBullets().get(2).getBulletId(), -128);
 	}
 
@@ -121,7 +121,7 @@ public class RbSerializerTest {
 		Assert.assertEquals(ec2.getTeamMessages().get(0).message[10], 10);
 		Assert.assertEquals(ec2.getTeamMessages().get(0).sender, "Foo");
 		Assert.assertEquals(ec2.getTeamMessages().get(0).recipient, "Bar");
-		Assert.assertEquals(ec2.getTeamMessages().get(1).message, null);
+        Assert.assertNull(ec2.getTeamMessages().get(1).message);
 	}
 
 	@Test

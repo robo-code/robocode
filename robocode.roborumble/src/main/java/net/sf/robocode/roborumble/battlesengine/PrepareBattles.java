@@ -526,9 +526,10 @@ public class PrepareBattles {
 			boolean exists = false;
 
 			for (int i = 0; i < count; i++) {
-				if (bots[i].equals(bots[count])) {
-					exists = true;
-				}
+                if (bots[i].equals(bots[count])) {
+                    exists = true;
+                    break;
+                }
 			}
 			if (!exists) {
 				count++;
@@ -549,9 +550,10 @@ public class PrepareBattles {
 			boolean exists = false;
 
 			for (int i = 0; i < count; i++) {
-				if (bots[i].equals(bots[count])) {
-					exists = true;
-				}
+                if (bots[i].equals(bots[count])) {
+                    exists = true;
+                    break;
+                }
 			}
 			if (!exists) {
 				count++;

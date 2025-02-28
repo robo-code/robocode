@@ -144,7 +144,7 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 			if (totalScore != 0) {
 				percent = " (" + NumberFormat.getPercentInstance().format(statistics.getScore() / totalScore) + ")";
 			}
-			return "" + (int) (statistics.getScore() + 0.5) + percent;
+			return (int) (statistics.getScore() + 0.5) + percent;
 
 		case 3:
 			return "" + (int) (statistics.getSurvival() + 0.5);

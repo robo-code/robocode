@@ -225,7 +225,7 @@ public class BattleProperties implements Serializable {
 	 */
 	public void setSelectedRobots(String selectedRobots) {
 		this.selectedRobots = selectedRobots;
-		props.setProperty(BATTLE_SELECTEDROBOTS, "" + selectedRobots);
+		props.setProperty(BATTLE_SELECTEDROBOTS, selectedRobots);
 	}
 
 	/**

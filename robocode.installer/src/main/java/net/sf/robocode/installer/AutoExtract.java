@@ -517,7 +517,7 @@ public class AutoExtract implements ActionListener {
 
     private void createShortcuts(File installDir, String runnable, String folder, String name) {
         if (osName.toLowerCase().indexOf("win") == 0) {
-            if (createWindowsShortcuts(installDir, runnable, folder, name) == false) {
+            if (!createWindowsShortcuts(installDir, runnable, folder, name)) {
                 JOptionPane.showMessageDialog(null,
                         message + "\n" + "To start Robocode, enter the following at a command prompt:\n" + "cd "
                                 + installDir.getAbsolutePath() + "\n" + "robocode.bat");
@@ -674,22 +674,21 @@ public class AutoExtract implements ActionListener {
     }
 
     private static String createWindowsRegistryFileAssociation(String installDir, String fileExt, String progId, String description, String robocodeCmdParam) {
-        StringBuffer sb = new StringBuffer();
 
         String HKCR = "[HKEY_CLASSES_ROOT\\";
 
-        sb.append("REGEDIT4\n");
-        sb.append(HKCR).append(fileExt).append("]\n");
-        sb.append("@=\"").append(progId).append("\"\n");
-        sb.append(HKCR).append(progId).append("]\n");
-        sb.append("@=\"").append(description).append("\"\n");
-        sb.append(HKCR).append(progId).append("\\shell]\n");
-        sb.append(HKCR).append(progId).append("\\shell\\open]\n");
-        sb.append(HKCR).append(progId).append("\\shell\\open\\command]\n");
-        sb.append("@=\"").append(getWindowsCmd()).append("\\\"cd \\\"").append(installDir.replaceAll("[\\\\]", "\\\\\\\\")).append("\\\" && robocode.bat ").append(robocodeCmdParam).append(
-                " \\\"%1\\\"\\\"\"\n");
+        String sb = "REGEDIT4\n" +
+                HKCR + fileExt + "]\n" +
+                "@=\"" + progId + "\"\n" +
+                HKCR + progId + "]\n" +
+                "@=\"" + description + "\"\n" +
+                HKCR + progId + "\\shell]\n" +
+                HKCR + progId + "\\shell\\open]\n" +
+                HKCR + progId + "\\shell\\open\\command]\n" +
+                "@=\"" + getWindowsCmd() + "\\\"cd \\\"" + installDir.replaceAll("[\\\\]", "\\\\\\\\") + "\\\" && robocode.bat " + robocodeCmdParam +
+                " \\\"%1\\\"\\\"\"\n";
 
-        return sb.toString();
+        return sb;
     }
 
     private static String escaped(String s) {

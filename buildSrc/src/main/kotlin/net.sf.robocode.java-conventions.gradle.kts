@@ -23,7 +23,7 @@ java {
 }
 
 tasks {
-    withType<JavaCompile>() {
+    withType<JavaCompile> {
         options.encoding = "UTF-8"
     }
 }

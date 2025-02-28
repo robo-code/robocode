@@ -290,8 +290,7 @@ public class PreferencesRenderingOptionsTab extends WizardPanel {
 						imageManager.initialize();
 					}
 				}.start();
-				return;
-			}
+            }
 		}
 	}
 }

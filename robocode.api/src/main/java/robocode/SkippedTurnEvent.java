@@ -84,7 +84,7 @@ public final class SkippedTurnEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int getPriority() {
+	public int getPriority() {
 		return DEFAULT_PRIORITY;
 	}
 
@@ -92,7 +92,7 @@ public final class SkippedTurnEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final int getDefaultPriority() {
+    int getDefaultPriority() {
 		return DEFAULT_PRIORITY;
 	}
 
@@ -100,7 +100,7 @@ public final class SkippedTurnEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
+    void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 		if (statics.isAdvancedRobot()) {
 			IAdvancedEvents listener = ((IAdvancedRobot) robot).getAdvancedEventListener();
 
@@ -114,7 +114,7 @@ public final class SkippedTurnEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final boolean isCriticalEvent() {
+    boolean isCriticalEvent() {
 		return true;
 	}
 

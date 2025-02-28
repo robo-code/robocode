@@ -128,7 +128,7 @@ public final class HitRobotEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int compareTo(Event event) {
+	public int compareTo(Event event) {
 		final int res = super.compareTo(event);
 
 		if (res != 0) {
@@ -152,7 +152,7 @@ public final class HitRobotEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final int getDefaultPriority() {
+    int getDefaultPriority() {
 		return DEFAULT_PRIORITY;
 	}
 
@@ -160,7 +160,7 @@ public final class HitRobotEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
+    void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 		IBasicEvents listener = robot.getBasicEventListener();
 
 		if (listener != null) {

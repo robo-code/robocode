@@ -54,7 +54,7 @@ public final class MouseMovedEvent extends MouseEvent {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final int getDefaultPriority() {
+    int getDefaultPriority() {
 		return DEFAULT_PRIORITY;
 	}
 
@@ -62,7 +62,7 @@ public final class MouseMovedEvent extends MouseEvent {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
+    void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 		if (statics.isInteractiveRobot()) {
 			IInteractiveEvents listener = ((IInteractiveRobot) robot).getInteractiveEventListener();
 

@@ -153,7 +153,7 @@ public class TeamCreator extends JDialog implements WizardListener {
 		}
 		if (!file.getParentFile().exists()) {
 			if (!file.getParentFile().mkdirs()) {
-				Logger.logError("Can't create " + file.getParentFile().toString());
+				Logger.logError("Can't create " + file.getParentFile());
 			}
 		}
 

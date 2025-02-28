@@ -26,22 +26,22 @@ public class VersionTest {
 
 	@Test
 	public void same() {
-		Assert.assertTrue(Version.compare("1.1.3", "1.1.3") == 0);
+        Assert.assertEquals(0, Version.compare("1.1.3", "1.1.3"));
 	}
 
 	@Test
 	public void equalVersion() {
-		Assert.assertTrue(Version.compare("1.1", "1.1.0.0") == 0);
+        Assert.assertEquals(0, Version.compare("1.1", "1.1.0.0"));
 	}
 
 	@Test
 	public void equalAlphas() {
-		Assert.assertTrue(Version.compare(" 1.2 Alpha", "1.2.0.0alpha1 ") == 0);
+        Assert.assertEquals(0, Version.compare(" 1.2 Alpha", "1.2.0.0alpha1 "));
 	}
 
 	@Test
 	public void equalBetas() {
-		Assert.assertTrue(Version.compare("4.2.1Beta2 ", "  4.2.1.0 beta 2") == 0);
+        Assert.assertEquals(0, Version.compare("4.2.1Beta2 ", "  4.2.1.0 beta 2"));
 	}
 
 	@Test

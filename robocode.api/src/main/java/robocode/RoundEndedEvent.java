@@ -82,7 +82,7 @@ public final class RoundEndedEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final int getDefaultPriority() {
+    int getDefaultPriority() {
 		return DEFAULT_PRIORITY;
 	}
 
@@ -90,7 +90,7 @@ public final class RoundEndedEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int getPriority() {
+	public int getPriority() {
 		return DEFAULT_PRIORITY;
 	}
 
@@ -98,7 +98,7 @@ public final class RoundEndedEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
+    void dispatch(IBasicRobot robot, IRobotStatics statics, Graphics2D graphics) {
 		if (robot != null) {
 			IBasicEvents listener = robot.getBasicEventListener();
 
@@ -112,7 +112,7 @@ public final class RoundEndedEvent extends Event {
 	 * {@inheritDoc}
 	 */
 	@Override
-	final boolean isCriticalEvent() {
+    boolean isCriticalEvent() {
 		return true;
 	}
 

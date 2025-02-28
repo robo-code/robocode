@@ -56,9 +56,10 @@ class BufferedPipedOutputStream extends OutputStream {
 						if (readIndex == buf.length) {
 							readIndex = 0;
 						}
-						if (readIndex == writeIndex) {
-							writeIndexReached = true;
-						}
+                        if (readIndex == writeIndex) {
+                            writeIndexReached = true;
+                            break;
+                        }
 					}
 					if (!writeIndexReached) {
 						readIndex++;

@@ -159,7 +159,7 @@ public class Version implements Comparable<Object> {
 	}
 
 	private long getVersionLong() {
-		return ((long) major << 40) + ((long) minor << 32) + (revision << 24) + (build << 16) + (maturity << 8)
+		return ((long) major << 40) + ((long) minor << 32) + ((long) revision << 24) + ((long) build << 16) + ((long) maturity << 8)
 				+ maturity_version;
 	}
 

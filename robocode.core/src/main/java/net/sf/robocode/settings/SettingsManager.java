@@ -802,7 +802,7 @@ public class SettingsManager implements ISettingsManager {
 
 	public void setLastRunVersion(String lastRunVersion) {
 		this.lastRunVersion = lastRunVersion;
-		props.setProperty(LAST_RUN_VERSION, "" + lastRunVersion);
+		props.setProperty(LAST_RUN_VERSION, lastRunVersion);
 	}
 
 	public void addPropertyListener(ISettingsListener listener) {
@@ -851,9 +851,7 @@ public class SettingsManager implements ISettingsManager {
 		String splitExpr = File.pathSeparatorChar == ':' ? "[,:]+" : "[,;]+";
 		String[] strings = line.split(splitExpr);
 
-		for (String s : strings) {
-			set.add(s);
-		}
+        Collections.addAll(set, strings);
 		return set;
 	}
 

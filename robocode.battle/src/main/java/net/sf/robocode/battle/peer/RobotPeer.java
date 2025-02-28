@@ -459,7 +459,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		rbSerializer.serializeToBuffer(bidirectionalBuffer, RbSerializer.ExecResults_TYPE, results);
 	}
 
-	public final ExecResults executeImpl(ExecCommands newCommands) {
+	public ExecResults executeImpl(ExecCommands newCommands) {
 		validateCommands(newCommands);
 
 		if (!isExecFinishedAndDisabled) {
@@ -507,7 +507,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				isHalt(), shouldWait, isPaintEnabled());
 	}
 
-	public final ExecResults waitForBattleEndImpl(ExecCommands newCommands) {
+	public ExecResults waitForBattleEndImpl(ExecCommands newCommands) {
 		if (!isHalt()) {
 			// from robot to battle
 			commands.set(new ExecCommands(newCommands, true));
@@ -885,7 +885,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public final void performMove(List<RobotPeer> robots, double zapEnergy) {
+	public void performMove(List<RobotPeer> robots, double zapEnergy) {
 
 		// Reset robot state to active if it is not dead
 		if (isDead()) {
@@ -1073,8 +1073,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	private void checkWallCollision() {
-		int minX = 0 + HALF_WIDTH_OFFSET;
-		int minY = 0 + HALF_HEIGHT_OFFSET;
+		int minX = HALF_WIDTH_OFFSET;
+		int minY = HALF_HEIGHT_OFFSET;
 		int maxX = (int) getBattleFieldWidth() - HALF_WIDTH_OFFSET;
 		int maxY = (int) getBattleFieldHeight() - HALF_HEIGHT_OFFSET;
 
@@ -1489,7 +1489,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return Math.max(velocity - Rules.ACCELERATION, Math.min(goalVel, velocity + maxDecel(-velocity)));
 	}
 
-	private final static double getMaxVelocity(double distance) {
+	private static double getMaxVelocity(double distance) {
 		final double decelTime = Math.max(1, Math.ceil(// sum of 0... decelTime, solving for decelTime using quadratic formula
 				(Math.sqrt((4 * 2 / Rules.DECELERATION) * distance + 1) - 1) / 2));
 

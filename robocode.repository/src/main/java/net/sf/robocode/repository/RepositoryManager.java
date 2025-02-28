@@ -13,9 +13,9 @@ import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.io.URLJarCollector;
 import net.sf.robocode.repository.items.IRepositoryItem;
+import net.sf.robocode.repository.items.RepositoryItem;
 import net.sf.robocode.repository.items.RobotItem;
 import net.sf.robocode.repository.items.TeamItem;
-import net.sf.robocode.repository.items.RepositoryItem;
 import net.sf.robocode.repository.packager.JarCreator;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 import net.sf.robocode.repository.root.handlers.RootHandler;
@@ -29,13 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 
 /**
@@ -470,7 +464,7 @@ public class RepositoryManager implements IRepositoryManager { // NO_UCD (use de
 
 				Collection<String> enabledDevelPaths = properties.getOptionsEnabledDevelopmentPaths();
 
-				if (lastEnabledDevelPaths == null || !enabledDevelPaths.equals(lastEnabledDevelPaths)) {
+				if (!enabledDevelPaths.equals(lastEnabledDevelPaths)) {
 					lastEnabledDevelPaths = enabledDevelPaths;
 					reload(false);
 				}

@@ -56,7 +56,7 @@ public final class ConsoleScrollPane extends JScrollPane {
 					autoResizeMode = AUTO_RESIZE_OFF;
 				}
 
-				protected boolean hasExcessWidth() {
+				private boolean hasExcessWidth() {
 					return getPreferredSize().width < getViewport().getWidth();
 				}
 			};

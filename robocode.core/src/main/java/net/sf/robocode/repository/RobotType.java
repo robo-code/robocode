@@ -18,7 +18,7 @@ import java.io.Serializable;
 public final class RobotType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private static final transient int
+	private static final int
 			NONE_FLAG = 0,
 			JUNIOR_FLAG = 1,
 			STANDARD_FLAG = 2,
@@ -29,7 +29,7 @@ public final class RobotType implements Serializable {
 			PAINTING_FLAG = 64,
 			SENTRY_FLAG = 128;
 
-	public static final transient RobotType INVALID = new RobotType(NONE_FLAG);
+	public static final RobotType INVALID = new RobotType(NONE_FLAG);
 
 	private int typeFlags;
 

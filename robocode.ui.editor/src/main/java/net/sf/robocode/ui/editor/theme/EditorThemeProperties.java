@@ -525,7 +525,7 @@ public class EditorThemeProperties implements IEditorThemeProperties {
 
 		@Override
 		public void save() {
-			props.setProperty(propertyName, "" + get().getName());
+			props.setProperty(propertyName, get().getName());
 		}
 
 		private FontStyle fromPropertyToFontStyle(String propertyName) {

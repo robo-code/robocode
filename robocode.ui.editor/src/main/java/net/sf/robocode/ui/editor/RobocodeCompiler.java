@@ -100,13 +100,12 @@ public class RobocodeCompiler {
 			} else {
 				weightClass = "NanoBot  (codesize < 250 bytes)";
 			}
-			StringBuilder sb = new StringBuilder();
 
-			sb.append("\n\n---- Codesize ----\n");
-			sb.append("Codesize: ").append(codesize).append(" bytes\n");
-			sb.append("Robot weight class: ").append(weightClass).append('\n');
+            String sb = "\n\n---- Codesize ----\n" +
+                    "Codesize: " + codesize + " bytes\n" +
+                    "Robot weight class: " + weightClass + '\n';
 			
-			console.append(sb.toString());
+			console.append(sb);
 		}
 	}
 }
