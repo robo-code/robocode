@@ -466,14 +466,14 @@ public final class EventManager implements IEventManager {
 	 * When an event is interrupted, events with the same priority are allowed to restart the event handler. 
 	 *
 	 * @param priority is the priority of the event to set the interruptible flag for.
-	 * @param isInterruptable {@code true} if events with the specified priority must be interruptible
+	 * @param isInterruptible {@code true} if events with the specified priority must be interruptible
 	 *                        allowing events with the same priority to restart the event handler.
 	 *                        {@code false} if events with the specified priority must not be interruptible
 	 *                        disallowing events with the same priority to restart the event handler. 
 	 */
-	public void setInterruptible(int priority, boolean isInterruptable) {
+	public void setInterruptible(int priority, boolean isInterruptible) {
 		if (priority >= 0 && priority < MAX_PRIORITY) {
-			interruptible[priority] = isInterruptable;
+			interruptible[priority] = isInterruptible;
 		}
 	}
 
