@@ -15,11 +15,13 @@
 @rem Used for setting _JAVA_OPTIONS
 call set_java_options.bat
 
-@rem Run TwinDuel
-java ^
-  -cp "libs/*" ^
-  -Xmx512M ^
-  -XX:+IgnoreUnrecognizedVMOptions ^
-  "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" ^
-  "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" ^
-  roborumble.RoboRumbleAtHome ./roborumble/twinduel.txt
+if not %ERRORLEVEL%==100 (
+  @rem Run TwinDuel
+  java ^
+    -cp "libs/*" ^
+    -Xmx512M ^
+    -XX:+IgnoreUnrecognizedVMOptions ^
+    "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" ^
+    "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" ^
+    roborumble.RoboRumbleAtHome ./roborumble/twinduel.txt
+)

@@ -15,13 +15,15 @@
 @rem Used for setting _JAVA_OPTIONS
 call set_java_options.bat
 
-@rem Run RoboRumble
-java ^
-  -cp "libs/*" ^
-  -Xmx512M ^
-  -XX:+IgnoreUnrecognizedVMOptions ^
-  "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" ^
-  "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" ^
-  "--add-opens=java.desktop/javax.swing.text=ALL-UNNAMED" ^
-  "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" ^
-  roborumble.RoboRumbleAtHome ./roborumble/roborumble.txt
+if not %ERRORLEVEL%==100 (
+  @rem Run RoboRumble
+  java ^
+    -cp "libs/*" ^
+    -Xmx512M ^
+    -XX:+IgnoreUnrecognizedVMOptions ^
+    "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" ^
+    "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" ^
+    "--add-opens=java.desktop/javax.swing.text=ALL-UNNAMED" ^
+    "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" ^
+    roborumble.RoboRumbleAtHome ./roborumble/roborumble.txt
+)

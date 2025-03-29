@@ -18,14 +18,15 @@ call java2d.bat
 @rem Used for setting _JAVA_OPTIONS
 call set_java_options.bat
 
-@rem Run Robocode
-
-java ^
-  -cp "libs/*" ^
-  -Xmx512M ^
-  -XX:+IgnoreUnrecognizedVMOptions ^
-  "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" ^
-  "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" ^
-  "--add-opens=java.desktop/javax.swing.text=ALL-UNNAMED" ^
-  "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" ^
-  robocode.Robocode %*
+if not %ERRORLEVEL%==100 (
+  @rem Run Robocode
+  java ^
+    -cp "libs/*" ^
+    -Xmx512M ^
+    -XX:+IgnoreUnrecognizedVMOptions ^
+    "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" ^
+    "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" ^
+    "--add-opens=java.desktop/javax.swing.text=ALL-UNNAMED" ^
+    "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" ^
+    robocode.Robocode %*
+)

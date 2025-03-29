@@ -15,11 +15,13 @@
 @rem Used for setting Java options
 call set_java_options.bat
 
-@rem Run MeleeRumble
-java ^
-  -cp "libs/*" ^
-  -Xmx1024M ^
-  -XX:+IgnoreUnrecognizedVMOptions ^
-  "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" ^
-  "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" ^
-  roborumble.RoboRumbleAtHome ./roborumble/meleerumble.txt
+if not %ERRORLEVEL%==100 (
+  @rem Run MeleeRumble
+  java ^
+    -cp "libs/*" ^
+    -Xmx1024M ^
+    -XX:+IgnoreUnrecognizedVMOptions ^
+    "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" ^
+    "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" ^
+    roborumble.RoboRumbleAtHome ./roborumble/meleerumble.txt
+)

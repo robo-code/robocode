@@ -13,6 +13,7 @@
 
 # Used for setting Java options
 . ./set_java_options.sh
+exit_code=$?
 
 # Save present work directory (pwd)
 pwd=$(pwd)
@@ -20,18 +21,20 @@ pwd=$(pwd)
 # Change directory to the directory where this script is located
 cd "${0%/*}" || exit
 
-# Run Robocode
-java \
-  -cp "libs/*" \
-  -Xmx512M \
-  -Xdock:name=Robocode \
-  -Xdock:icon=robocode.ico \
-  -XX:+IgnoreUnrecognizedVMOptions \
-  "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" \
-  "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" \
-  "--add-opens=java.desktop/javax.swing.text=ALL-UNNAMED" \
-  "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" \
-  robocode.Robocode "$@"
+if [ "$exit_code" -ne 100 ]; then
+  # Run Robocode
+  java \
+    -cp "libs/*" \
+    -Xmx512M \
+    -Xdock:name=Robocode \
+    -Xdock:icon=robocode.ico \
+    -XX:+IgnoreUnrecognizedVMOptions \
+    "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" \
+    "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" \
+    "--add-opens=java.desktop/javax.swing.text=ALL-UNNAMED" \
+    "--add-opens=java.desktop/sun.awt=ALL-UNNAMED" \
+    robocode.Robocode "$@"
+fi
 
 # Restore present work directory
 cd "${pwd}" || exit

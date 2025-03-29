@@ -13,6 +13,7 @@
 
 # Used for setting Java options
 . ./set_java_options.sh
+exit_code=$?
 
 # Save present work directory (pwd)
 pwd=$(pwd)
@@ -20,17 +21,19 @@ pwd=$(pwd)
 # Change directory to the directory where this script is located
 cd "${0%/*}" || exit
 
-# Run TeamRumble
-java \
-  -cp "libs/*" \
-  -Xmx512M \
-  -Xdock:name=TeamRumble \
-  -Xdock:icon=roborumble.ico \
-  -XX:+IgnoreUnrecognizedVMOptions \
-  "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" \
-  "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" \
-  roborumble.RoboRumbleAtHome \
-  ./roborumble/teamrumble.txt
+if [ "$exit_code" -ne 100 ]; then
+  # Run TeamRumble
+  java \
+    -cp "libs/*" \
+    -Xmx512M \
+    -Xdock:name=TeamRumble \
+    -Xdock:icon=roborumble.ico \
+    -XX:+IgnoreUnrecognizedVMOptions \
+    "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" \
+    "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED" \
+    roborumble.RoboRumbleAtHome \
+    ./roborumble/teamrumble.txt
+fi
 
 # Restore present work directory
 cd "${pwd}" || exit
