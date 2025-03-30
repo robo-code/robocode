@@ -8,12 +8,7 @@ plugins {
 
 repositories {
     mavenLocal()
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
-    maven {
-        url = uri("https://repo.eclipse.org/content/repositories/eclipse-staging")
-    }
+    mavenCentral()
 }
 
 java {
