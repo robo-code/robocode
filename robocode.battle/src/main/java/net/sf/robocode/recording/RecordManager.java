@@ -111,23 +111,34 @@ public class RecordManager implements IRecordManager {
     }
 
     private void createTempFile() {
-        try {
-            if (tempFile == null) {
-                tempFile = File.createTempFile("robocode-battle-records", ".tmp");
-                tempFile.deleteOnExit();
-            } else {
-                if (!tempFile.delete()) {
-                    Logger.logError("Could not delete temp file");
+    final List<IOException> exs = new ArrayList<>();
+    
+    AccessController.doPrivileged(new PrivilegedAction<Void>() {
+        public Void run() {
+            try {
+                if (tempFile == null) {
+                    tempFile = File.createTempFile("robocode-battle-records", ".tmp");
+                    tempFile.deleteOnExit();
+                } else {
+                    if (!tempFile.delete()) {
+                        Logger.logError("Could not delete temp file");
+                    }
+                    if (!tempFile.createNewFile()) {
+                        throw new Error("Temp file creation failed");
+                    }
                 }
-                if (!tempFile.createNewFile()) {
-                    throw new Error("Temp file creation failed");
-                }
+            } catch (IOException e) {
+                exs.add(e);
+                logError(e);
             }
-        } catch (IOException e) {
-            logError(e);
-            throw new Error("Temp file creation failed", e);
+            return null;
         }
+    });
+    
+    if (!exs.isEmpty()) {
+        throw new Error("Temp file creation failed", exs.get(0));
     }
+}
 
     void prepareInputStream() {
         try {
