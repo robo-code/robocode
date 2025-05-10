@@ -56,18 +56,30 @@ public final class CacheCleaner {
 		}
 	}
 
-	private static void recursivelyDelete(File file) throws IOException {
-		if (file.exists()) {
-			if (file.isDirectory()) {
-				final File[] files = file.listFiles();
-
-				for (File f : files) {
-					recursivelyDelete(f);
-				}
-			}
-			if (!file.delete()) {
-				throw new IOException("Failed deleting file: " + file.getPath());
-			}
-		}
+	private static void recursivelyDelete(File file, File base) throws IOException {
+	    if (!file.exists()) {
+	        return;
+	    }
+	    
+	    // Security check to prevent directory traversal attacks
+	    if (!(file.getCanonicalFile().toPath().startsWith(base.getCanonicalFile().toPath()))) {
+	        throw new IOException("Security violation: Attempting to delete a file outside the allowed base directory: "
+	                + file.getCanonicalPath());
+	    }
+	
+	    if (file.isDirectory()) {
+	        final File[] files = file.listFiles();
+	        
+	        // Null check for file listing
+	        if (files != null) {
+	            for (File f : files) {
+	                recursivelyDelete(f, base);
+	            }
+	        }
+	    }
+	    
+	    if (!file.delete()) {
+	        throw new IOException("Failed deleting file: " + file.getPath());
+	    }
 	}
-}
+	}
