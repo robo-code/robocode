@@ -129,25 +129,56 @@ public class FileUtil {
 	 * @throws IOException if an I/O exception occurs
 	 */
 	public static void copyFolder(String src, String dest) throws IOException {
-		Path srcPath = new File(src).getCanonicalFile().getAbsoluteFile().toPath();
-		Path destPath= new File(dest).getCanonicalFile().getAbsoluteFile().toPath();
-		try (Stream<Path> stream = Files.walk(srcPath)) {
-			stream.forEach(source -> {
-				Path resolve = destPath.resolve(srcPath.relativize(source));
-				try {
-					if (!Files.isDirectory(source)) {
-						Files.copy(source, resolve, REPLACE_EXISTING);
-					} else if (!Files.isDirectory(resolve)) {
-						Files.createDirectory(resolve);
-					}
-				} catch (DirectoryNotEmptyException e) {
-					// no action
-				} catch (IOException e) {
-					Logger.logError(e);
-				}
-			});
-		}
-	}
+    // Validate inputs
+    if (src == null || dest == null) {
+        throw new NullPointerException("Source and destination paths cannot be null");
+    }
+    
+    File srcFile = new File(src).getCanonicalFile();
+    File destFile = new File(dest).getCanonicalFile();
+    
+    // Check if source and destination are the same
+    if (srcFile.equals(destFile)) {
+        throw new IOException("Source and destination cannot be the same");
+    }
+    
+    // Convert to paths for modern Java operations
+    Path srcPath = srcFile.toPath();
+    Path destPath = destFile.toPath();
+    
+    // Ensure destination parent directory exists
+    Files.createDirectories(destPath);
+    
+    // Safely copy directory contents
+    try (Stream<Path> stream = Files.walk(srcPath)) {
+        stream.forEach(source -> {
+            try {
+                // Calculate relative path
+                Path relativePath = srcPath.relativize(source);
+                Path target = destPath.resolve(relativePath);
+                
+                // Security check - ensure we're not writing outside destination directory
+                if (!target.normalize().startsWith(destPath.normalize())) {
+                    throw new SecurityException("Path traversal attempt detected");
+                }
+                
+                if (Files.isDirectory(source)) {
+                    if (!Files.exists(target)) {
+                        Files.createDirectory(target);
+                    }
+                } else {
+                    Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+                }
+            } catch (SecurityException e) {
+                throw new RuntimeException("Security violation: " + e.getMessage(), e);
+            } catch (DirectoryNotEmptyException e) {
+                // Directory already exists and is not empty - can ignore
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to copy: " + e.getMessage(), e);
+            }
+        });
+    }
+}
 
 	/**
 	 * Deletes a directory.
