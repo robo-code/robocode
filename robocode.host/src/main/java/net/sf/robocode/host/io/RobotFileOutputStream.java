@@ -1,4 +1,25 @@
-/*
+@Override
+public final void write(byte[] b, int off, int len) throws IOException {
+    // Check for null array
+    if (b == null) {
+        throw new NullPointerException();
+    }
+    
+    // Comprehensive bounds checking to prevent integer overflow
+    if (off < 0 || len < 0 || len > b.length || off > b.length - len) {
+        throw new ArrayIndexOutOfBoundsException();
+    }
+    
+    try {
+        fileSystemManager.checkQuota(len);
+        super.write(b, off, len);
+    } catch (IOException e) {
+        try {
+            close();
+        } catch (IOException ignored) {}
+        throw e;
+    }
+}/*
  * Copyright (c) 2001-2023 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -46,18 +67,25 @@ public class RobotFileOutputStream extends FileOutputStream {
 
 	@Override
 	public final void write(byte[] b, int off, int len) throws IOException {
-		if (len < 0) {
-			throw new IndexOutOfBoundsException();
-		}
-		try {
-			fileSystemManager.checkQuota(len);
-			super.write(b, off, len);
-		} catch (IOException e) {
-			try {
-				close();
-			} catch (IOException ignored) {}
-			throw e;
-		}
+	    // Check for null array
+	    if (b == null) {
+	        throw new NullPointerException();
+	    }
+	    
+	    // Comprehensive bounds checking to prevent integer overflow
+	    if (off < 0 || len < 0 || len > b.length || off > b.length - len) {
+	        throw new ArrayIndexOutOfBoundsException();
+	    }
+	    
+	    try {
+	        fileSystemManager.checkQuota(len);
+	        super.write(b, off, len);
+	    } catch (IOException e) {
+	        try {
+	            close();
+	        } catch (IOException ignored) {}
+	        throw e;
+	    }
 	}
 
 	@Override
