@@ -14,8 +14,6 @@ import net.sf.robocode.battle.snapshot.RobotSnapshot;
 import net.sf.robocode.battle.snapshot.TurnSnapshot;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
-import static net.sf.robocode.io.Logger.logError;
-
 import net.sf.robocode.serialization.*;
 import net.sf.robocode.settings.ISettingsManager;
 import net.sf.robocode.version.IVersionManager;
@@ -29,6 +27,8 @@ import robocode.control.snapshot.ITurnSnapshot;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -36,6 +36,8 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
+import static net.sf.robocode.io.Logger.logError;
 
 
 /**
@@ -111,34 +113,26 @@ public class RecordManager implements IRecordManager {
     }
 
     private void createTempFile() {
-    final List<IOException> exs = new ArrayList<>();
-    
-    AccessController.doPrivileged(new PrivilegedAction<Void>() {
-        public Void run() {
+        AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
             try {
                 if (tempFile == null) {
                     tempFile = File.createTempFile("robocode-battle-records", ".tmp");
                     tempFile.deleteOnExit();
                 } else {
                     if (!tempFile.delete()) {
-                        Logger.logError("Could not delete temp file");
+                        logError("Could not delete temp file");
                     }
                     if (!tempFile.createNewFile()) {
                         throw new Error("Temp file creation failed");
                     }
                 }
             } catch (IOException e) {
-                exs.add(e);
                 logError(e);
+                throw new Error("Temp file creation failed", e);
             }
             return null;
-        }
-    });
-    
-    if (!exs.isEmpty()) {
-        throw new Error("Temp file creation failed", exs.get(0));
+        });
     }
-}
 
     void prepareInputStream() {
         try {
