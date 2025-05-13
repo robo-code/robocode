@@ -6,7 +6,8 @@
 
 Vulnerabilities fixes:
 
-* #65: The CacheCleaner contained a Directory Traversal Vulnerability when deleting files (recursively).
+* #67: The CacheCleaner contained a Directory Traversal Vulnerability when deleting files (recursively).
+* #68: Fix for Insecure Temporary File Creation.
 
 ## Version 1.9.5.5 (29-Mar-2025)
 
