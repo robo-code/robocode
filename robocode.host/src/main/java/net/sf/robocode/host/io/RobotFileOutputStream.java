@@ -46,25 +46,26 @@ public class RobotFileOutputStream extends FileOutputStream {
 
 	@Override
 	public final void write(byte[] b, int off, int len) throws IOException {
-	    // Check for null array
-	    if (b == null) {
-	        throw new NullPointerException();
-	    }
-	    
-	    // Comprehensive bounds checking to prevent integer overflow
-	    if (off < 0 || len < 0 || len > b.length || off > b.length - len) {
-	        throw new ArrayIndexOutOfBoundsException();
-	    }
-	    
-	    try {
-	        fileSystemManager.checkQuota(len);
-	        super.write(b, off, len);
-	    } catch (IOException e) {
-	        try {
-	            close();
-	        } catch (IOException ignored) {}
-	        throw e;
-	    }
+		// Sanity check
+		if (b == null) {
+			throw new NullPointerException();
+		}
+
+		// Comprehensive bounds checking to prevent integer overflow
+		if (off < 0 || len < 0 || len > b.length || off > b.length - len) {
+			throw new ArrayIndexOutOfBoundsException();
+		}
+
+		try {
+			fileSystemManager.checkQuota(len);
+			super.write(b, off, len);
+		} catch (IOException e) {
+			try {
+				close();
+			} catch (IOException ignore) {
+			}
+			throw e;
+		}
 	}
 
 	@Override
