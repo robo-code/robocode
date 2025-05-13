@@ -25,7 +25,8 @@ import java.io.IOException;
  * @author Flemming N. Larsen (minor optimizations)
  */
 public final class CacheCleaner {
-	private CacheCleaner() {}
+	private CacheCleaner() {
+	}
 
 	public static void main(String[] args) {
 		clean();
@@ -35,8 +36,20 @@ public final class CacheCleaner {
 		File roborumbleTempFile = new File("roborumble/temp");
 
 		deleteFile(roborumbleTempFile.getPath());
-		deleteFile(FileUtil.getRobotsDataDir().getPath());
-		deleteFile(FileUtil.getRobotDatabaseFile().getPath());
+
+		File robotsDataDir = FileUtil.getRobotsDataDir();
+		if (robotsDataDir != null) {
+			deleteFile(robotsDataDir.getPath());
+		} else {
+			Logger.logMessage("Robots data directory is not configured or found.");
+		}
+
+		File robotDbFile = FileUtil.getRobotDatabaseFile(); // can return null!
+		if (robotDbFile != null) {
+			deleteFile(robotDbFile.getPath());
+		} else {
+			Logger.logMessage("Robot database file is not configured or found.");
+		}
 
 		FileUtil.createDir(roborumbleTempFile);
 
@@ -52,34 +65,45 @@ public final class CacheCleaner {
 		try {
 			recursivelyDelete(new File(filename));
 		} catch (IOException ex) {
-			Logger.logError(ex.getMessage());
+			Logger.logError("Error deleting " + filename + ": " + ex.getMessage());
 		}
 	}
 
+	/**
+	 * Initiates recursive deletion of a file/directory.
+	 * Uses the file itself as the base for security checks.
+	 */
+	private static void recursivelyDelete(File file) throws IOException {
+		if (file.exists()) {
+			recursivelyDelete(file, file);
+		}
+	}
+
+	// Security Boundary: The 2nd parameter (base) acts as a security boundary to prevent directory traversal attacks.
 	private static void recursivelyDelete(File file, File base) throws IOException {
-	    if (!file.exists()) {
-	        return;
-	    }
-	    
-	    // Security check to prevent directory traversal attacks
-	    if (!(file.getCanonicalFile().toPath().startsWith(base.getCanonicalFile().toPath()))) {
-	        throw new IOException("Security violation: Attempting to delete a file outside the allowed base directory: "
-	                + file.getCanonicalPath());
-	    }
-	
-	    if (file.isDirectory()) {
-	        final File[] files = file.listFiles();
-	        
-	        // Null check for file listing
-	        if (files != null) {
-	            for (File f : files) {
-	                recursivelyDelete(f, base);
-	            }
-	        }
-	    }
-	    
-	    if (!file.delete()) {
-	        throw new IOException("Failed deleting file: " + file.getPath());
-	    }
+		if (!file.exists()) {
+			return;
+		}
+
+		// Security check to prevent directory traversal attacks
+		if (!(file.getCanonicalFile().toPath().startsWith(base.getCanonicalFile().toPath()))) {
+			throw new IOException("Security violation: Attempting to delete a file outside the allowed base directory: "
+					+ file.getCanonicalPath());
+		}
+
+		if (file.isDirectory()) {
+			final File[] files = file.listFiles();
+
+			// Null check for file listing
+			if (files != null) {
+				for (File f : files) {
+					recursivelyDelete(f, base);
+				}
+			}
+		}
+
+		if (!file.delete()) {
+			throw new IOException("Failed deleting file: " + file.getPath());
+		}
 	}
-	}
+}
