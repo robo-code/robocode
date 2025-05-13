@@ -1,3 +1,13 @@
+## Version 1.9.5.6
+
+### Bugfix
+
+[Lim Sim Yee](https://github.com/simei2k) found and fixed the following vulnerabilities. Thank you for the PRs ❤️
+
+Vulnerabilities fixes:
+
+* #65: The CacheCleaner contained a Directory Traversal Vulnerability when deleting files (recursively).
+
 ## Version 1.9.5.5 (29-Mar-2025)
 
 ### Changes
