@@ -8,14 +8,14 @@
 package net.sf.robocode.io;
 
 
+import java.io.Closeable;
+import java.io.File;
+import java.io.Flushable;
+import java.io.IOException;
+import java.nio.file.Files;
+
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static net.sf.robocode.io.Logger.logError;
-
-import java.io.*;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.stream.Stream;
 
 
 /**
@@ -60,30 +60,6 @@ public class FileUtil {
 	}
 
 	/**
-	 * Returns the file type of a file, i.e. it's extension.
-	 *
-	 * @param file the file
-	 * @return the file type of the file, e.g. ".class", ".jar" or "" if the
-	 *         file name does not contain an extension.
-	 */
-	public static String getFileType(File file) {
-		return getFileType(file.getName());
-	}
-
-	/**
-	 * Returns the file type of a file name, i.e. it's extension.
-	 *
-	 * @param fileName the file name
-	 * @return the file type of the file name, e.g. ".class", ".jar" or "" if
-	 *         the file name does not contain an extension.
-	 */
-	public static String getFileType(String fileName) {
-		int lastdot = fileName.lastIndexOf('.');
-
-		return (lastdot < 0) ? "" : fileName.substring(lastdot);
-	}
-
-	/**
 	 * Quotes a file name if it contains white spaces and has not already been
 	 * quoted.
 	 *
@@ -122,69 +98,6 @@ public class FileUtil {
 	}
 
 	/**
-	 * Copies a folder recursively to another path.
-	 *
-	 * @param src  the input file to copy
-	 * @param dest the output file to copy to
-	 * @throws IOException if an I/O exception occurs
-	 */
-	public static void copyFolder(String src, String dest) throws IOException {
-		Path srcPath = new File(src).getCanonicalFile().getAbsoluteFile().toPath();
-		Path destPath= new File(dest).getCanonicalFile().getAbsoluteFile().toPath();
-		try (Stream<Path> stream = Files.walk(srcPath)) {
-			stream.forEach(source -> {
-				Path resolve = destPath.resolve(srcPath.relativize(source));
-				try {
-					if (!Files.isDirectory(source)) {
-						Files.copy(source, resolve, REPLACE_EXISTING);
-					} else if (!Files.isDirectory(resolve)) {
-						Files.createDirectory(resolve);
-					}
-				} catch (DirectoryNotEmptyException e) {
-					// no action
-				} catch (IOException e) {
-					Logger.logError(e);
-				}
-			});
-		}
-	}
-
-	/**
-	 * Deletes a directory.
-	 *
-	 * @param dir the file for the directory to delete
-	 * @return true if success
-	 */
-	public static boolean deleteDir(File dir) {
-		if (dir.isDirectory()) {
-			for (File file : dir.listFiles()) {
-				if (file.isDirectory()) {
-					try {
-						// Test for symlink and ignore.
-						// Robocode won't create one, but just in case a user does...
-						if (file.getCanonicalFile().getParentFile().equals(dir.getCanonicalFile())) {
-							deleteDir(file);
-							if (file.exists() && !file.delete()) {
-								Logger.logError("Cannot delete: " + file);
-							}
-						} else {
-							Logger.logWarning(file + " may be a symlink. Ignoring.");
-						}
-					} catch (IOException e) {
-						Logger.logWarning("Cannot determine canonical file for " + file + ". Ignoring.");
-					}
-				} else {
-					if (file.exists() && !file.delete()) {
-						Logger.logError("Cannot delete: " + file);
-					}
-				}
-			}
-			return dir.delete();
-		}
-		return false;
-	}
-
-	/**
 	 * Creates a directory if it does not exist already
 	 *
 	 * @param dir the File that represents the new directory to create.
@@ -197,24 +110,6 @@ public class FileUtil {
 			}
 		}
 		return dir;
-	}
-
-	/**
-	 * Returns the class name of the specified filename.
-	 *
-	 * @param fileName the filename to extract the class name from
-	 * @return the class name of the specified filename
-	 */
-	public static String getClassName(String fileName) {
-		int lastdot = fileName.lastIndexOf('.');
-
-		if (lastdot < 0) {
-			return fileName;
-		}
-		if (fileName.length() - 1 == lastdot) {
-			return fileName.substring(0, fileName.length() - 1);
-		}
-		return fileName.substring(0, lastdot);
 	}
 
 	/**
