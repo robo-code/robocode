@@ -39,7 +39,9 @@ public class RobotFileOutputStream extends FileOutputStream {
 		} catch (IOException e) {
 			try {
 				close();
-			} catch (IOException ignored) {}
+			} catch (IOException closeEx) {
+				e.addSuppressed(closeEx);
+			}
 			throw e;
 		}
 	}
@@ -62,7 +64,8 @@ public class RobotFileOutputStream extends FileOutputStream {
 		} catch (IOException e) {
 			try {
 				close();
-			} catch (IOException ignore) {
+			} catch (IOException closeEx) {
+				e.addSuppressed(closeEx);
 			}
 			throw e;
 		}
@@ -76,7 +79,9 @@ public class RobotFileOutputStream extends FileOutputStream {
 		} catch (IOException e) {
 			try {
 				close();
-			} catch (IOException ignored) {}
+			} catch (IOException closeEx) {
+				e.addSuppressed(closeEx);
+			}
 			throw e;
 		}
 	}
