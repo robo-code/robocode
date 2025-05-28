@@ -12,11 +12,6 @@ dependencies {
 
 description = "Robocode Core"
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
 tasks {
     val copyVersion by registering(Copy::class) {
         from("../") {

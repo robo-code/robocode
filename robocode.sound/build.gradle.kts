@@ -11,11 +11,6 @@ dependencies {
 
 description = "Robocode Sound"
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
 tasks {
     javadoc {
         source = sourceSets["main"].java

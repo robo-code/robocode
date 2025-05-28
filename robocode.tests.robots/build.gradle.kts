@@ -30,9 +30,3 @@ tasks {
         dependsOn(copyRobotClasses)
     }
 }
-
-tasks {
-    publishMavenJavaPublicationToSonatypeRepository {
-        enabled = false
-    }
-}

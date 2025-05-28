@@ -12,11 +12,6 @@ dependencies {
 
 description = "Robocode Repository"
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
 tasks {
     javadoc {
         source = sourceSets["main"].java

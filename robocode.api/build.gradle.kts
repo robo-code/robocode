@@ -1,13 +1,6 @@
 plugins {
     id("net.sf.robocode.java-conventions")
     java
-    signing
-    `maven-publish`
-}
-
-java {
-    withJavadocJar()
-    withSourcesJar()
 }
 
 description = "Robocode API"

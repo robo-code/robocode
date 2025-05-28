@@ -1,7 +1,7 @@
 plugins {
     java
     `kotlin-dsl`
-    alias(libs.plugins.nexus.publish)
+    alias(libs.plugins.jreleaser)
 }
 
 repositories {
