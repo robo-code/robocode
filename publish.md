@@ -47,18 +47,14 @@ ossrhPassword=<password-at-issues.sonatype.org>
 
 ## Just staging
 
-Run this command to publish to the staging repository. 
-
-```shell
-./gradlew publishToSonatype
-```
-
 When you log in, you should be able to see the binaries uploaded to [staging Repository].
 
 ## Release to public repos
 
 ```shell
-./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+./gradlew publish
+./gradlew clean publishMavenPublicationToStagingRepository
+./gradlew jreleaserRelease
 ```
 
 This typically occurs within 10 minutes, though updates to search can take up to two hours.
