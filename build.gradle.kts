@@ -45,8 +45,10 @@ tasks {
 nexusPublishing {
     repositories {
         sonatype {
-            nexusUrl.set(uri("https://oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://oss.sonatype.org/content/repositories/snapshots/"))
+            // Publishing By Using the Portal OSSRH Staging API:
+            // https://central.sonatype.org/publish/publish-portal-ossrh-staging-api/
+            nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
             stagingProfileId.set("c7f511545ccf8")
             username.set(ossrhUsername)
             password.set(ossrhPassword)
@@ -58,5 +60,12 @@ val initializeSonatypeStagingRepository by tasks.existing
 subprojects {
     initializeSonatypeStagingRepository {
         shouldRunAfter(tasks.withType<Sign>())
+    }
+
+    // Apply common signing configuration to all subprojects
+    plugins.withId("signing") {
+        configure<SigningExtension> {
+            useGpgCmd() // Use GPG agent instead of key file
+        }
     }
 }
