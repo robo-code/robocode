@@ -1,4 +1,5 @@
 import org.jreleaser.model.Active
+import org.jreleaser.model.Stereotype
 
 /**
  * To build Robocode, you need to run this command:
@@ -154,6 +155,24 @@ jreleaser {
                     // Support for snapshot releases
                     snapshotSupported = true
                 }
+            }
+        }
+    }
+
+    distributions {
+        create("robocode.api") {
+            enabled = true
+            active = Active.ALWAYS
+            distributionType = org.jreleaser.model.Distribution.DistributionType.JAVA_BINARY
+            stereotype = Stereotype.CLI
+
+            artifact {
+                path = file("robocode.api/build/libs/robocode.jar")
+            }
+
+            java {
+                enabled = true
+                mainClass = "robocode.Robocode"
             }
         }
     }
