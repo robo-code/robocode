@@ -137,4 +137,8 @@ tasks {
         // dependsOn("chocoBuild")
         // dependsOn("dockerBuild")
     }
+
+    publishMavenJavaPublicationToSonatypeRepository {
+        enabled = false
+    }
 }

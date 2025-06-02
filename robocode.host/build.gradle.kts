@@ -13,6 +13,11 @@ dependencies {
 
 description = "Robocode Host"
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 tasks {
     javadoc {
         source = sourceSets["main"].java

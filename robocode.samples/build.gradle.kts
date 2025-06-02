@@ -9,6 +9,11 @@ dependencies {
 
 description = "Robocode Samples"
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 tasks {
     val copyContent by registering(Copy::class) {
         from("src/main/resources") {

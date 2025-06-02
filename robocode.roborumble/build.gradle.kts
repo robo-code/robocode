@@ -19,6 +19,11 @@ tasks.jar {
     archiveFileName.set("roborumble.jar")
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 tasks {
     javadoc {
         source = sourceSets["main"].java
