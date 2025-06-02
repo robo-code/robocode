@@ -134,7 +134,7 @@ jreleaser {
             artifactory {
                 create("local") {
                     enabled = true // Always enable local staging
-                    active = Active.SNAPSHOT // Always active regardless of version type
+                    active = Active.ALWAYS // Always active regardless of version type
 
                     url = file("build/staging-deploy").toURI().toString()
 
