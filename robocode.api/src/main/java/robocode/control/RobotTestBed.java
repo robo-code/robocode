@@ -31,12 +31,14 @@ import static robocode.util.Utils.assertNotNull;
  *
  * @author Philip Johnson (original)
  * @author Pavel Savara (contributor)
+ * @author Flemming N. Larsen (contributor)
  */
 public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor {
     /**
      * The Robocode game engine instance used for this test.
      */
-    protected static IRobocodeEngine engine;
+    protected static volatile IRobocodeEngine engine;
+    private static final Object engineLock = new Object();
     /**
      * The battlefield specification, which is the default.
      */
@@ -53,8 +55,9 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
     /**
      * The number of messages generated during this battle so far.
      */
-    protected static int messages = 0;
-    protected static String robotsPath;
+    protected int messages = 0;
+    protected static volatile String robotsPath;
+    private static final Object ROBOTS_PATH_LOCK = new Object();
 
     /**
      * True to specify that the position during each turn should be printed out.
@@ -84,10 +87,12 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
     protected R robotObject;
 
     public RobotTestBed() {
-        if (engine == null) {
-            beforeInit();
-            engine = new RobocodeEngine();
-            afterInit();
+        synchronized (engineLock) {
+            if (engine == null) {
+                beforeInit();
+                engine = new RobocodeEngine();
+                afterInit();
+            }
         }
 
         errors = 0;
@@ -176,13 +181,27 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         System.setProperty("TESTING", "true");
         System.setProperty("robocode.options.battle.desiredTPS", "10000");
 
-        try {
-            File robotsPathFile = new File("../.sandbox/test-robots").getCanonicalFile().getAbsoluteFile();
-            robotsPath = robotsPathFile.getPath();
-        } catch (IOException e) {
-            e.printStackTrace(Logger.realErr);
-            throw new Error(e);
+        synchronized (ROBOTS_PATH_LOCK) {
+            if (robotsPath == null) {
+                try {
+                    // Use configurable path via system property if available
+                    String configPath = System.getProperty("robocode.robot.test.path");
+                    File robotsPathFile = (configPath != null) ?
+                            new File(configPath).getCanonicalFile().getAbsoluteFile() :
+                            new File("../.sandbox/test-robots").getCanonicalFile().getAbsoluteFile();
+
+                    if (!robotsPathFile.exists()) {
+                        robotsPathFile.mkdirs();
+                    }
+
+                    robotsPath = robotsPathFile.getPath();
+                } catch (IOException e) {
+                    Logger.logError("Error initializing robots path", e);
+                    throw new RuntimeException("Error initializing robot test bed", e);
+                }
+            }
         }
+
         System.setProperty("ROBOTPATH", robotsPath);
         if (isEnableScreenshots()) {
             System.setProperty("PAINTING", "true");
@@ -215,6 +234,24 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
     protected void after() {
         engine.removeBattleListener(engineErrorsListener);
         engine.removeBattleListener(testErrorListener);
+    }
+
+    /**
+     * Releases any resources used by this test bed.
+     * Should be called when the test framework is being shut down.
+     */
+    public static void cleanup() {
+        synchronized (engineLock) {
+            if (engine != null) {
+                try {
+                    engine.close();
+                } catch (Exception e) {
+                    Logger.logError("Error closing Robocode engine", e);
+                } finally {
+                    engine = null;
+                }
+            }
+        }
     }
 
     protected void run(String robotName, String enemyName) {
@@ -259,6 +296,10 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
     }
 
     protected void runBattle(String robotList, int numRounds, String initialPositions) {
+        if (robotList == null || robotList.isEmpty()) {
+            throw new IllegalArgumentException("Robot list cannot be null or empty");
+        }
+
         final RobotSpecification[] robotSpecifications = engine.getLocalRepository(robotList);
 
         if (getExpectedRobotCount(robotList) > 0) {
@@ -274,14 +315,21 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
             if (isDumpingMessages) {
                 Logger.realOut.println(event.getMessage());
             }
-            messages++;
+            RobotTestBed.this.messages++;
         }
 
         @Override
         public void onRoundStarted(RoundStartedEvent event) {
             List<IBasicRobot> robotObjects = event.getRobotObjects();
             if (robotObjects != null && !robotObjects.isEmpty()) {
-                RobotTestBed.this.robotObject = (R) robotObjects.get(0);
+                IBasicRobot robot = robotObjects.get(0);
+                try {
+                    @SuppressWarnings("unchecked")
+                    R typedRobot = (R) robot;
+                    RobotTestBed.this.robotObject = typedRobot;
+                } catch (ClassCastException e) {
+                    Logger.logError("Error casting robot to expected type: " + robot.getClass().getName(), e);
+                }
             }
         }
 
@@ -301,10 +349,24 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
 
         @Override
         public void onTurnEnded(TurnEndedEvent event) {
+            if (event == null || event.getTurnSnapshot() == null) {
+                return;
+            }
+
             if (isDumpingTurns) {
                 Logger.realOut.println("turn " + event.getTurnSnapshot().getTurn());
             }
-            for (IRobotSnapshot robot : event.getTurnSnapshot().getRobots()) {
+
+            IRobotSnapshot[] robots = event.getTurnSnapshot().getRobots();
+            if (robots == null) {
+                return;
+            }
+
+            for (IRobotSnapshot robot : robots) {
+                if (robot == null) {
+                    continue;
+                }
+
                 if (isDumpingPositions) {
                     Logger.realOut.print(robot.getVeryShortName());
                     Logger.realOut.print(" X:");
@@ -327,12 +389,24 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
 
     class TestErrorListener implements IBattleListener {
         protected void handleError(Throwable ex) {
-            if (RobotTestBed.this.lastError == null) {
-                RobotTestBed.this.lastError = ex;
-                if (isEnableScreenshots()) {
-                    RobotTestBed.engine.takeScreenshot();
+            if (ex == null) {
+                return;
+            }
+
+            synchronized (RobotTestBed.this) {
+                if (RobotTestBed.this.lastError == null) {
+                    RobotTestBed.this.lastError = ex;
+                    try {
+                        if (isEnableScreenshots() && engine != null) {
+                            engine.takeScreenshot();
+                        }
+                        if (engine != null) {
+                            engine.abortCurrentBattle(false);
+                        }
+                    } catch (Exception e) {
+                        Logger.logError("Error while handling another error", e);
+                    }
                 }
-                RobotTestBed.engine.abortCurrentBattle(false);
             }
         }
 
