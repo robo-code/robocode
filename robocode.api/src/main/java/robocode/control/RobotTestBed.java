@@ -349,6 +349,9 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         // Ensure security is enabled without SecurityManager (removed in Java 24)
         System.setProperty("NOSECURITY", "false");
 
+        // Enable custom security adapter for Java 24+
+        System.setProperty("robocode.security.adapter", "true");
+
         synchronized (ROBOTS_PATH_LOCK) {
             if (robotsPath == null) {
                 try {
