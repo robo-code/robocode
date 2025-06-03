@@ -11,7 +11,8 @@ package net.sf.robocode.host.security;
 /**
  * @author Mathew A. Nelson (original)
  */
-@SuppressWarnings("serial") class RobocodePermission extends java.security.Permission {
+@SuppressWarnings("serial")
+class RobocodePermission extends java.security.Permission {
 
 	RobocodePermission(String name) {
 		super(name);
@@ -91,7 +92,7 @@ package net.sf.robocode.host.security;
 	 *
 	 * @param permission the permission to check against.
 	 * @return true if the specified permission is implied by this object,
-	 *         false if not.
+	 * false if not.
 	 */
 	@Override
 	public boolean implies(java.security.Permission permission) {

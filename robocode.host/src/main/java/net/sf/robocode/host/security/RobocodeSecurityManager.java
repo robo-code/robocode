@@ -55,7 +55,7 @@ public class RobocodeSecurityManager extends SecurityManager {
 		// attacker thread; otherwise an AccessControlException must be thrown.
 
 		boolean found = false;
-		
+
 		ThreadGroup cg = c.getThreadGroup();
 		ThreadGroup tg = t.getThreadGroup();
 
@@ -102,11 +102,11 @@ public class RobocodeSecurityManager extends SecurityManager {
 		if ("SeedGenerator Thread".equals(c.getName()) && "SeedGenerator ThreadGroup".equals(cg.getName())) {
 			return; // The SeedGenerator might create a thread, which needs to be silently ignored
 		}
-		
+
 		IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
 
 		if (robotProxy == null) {
-			throw new AccessControlException("Preventing " + c.getName() + " from access to " + g.getName());			
+			throw new AccessControlException("Preventing " + c.getName() + " from access to " + g.getName());
 		}
 
 		if (cg.activeCount() > 5) {
@@ -116,8 +116,8 @@ public class RobocodeSecurityManager extends SecurityManager {
 			throw new SecurityException(message);
 		}
 	}
-	
-    public void checkPermission(Permission perm) {
+
+	public void checkPermission(Permission perm) {
 		Thread c = Thread.currentThread();
 		if (isSafeThread(c)) {
 			return;
@@ -129,15 +129,15 @@ public class RobocodeSecurityManager extends SecurityManager {
 				return;
 			}
 		}
-        super.checkPermission(perm);
+		super.checkPermission(perm);
 
-        if (perm instanceof SocketPermission) {
-    		IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
-        	String message = "Using socket is not allowed";
-        	robotProxy.punishSecurityViolation(message);
-            throw new SecurityException(message);
-        }
-    }
+		if (perm instanceof SocketPermission) {
+			IHostedThread robotProxy = threadManager.getLoadedOrLoadingRobotProxy(c);
+			String message = "Using socket is not allowed";
+			robotProxy.punishSecurityViolation(message);
+			throw new SecurityException(message);
+		}
+	}
 
 	private boolean isSafeThread(Thread c) {
 		return threadManager.isSafeThread(c);

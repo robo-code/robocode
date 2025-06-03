@@ -122,7 +122,7 @@ public class RobotThreadManager {
 			} else {
 				logError(
 						"Robot " + robotProxy.getStatics().getName()
-						+ " is still running.  Not stopping it because security is off.");
+								+ " is still running.  Not stopping it because security is off.");
 			}
 		}
 
