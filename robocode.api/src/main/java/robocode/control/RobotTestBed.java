@@ -62,23 +62,185 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
     /**
      * True to specify that the position during each turn should be printed out.
      */
-    public static boolean isDumpingPositions = false;
+    private static volatile boolean isDumpingPositions = false;
     /**
      * True to specify that each turn should be printed out.
      */
-    public static boolean isDumpingTurns = false;
+    private static volatile boolean isDumpingTurns = false;
     /**
      * True to specify that Robot output should be printed out.
      */
-    public static boolean isDumpingOutput = true;
+    private static volatile boolean isDumpingOutput = true;
     /**
      * True to specify that error messages should be printed out.
      */
-    public static boolean isDumpingErrors = true;
+    private static volatile boolean isDumpingErrors = true;
     /**
      * True to specify that Robot messages should be printed out.
      */
-    public static boolean isDumpingMessages = true;
+    private static volatile boolean isDumpingMessages = true;
+
+    private static final Object FLAGS_LOCK = new Object();
+
+    /**
+     * Thread-safe method to modify the position dumping flag.
+     * Use this instead of directly modifying the isDumpingPositions field.
+     *
+     * @param value The new value for the flag
+     */
+    public static void setPositionDumping(boolean value) {
+        synchronized (FLAGS_LOCK) {
+            isDumpingPositions = value;
+        }
+    }
+
+    /**
+     * Thread-safe method to modify the turn dumping flag.
+     * Use this instead of directly modifying the isDumpingTurns field.
+     *
+     * @param value The new value for the flag
+     */
+    public static void setTurnDumping(boolean value) {
+        synchronized (FLAGS_LOCK) {
+            isDumpingTurns = value;
+        }
+    }
+
+    /**
+     * Thread-safe method to modify the output dumping flag.
+     * Use this instead of directly modifying the isDumpingOutput field.
+     *
+     * @param value The new value for the flag
+     */
+    public static void setOutputDumping(boolean value) {
+        synchronized (FLAGS_LOCK) {
+            isDumpingOutput = value;
+        }
+    }
+
+    /**
+     * Thread-safe method to modify the error dumping flag.
+     * Use this instead of directly modifying the isDumpingErrors field.
+     *
+     * @param value The new value for the flag
+     */
+    public static void setErrorDumping(boolean value) {
+        synchronized (FLAGS_LOCK) {
+            isDumpingErrors = value;
+        }
+    }
+
+    /**
+     * Thread-safe method to modify the message dumping flag.
+     * Use this instead of directly modifying the isDumpingMessages field.
+     *
+     * @param value The new value for the flag
+     */
+    public static void setMessageDumping(boolean value) {
+        synchronized (FLAGS_LOCK) {
+            isDumpingMessages = value;
+        }
+    }
+
+    /**
+     * Gets whether robot positions should be printed during each turn.
+     *
+     * @return true if position dumping is enabled
+     */
+    public static boolean isDumpingPositions() {
+        return isDumpingPositions;
+    }
+
+    /**
+     * Sets whether robot positions should be printed during each turn.
+     *
+     * @param dumpingPositions true to enable position dumping
+     */
+    public static void setDumpingPositions(boolean dumpingPositions) {
+        synchronized (FLAGS_LOCK) {
+            isDumpingPositions = dumpingPositions;
+        }
+    }
+
+    /**
+     * Gets whether each turn should be printed out.
+     *
+     * @return true if turn dumping is enabled
+     */
+    public static boolean isDumpingTurns() {
+        return isDumpingTurns;
+    }
+
+    /**
+     * Sets whether each turn should be printed out.
+     *
+     * @param dumpingTurns true to enable turn dumping
+     */
+    public static void setDumpingTurns(boolean dumpingTurns) {
+        synchronized (FLAGS_LOCK) {
+            isDumpingTurns = dumpingTurns;
+        }
+    }
+
+    /**
+     * Gets whether robot output should be printed out.
+     *
+     * @return true if output dumping is enabled
+     */
+    public static boolean isDumpingOutput() {
+        return isDumpingOutput;
+    }
+
+    /**
+     * Sets whether robot output should be printed out.
+     *
+     * @param dumpingOutput true to enable output dumping
+     */
+    public static void setDumpingOutput(boolean dumpingOutput) {
+        synchronized (FLAGS_LOCK) {
+            isDumpingOutput = dumpingOutput;
+        }
+    }
+
+    /**
+     * Gets whether error messages should be printed out.
+     *
+     * @return true if error dumping is enabled
+     */
+    public static boolean isDumpingErrors() {
+        return isDumpingErrors;
+    }
+
+    /**
+     * Sets whether error messages should be printed out.
+     *
+     * @param dumpingErrors true to enable error dumping
+     */
+    public static void setDumpingErrors(boolean dumpingErrors) {
+        synchronized (FLAGS_LOCK) {
+            isDumpingErrors = dumpingErrors;
+        }
+    }
+
+    /**
+     * Gets whether robot messages should be printed out.
+     *
+     * @return true if message dumping is enabled
+     */
+    public static boolean isDumpingMessages() {
+        return isDumpingMessages;
+    }
+
+    /**
+     * Sets whether robot messages should be printed out.
+     *
+     * @param dumpingMessages true to enable message dumping
+     */
+    public static void setDumpingMessages(boolean dumpingMessages) {
+        synchronized (FLAGS_LOCK) {
+            isDumpingMessages = dumpingMessages;
+        }
+    }
 
 
     /**
@@ -153,6 +315,9 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
      * @return The number of robots in this battle.
      */
     public int getExpectedRobotCount(String robotList) {
+        if (robotList == null || robotList.isEmpty()) {
+            return 0;
+        }
         return robotList.split("[\\s,;]+").length;
     }
 
@@ -208,9 +373,19 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         }
     }
 
+    /**
+     * Called after the engine is initialized to perform additional setup.
+     * Use this method to configure engine properties after initialization.
+     */
     protected void afterInit() {
-        if (isEnableScreenshots()) {
-            engine.setVisible(true);
+        try {
+            if (isEnableScreenshots() && engine != null) {
+                engine.setVisible(true);
+            }
+        } catch (Exception e) {
+            Logger.logError("Error in afterInit", e);
+            cleanup(); // Clean up resources if initialization fails
+            throw new RuntimeException("Error configuring Robocode engine", e);
         }
     }
 
@@ -238,7 +413,13 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
 
     /**
      * Releases any resources used by this test bed.
-     * Should be called when the test framework is being shut down.
+     * <p>
+     * This method should be called when the test framework is being shut down to ensure
+     * proper cleanup of resources. It will close the Robocode engine and release all
+     * associated resources.
+     * <p>
+     * It is recommended to call this method in a finally block or shutdown hook to
+     * ensure resources are properly released even if tests fail.
      */
     public static void cleanup() {
         synchronized (engineLock) {
@@ -261,7 +442,7 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         final int expectedErrors = getExpectedErrors();
 
         if (lastError != null) {
-            Class errorClass = lastError.getClass();
+            Class<?> errorClass = lastError.getClass();
             if (RuntimeException.class.isAssignableFrom(errorClass)) {
                 throw (RuntimeException) lastError;
             } else if (Error.class.isAssignableFrom(errorClass)) {
@@ -414,7 +595,7 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         public void onBattleStarted(BattleStartedEvent event) {
             try {
                 RobotTestBed.this.onBattleStarted(event);
-            } catch (Error ex) {
+            } catch (Error | Exception ex) {
                 handleError(ex);
             }
         }
@@ -423,7 +604,7 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         public void onBattleFinished(BattleFinishedEvent event) {
             try {
                 RobotTestBed.this.onBattleFinished(event);
-            } catch (Error ex) {
+            } catch (Error | Exception ex) {
                 handleError(ex);
             }
         }
@@ -432,7 +613,7 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         public void onBattleCompleted(BattleCompletedEvent event) {
             try {
                 RobotTestBed.this.onBattleCompleted(event);
-            } catch (Error ex) {
+            } catch (Error | Exception ex) {
                 handleError(ex);
             }
         }
@@ -441,7 +622,7 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         public void onBattlePaused(BattlePausedEvent event) {
             try {
                 RobotTestBed.this.onBattlePaused(event);
-            } catch (Error ex) {
+            } catch (Error | Exception ex) {
                 handleError(ex);
             }
         }
@@ -450,7 +631,7 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         public void onBattleResumed(BattleResumedEvent event) {
             try {
                 RobotTestBed.this.onBattleResumed(event);
-            } catch (Error ex) {
+            } catch (Error | Exception ex) {
                 handleError(ex);
             }
         }
@@ -459,7 +640,7 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         public void onRoundStarted(RoundStartedEvent event) {
             try {
                 RobotTestBed.this.onRoundStarted(event);
-            } catch (Error ex) {
+            } catch (Error | Exception ex) {
                 handleError(ex);
             }
         }
@@ -468,7 +649,7 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         public void onRoundEnded(RoundEndedEvent event) {
             try {
                 RobotTestBed.this.onRoundEnded(event);
-            } catch (Error ex) {
+            } catch (Error | Exception ex) {
                 handleError(ex);
             }
         }
@@ -477,7 +658,7 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         public void onTurnStarted(TurnStartedEvent event) {
             try {
                 RobotTestBed.this.onTurnStarted(event);
-            } catch (Error ex) {
+            } catch (Error | Exception ex) {
                 handleError(ex);
             }
         }
@@ -485,10 +666,12 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         @Override
         public void onTurnEnded(TurnEndedEvent event) {
             try {
-                if (RobotTestBed.this.lastError == null) {
-                    RobotTestBed.this.onTurnEnded(event);
+                synchronized (RobotTestBed.this) {
+                    if (RobotTestBed.this.lastError == null) {
+                        RobotTestBed.this.onTurnEnded(event);
+                    }
                 }
-            } catch (Error ex) {
+            } catch (Error | Exception ex) {
                 handleError(ex);
             }
         }
@@ -497,7 +680,7 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         public void onBattleMessage(BattleMessageEvent event) {
             try {
                 RobotTestBed.this.onBattleMessage(event);
-            } catch (Error ex) {
+            } catch (Error | Exception ex) {
                 handleError(ex);
             }
         }
@@ -510,7 +693,7 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
                 if (errorInstance != null) {
                     handleError(errorInstance);
                 }
-            } catch (Error ex) {
+            } catch (Error | Exception ex) {
                 handleError(ex);
             }
         }
