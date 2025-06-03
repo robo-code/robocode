@@ -1,4 +1,17 @@
-## Version 1.9.5.6
+## Version 1.10.0 (04-Jun-2025)
+
+Robocode's code around `RobocodeSecurityManager` has been refactored to ensure compatibility with Java 24 and newer
+versions, even after the retirement of the Security Manager in Java 24.
+[Read more here](https://inside.java/2024/12/11/quality-heads-up/).  
+Additionally, Robocode remains fully functional on older Java versions, from Java 8 onward.
+
+### Changes
+
+- **Java 24 support**: Implemented new security mechanisms that work with Java 24+ while maintaining compatibility with
+  Java 8+.
+- **Versioning update**: Adopted [Semantic Versioning](https://semver.org/) starting with version **1.10.0**.
+
+## Version 1.9.5.6 (30-May-2025)
 
 ### Bugfix
 
