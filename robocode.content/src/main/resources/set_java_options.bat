@@ -30,16 +30,8 @@ if %JAVA_MAJOR_VERSION% == 1 for /f "delims=. tokens=2" %%v in ("%JAVA_VERSION_P
 echo Robocode is running on Java %JAVA_MAJOR_VERSION%
 
 @rem ------------------------------------------------------
-@rem Check if Java version is greater than 23
-@rem ------------------------------------------------------
-if %JAVA_MAJOR_VERSION% GTR 23 (
-    echo Robocode does not support Java versions newer than version 23.
-    exit /b 100
-)
-
-@rem ------------------------------------------------------
 @rem Set Java options
 @rem ------------------------------------------------------
 
-@rem Only set 'java.security.manager=allow' for Java version greater than 11
-if %JAVA_MAJOR_VERSION% GTR 11 set _JAVA_OPTIONS="-Djava.security.manager=allow"
+@rem Only set 'java.security.manager=allow' for Java version greater than 11 and lesser than 24
+if %JAVA_MAJOR_VERSION% GTR 11 if %JAVA_MAJOR_VERSION% LSS 24 set _JAVA_OPTIONS="-Djava.security.manager=allow"
