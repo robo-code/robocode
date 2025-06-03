@@ -30,30 +30,30 @@ public interface IThreadManager extends IThreadManagerBase {
 	void setLoadingRobot(IHostedThread newLoadingRobotProxy);
 
 	void addSafeThread(Thread safeThread);
-	
+
 	void addSafeThreadGroup(ThreadGroup safeThreadGroup);
 
 	void removeSafeThread(Thread safeThread);
 
 	boolean isSafeThread(Thread c);
 
-		/**
-		 * Checks if the current thread can access the specified thread.
-		 * This replaces SecurityManager.checkAccess(Thread) functionality.
-		 * 
-		 * @param thread The thread to check access for
-		 * @return true if access is allowed, false otherwise
-		 */
-		boolean checkThreadAccess(Thread thread);
+	/**
+	 * Checks if the current thread can access the specified thread.
+	 * This replaces SecurityManager.checkAccess(Thread) functionality.
+	 *
+	 * @param thread The thread to check access for
+	 * @return true if access is allowed, false otherwise
+	 */
+	boolean checkThreadAccess(Thread thread);
 
-		/**
-		 * Checks if the current thread can access the specified thread group.
-		 * This replaces SecurityManager.checkAccess(ThreadGroup) functionality.
-		 * 
-		 * @param group The thread group to check access for
-		 * @return true if access is allowed, false otherwise
-		 */
-		boolean checkThreadGroupAccess(ThreadGroup group);
+	/**
+	 * Checks if the current thread can access the specified thread group.
+	 * This replaces SecurityManager.checkAccess(ThreadGroup) functionality.
+	 *
+	 * @param group The thread group to check access for
+	 * @return true if access is allowed, false otherwise
+	 */
+	boolean checkThreadGroupAccess(ThreadGroup group);
 
 	PrintStream getRobotOutputStream();
 

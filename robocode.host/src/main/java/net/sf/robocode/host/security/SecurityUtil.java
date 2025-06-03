@@ -11,13 +11,11 @@ import net.sf.robocode.host.IHostedThread;
 import net.sf.robocode.host.IThreadManager;
 import net.sf.robocode.io.Logger;
 
-import java.security.AccessControlException;
-
 /**
  * Modern security utility to replace functionality previously provided by SecurityManager.
  * Created as part of removing SecurityManager dependency (deprecated in Java 17, removed in Java 24).
  *
- * @author Robocode Contributors
+ * @author Flemming N. Larsen (original)
  */
 public class SecurityUtil {
 

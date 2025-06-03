@@ -10,6 +10,7 @@ package net.sf.robocode.host;
 
 import net.sf.robocode.core.BaseModule;
 import net.sf.robocode.core.Container;
+import net.sf.robocode.host.security.SecurityUtil;
 import net.sf.robocode.host.security.ThreadManager;
 
 
@@ -22,8 +23,6 @@ public class Module extends BaseModule {
 		Container.cache.addComponent(ICpuManager.class, CpuManager.class);
 		Container.cache.addComponent(IThreadManager.class, ThreadManager.class);
 		Container.cache.addComponent("robocode.host.java", JavaHost.class);
-
-		// Register security components
-		Container.cache.addComponent("robocode.host.security.util", net.sf.robocode.host.security.SecurityUtil.class);
+		Container.cache.addComponent("robocode.host.security.util", SecurityUtil.class);
 	}
 }

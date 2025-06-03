@@ -11,7 +11,7 @@ package net.sf.robocode.host.security;
  * Error thrown when a robot violates security constraints.
  * This replaces SecurityExceptions that were previously thrown by SecurityManager.
  *
- * @author Robocode Contributors
+ * @author Flemming N. Larsen (original)
  */
 public class RobotSecurityViolationError extends Error {
 
