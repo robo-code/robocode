@@ -18,10 +18,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -42,7 +42,8 @@ public class ThreadManager implements IThreadManager {
 	private Thread robotLoaderThread;
 	private IHostedThread loadingRobot;
 
-	public ThreadManager() {}
+	public ThreadManager() {
+	}
 
 	public void addSafeThread(Thread safeThread) {
 		safeThreads.add(safeThread);
@@ -130,7 +131,7 @@ public class ThreadManager implements IThreadManager {
 		if (!robotProxy.getStatics().isAdvancedRobot()) {
 			throw new RobotException("Only advanced robots could create files");
 		}
-		
+
 		final File dir = robotProxy.getRobotFileSystemManager().getWritableDirectory();
 
 		if (!dir.exists()) {
@@ -197,6 +198,54 @@ public class ThreadManager implements IThreadManager {
 			e.printStackTrace(syserr);
 			return false;
 		}
+	}
+
+	@Override
+	public boolean checkThreadAccess(Thread thread) {
+		Thread currentThread = Thread.currentThread();
+
+		// Allow access if the current thread is a safe thread
+		if (isSafeThread(currentThread)) {
+			return true;
+		}
+
+		// Allow a thread to access itself
+		if (currentThread == thread) {
+			return true;
+		}
+
+		// Get the robot proxy for the current thread
+		IHostedThread robotProxy = getLoadedOrLoadingRobotProxy(currentThread);
+		if (robotProxy == null) {
+			return false;
+		}
+
+		// Allow access to threads in the same thread group
+		ThreadGroup currentGroup = currentThread.getThreadGroup();
+		ThreadGroup targetGroup = thread.getThreadGroup();
+
+		return currentGroup != null && currentGroup == targetGroup;
+	}
+
+	@Override
+	public boolean checkThreadGroupAccess(ThreadGroup group) {
+		Thread currentThread = Thread.currentThread();
+
+		// Allow access if the current thread is a safe thread
+		if (isSafeThread(currentThread)) {
+			return true;
+		}
+
+		// Get the robot proxy for the current thread
+		IHostedThread robotProxy = getLoadedOrLoadingRobotProxy(currentThread);
+		if (robotProxy == null) {
+			return false;
+		}
+
+		// Allow access to the thread's own thread group
+		ThreadGroup currentGroup = currentThread.getThreadGroup();
+
+		return currentGroup != null && (currentGroup == group || currentGroup.parentOf(group));
 	}
 
 	public PrintStream getRobotOutputStream() {

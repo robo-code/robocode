@@ -346,6 +346,9 @@ public abstract class RobotTestBed<R extends IBasicRobot> extends BattleAdaptor 
         System.setProperty("TESTING", "true");
         System.setProperty("robocode.options.battle.desiredTPS", "10000");
 
+        // Ensure security is enabled without SecurityManager (removed in Java 24)
+        System.setProperty("NOSECURITY", "false");
+
         synchronized (ROBOTS_PATH_LOCK) {
             if (robotsPath == null) {
                 try {
