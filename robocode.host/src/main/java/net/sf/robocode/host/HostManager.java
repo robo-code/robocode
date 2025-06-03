@@ -101,9 +101,25 @@ public class HostManager implements IHostManager {
 		JarJarURLConnection.register();
 
 		if (RobocodeProperties.isSecurityOn()) {
-			new RobocodeSecurityPolicy(threadManager);
-			new RobocodeSecurityManager(threadManager);
+			// Check if we're running on Java 24 or later
+			int majorVersion = net.sf.robocode.util.JavaVersion.getJavaMajorVersion();
+
+			if (majorVersion >= 24) {
+				// Use the Java 24+ compatible security adapter
+				RobocodeSecurityAdapter securityAdapter = new RobocodeSecurityAdapter(threadManager);
+				securityAdapter.init();
+			} else {
+				// Use traditional security policy for Java < 24
+				try {
+					new RobocodeSecurityPolicy(threadManager);
+					new RobocodeSecurityManager(threadManager);
+				} catch (UnsupportedOperationException e) {
+					// Fallback to adapter if policy fails for any reason
+					Logger.logWarning("Falling back to alternative security implementation due to: " + e.getMessage());
+					RobocodeSecurityAdapter securityAdapter = new RobocodeSecurityAdapter(threadManager);
+					securityAdapter.init();
+				}
+			}
 		}
 	}
-
 }

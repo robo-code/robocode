@@ -39,14 +39,22 @@ public class RobocodeSecurityFactory {
      * Get or create the Robocode security policy.
      * 
      * @param threadManager the thread manager to use
-     * @return the security policy instance
+     * @return the security policy instance or null if policy creation failed
      */
     public static synchronized RobocodeSecurityPolicy getSecurityPolicy(IThreadManager threadManager) {
         if (securityPolicy == null) {
+            // Check if we're running on Java 24 or later
+            int majorVersion = net.sf.robocode.util.JavaVersion.getJavaMajorVersion();
+
+            if (majorVersion >= 24) {
+                Logger.logMessage("Running on Java " + majorVersion + ", using alternative security implementation");
+                return null; // Will use RobocodeSecurityAdapter instead
+            }
+
             try {
                 securityPolicy = new RobocodeSecurityPolicy(threadManager);
             } catch (UnsupportedOperationException e) {
-                Logger.logError("Security policy creation failed - probably running on Java 24+", e);
+                Logger.logError("Security policy creation failed - using alternative security implementation", e);
                 return null;
             }
         }
