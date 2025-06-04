@@ -65,6 +65,13 @@ This typically occurs within 10 minutes, though updates to search can take up to
 
 You should be able to see the binaries uploaded to [public Repository]
 
+## Publish to Chocolatey
+
+Make sure you set up a `CHOCOLATEY_API_KEY` environment variable with the API key used for Robocode.
+
+```
+./gradlew chocoPush
+```
 
 [staging Repository]: https://oss.sonatype.org/#stagingRepositories
 

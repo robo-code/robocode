@@ -130,7 +130,15 @@ tasks {
         dependsOn(chocoBuild)
 
         workingDir = file("build/choco")
-        commandLine("choco", "push", "robocode.${project.version}.nupkg", "-s", "https://push.chocolatey.org/")
+        commandLine(
+            "choco",
+            "push",
+            "robocode.${project.version}.nupkg",
+            "-s",
+            "https://push.chocolatey.org/",
+            "--api-key",
+            System.getenv("CHOCOLATEY_API_KEY")
+        )
     }
 
     build {
