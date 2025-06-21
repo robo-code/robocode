@@ -16,13 +16,12 @@ import java.awt.*;
 
 
 /**
- * PaintingRobot - a sample robot that demonstrates the onPaint() and
- * getGraphics() methods.
- * Also demonstrate feature of debugging properties on RobotDialog
+ * A sample robot that demonstrates graphical painting and debugging features.
  * <p>
- * Moves in a seesaw motion, and spins the gun around at each end.
- * When painting is enabled for this robot, a red circle will be painted
- * around this robot.
+ * This robot demonstrates the onPaint() and getGraphics() methods, as well as
+ * the debugging properties feature on RobotDialog. It moves in a seesaw motion
+ * and spins the gun around at each end. When painting is enabled, it displays
+ * a red circle outline around itself with a translucent green fill.
  *
  * @author Stefan Westen (original SGSample)
  * @author Pavel Savara (contributor)
@@ -30,7 +29,8 @@ import java.awt.*;
 public class PaintingRobot extends Robot {
 
 	/**
-	 * PaintingRobot's run method - Seesaw
+	 * Main robot behavior method that implements a seesaw movement pattern.
+	 * The robot moves forward, spins the gun, then backward, and repeats.
 	 */
 	public void run() {
 		while (true) {
@@ -42,28 +42,30 @@ public class PaintingRobot extends Robot {
 	}
 
 	/**
-	 * Fire when we see a robot
+	 * Fires at scanned robots and demonstrates the debugging properties feature
+	 * by storing information about the scanned robot.
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
-		// demonstrate feature of debugging properties on RobotDialog
+		// demonstrate the feature of debugging properties on RobotDialog
 		setDebugProperty("lastScannedRobot", e.getName() + " at " + e.getBearing() + " degrees at time " + getTime());
 		
 		fire(1);
 	}
 
 	/**
-	 * We were hit!  Turn perpendicular to the bullet,
-	 * so our seesaw might avoid a future shot.
-	 * In addition, draw orange circles where we were hit.
+	 * Responds when the robot is hit by a bullet by turning perpendicular
+	 * to the bullet's path to potentially avoid future shots.
+	 * Also demonstrates debugging features by setting properties and
+	 * drawing orange circles at the hit location.
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
-		// demonstrate feature of debugging properties on RobotDialog
+		// demonstrate the feature of debugging properties on RobotDialog
 		setDebugProperty("lastHitBy", e.getName() + " with power of bullet " + e.getPower() + " at time " + getTime());
 
-		// show how to remove debugging property
+		// show how to remove a debugging property
 		setDebugProperty("lastScannedRobot", null);
 
-		// gebugging by painting to battle view
+		// debugging by painting to battle view
 		Graphics2D g = getGraphics();
 
 		g.setColor(Color.orange);
@@ -76,7 +78,9 @@ public class PaintingRobot extends Robot {
 	}
 
 	/**
-	 * Paint a red circle around our PaintingRobot
+	 * Paints custom graphics for the robot.
+	 * Draws a red circle outline around the robot and overlays a translucent
+	 *  green-filled circle to create a visual effect.
 	 */
 	public void onPaint(Graphics2D g) {
 		g.setColor(Color.red);

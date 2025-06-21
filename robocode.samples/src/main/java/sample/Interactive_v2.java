@@ -10,51 +10,51 @@ package sample;
 
 import robocode.AdvancedRobot;
 import robocode.util.Utils;
-import static robocode.util.Utils.normalAbsoluteAngle;
-import static robocode.util.Utils.normalRelativeAngle;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import static java.awt.event.KeyEvent.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.awt.event.KeyEvent.*;
+import static robocode.util.Utils.normalAbsoluteAngle;
+import static robocode.util.Utils.normalRelativeAngle;
+
 
 /**
- * Interactive_v2 - a modified version of the sample robot Interactive by Flemming N. Larsen
- *                  to use absolute movements (up, right, down, left) by Tuan Anh Nguyen.
+ * Interactive_v2 - a sample robot that demonstrates absolute directional movement control using keyboard and mouse input.
  * <p>
- * This is a robot that is controlled using the arrow keys (or WASD) and mouse only.
+ * This robot is controlled using the arrow keys (or WASD) and mouse input.
  * <p>
  * Keys:
- * - W or arrow up:    Move up
- * - S or arrow down:  Move down
- * - A or arrow right: Move right
- * - D or arrow left:  Move left
+ * - W or arrow up:    Move up (north)
+ * - S or arrow down:  Move down (south)
+ * - D or arrow right: Move right (east)
+ * - A or arrow left:  Move left (west)
  * Mouse:
- * - Moving:      Moves the aim, which the gun will follow
+ * - Moving:      Moves the aim point that the gun will follow
  * - Button 1:    Fire a bullet with power = 1
  * - Button 2:    Fire a bullet with power = 2
  * - Button 3:    Fire a bullet with power = 3
  * <p>
- * The bullet color depends on the fire power:
+ * The bullet color corresponds to its power level:
  * - Power = 1:   Yellow
  * - Power = 2:   Orange
  * - Power = 3:   Red
  * <p>
- * Note that the robot will continue firing as long as the mouse button is
+ * Note that the robot will continue firing as long as a mouse button is
  * pressed down.
  * <p>
  * By enabling the "Paint" button on the robot console window for this robot,
- * a cross hair will be painted for the robots current aim (controlled by the
+ * a red crosshair will be displayed at the current aim point (controlled by the
  * mouse).
  *
  * @author Flemming N. Larsen (original)
  * @author Tuan Anh Nguyen (contributor)
  *
- * @version 1.0
+ * @version 2.0
  *
  * @since 1.7.2.2
  */
@@ -106,7 +106,7 @@ public class Interactive_v2 extends AdvancedRobot {
 			// Execute all pending set-statements
 			execute();
 
-			// Next turn is processed in this loop..
+			// The next turn is processed in this loop
 		}
 	}
 
@@ -195,11 +195,11 @@ public class Interactive_v2 extends AdvancedRobot {
 		firePower = 0;
 	}
 
-	// Called in order to paint graphics for this robot.
+	// Called to paint graphics for this robot.
 	// "Paint" button on the robot console window for this robot must be
-	// enabled in order to see the paintings.
+	// enabled to see the paintings.
 	public void onPaint(Graphics2D g) {
-		// Draw a red cross hair with the center at the current aim
+		// Draw a red cross-hair with the center at the current aim
 		// coordinate (x,y)
 		g.setColor(Color.RED);
 		g.drawOval(aimX - 15, aimY - 15, 30, 30);
@@ -222,7 +222,7 @@ public class Interactive_v2 extends AdvancedRobot {
 		if (directions.isEmpty()) {
 			return 0;
 		}
-		// If the robot has more than 45 degrees to turn, move only 5 pixel 
+		// If the robot has more than 45 degrees to turn, move only 5 pixels
 		if (Math.abs(angleToTurnInDegrees()) > 45) {
 			return 5;
 		}
@@ -231,8 +231,10 @@ public class Interactive_v2 extends AdvancedRobot {
 	}
 
 	// Return the desired direction depending on the pending move directions.
-	// With one arrow key pressed, the move to N, E, S, W.
-	// With two keys pressed, the robot also move to NE, NW, SE, SW.
+	// When one direction key is pressed (up/W, right/D, down/S, left/A),
+	//  the robot moves in cardinal directions (North, East, South, West).
+	// When two direction keys are pressed simultaneously,
+	//  the robot moves diagonally (Northeast, Northwest, Southeast, Southwest).
 	private double desiredDirection() {
 		if (directions.contains(Direction.UP)) {
 			if (directions.contains(Direction.RIGHT)) {

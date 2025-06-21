@@ -12,10 +12,10 @@ import robocode.JuniorRobot;
 
 
 /**
- * MyFirstJuniorRobot - a sample robot by Flemming N. Larsen
+ * MyFirstJuniorRobot - a sample robot that demonstrates basic movement patterns and targeting.
  * <p>
- * Moves in a seesaw motion, and spins the gun around at each end
- * when it cannot see any enemy robot. When the robot sees and enemy
+ * Moves in a seesaw motion and spins the gun around at each end
+ * when it cannot see any enemy robot. When the robot sees an enemy
  * robot, it will immediately turn the gun and fire at it.
  *
  * @author Flemming N. Larsen (original)
@@ -23,38 +23,40 @@ import robocode.JuniorRobot;
 public class MyFirstJuniorRobot extends JuniorRobot {
 
 	/**
-	 * MyFirstJuniorRobot's run method - Seesaw as default
+	 * The main run method - Implements a seesaw movement pattern
 	 */
 	public void run() {
-		// Set robot colors
+		// Set robot colors (body, gun, radar)
 		setColors(green, black, blue);
 
-		// Seesaw forever
+		// Seesaw movement pattern - repeats forever
 		while (true) {
-			ahead(100); // Move ahead 100
-			turnGunRight(360); // Spin gun around
-			back(100); // Move back 100
-			turnGunRight(360); // Spin gun around
+			ahead(100); // Move forward 100 pixels
+			turnGunRight(360); // Scan for enemies by spinning gun 360 degrees
+			back(100); // Move backward 100 pixels
+			turnGunRight(360); // Scan for enemies by spinning gun 360 degrees
 		}
 	}
 
 	/**
-	 * When we see a robot, turn the gun towards it and fire
+	 * Called when our robot's radar detects another robot
+	 * Responds by aiming the gun at the detected robot and firing
 	 */
 	public void onScannedRobot() {
-		// Turn gun to point at the scanned robot
+		// Aim the gun directly at the detected robot
 		turnGunTo(scannedAngle);
 
-		// Fire!
+		// Fire with power level 1 (low power)
 		fire(1);
 	}
 
 	/**
-	 * We were hit!  Turn and move perpendicular to the bullet,
-	 * so our seesaw might avoid a future shot.
+	 * Called when our robot is hit by a bullet
+	 * Responds by moving perpendicular to the bullet's path
+	 * to potentially avoid future shots from the same direction
 	 */
 	public void onHitByBullet() {
-		// Move ahead 100 and in the same time turn left papendicular to the bullet
+		// Move forward 100 pixels while turning left perpendicular to the bullet's path
 		turnAheadLeft(100, 90 - hitByBulletBearing);
 	}
 }

@@ -16,20 +16,20 @@ import java.awt.*;
 
 
 /**
- * Walls - a sample robot by Mathew Nelson, and maintained by Flemming N. Larsen
+ * Walls - A sample robot that demonstrates a wall-following movement pattern.
  * <p>
- * Moves around the outer edge with the gun facing in.
+ * This robot navigates around the perimeter of the battlefield with the gun pointed inward.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class Walls extends Robot {
 
-	boolean peek; // Don't turn if there's a robot there
-	double moveAmount; // How much to move
+	boolean peek; // Flag to determine if scanning is needed before turning
+	double moveAmount; // The maximum distance to move along a wall
 
 	/**
-	 * run: Move around the walls
+	 * run: Navigates the robot around the battlefield perimeter
 	 */
 	public void run() {
 		// Set colors
@@ -39,54 +39,55 @@ public class Walls extends Robot {
 		setBulletColor(Color.cyan);
 		setScanColor(Color.cyan);
 
-		// Initialize moveAmount to the maximum possible for this battlefield.
+		// Set movement distance to the maximum battlefield dimension
 		moveAmount = Math.max(getBattleFieldWidth(), getBattleFieldHeight());
-		// Initialize peek to false
+		// Initialize scanning flag to false
 		peek = false;
 
-		// turnLeft to face a wall.
-		// getHeading() % 90 means the remainder of
-		// getHeading() divided by 90.
+		// Align with a wall by turning to face it directly
+		// Using modulo to calculate the angle needed to face a wall
 		turnLeft(getHeading() % 90);
 		ahead(moveAmount);
-		// Turn the gun to turn right 90 degrees.
+		// Enable scanning before turning
 		peek = true;
+		// Point gun toward the battlefield center
 		turnGunRight(90);
+		// Turn to move along the next wall
 		turnRight(90);
 
 		while (true) {
-			// Look before we turn when ahead() completes.
+			// Enable scanning before moving along the wall
 			peek = true;
-			// Move up the wall
+			// Move along the current wall
 			ahead(moveAmount);
-			// Don't look now
+			// Disable scanning during turning
 			peek = false;
-			// Turn to the next wall
+			// Turn 90 degrees to follow the next wall
 			turnRight(90);
 		}
 	}
 
 	/**
-	 * onHitRobot:  Move away a bit.
+	 * onHitRobot: Handles collision with another robot by moving away
 	 */
 	public void onHitRobot(HitRobotEvent e) {
-		// If he's in front of us, set back up a bit.
+		// If the other robot is in front of us, move backward
 		if (e.getBearing() > -90 && e.getBearing() < 90) {
 			back(100);
-		} // else he's in back of us, so set ahead a bit.
+		} // If the other robot is behind us, move forward
 		else {
 			ahead(100);
 		}
 	}
 
 	/**
-	 * onScannedRobot:  Fire!
+	 * onScannedRobot: Fires at the detected robot and performs additional scanning when needed
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
+		// Fire at the detected robot with power level 2
 		fire(2);
-		// Note that scan is called automatically when the robot is moving.
-		// By calling it manually here, we make sure we generate another scan event if there's a robot on the next
-		// wall, so that we do not start moving up it until it's gone.
+		// Scan is automatically called during movement, but we need an additional scan
+		// when the peek flag is true to detect robots before turning or moving toward a new wall
 		if (peek) {
 			scan();
 		}

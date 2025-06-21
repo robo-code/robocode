@@ -15,7 +15,9 @@ import robocode.ScannedRobotEvent;
 
 
 /**
- * This is a sample of a robot using the RateControlRobot class
+ * VelociRobot - a sample robot that demonstrates rate-controlled movement patterns.
+ * This robot uses the RateControlRobot class to alternate between forward and backward
+ * movement while responding to events.
  * 
  * @author Joshua Galecki (original)
  */
@@ -29,7 +31,7 @@ public class VelociRobot extends RateControlRobot {
 		
 		while (true) {
 			if (turnCounter % 64 == 0) {
-				// Straighten out, if we were hit by a bullet and are turning
+				// Straighten out if we were hit by a bullet and are turning
 				setTurnRate(0);
 				// Go forward with a velocity of 4
 				setVelocityRate(4);

@@ -9,26 +9,27 @@ package sample;
 
 
 import robocode.AdvancedRobot;
-import static robocode.util.Utils.normalAbsoluteAngle;
-import static robocode.util.Utils.normalRelativeAngle;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import static java.awt.event.KeyEvent.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
+import static java.awt.event.KeyEvent.*;
+import static robocode.util.Utils.normalAbsoluteAngle;
+import static robocode.util.Utils.normalRelativeAngle;
+
 
 /**
- * Interactive - a sample robot by Flemming N. Larsen.
+ * Interactive - a sample robot that demonstrates user-controlled movement through keyboard and mouse input.
  * <p>
- * This is a robot that is controlled using the arrow keys and mouse only.
+ * This robot allows direct control using keyboard arrows and WASD keys for movement, and mouse for aiming and firing.
  * <p>
  * Keys:
  * - W or arrow up:    Move forward
  * - S or arrow down:  Move backward
- * - A or arrow right: Turn right
- * - D or arrow left:  Turn left
+ * - D or arrow right: Turn right
+ * - A or arrow left:  Turn left
  * Mouse:
  * - Moving:      Moves the aim, which the gun will follow
  * - Wheel up:    Move forward
@@ -37,120 +38,120 @@ import java.awt.event.MouseWheelEvent;
  * - Button 2:    Fire a bullet with power = 2
  * - Button 3:    Fire a bullet with power = 3
  * <p>
- * The bullet color depends on the fire power:
- * - Power = 1:   Yellow
- * - Power = 2:   Orange
- * - Power = 3:   Red
+ * The bullet color corresponds to the fire power:
+ * - Power = 1:   Yellow (lowest damage)
+ * - Power = 2:   Orange (medium damage)
+ * - Power = 3:   Red (highest damage)
  * <p>
  * Note that the robot will continue firing as long as the mouse button is
  * pressed down.
  * <p>
- * By enabling the "Paint" button on the robot console window for this robot,
- * a cross hair will be painted for the robots current aim (controlled by the
- * mouse).
+ * When the "Paint" button is enabled on the robot console window,
+ * a red cross-hair will be displayed showing the current aim position
+ * controlled by the mouse.
  *
  * @author Flemming N. Larsen (original)
  *
  * @version 1.2
- *
  * @since 1.3.4
  */
 public class Interactive extends AdvancedRobot {
 
-	// Move direction: 1 = move forward, 0 = stand still, -1 = move backward
+	// Movement direction indicator: 1 = forward, 0 = stopped, -1 = backward
 	int moveDirection;
 
-	// Turn direction: 1 = turn right, 0 = no turning, -1 = turn left
+	// Rotation direction indicator: 1 = right turn, 0 = no rotation, -1 = left turn
 	int turnDirection;
 
-	// Amount of pixels/units to move
+	// Distance to move in pixels/units
 	double moveAmount;
 
-	// The coordinate of the aim (x,y)
+	// Target aim coordinates (x,y) controlled by mouse position
 	int aimX, aimY;
 
-	// Fire power, where 0 = don't fire
+	// Bullet fire power: 1-3 for firing (energy consumed), 0 = don't fire
 	int firePower;
 
 	// Called when the robot must run
 	public void run() {
 
-		// Sets the colors of the robot
+		// Set robot appearance colors:
 		// body = black, gun = white, radar = red
 		setColors(Color.BLACK, Color.WHITE, Color.RED);
 
 		// Loop forever
 		for (;;) {
-			// Sets the robot to move forward, backward or stop moving depending
-			// on the move direction and amount of pixels to move
+			// Control robot movement: forward, backward or stop
+			// based on moveDirection and moveAmount values
 			setAhead(moveAmount * moveDirection);
 
-			// Decrement the amount of pixels to move until we reach 0 pixels
-			// This way the robot will automatically stop if the mouse wheel
-			// has stopped it's rotation
+			// Gradually decrease movement distance until stopped
+			// This creates automatic deceleration when the mouse wheel
+			// is no longer being rotated
 			moveAmount = Math.max(0, moveAmount - 1);
 
-			// Sets the robot to turn right or turn left (at maximum speed) or
-			// stop turning depending on the turn direction
+			// Control robot rotation: right, left, or no rotation
+			// at 45 degrees per turn when turning
 			setTurnRight(45 * turnDirection); // degrees
 
-			// Turns the gun toward the current aim coordinate (x,y) controlled by
-			// the current mouse coordinate
+			// Calculate the angle to target position and turn gun to face it
+			// Uses mouse position (aimX, aimY) as the target
 			double angle = normalAbsoluteAngle(Math.atan2(aimX - getX(), aimY - getY()));
 
 			setTurnGunRightRadians(normalRelativeAngle(angle - getGunHeadingRadians()));
 
-			// Fire the gun with the specified fire power, unless the fire power = 0
+			// Fire weapon if the power level is set (controlled by mouse buttons)
+			// No firing occurs when firePower = 0
 			if (firePower > 0) {
 				setFire(firePower);
 			}
 
-			// Execute all pending set-statements
+			// Execute all pending commands for this turn
 			execute();
 
-			// Next turn is processed in this loop..
+			// Continue to the next turn in the infinite loop
 		}
 	}
 
-	// Called when a key has been pressed
+	// Handles keyboard key press events for robot control
 	public void onKeyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case VK_UP:
 		case VK_W:
-			// Arrow up key: move direction = forward (infinitely)
+			// Arrow up key: the move direction = forward (infinitely)
 			moveDirection = 1;
 			moveAmount = Double.POSITIVE_INFINITY;
 			break;
 
 		case VK_DOWN:
 		case VK_S:
-			// Arrow down key: move direction = backward (infinitely)
+			// Arrow down key: the move direction = backward (infinitely)
 			moveDirection = -1;
 			moveAmount = Double.POSITIVE_INFINITY;
 			break;
 
 		case VK_RIGHT:
 		case VK_D:
-			// Arrow right key: turn direction = right
+			// Right arrow or D key: set the turn direction to right
 			turnDirection = 1;
 			break;
 
 		case VK_LEFT:
 		case VK_A:
-			// Arrow left key: turn direction = left
+			// Left arrow or A key: set the turn direction to left
 			turnDirection = -1;
 			break;
 		}
 	}
 
-	// Called when a key has been released (after being pressed)
+	// Handles keyboard key release events to stop movement/rotation
 	public void onKeyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case VK_UP:
 		case VK_W:
 		case VK_DOWN:
 		case VK_S:
-			// Arrow up and down keys: move direction = stand still
+			// Arrow up and down keys: the move direction = stand still
 			moveDirection = 0;
 			moveAmount = 0;
 			break;
@@ -159,62 +160,60 @@ public class Interactive extends AdvancedRobot {
 		case VK_D:
 		case VK_LEFT:
 		case VK_A:
-			// Arrow right and left keys: turn direction = stop turning
+			// Arrow right and left keys: the turn direction = stop turning
 			turnDirection = 0;
 			break;
 		}
 	}
 
-	// Called when the mouse wheel is rotated
+	// Handles mouse wheel rotation to control forward/backward movement
 	public void onMouseWheelMoved(MouseWheelEvent e) {
-		// If the wheel rotation is negative it means that it is moved forward.
-		// Set move direction = forward, if wheel is moved forward.
-		// Otherwise, set move direction = backward
+		// Determine the movement direction based on wheel rotation:
+		// Negative rotation = forward movement (1)
+		// Positive rotation = backward movement (-1)
 		moveDirection = (e.getWheelRotation() < 0) ? 1 : -1;
 
-		// Set the amount to move = absolute wheel rotation amount * 5 (speed)
-		// Here 5 means 5 pixels per wheel rotation step. The higher value, the
-		// more speed
+		// Calculate movement distance based on wheel rotation magnitude
+		// Each rotation step adds 5 pixels of movement distance
+		// Larger values would increase the speed sensitivity
 		moveAmount += Math.abs(e.getWheelRotation()) * 5;
 	}
 
-	// Called when the mouse has been moved
+	// Updates gun aim target position when the mouse is moved
 	public void onMouseMoved(MouseEvent e) {
-		// Set the aim coordinate = the mouse pointer coordinate
+		// Set aim target to the current mouse cursor position
 		aimX = e.getX();
 		aimY = e.getY();
 	}
 
-	// Called when a mouse button has been pressed
+	// Handles mouse button press events to control weapon firing
 	public void onMousePressed(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON3) {
-			// Button 3: fire power = 3 energy points, bullet color = red
+			// Right mouse button: high-power shot (3 energy points)
 			firePower = 3;
 			setBulletColor(Color.RED);
 		} else if (e.getButton() == MouseEvent.BUTTON2) {
-			// Button 2: fire power = 2 energy points, bullet color = orange
+			// Middle mouse button: medium-power shot (2 energy points)
 			firePower = 2;
 			setBulletColor(Color.ORANGE);
 		} else {
-			// Button 1 or unknown button:
-			// fire power = 1 energy points, bullet color = yellow
+			// Left mouse button or any other button:
+			// low-power shot (1 energy point)
 			firePower = 1;
 			setBulletColor(Color.YELLOW);
 		}
 	}
 
-	// Called when a mouse button has been released (after being pressed)
+	// Stops weapon firing when mouse button is released
 	public void onMouseReleased(MouseEvent e) {
-		// Fire power = 0, which means "don't fire"
+		// Set the fire power to 0 to stop firing
 		firePower = 0;
 	}
 
-	// Called in order to paint graphics for this robot.
-	// "Paint" button on the robot console window for this robot must be
-	// enabled in order to see the paintings.
+	// Renders custom graphics when the "Paint" button is enabled
 	public void onPaint(Graphics2D g) {
-		// Draw a red cross hair with the center at the current aim
-		// coordinate (x,y)
+		// Draw a red crosshair at the current aim position
+		// consisting of a circle and intersecting lines
 		g.setColor(Color.RED);
 		g.drawOval(aimX - 15, aimY - 15, 30, 30);
 		g.drawLine(aimX, aimY - 4, aimX, aimY + 4);

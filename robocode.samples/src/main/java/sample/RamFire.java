@@ -16,10 +16,10 @@ import java.awt.*;
 
 
 /**
- * RamFire - a sample robot by Mathew Nelson.
+ * RamFire - a sample robot that demonstrates aggressive ramming tactics.
  * <p>
- * Drives at robots trying to ram them.
- * Fires when it hits them.
+ * This robot actively seeks out opponents, rams into them, and fires with
+ * appropriate power based on the enemy's remaining energy.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -28,7 +28,7 @@ public class RamFire extends Robot {
 	int turnDirection = 1; // Clockwise or counterclockwise
 
 	/**
-	 * run: Spin around looking for a target
+	 * The main robot behavior. Continuously spins the robot to scan for enemies.
 	 */
 	public void run() {
 		// Set colors
@@ -42,7 +42,8 @@ public class RamFire extends Robot {
 	}
 
 	/**
-	 * onScannedRobot:  We have a target.  Go get it.
+	 * Handles enemy detection. When an enemy is spotted, the robot turns toward it,
+	 * moves forward to ram it, and performs another scan.
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 
@@ -58,7 +59,8 @@ public class RamFire extends Robot {
 	}
 
 	/**
-	 * onHitRobot:  Turn to face robot, fire hard, and ram him again!
+	 * Handles collisions with enemy robots. When a collision occurs, the robot turns to face the enemy,
+	 * fires with power appropriate to the enemy's remaining energy, and rams again for bonus points.
 	 */
 	public void onHitRobot(HitRobotEvent e) {
 		if (e.getBearing() >= 0) {

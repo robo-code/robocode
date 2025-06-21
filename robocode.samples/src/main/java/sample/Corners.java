@@ -11,28 +11,28 @@ package sample;
 import robocode.DeathEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
-import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 import java.awt.*;
 
+import static robocode.util.Utils.normalRelativeAngleDegrees;
+
 
 /**
- * Corners - a sample robot by Mathew Nelson.
+ * Corners - a sample robot that demonstrates defensive corner positioning and adaptive strategy.
  * <p>
- * This robot moves to a corner, then swings the gun back and forth.
- * If it dies, it tries a new corner in the next round.
+ * This robot moves to a corner, then rotates its gun back and forth scanning for enemies.
+ * If it performs poorly in a round, it will try a different corner in the next round.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class Corners extends Robot {
-	int others; // Number of other robots in the game
-	static int corner = 0; // Which corner we are currently using
-	// static so that it keeps it between rounds.
-	boolean stopWhenSeeRobot = false; // See goCorner()
+	int others; // Tracks the initial number of opponents
+	static int corner = 0; // Current corner angle (static to persist between rounds)
+	boolean stopWhenSeeRobot = false; // Flag to control movement behavior when enemies are detected
 
 	/**
-	 * run:  Corners' main run function.
+	 * Main robot behavior. Sets colors, moves to the corner, and continuously scans for enemies.
 	 */
 	public void run() {
 		// Set colors
@@ -61,7 +61,8 @@ public class Corners extends Robot {
 	}
 
 	/**
-	 * goCorner:  A very inefficient way to get to a corner.  Can you do better?
+	 * Navigates to a corner of the battlefield using a simple but inefficient approach.
+	 * This method could be optimized for better performance.
 	 */
 	public void goCorner() {
 		// We don't want to stop when we're just turning...
@@ -81,7 +82,10 @@ public class Corners extends Robot {
 	}
 
 	/**
-	 * onScannedRobot:  Stop and fire!
+	 * Handles robot detection events. Either stops and fires or just fires
+	 * depending on the current movement strategy.
+	 *
+	 * @param e The scanned robot event containing target information
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 		// Should we stop, or just fire?
@@ -90,12 +94,12 @@ public class Corners extends Robot {
 			stop();
 			// Call our custom firing method
 			smartFire(e.getDistance());
-			// Look for another robot.
-			// NOTE:  If you call scan() inside onScannedRobot, and it sees a robot,
-			// the game will interrupt the event handler and start it over
+			// Actively scan for additional robots
+			// NOTE: If scan() detects a robot, the current onScannedRobot event
+			// will be interrupted, and a new event will be triggered
 			scan();
-			// We won't get here if we saw another robot.
-			// Okay, we didn't see another robot... start moving or turning again.
+			// The code below only executes if no additional robots were detected
+			// to Resume the previous movement pattern
 			resume();
 		} else {
 			smartFire(e.getDistance());
@@ -103,34 +107,38 @@ public class Corners extends Robot {
 	}
 
 	/**
-	 * smartFire:  Custom fire method that determines firepower based on distance.
+	 * Adjusts fire power based on distance to target and current energy level.
+	 * Uses higher fire power at closer ranges for maximum damage.
 	 *
-	 * @param robotDistance the distance to the robot to fire at
+	 * @param robotDistance the distance to the target robot in pixels
 	 */
 	public void smartFire(double robotDistance) {
 		if (robotDistance > 200 || getEnergy() < 15) {
-			fire(1);
+			fire(1); // Low power for long distance or when energy is low
 		} else if (robotDistance > 50) {
-			fire(2);
+			fire(2); // Medium power for moderate distance
 		} else {
-			fire(3);
+			fire(3); // High power for close range
 		}
 	}
 
 	/**
-	 * onDeath:  We died.  Decide whether to try a different corner next game.
+	 * Evaluates performance after robot destruction and adjusts strategy.
+	 * Changes corner position if performance was poor in the current round.
+	 *
+	 * @param e The death event
 	 */
 	public void onDeath(DeathEvent e) {
-		// Well, others should never be 0, but better safe than sorry.
+		// Safety check: avoids division by zero, though 'others' should never be 0
 		if (others == 0) {
 			return;
 		}
 
 		// If 75% of the robots are still alive when we die, we'll switch corners.
 		if (getOthers() / (double) others >= .75) {
-			corner += 90;
+			corner += 90; // Rotate 90 degrees to try the next corner
 			if (corner == 270) {
-				corner = -90;
+				corner = -90; // Reset to the first corner after completing the full rotation
 			}
 			out.println("I died and did poorly... switching corner to " + corner);
 		} else {

@@ -12,27 +12,27 @@ import robocode.HitRobotEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
 import robocode.WinEvent;
-import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 import java.awt.*;
 
+import static robocode.util.Utils.normalRelativeAngleDegrees;
+
 
 /**
- * Tracker - a sample robot by Mathew Nelson.
+ * Tracker - a sample robot that demonstrates target tracking behavior.
  * <p>
- * Locks onto a robot, moves close, fires when close.
+ * Locks onto a robot, follows it, and fires when close.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class Tracker extends Robot {
-	int count = 0; // Keeps track of how long we've
-	// been searching for our target
-	double gunTurnAmt; // How much to turn our gun when searching
-	String trackName; // Name of the robot we're currently tracking
+	int count = 0; // Counts turns spent searching for a target
+	double gunTurnAmt; // Amount to turn the gun when searching
+	String trackName; // Name of the currently tracked robot
 
 	/**
-	 * run:  Tracker's main run function
+	 * Main robot logic: search for targets by rotating the gun
 	 */
 	public void run() {
 		// Set colors
@@ -47,21 +47,21 @@ public class Tracker extends Robot {
 		setAdjustGunForRobotTurn(true); // Keep the gun still when we turn
 		gunTurnAmt = 10; // Initialize gunTurn to 10
 
-		// Loop forever
+		// Main loop
 		while (true) {
-			// turn the Gun (looks for enemy)
+			// Rotate the gun to scan for enemies
 			turnGunRight(gunTurnAmt);
-			// Keep track of how long we've been looking
+			// Increment the search counter
 			count++;
-			// If we've haven't seen our target for 2 turns, look left
+			// After 2 turns without seeing the target, look left
 			if (count > 2) {
 				gunTurnAmt = -10;
 			}
-			// If we still haven't seen our target for 5 turns, look right
+			// After 5 turns without seeing the target, look right
 			if (count > 5) {
 				gunTurnAmt = 10;
 			}
-			// If we *still* haven't seen our target after 10 turns, find another target
+			// After 11 turns without seeing the target, forget it and find another
 			if (count > 11) {
 				trackName = null;
 			}
@@ -69,40 +69,39 @@ public class Tracker extends Robot {
 	}
 
 	/**
-	 * onScannedRobot:  Here's the good stuff
+	 * Handles robot detection events - core tracking behavior
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 
-		// If we have a target, and this isn't it, return immediately
-		// so we can get more ScannedRobotEvents.
+		// Ignore if we're tracking a different robot
 		if (trackName != null && !e.getName().equals(trackName)) {
 			return;
 		}
 
-		// If we don't have a target, well, now we do!
+		// Set a new target if we don't have one
 		if (trackName == null) {
 			trackName = e.getName();
 			out.println("Tracking " + trackName);
 		}
-		// This is our target.  Reset count (see the run method)
+		// Reset search counter since we found our target
 		count = 0;
-		// If our target is too far away, turn and move toward it.
+		// If the target is far away, move toward it
 		if (e.getDistance() > 150) {
 			gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 
-			turnGunRight(gunTurnAmt); // Try changing these to setTurnGunRight,
-			turnRight(e.getBearing()); // and see how much Tracker improves...
-			// (you'll have to make Tracker an AdvancedRobot)
+			turnGunRight(gunTurnAmt); // For better performance, this could use setTurnGunRight
+			turnRight(e.getBearing()); // with an AdvancedRobot implementation
+			// which would allow non-blocking movement
 			ahead(e.getDistance() - 140);
 			return;
 		}
 
-		// Our target is close.
+		// Target is within firing range - aim and fire
 		gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 		turnGunRight(gunTurnAmt);
 		fire(3);
 
-		// Our target is too close!  Back up.
+		// Maintain optimal distance - back away if too close
 		if (e.getDistance() < 100) {
 			if (e.getBearing() > -90 && e.getBearing() <= 90) {
 				back(40);
@@ -114,18 +113,18 @@ public class Tracker extends Robot {
 	}
 
 	/**
-	 * onHitRobot:  Set him as our new target
+	 * Handles collisions with other robots by targeting them
 	 */
 	public void onHitRobot(HitRobotEvent e) {
-		// Only print if he's not already our target.
+		// Announce a new target only if different from the current target
 		if (trackName != null && !trackName.equals(e.getName())) {
 			out.println("Tracking " + e.getName() + " due to collision");
 		}
-		// Set the target
+		// Set the collided robot as our new target
 		trackName = e.getName();
-		// Back up a bit.
-		// Note:  We won't get scan events while we're doing this!
-		// An AdvancedRobot might use setBack(); execute();
+		// Move back to create space
+		// Note: This blocks scan events until complete
+		// An AdvancedRobot could use non-blocking setBack() and execute() instead
 		gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 		turnGunRight(gunTurnAmt);
 		fire(3);
@@ -133,7 +132,7 @@ public class Tracker extends Robot {
 	}
 
 	/**
-	 * onWin:  Do a victory dance
+	 * Celebrates victory with a spinning dance
 	 */
 	public void onWin(WinEvent e) {
 		for (int i = 0; i < 50; i++) {

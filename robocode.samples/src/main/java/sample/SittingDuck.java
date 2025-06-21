@@ -19,9 +19,10 @@ import java.io.PrintStream;
 
 
 /**
- * SittingDuck - a sample robot by Mathew Nelson.
+ * SittingDuck - a sample robot that demonstrates file persistence.
  * <p>
- * Along with sitting still doing nothing, this robot demonstrates persistency.
+ * This robot sits still without moving and demonstrates how to maintain persistent data
+ * across rounds and battles by reading and writing to a data file.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)

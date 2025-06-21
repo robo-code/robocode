@@ -1,3 +1,9 @@
+## Version 1.10.1
+
+### Changes
+
+- Improved documentation and comments with all sample bots.
+
 ## Version 1.10.0 (04-Jun-2025)
 
 Robocode's code around `RobocodeSecurityManager` has been refactored to ensure compatibility with Java 24 and newer

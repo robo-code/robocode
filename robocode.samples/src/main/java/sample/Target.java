@@ -16,20 +16,20 @@ import java.awt.*;
 
 
 /**
- * Target - a sample robot by Mathew Nelson.
+ * Target - a sample robot that demonstrates custom events.
  * <p>
- * Sits still. Moves every time energy drops by 20.
- * This Robot demonstrates custom events.
+ * A stationary robot that moves when its energy drops below a certain threshold.
+ * This robot demonstrates how to use custom events in Robocode.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class Target extends AdvancedRobot {
 
-	int trigger; // Keeps track of when to move
+	int trigger; // Energy threshold that triggers movement
 
 	/**
-	 * TrackFire's run method
+	 * Target's run method
 	 */
 	public void run() {
 		// Set colors
@@ -37,9 +37,9 @@ public class Target extends AdvancedRobot {
 		setGunColor(Color.white);
 		setRadarColor(Color.white);
 
-		// Initially, we'll move when life hits 80
+		// Set the initial energy threshold to 80
 		trigger = 80;
-		// Add a custom event named "trigger hit",
+		// Add a custom event that fires when energy falls below the threshold
 		addCustomEvent(new Condition("triggerhit") {
 			public boolean test() {
 				return (getEnergy() <= trigger);
@@ -51,13 +51,12 @@ public class Target extends AdvancedRobot {
 	 * onCustomEvent handler
 	 */
 	public void onCustomEvent(CustomEvent e) {
-		// If our custom event "triggerhit" went off,
+		// Check if our custom event "triggerhit" was triggered
 		if (e.getCondition().getName().equals("triggerhit")) {
-			// Adjust the trigger value, or
-			// else the event will fire again and again and again...
+			// Lower the threshold by 20 to prevent continuous triggering
 			trigger -= 20;
 			out.println("Ouch, down to " + (int) (getEnergy() + .5) + " energy.");
-			// move around a bit.
+			// Execute evasive movement
 			turnLeft(65);
 			ahead(100);
 		}

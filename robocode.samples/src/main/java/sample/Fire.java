@@ -12,24 +12,25 @@ import robocode.HitByBulletEvent;
 import robocode.HitRobotEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
-import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 import java.awt.*;
 
+import static robocode.util.Utils.normalRelativeAngleDegrees;
+
 
 /**
- * Fire - a sample robot by Mathew Nelson, and maintained.
+ * Fire - a sample robot that demonstrates basic targeting and reactionary movement.
  * <p>
- * Sits still. Spins gun around. Moves when hit.
+ * This robot sits still, continuously rotates its gun, and only moves when hit.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
  */
 public class Fire extends Robot {
-	int dist = 50; // distance to move when we're hit
+	int dist = 50; // Distance to move when hit by a bullet
 
 	/**
-	 * run:  Fire's main run function
+	 * Main robot logic that sets colors and rotates the gun continuously
 	 */
 	public void run() {
 		// Set colors
@@ -46,7 +47,7 @@ public class Fire extends Robot {
 	}
 
 	/**
-	 * onScannedRobot:  Fire!
+	 * Fires at detected robots with variable power based on distance and energy
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 		// If the other robot is close by, and we have plenty of life,
@@ -62,7 +63,7 @@ public class Fire extends Robot {
 	}
 
 	/**
-	 * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
+	 * Reacts to being hit by turning perpendicular to the incoming bullet and moving
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
 		turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
@@ -73,7 +74,7 @@ public class Fire extends Robot {
 	}
 
 	/**
-	 * onHitRobot:  Aim at it.  Fire Hard!
+	 * Targets and fires at robots that collide with this robot
 	 */
 	public void onHitRobot(HitRobotEvent e) {
 		double turnGunAmt = normalRelativeAngleDegrees(e.getBearing() + getHeading() - getGunHeading());

@@ -11,15 +11,16 @@ package sample;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
 import robocode.WinEvent;
-import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 import java.awt.*;
 
+import static robocode.util.Utils.normalRelativeAngleDegrees;
+
 
 /**
- * TrackFire - a sample robot by Mathew Nelson.
+ * TrackFire - a sample robot that demonstrates target tracking and firing.
  * <p>
- * Sits still. Tracks and fires at the nearest robot it sees.
+ * Sits still while tracking and firing at the nearest robot it detects.
  *
  * @author Mathew A. Nelson (original)
  * @author Flemming N. Larsen (contributor)
@@ -27,7 +28,7 @@ import java.awt.*;
 public class TrackFire extends Robot {
 
 	/**
-	 * TrackFire's run method
+	 * The main run method. Sets colors and continuously rotates the gun.
 	 */
 	public void run() {
 		// Set colors
@@ -37,44 +38,46 @@ public class TrackFire extends Robot {
 		setScanColor(Color.pink);
 		setBulletColor(Color.pink);
 
-		// Loop forever
+		// Main control loop
 		while (true) {
-			turnGunRight(10); // Scans automatically
+			turnGunRight(10); // Rotates gun and scans automatically
 		}
 	}
 
 	/**
-	 * onScannedRobot:  We have a target.  Go get it.
+	 * Handles robot detection events. Calculates gun bearing and fires when appropriate.
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
-		// Calculate exact location of the robot
+		// Calculate the exact location of the robot
 		double absoluteBearing = getHeading() + e.getBearing();
 		double bearingFromGun = normalRelativeAngleDegrees(absoluteBearing - getGunHeading());
 
-		// If it's close enough, fire!
+		// Fire when the gun is closely aligned with the target
 		if (Math.abs(bearingFromGun) <= 3) {
 			turnGunRight(bearingFromGun);
-			// We check gun heat here, because calling fire()
-			// uses a turn, which could cause us to lose track
-			// of the other robot.
+			// Check gun heat before firing to avoid wasting a turn
+			// when the gun is not ready to fire
 			if (getGunHeat() == 0) {
 				fire(Math.min(3 - Math.abs(bearingFromGun), getEnergy() - .1));
 			}
-		} // otherwise just set the gun to turn.
-		// Note:  This will have no effect until we call scan()
-		else {
+		} else {
+			// Set the gun to turn toward the target
+			// Note: This rotation will take effect on the next execution cycle
 			turnGunRight(bearingFromGun);
 		}
-		// Generates another scan event if we see a robot.
-		// We only need to call this if the gun (and therefore radar)
-		// are not turning.  Otherwise, scan is called automatically.
+		// Force another scan when the gun is directly facing the target
+		// This is only needed if the gun/radar has stopped turning
+		// because otherwise scanning happens automatically
 		if (bearingFromGun == 0) {
 			scan();
 		}
 	}
 
+	/**
+	 * Celebrates winning by spinning in place.
+	 */
 	public void onWin(WinEvent e) {
-		// Victory dance
+		// Perform victory celebration by spinning in place
 		turnRight(36000);
 	}
 }				

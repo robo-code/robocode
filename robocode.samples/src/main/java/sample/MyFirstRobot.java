@@ -14,37 +14,39 @@ import robocode.ScannedRobotEvent;
 
 
 /**
- * MyFirstRobot - a sample robot by Mathew Nelson.
+ * MyFirstRobot - a sample robot that demonstrates basic movement and targeting.
  * <p>
- * Moves in a seesaw motion, and spins the gun around at each end.
+ * Moves in a seesaw motion and spins the gun around at each end.
  *
  * @author Mathew A. Nelson (original)
  */
 public class MyFirstRobot extends Robot {
 
 	/**
-	 * MyFirstRobot's run method - Seesaw
+	 * The main run method - Implements a seesaw movement pattern
 	 */
 	public void run() {
 
 		while (true) {
-			ahead(100); // Move ahead 100
-			turnGunRight(360); // Spin gun around
-			back(100); // Move back 100
-			turnGunRight(360); // Spin gun around
+			ahead(100); // Move forward 100 pixels
+			turnGunRight(360); // Scan for enemies by spinning gun 360 degrees
+			back(100); // Move backward 100 pixels
+			turnGunRight(360); // Scan for enemies by spinning gun 360 degrees
 		}
 	}
 
 	/**
-	 * Fire when we see a robot
+	 * Called when our robot's radar detects another robot
+	 * Fires a bullet with power 1 at the detected robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 		fire(1);
 	}
 
 	/**
-	 * We were hit!  Turn perpendicular to the bullet,
-	 * so our seesaw might avoid a future shot.
+	 * Called when our robot is hit by a bullet
+	 * Responds by turning perpendicular to the bullet's path
+	 * to potentially avoid future shots from the same direction
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
 		turnLeft(90 - e.getBearing());
