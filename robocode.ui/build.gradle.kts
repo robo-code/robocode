@@ -14,9 +14,9 @@ dependencies {
 description = "Robocode UI"
 
 java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-    }
+    withJavadocJar()
+    withSourcesJar()
+}
 
 tasks {
     javadoc {

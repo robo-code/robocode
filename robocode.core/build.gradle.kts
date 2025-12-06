@@ -13,9 +13,9 @@ dependencies {
 description = "Robocode Core"
 
 java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-    }
+    withJavadocJar()
+    withSourcesJar()
+}
 
 tasks {
     val copyVersion by registering(Copy::class) {

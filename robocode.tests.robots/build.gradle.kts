@@ -10,12 +10,12 @@ dependencies {
 
 description = "Robocode Tested Robots"
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-    }
-}
-
+tasks {
+    val copyContent by registering(Copy::class) {
+        from("src/main/resources") {
+            include("**/*.*")
+        }
+        into("../.sandbox/test-robots")
     }
 
     val copyRobotClasses by registering(Copy::class) {

@@ -17,12 +17,12 @@ dependencies {
     runtimeOnly(libs.picocontainer)
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-    }
-}
-
+tasks {
+    val copyContent by registering(Copy::class) {
+        from("src/main/resources") {
+            include("**/*.*")
+        }
+        from("../") {
             include("versions.md")
         }
         into("../.sandbox")
