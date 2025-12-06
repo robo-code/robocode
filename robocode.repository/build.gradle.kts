@@ -13,9 +13,9 @@ dependencies {
 description = "Robocode Repository"
 
 java {
-    withJavadocJar()
-    withSourcesJar()
-}
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
 
 tasks {
     javadoc {

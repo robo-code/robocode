@@ -17,3 +17,9 @@ tasks {
         enabled = false
     }
 }
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+}

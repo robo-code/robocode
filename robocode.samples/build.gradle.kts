@@ -10,9 +10,9 @@ dependencies {
 description = "Robocode Samples"
 
 java {
-    withJavadocJar()
-    withSourcesJar()
-}
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
 
 tasks {
     val copyContent by registering(Copy::class) {

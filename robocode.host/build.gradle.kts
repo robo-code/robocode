@@ -14,9 +14,9 @@ dependencies {
 description = "Robocode Host"
 
 java {
-    withJavadocJar()
-    withSourcesJar()
-}
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
 
 tasks {
     javadoc {
