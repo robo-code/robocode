@@ -179,7 +179,7 @@ public class RobotThreadManager {
 	private void stop(Thread t) {
 		if (t != null) {
 			// noinspection deprecation
-			t.stop();
+			t.interrupt();
 			try {
 				t.join(1500);
 			} catch (InterruptedException e) {
