@@ -175,7 +175,6 @@ public class RobotThreadManager {
 		return 0;
 	}
 
-	@SuppressWarnings("deprecation")
 	private void stop(Thread t) {
 		if (t != null) {
 			// noinspection deprecation

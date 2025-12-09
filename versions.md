@@ -1,8 +1,18 @@
 ## Version 1.10.1
 
+### Bugfix
+
+- #71: Replaced `Thread.stop()` call with `Thread.interrupt()` in the `RobotThreadManager`
+    - The `Thread.stop()` call has been removed as of Java 21, so the old call to stop() would cause the rest of the
+      battle to be aborted; e.g., if you were running 100 rounds, but after the second a robot's thread needs to be
+      terminated, then that would abort the rest of the rounds.
+      By swapping in interrupt, the thread should still terminate, but gracefully.
+    - Thanks go to [Jeremiah Blanchard](https://github.com/doctorjei) for fixing this ❤️. Nice catch!
+
 ### Changes
 
 - Improved documentation and comments with all sample bots.
+- Updated libraries (dependencies) to latest versions.
 
 ## Version 1.10.0 (04-Jun-2025)
 
