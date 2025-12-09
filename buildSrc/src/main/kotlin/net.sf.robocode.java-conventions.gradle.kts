@@ -76,5 +76,17 @@ publishing {
 }
 
 signing {
-    sign(publishing.publications["mavenJava"])
+    val signingKey: String? by project
+    val signingPassword: String? by project
+
+    if (!signingKey.isNullOrBlank()) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+    }
+
+    // Make signing required only when a key is provided
+    isRequired = !signingKey.isNullOrBlank()
+
+    if (isRequired) {
+        sign(publishing.publications["mavenJava"])
+    }
 }

@@ -62,34 +62,52 @@ subprojects {
         shouldRunAfter(tasks.withType<Sign>())
     }
 
-    // Apply common signing configuration to all subprojects
-    plugins.withId("signing") {
-        configure<SigningExtension> {
-            useGpgCmd() // Use GPG agent instead of key file
-        }
-    }
-
-    // Include Tank.ico in the published artifacts
+    // Configure signing for all subprojects with both signing and maven-publish plugins
     plugins.withId("maven-publish") {
-        configure<PublishingExtension> {
-            publications.withType<MavenPublication> {
-                artifact(file("${rootProject.projectDir}/gfx/Tank/Tank.ico")) {
-                    classifier = "icon"
-                    extension = "ico"
+        plugins.withId("signing") {
+            the<SigningExtension>().apply {
+                val signingKey: String? by project
+                val signingPassword: String? by project
+
+                if (!signingKey.isNullOrBlank()) {
+                    useInMemoryPgpKeys(signingKey, signingPassword)
+                }
+
+                // Make signing required only when a key is provided
+                isRequired = !signingKey.isNullOrBlank()
+
+                if (isRequired) {
+                    sign(the<PublishingExtension>().publications)
                 }
             }
         }
     }
 
-    // Include robocode.ico in the published artifacts
+    // Include robocode.ico in the published artifacts without cross-project output conflicts
+    // We copy the icon into a subproject-local build directory, so each module signs its own copy.
     plugins.withId("maven-publish") {
+        val prepareRobocodeIcon = tasks.register<Copy>("prepareRobocodeIcon") {
+            val srcIcon = file("${rootProject.projectDir}/robocode.content/src/main/resources/robocode.ico")
+            val destDir = layout.buildDirectory.dir("publication-resources/icon").get().asFile
+            from(srcIcon)
+            into(destDir)
+            outputs.file(file("${destDir}/robocode.ico"))
+        }
+
         configure<PublishingExtension> {
             publications.withType<MavenPublication> {
-                artifact(file("${rootProject.projectDir}/robocode.content/src/main/resources/robocode.ico")) {
+                val copiedIcon = layout.buildDirectory.file("publication-resources/icon/robocode.ico").get().asFile
+                artifact(copiedIcon) {
+                    builtBy(prepareRobocodeIcon)
                     classifier = "icon"
                     extension = "ico"
                 }
             }
+        }
+
+        // Ensure sign tasks depend on icon preparation
+        tasks.withType<Sign>().configureEach {
+            dependsOn(prepareRobocodeIcon)
         }
     }
 }
