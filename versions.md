@@ -1,4 +1,4 @@
-## Version 1.10.1
+## Version 1.10.1 (09-Dec-2025)
 
 ### Bugfix
 
@@ -12,7 +12,7 @@
 ### Changes
 
 - Improved documentation and comments with all sample bots.
-- Updated libraries (dependencies) to latest versions.
+- Updated libraries (dependencies) to the latest versions (including Eclipse Compiler for Java and Codesize).
 
 ## Version 1.10.0 (04-Jun-2025)
 
