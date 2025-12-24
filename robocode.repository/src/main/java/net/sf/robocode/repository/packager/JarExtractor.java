@@ -46,7 +46,12 @@ public class JarExtractor {
 			while (entry != null) {
 				if (entry.isDirectory()) {
 					File dir = new File(dest, entry.getName());
-
+					// Path traversal protection
+					if (!dir.toPath().normalize().startsWith(dest.toPath().normalize())) {
+						Logger.logError("Path traversal attempt detected in directory entry: " + entry.getName());
+						entry = jarIS.getNextJarEntry();
+						continue;
+					}
 					if (!dir.exists() && !dir.mkdirs()) {
 						Logger.logError("Cannot create dir: " + dir);
 					}
@@ -66,8 +71,12 @@ public class JarExtractor {
 
 	public static void extractFile(File dest, JarInputStream jarIS, JarEntry entry) throws IOException {
 		File out = new File(dest, entry.getName());
+		// Path traversal protection
+		if (!out.toPath().normalize().startsWith(dest.toPath().normalize())) {
+			Logger.logError("Path traversal attempt detected in file entry: " + entry.getName());
+			return;
+		}
 		File parentDirectory = new File(out.getParent());
-
 		if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
 			Logger.logError("Cannot create dir: " + parentDirectory);
 		}

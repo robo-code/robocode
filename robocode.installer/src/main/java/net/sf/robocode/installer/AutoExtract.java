@@ -255,7 +255,10 @@ public class AutoExtract implements ActionListener {
                         }
 
                         File outputFile = new File(installDir, entryName);
-
+                        // Path traversal protection
+                        if (!outputFile.toPath().normalize().startsWith(installDir.toPath().normalize())) {
+                            throw new RuntimeException("Bad zip entry: " + entryName);
+                        }
                         File parentDirectory = new File(outputFile.getParent());
                         if (!parentDirectory.exists() && !parentDirectory.mkdirs()) {
                             System.err.println("Can't create dir: " + parentDirectory);
@@ -289,7 +292,7 @@ public class AutoExtract implements ActionListener {
                         if (isShFile || isCommandFile) {
                             String filePath = outputFile.getAbsolutePath();
 
-                            // Remove ^M (MS DOS) characters, if they exists
+                            // Remove ^M (MS DOS) characters if they exist
                             dos2unix(filePath);
 
                             // Set file permissions for .sh and .command files under Unix and Mac OS X
@@ -426,25 +429,42 @@ public class AutoExtract implements ActionListener {
             // The .robotcache has been renamed to .data
             File robotsCacheDir = new File(installDir, "robots/.robotcache");
             File robotsDataDir = new File(installDir, "robots/.data");
-
+            // Path traversal protection for robotsCacheDir and robotsDataDir
+            if (!robotsCacheDir.toPath().normalize().startsWith(installDir.toPath().normalize()) ||
+                !robotsDataDir.toPath().normalize().startsWith(installDir.toPath().normalize())) {
+                throw new RuntimeException("Bad robots cache/data directory");
+            }
             if (robotsCacheDir.exists()) {
                 // Rename ".robotcache" into ".data"
-                robotsCacheDir.renameTo(robotsDataDir);
+                if (!robotsCacheDir.renameTo(robotsDataDir)) {
+                    System.err.println("Failed to rename .robotcache to .data");
+                }
             }
-
             // Fix problem with .data starting with a underscore dir by
             // renaming files containing ".data/_" into ".data"
             if (robotsDataDir.exists()) {
                 File underScoreDir = new File(robotsDataDir, "_");
+                // Path traversal protection for underScoreDir
+                if (!underScoreDir.toPath().normalize().startsWith(robotsDataDir.toPath().normalize())) {
+                    throw new RuntimeException("Bad underscore directory in .data");
+                }
                 String[] list = underScoreDir.list();
-
                 if (list != null) {
                     for (String fileName : list) {
                         File file = new File(underScoreDir, fileName);
-
-                        file.renameTo(new File(robotsDataDir, fileName));
+                        File targetFile = new File(robotsDataDir, fileName);
+                        // Path traversal protection for file and targetFile
+                        if (!file.toPath().normalize().startsWith(underScoreDir.toPath().normalize()) ||
+                            !targetFile.toPath().normalize().startsWith(robotsDataDir.toPath().normalize())) {
+                            throw new RuntimeException("Bad file in underscore directory: " + fileName);
+                        }
+                        if (!file.renameTo(targetFile)) {
+                            System.err.println("Failed to rename " + file.getAbsolutePath() + " to " + targetFile.getAbsolutePath());
+                        }
                     }
-                    underScoreDir.delete();
+                    if (!underScoreDir.delete()) {
+                        System.err.println("Failed to delete underscore directory: " + underScoreDir.getAbsolutePath());
+                    }
                 }
             }
 

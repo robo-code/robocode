@@ -16,7 +16,7 @@ import net.sf.robocode.roborumble.netengine.UpdateRatingFiles;
 
 import static net.sf.robocode.roborumble.util.PropertiesUtil.getProperties;
 
-import java.util.Map;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 
@@ -45,8 +45,12 @@ public class RoboRumbleAtHome {
             System.out.println("No argument found specifying properties file. \"" + paramsFileName + "\" assumed.");
         }
 
+        // Define trusted directory
+        String trustedDir = "./roborumble";
+        // Validate paramsFileName is inside trustedDir
+        String safeParamsFilePath = getSafePath(paramsFileName, trustedDir);
         // Read parameters for running the app
-        Properties properties = getProperties(paramsFileName);
+        Properties properties = getProperties(safeParamsFilePath);
 
         String envUser = System.getenv("RUMBLE_USER");
         if (envUser != null) {
@@ -82,10 +86,12 @@ public class RoboRumbleAtHome {
         boolean participantsdownloaded;
         String version = null;
         String game = paramsFileName;
-        while (game.indexOf("/") != -1) {
-            game = game.substring(game.indexOf("/") + 1);
+        // Path traversal protection: extract only the filename
+        String safeGame = Paths.get(game).getFileName().toString();
+        if (safeGame.contains("..") || safeGame.contains("/") || safeGame.contains("\\")) {
+            throw new RuntimeException("Invalid game filename: " + safeGame);
         }
-        game = game.substring(0, game.indexOf("."));
+        game = safeGame.substring(0, safeGame.indexOf("."));
 
         do {
             final BattlesRunner engine = new BattlesRunner(game, properties);
@@ -125,7 +131,7 @@ public class RoboRumbleAtHome {
                 final boolean isMelee = melee.equals("YES");
 
                 boolean ready;
-                PrepareBattles battles = new PrepareBattles(paramsFileName);
+                PrepareBattles battles = new PrepareBattles(safeParamsFilePath);
 
                 if (isMelee) {
                     System.out.println("Preparing melee battles list ...");
@@ -178,5 +184,22 @@ public class RoboRumbleAtHome {
 
         // With Java 5 this causes a IllegalThreadStateException, but not in Java 6
         // System.exit(0);
+    }
+
+    private static String sanitizeFileName(String fileName) {
+        String safeName = Paths.get(fileName).getFileName().toString();
+        if (safeName.contains("..") || safeName.contains("/") || safeName.contains("\\")) {
+            throw new RuntimeException("Invalid file name: " + safeName);
+        }
+        return safeName;
+    }
+
+    private static String getSafePath(String fileName, String trustedDir) {
+        java.nio.file.Path trustedPath = Paths.get(trustedDir).toAbsolutePath().normalize();
+        java.nio.file.Path filePath = Paths.get(fileName).toAbsolutePath().normalize();
+        if (!filePath.startsWith(trustedPath)) {
+            throw new RuntimeException("Path traversal or access outside trusted directory: " + fileName);
+        }
+        return filePath.toString();
     }
 }

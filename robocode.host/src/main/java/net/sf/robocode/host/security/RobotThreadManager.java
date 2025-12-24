@@ -103,7 +103,9 @@ public class RobotThreadManager {
 
 		Thread[] threads = new Thread[100];
 
-		runThreadGroup.enumerate(threads);
+		if (runThreadGroup != null) {
+			runThreadGroup.enumerate(threads);
+		}
 
 		for (Thread thread : threads) {
 			if (thread != null && thread != runThread && thread.isAlive()) {

@@ -295,7 +295,14 @@ public class RobotFileSystemManager {
 				os = null;
 				try {
 					is = jarFile.getInputStream(jarEntry);
-					os = new FileOutputStream(new File(parent, filename));
+					File targetFile = new File(parent, filename);
+					File canonicalParent = parent.getCanonicalFile();
+					File canonicalTarget = targetFile.getCanonicalFile();
+					if (!canonicalTarget.getPath().startsWith(canonicalParent.getPath())) {
+						Logger.logError("Path traversal attempt detected: " + filename);
+						continue;
+					}
+					os = new FileOutputStream(canonicalTarget);
 					copyStream(is, os);
 				} finally {
 					FileUtil.cleanupStream(is);

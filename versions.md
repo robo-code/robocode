@@ -1,3 +1,9 @@
+## Version 1.10.2 (24-Dec-2025)
+
+### Bugfix
+
+- Fixing security issues (CWE-23)
+
 ## Version 1.10.1 (09-Dec-2025)
 
 ### Bugfix
