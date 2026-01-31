@@ -78,6 +78,7 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem helpFaqMenuItem;
 	private JMenuItem helpAboutMenuItem;
 	private JMenuItem helpRobocodeMenuItem;
+	private JMenuItem helpBookOfRobocodeMenuItem;
 	private JMenuItem helpRoboWikiMenuItem;
 	private JMenuItem helpGoogleGroupRobocodeMenuItem;
 	private JMenuItem helpRoboRumbleMenuItem;
@@ -146,6 +147,8 @@ public class MenuBar extends JMenuBar {
 				helpFaqActionPerformed();
 			} else if (source == mb.getHelpRobocodeMenuItem()) {
 				helpRobocodeHomeMenuItemActionPerformed();
+			} else if (source == mb.getHelpBookOfRobocodeMenuItem()) {
+				helpBookOfRobocodeActionPerformed();
 			} else if (source == mb.getHelpRoboWikiMenuItem()) {
 				helpRoboWikiMenuItemActionPerformed();
 			} else if (source == mb.getHelpGoogleGroupRobocodeMenuItem()) {
@@ -573,11 +576,12 @@ public class MenuBar extends JMenuBar {
 			helpMenu.add(getHelpJavaDocumentationMenuItem());
 			helpMenu.add(new JSeparator());
 			helpMenu.add(getHelpOnlineHelpMenuItem());
-			helpMenu.add(getHelpRoboWikiMenuItem());
 			helpMenu.add(getHelpGoogleGroupRobocodeMenuItem());
 			helpMenu.add(getHelpFaqMenuItem());
 			helpMenu.add(new JSeparator());
 			helpMenu.add(getHelpRobocodeMenuItem());
+			helpMenu.add(getHelpBookOfRobocodeMenuItem());
+			helpMenu.add(getHelpRoboWikiMenuItem());
 			helpMenu.add(getHelpRoboRumbleMenuItem());
 			helpMenu.add(new JSeparator());
 			helpMenu.add(getHelpCheckForNewVersionMenuItem());
@@ -651,6 +655,16 @@ public class MenuBar extends JMenuBar {
 			helpRobocodeMenuItem.addActionListener(eventHandler);
 		}
 		return helpRobocodeMenuItem;
+	}
+
+	private JMenuItem getHelpBookOfRobocodeMenuItem() {
+		if (helpBookOfRobocodeMenuItem == null) {
+			helpBookOfRobocodeMenuItem = new JMenuItem();
+			helpBookOfRobocodeMenuItem.setText("The Book of Robocode");
+			helpBookOfRobocodeMenuItem.setMnemonic('B');
+			helpBookOfRobocodeMenuItem.addActionListener(eventHandler);
+		}
+		return helpBookOfRobocodeMenuItem;
 	}
 
 	private JMenuItem getHelpJavaDocumentationMenuItem() {
@@ -859,6 +873,10 @@ public class MenuBar extends JMenuBar {
 
 	private void helpRobocodeHomeMenuItemActionPerformed() {
 		windowManager.showRobocodeHome();
+	}
+
+	private void helpBookOfRobocodeActionPerformed() {
+		windowManager.showBookOfRobocode();
 	}
 
 	private void helpJavaDocumentationActionPerformed() {

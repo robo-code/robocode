@@ -249,15 +249,19 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showOnlineHelp() {
-		showInBrowser("https://robowiki.net/w/index.php?title=Robocode/Getting_Started");
+		showInBrowser("https://book.robocode.dev/getting-started/your-first-bot.html");
 	}
 
 	public void showJavaDocumentation() {
-		showInBrowser("https://docs.oracle.com/en/java/javase/16/docs/api/index.html");
+		showInBrowser("https://docs.oracle.com/en/java/javase/25/docs/api/index.html");
 	}
 
 	public void showRobocodeHome() {
 		showInBrowser("https://robocode.sourceforge.io");
+	}
+
+	public void showBookOfRobocode() {
+		showInBrowser("https://book.robocode.dev/");
 	}
 
 	public void showRoboWiki() {
@@ -265,7 +269,7 @@ public class WindowManager implements IWindowManagerExt {
 	}
 
 	public void showGoogleGroupRobocode() {
-		showInBrowser("https://groups.google.com/forum/?fromgroups#!forum/robocode");
+		showInBrowser("https://groups.google.com/g/robocode");
 	}
 
 	public void showRoboRumble() {

@@ -1,3 +1,14 @@
+## Version 1.10.3 (TBD)
+
+### Changes
+
+- **Help menu improvements**:
+    - Added a new menu item "The Book of Robocode" pointing to https://book.robocode.dev/
+    - Updated "Online Help" to point to Getting Started guide from the Book of
+      Robocode (https://book.robocode.dev/getting-started/)
+    - Updated "Java API documentation" link from Java 16 to Java
+      25 (https://docs.oracle.com/en/java/javase/25/docs/api/index.html)
+
 ## Version 1.10.2 (24-Dec-2025)
 
 ### Bugfix
