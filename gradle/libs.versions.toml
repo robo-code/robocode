@@ -6,7 +6,7 @@ nexus-publish = "2.0.0"
 ben-manes-versions = "0.53.0"
 eclipse-jdt = "3.44.0"
 kotlin = "2.3.0"
-bcel = "6.11.0"
+bcel = "6.12.0"
 
 [libraries]
 
