@@ -9,33 +9,38 @@ tanks. The game's primary aim is to teach programming skills in a fun and intera
 
 With Robocode, you can:
 
-- **Learn to Program**: Develop programming skills in languages like Java and Kotlin.
+- **Learn to Program**: Develop programming skills in Java or Kotlin.
 - **Create Battle Tanks**: Design and program virtual robots that compete against each other in battles.
 - **Improve Problem-Solving**: Enhance your algorithmic thinking and problem-solving skills by writing better code to
   outsmart opponents.
 
-Robocode is suitable for all levels—from beginners taking their first steps in coding to experienced developers looking
-for a fun challenge. Whether you are learning to program or just seeking a stimulating activity, Robocode offers a
-platform where you can have fun while honing your skills.
+Robocode is suitable for all levels — from beginners taking their first steps in coding to experienced developers
+looking for a fun challenge. Whether you are learning to program or just seeking a stimulating activity, Robocode
+offers a platform where you can have fun while honing your skills.
 
 Get started with Robocode today and unleash your inner programmer!
 
+- [The Book of Robocode] is the best place to start learning Robocode
 - [Robocode home page]
 - [Introduction] to Robocode
-- [RoboWiki] is the best way to learn about Robocoding
+- [RoboWiki] — a community knowledge base collecting Robocode wisdom since 2003
 - [Robocode group] is where you can ask questions
 - [Facebook group] is a community for enthusiasts of the Robocode programming game
-- [Robocode Application Developers] is for people that want to develop or experiments with the Robocode application (
-  game)
+- [Robocode Application Developers] is for people that want to develop or experiment with the Robocode application
 - [Robocode Guide for building Robocode], if you want to build Robocode yourself
 
-Also note that a new version of Robocode supports C# as well (and more languages in the future):
+## Next Generation: Robocode Tank Royale
 
-- [Robocode Tank Royale] is a new platform for Robocode
+[Robocode Tank Royale] is the next-generation Robocode platform with a modernised architecture. It supports multiple
+programming languages including **Java, Kotlin, Python, and C#** — with more languages possible in the future.
+
+Note that Tank Royale does not yet have an equivalent of [LiteRumble] for competitive rankings.
 
 Happy Robocoding! 🤖⌨️
 
 [programming game]: https://x-team.com/magazine/coding-games "23 Programming Games to Level Up Your Programming Skills"
+
+[The Book of Robocode]: https://book.robocode.dev/ "The Book of Robocode"
 
 [Robocode home page]: https://robocode.sourceforge.io/ "Home page for Robocode"
 
@@ -51,4 +56,6 @@ Happy Robocoding! 🤖⌨️
 
 [Robocode Application Developers]: https://groups.google.com/g/robocode-developers "Group for developers of the Robocode application"
 
-[Robocode Tank Royale]: https://github.com/robocode-dev/tank-royale/blob/main/README.md "Robocode Tank Royale"
+[Robocode Tank Royale]: https://github.com/robocode-dev/tank-royale "Robocode Tank Royale"
+
+[LiteRumble]: https://literumble.appspot.com/ "LiteRumble - Robocode competitive rankings"
