@@ -1,4 +1,4 @@
-FROM eclipse-temurin:8-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 
 COPY ./build/robocode-*-setup.jar ./
 RUN java -jar robocode-*-setup.jar
