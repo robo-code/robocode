@@ -150,3 +150,9 @@ tasks {
         enabled = false
     }
 }
+
+afterEvaluate {
+    tasks.findByName("signMavenJavaPublication")?.let { sign ->
+        tasks.named("chocoCopy").configure { dependsOn(sign) }
+    }
+}
