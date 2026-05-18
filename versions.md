@@ -1,3 +1,16 @@
+## Version 1.11.0 TBD
+
+### Changes
+
+- **Installer overhaul**: Refactored the monolithic `AutoExtract` installer (844 lines) into 5 focused classes
+  (`Installer`, `InstallerDialog`, `Extractor`, `ShortcutManager`, `OsUtil`).
+- **Reduced confirmation dialogs** from 5 user prompts down to 1 — a single "Install to" dialog with Proceed/Cancel.
+- **Removed** license agreement dialog, start-menu shortcut prompt, and Windows file associations prompt.
+- **Removed** Windows `.battle`/`.br` file association registration (rarely used, required admin privileges).
+- **Removed** legacy code: Win 9x/ME `command.com` path, obsolete `.robotcache` migration, fragile self-cleanup hacks.
+- Windows shortcuts are now always created without prompting.
+- Improved code quality: try-with-resources, `StringBuilder`, proper error handling, fixed spinner animation bug.
+
 ## Version 1.10.3 (18-May-2026)
 
 ### Bugfix

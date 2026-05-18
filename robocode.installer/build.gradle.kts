@@ -29,7 +29,7 @@ tasks {
         dependsOn(configurations.runtimeClasspath)
 
         manifest {
-            attributes(mapOf("Main-Class" to "net.sf.robocode.installer.AutoExtract"))
+            attributes(mapOf("Main-Class" to "net.sf.robocode.installer.Installer"))
         }
         archiveFileName.set("robocode-${project.version}-setup.jar")
         destinationDirectory.set(file("${layout.buildDirectory.get()}/../../build"))
