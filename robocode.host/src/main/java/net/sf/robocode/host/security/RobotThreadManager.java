@@ -94,11 +94,11 @@ public class RobotThreadManager {
 	 */
 	public boolean waitForStop() {
 		boolean isAlive = false;
-
-		if (runThread != null && runThread.isAlive()) {
-			runThread.interrupt();
-			waitForStop(runThread);
-			isAlive = runThread.isAlive();
+        Thread thr = runThread; // forceStop() can set to null concurrently
+		if (thr != null && thr.isAlive()) {
+			thr.interrupt();
+			waitForStop(thr);
+			isAlive = thr.isAlive();
 		}
 
 		Thread[] threads = new Thread[100];
@@ -108,7 +108,7 @@ public class RobotThreadManager {
 		}
 
 		for (Thread thread : threads) {
-			if (thread != null && thread != runThread && thread.isAlive()) {
+			if (thread != null && thread != thr && thread.isAlive()) {
 				thread.interrupt();
 				waitForStop(thread);
 				isAlive |= thread.isAlive();
