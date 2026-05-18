@@ -1,4 +1,12 @@
-## Version 1.10.3 (TBD)
+## Version 1.10.3 (18-May-2026)
+
+### Bugfix
+
+- #85: Fix NPE causing truncated battles when a robot thread stop is attempted
+    - If the thread stop fails, a NullPointerException was thrown which aborted the battle early, resulting in battles
+      being reported with results but the wrong number of rounds.
+      The fix takes a reference to the thread beforehand so the NPE is avoided when `forceStop()` sets it to `null`.
+    - Thanks go to [Julian Kent](https://github.com/jkflying) for fixing this ❤️. Nice catch!
 
 ### Changes
 
