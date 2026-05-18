@@ -120,7 +120,9 @@ public final class Installer {
             progress.close();
         }
 
-        ShortcutManager.create(installDir);
+        if (!isSilent) {
+            ShortcutManager.create(installDir);
+        }
         cleanupInstallerClasses(installDir);
 
         return true;

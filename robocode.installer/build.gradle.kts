@@ -119,11 +119,13 @@ tasks {
         into("build/choco")
     }
 
+    val chocoVersion = project.findProperty("chocoVersion")?.toString() ?: project.version.toString()
+
     val chocoBuild by registering(Exec::class) {
         dependsOn(chocoCopy)
 
         workingDir = file("build/choco")
-        commandLine("choco", "pack", "--version", "${project.version}")
+        commandLine("choco", "pack", "--version", chocoVersion)
     }
 
     val chocoPush by registering(Exec::class) {
@@ -133,7 +135,7 @@ tasks {
         commandLine(
             "choco",
             "push",
-            "robocode.${project.version}.nupkg",
+            "robocode.$chocoVersion.nupkg",
             "-s",
             "https://push.chocolatey.org/",
             "--api-key",
