@@ -1,0 +1,122 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+
+  check:
+    name: Check if release already exists
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.check.outputs.should_release }}
+    steps:
+      - name: Check for existing release
+        id: check
+        run: |
+          if gh release view "${{ github.ref_name }}" --repo "${{ github.repository }}" &>/dev/null; then
+            echo "Release ${{ github.ref_name }} already exists — skipping (created by local ./gradlew release)"
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    needs: check
+    if: needs.check.outputs.should_release == 'true'
+    name: Build & publish to Maven Central
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify required secrets
+        run: |
+          missing=()
+          [ -z "$SIGNING_KEY" ]       && missing+=("SIGNING_KEY")
+          [ -z "$SIGNING_PASSWORD" ]  && missing+=("SIGNING_PASSWORD")
+          [ -z "$OSSRH_USERNAME" ]    && missing+=("OSSRH_USERNAME")
+          [ -z "$OSSRH_PASSWORD" ]    && missing+=("OSSRH_PASSWORD")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "❌ Missing required secrets: ${missing[*]}"
+            echo "See release.md → Prerequisites → GitHub secrets"
+            exit 1
+          fi
+          echo "✅ All required secrets present"
+        env:
+          SIGNING_KEY:      ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          OSSRH_USERNAME:   ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD:   ${{ secrets.OSSRH_PASSWORD }}
+
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        run: ./gradlew build
+
+      - name: Publish to Maven Central
+        run: ./gradlew publishAllPublicationsToSonatypeRepository closeAndReleaseSonatypeStagingRepository
+        env:
+          ORG_GRADLE_PROJECT_signingKey:      ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_ossrhUsername:   ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_ossrhPassword:   ${{ secrets.OSSRH_PASSWORD }}
+
+      - name: Create GitHub Release
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "Robocode ${{ steps.version.outputs.version }}" \
+            --notes "See [versions.md](https://github.com/${{ github.repository }}/blob/main/versions.md) for release notes." \
+            "build/robocode-${{ steps.version.outputs.version }}-setup.jar"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  chocolatey:
+    name: Publish to Chocolatey
+    needs: [check, publish]
+    if: needs.check.outputs.should_release == 'true'
+    runs-on: windows-latest
+    steps:
+      - name: Verify CHOCOLATEY_API_KEY
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrEmpty($env:CHOCOLATEY_API_KEY)) {
+            Write-Error "❌ CHOCOLATEY_API_KEY secret is not set — see release.md → Prerequisites → GitHub secrets"
+            exit 1
+          }
+          Write-Host "✅ CHOCOLATEY_API_KEY is present"
+        env:
+          CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
+
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Publish to Chocolatey
+        run: ./gradlew :robocode.installer:chocoPush
+        env:
+          CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
