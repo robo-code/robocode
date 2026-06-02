@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+# Force JavaScript-based actions still pinned to Node.js 20 (e.g. dorny/test-reporter@v2) to run on Node.js 24
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 # Cancel in-progress runs for the same ref (e.g. when pushing new commits to a PR)
 concurrency:
   group: ci-${{ github.ref }}

@@ -6,4 +6,9 @@ plugins {
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
+}
+
+dependencies {
+    implementation(libs.test.retry)
 }
