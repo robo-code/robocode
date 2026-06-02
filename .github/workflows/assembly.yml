@@ -1,6 +1,21 @@
 name: Java CI
 
-on: [push]
+on:
+  push:
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+# Force JavaScript-based actions still pinned to Node.js 20 (e.g. dorny/test-reporter@v2) to run on Node.js 24
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Cancel in-progress runs for the same ref (e.g. when pushing new commits to a PR)
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -13,9 +28,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: gradle
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
 
       - name: robocode.core test artifacts
         if: always()
@@ -37,6 +53,15 @@ jobs:
         with:
           name: robocode.tests-result
           path: robocode.tests/build/reports/tests/test
+
+      - name: Publish test results summary
+        if: always()
+        uses: dorny/test-reporter@v2
+        with:
+          name: Unit test results
+          path: '**/build/test-results/test/*.xml'
+          reporter: java-junit
+          fail-on-error: false
 
       - name: setup binary artifact
         uses: actions/upload-artifact@v7
