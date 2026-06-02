@@ -33,6 +33,19 @@ public class BulletCommand implements Serializable {
 	private final double fireAssistAngle;
 	private final int bulletId;
 
+	// Battle-side only: marks that this command has already fired a bullet, so it
+	// is not fired again on a later cooldown when the command list persists across
+	// turns (e.g. after the robot stops executing). Not part of the wire format.
+	private transient boolean consumed;
+
+	public boolean isConsumed() {
+		return consumed;
+	}
+
+	public void consume() {
+		consumed = true;
+	}
+
 	public boolean isFireAssistValid() {
 		return fireAssistValid;
 	}
