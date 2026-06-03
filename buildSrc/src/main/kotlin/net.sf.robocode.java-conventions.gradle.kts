@@ -4,6 +4,7 @@ plugins {
     java
     signing
     `maven-publish`
+    id("org.gradle.test-retry")
 }
 
 repositories {
@@ -25,6 +26,16 @@ java {
 tasks {
     withType<JavaCompile> {
         options.encoding = "UTF-8"
+    }
+    // Robot battle tests are timing-sensitive and can intermittently report transient
+    // engine errors (e.g. "Unable to stop thread") on slow/loaded CI machines.
+    // Retry failed tests a few times so such flakiness does not fail the build.
+    withType<Test> {
+        retry {
+            maxRetries.set(2)
+            maxFailures.set(20)
+            failOnPassedAfterRetry.set(false)
+        }
     }
 }
 

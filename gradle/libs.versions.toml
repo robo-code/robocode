@@ -7,6 +7,7 @@ ben-manes-versions = "0.54.0"
 eclipse-jdt = "3.45.0"
 kotlin = "2.3.21"
 bcel = "6.12.0"
+test-retry = "1.6.2"
 
 [libraries]
 
@@ -15,6 +16,7 @@ codesize = { module = "net.sf.robocode:codesize", version.ref = "codesize" }
 eclipse-jdt = { module = "org.eclipse.jdt:org.eclipse.jdt.core", version.ref = "eclipse-jdt" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 bcel = { module = "org.apache.bcel:bcel", version.ref = "bcel" }
+test-retry = { module = "org.gradle.test-retry:org.gradle.test-retry.gradle.plugin", version.ref = "test-retry" }
 
 [bundles]
 

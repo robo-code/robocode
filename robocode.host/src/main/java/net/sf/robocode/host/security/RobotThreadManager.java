@@ -25,6 +25,19 @@ import static net.sf.robocode.io.Logger.logMessage;
  */
 public class RobotThreadManager {
 
+	// Total time to wait for a thread to stop on its own after being interrupted.
+	// Generous enough to tolerate CPU starvation on slow/loaded machines (e.g. CI runners),
+	// where the target thread may simply not be scheduled rather than being stuck.
+	private static final long WAIT_STOP_TOTAL_MS = 3000;
+	// Polling granularity while waiting for a thread to stop.
+	private static final long WAIT_STOP_POLL_MS = 10;
+	// How often to re-assert the interrupt while waiting (a single early interrupt can be
+	// missed if the thread is not yet at an interruptible point).
+	private static final long REASSERT_INTERRUPT_EVERY_MS = 100;
+	// Bounded join used by interrupt()/stop() escalation steps.
+	private static final long INTERRUPT_JOIN_MS = 1000;
+	private static final long STOP_JOIN_MS = 3000;
+
 	private final IHostedThread robotProxy;
 	private Thread runThread;
 	private ThreadGroup runThreadGroup;
@@ -182,7 +195,7 @@ public class RobotThreadManager {
 			// noinspection deprecation
 			t.interrupt();
 			try {
-				t.join(1500);
+				t.join(STOP_JOIN_MS);
 			} catch (InterruptedException e) {
 				// Immediately reasserts the exception by interrupting the caller thread itself
 				Thread.currentThread().interrupt();
@@ -199,7 +212,7 @@ public class RobotThreadManager {
 			}
 			t.interrupt();
 			try {
-				t.join(500);
+				t.join(INTERRUPT_JOIN_MS);
 			} catch (InterruptedException e) {
 				// Immediately reasserts the exception by interrupting the caller thread itself
 				Thread.currentThread().interrupt();
@@ -208,13 +221,26 @@ public class RobotThreadManager {
 	}
 
 	private void waitForStop(Thread thread) {
-		for (int j = 0; j < 100 && thread.isAlive(); j++) {
-			if (j == 50) {
+		final long maxIters = WAIT_STOP_TOTAL_MS / WAIT_STOP_POLL_MS;
+		final long reassertEvery = Math.max(1, REASSERT_INTERRUPT_EVERY_MS / WAIT_STOP_POLL_MS);
+		boolean loggedWaiting = false;
+
+		for (long j = 0; j < maxIters && thread.isAlive(); j++) {
+			if (!loggedWaiting && j >= maxIters / 2) {
+				loggedWaiting = true;
 				logMessage(
 						"Waiting for robot " + robotProxy.getStatics().getName() + " to stop thread " + thread.getName());
 			}
+			// Re-assert the interrupt periodically in case the thread had not yet reached
+			// an interruptible point when it was first interrupted.
+			if (j % reassertEvery == 0) {
+				thread.interrupt();
+			}
 			try {
-				Thread.sleep(10);
+				Thread.sleep(WAIT_STOP_POLL_MS);
+				// Give the target thread a chance to be scheduled, especially when the CPU is
+				// contended and time passes without the thread making progress.
+				Thread.yield();
 			} catch (InterruptedException e) {
 				// Immediately reasserts the exception by interrupting the caller thread itself
 				Thread.currentThread().interrupt();
