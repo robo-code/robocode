@@ -11,8 +11,6 @@
 - Windows shortcuts are now always created without prompting.
 - Improved code quality: try-with-resources, `StringBuilder`, proper error handling, fixed spinner animation bug.
 
-## Version 1.10.4 (03-Jun-2026)
-
 ### Bugfix
 
 - #89: Prevent a single fire command from spawning duplicate bullets with the same ID
