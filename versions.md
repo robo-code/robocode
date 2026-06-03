@@ -11,6 +11,15 @@
 - Windows shortcuts are now always created without prompting.
 - Improved code quality: try-with-resources, `StringBuilder`, proper error handling, fixed spinner animation bug.
 
+## Version 1.10.4 (03-Jun-2026)
+
+### Bugfix
+
+- #89: Prevent a single fire command from spawning duplicate bullets with the same ID
+    - A single `setFire()` call could spawn multiple bullets sharing the same bullet ID, which could cause issues with
+      bullet tracking and battle accuracy.
+    - Thanks go to [Pavel Savara](https://github.com/pavelsavara) for fixing this ❤️. Sharp-eyed fix!
+
 ## Version 1.10.3 (18-May-2026)
 
 ### Bugfix
