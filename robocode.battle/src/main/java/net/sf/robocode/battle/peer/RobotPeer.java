@@ -856,6 +856,12 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				println("SYSTEM: You cannot call fire(NaN)");
 				continue;
 			}
+			// Skip commands that have already fired: the command list is shared
+			// across turns, so a robot that stops executing would otherwise
+			// re-fire the same command (and its bullet id) on every cooldown.
+			if (bulletCmd.isConsumed()) {
+				continue;
+			}
 			if (gunHeat > 0 || energy == 0) {
 				return;
 			}
@@ -877,6 +883,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			}
 			newBullet.setX(x);
 			newBullet.setY(y);
+
+			// Mark consumed so this command cannot fire again on a later cooldown.
+			bulletCmd.consume();
 		}
 		// there is only last bullet in one turn
 		if (newBullet != null) {
