@@ -59,8 +59,9 @@ public class URLJarCollector {
 			jarFileURL = jarURLConnection.getDeclaredField("jarFileURL");
 			jarFileURL.setAccessible(true);
 
-			localSunJVM = true;
-		} catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException ignore) {
+			localSunJVM = (fileCache != null && urlCache != null);
+		} catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException | RuntimeException ignore) {
+			// Not a classic SUN/Oracle JVM layout: fall back to the non-caching path.
 		}
 		sunJVM = localSunJVM;
 
