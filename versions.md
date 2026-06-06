@@ -1,4 +1,4 @@
-## Version 1.11.0 (TBD)
+## Version 1.11.0 (06-Jun-2026)
 
 ### Changes
 
