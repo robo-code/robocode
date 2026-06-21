@@ -170,6 +170,13 @@ public abstract class Event implements Comparable<Event>, Serializable {
 	 */
 	// This method must be invisible on Robot API
 	private void setPriorityHidden(int newPriority) {
+		// System events have a fixed priority (e.g. 100) that is outside the 0-99 range allowed for
+		// robot-defined events. The priority of a system event must not be changed, and the 0-99 rule
+		// must not be enforced for them, as that would clamp their priority and emit misleading
+		// warnings on the robot console.
+		if (isCriticalEvent()) {
+			return;
+		}
 		if (newPriority < 0) {
 			Logger.printlnToRobotsConsole("SYSTEM: Priority must be between 0 and 99");
 			Logger.printlnToRobotsConsole("SYSTEM: Priority for " + this.getClass().getName() + " will be 0");

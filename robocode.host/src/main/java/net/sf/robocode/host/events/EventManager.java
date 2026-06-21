@@ -510,6 +510,7 @@ public final class EventManager implements IEventManager {
 		}
 		if (HiddenAccess.isCriticalEvent(event)) {
 			robotProxy.println("SYSTEM: You may not change the priority of a system event.");
+			return;
 		}
 		HiddenAccess.setEventPriority(event, priority);
 	}
