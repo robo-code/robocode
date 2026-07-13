@@ -58,4 +58,4 @@ Happy Robocoding! 🤖⌨️
 
 [Robocode Tank Royale]: https://github.com/robocode-dev/tank-royale "Robocode Tank Royale"
 
-[LiteRumble]: https://literumble.appspot.com/ "LiteRumble - Robocode competitive rankings"
+[LiteRumble]: https://rumble.robowiki.net/ "LiteRumble - Robocode competitive rankings"
