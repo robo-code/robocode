@@ -166,7 +166,7 @@ The Robocode API consists of several APIs.
 ### ROBOCODE REPOSITORY
 
 If you want to try out new robots other than the sample robots that come with Robocode, you should visit the
-[LiteRumble home](https://literumble.appspot.com/) that contains lots of bots.
+[LiteRumble home](https://rumble.robowiki.net/) that contains lots of bots.
 
 ### COMMUNITY
 
@@ -205,7 +205,7 @@ But there is a lot of other challenges available on RoboWiki besides the ones li
 
 If you want to challenge your robot(s) and yourself as Robocoder, the [LiteRumble](https://robowiki.net/wiki/LiteRumble)
 is the best way to do it. LiteRumble is the ultimate collaborative effort to have a live,
-[up-to-date ranking](https://literumble.appspot.com/) of Robocode bots.
+[up-to-date ranking](https://rumble.robowiki.net/) of Robocode bots.
 
 So don't hesitate to [enter the RoboRumble competition](https://robowiki.net/wiki/RoboRumble/Enter_The_Competition).
 
@@ -261,7 +261,7 @@ A feature request should be put on the [Feature Requests](https://sourceforge.ne
 SourceForge site for Robocode. Each feature request will be prioritized among other feature requests.
 
 Note that if the feature is a big change to the game, e.g. change the robot behaviour, it might not be accepted, as
-Robocode is being used for competitions like e.g. the [LiteRumble](https://literumble.appspot.com/).
+Robocode is being used for competitions like e.g. the [LiteRumble](https://rumble.robowiki.net/).
 
 It will be a great help if you describe your idea in detail, and how you think it could be implemented into Robocode.
 For example, will it be possible to extend an existing feature with your idea?
