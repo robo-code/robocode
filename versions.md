@@ -1,3 +1,15 @@
+## Version 1.11.1 (13-Jul-2026)
+
+### Bugfix
+
+- #94: Avoid misleading priority warnings for system events.
+  System events retain their fixed priority instead of being clamped to the 0–99 range used by robot-defined events.
+
+### Changes
+
+- Updated LiteRumble links and RoboRumble configuration URLs to `https://rumble.robowiki.net/`.
+- Updated to use Eclipse JDT 3.46.0.
+
 ## Version 1.11.0 (06-Jun-2026)
 
 ### Changes
