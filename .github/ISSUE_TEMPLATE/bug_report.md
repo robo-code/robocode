@@ -8,14 +8,6 @@ type: Bug
 
 ---
 
----
-name: Bug report
-about: Report a problem with classic Robocode
-title: ""
-labels: ""
-assignees: ""
----
-
 ## Describe the bug
 
 A clear and concise description of the problem.
