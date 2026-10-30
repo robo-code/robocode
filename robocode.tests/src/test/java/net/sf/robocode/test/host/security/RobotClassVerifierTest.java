@@ -35,6 +35,15 @@ public class RobotClassVerifierTest {
 	static URL classPath;
 	static File robotsDir;
 
+	// Attack robots that can be loaded, as their attacks are prevented by checks when the robot runs
+	static final List<String> RUNTIME_CHECKED_ATTACKS = java.util.Arrays.asList(
+			"DeserializationAttack.class",
+			"FileDeleteAttack.class",
+			"FileListAttack.class",
+			"FileReadAttack.class",
+			"ResourceTraversalAttack.class",
+			"RobocodeFileOutputStreamAttack.class");
+
 	@BeforeClass
 	public static void init() throws IOException {
 		HiddenAccess.initContainer();
@@ -63,11 +72,13 @@ public class RobotClassVerifierTest {
 		attacks.put("tested.robots.DnsAttack", "java.net.URL");
 		attacks.put("tested.robots.EnvAttack", "java.lang.System.setProperty");
 		attacks.put("tested.robots.FileAttack", "java.io.FileOutputStream");
+		attacks.put("tested.robots.FileDescriptorReadAttack", "java.io.FileInputStream.<init>");
 		attacks.put("tested.robots.FileOutputStreamAttack", "java.io.FileOutputStream");
 		attacks.put("tested.robots.FileSubclassDeleteAttack", "java.io.File.delete");
 		attacks.put("tested.robots.HttpAttack", "java.net.URL");
 		attacks.put("tested.robots.IncludeNamespaceAttack", "net.sf.robocode.security.HiddenAccess");
 		attacks.put("tested.robots.MethodReferenceAttack", "java.lang.Runtime.exec");
+		attacks.put("tested.robots.ObjectInputStreamSubclassAttack", "java.io.ObjectInputStream");
 		attacks.put("tested.robots.PrintStreamFileAttack", "java.io.PrintStream.<init>");
 		attacks.put("tested.robots.ProcessExecAttack", "java.lang.ProcessBuilder");
 		attacks.put("tested.robots.ReflectionAttack", "java.lang.Class.getField");
@@ -87,7 +98,8 @@ public class RobotClassVerifierTest {
 			} catch (ClassNotFoundException e) {
 				String message = String.valueOf(e.getMessage());
 
-				if (!message.contains("not allowed to use " + attack.getValue())) {
+				if (!message.contains("not allowed to use " + attack.getValue())
+						&& !message.contains("not allowed to extend " + attack.getValue())) {
 					failures.add(attack.getKey() + " was rejected with an unexpected message: " + message);
 				}
 			} finally {
@@ -108,7 +120,10 @@ public class RobotClassVerifierTest {
 			for (File file : files) {
 				String name = file.getName();
 
-				if (name.endsWith(".class") && !name.contains("$") && !name.endsWith("Attack.class")) {
+				// Attack robots are tested by attackRobotsAreRejected(), except those stopped when they run
+				boolean rejectedAttack = name.endsWith("Attack.class") && !RUNTIME_CHECKED_ATTACKS.contains(name);
+
+				if (name.endsWith(".class") && !name.contains("$") && !rejectedAttack) {
 					robots.add(packageName + '.' + name.substring(0, name.length() - ".class".length()));
 				}
 			}

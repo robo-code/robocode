@@ -474,6 +474,10 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			if (name.startsWith("jdk/") || name.startsWith("java/") || name.startsWith("javax/") || name.startsWith("sun/") || name.startsWith("net.sf.robocode/")) {
 				return null;
 			}
+			// Prevent robots from reading files outside their class path, e.g. via getResourceAsStream("../../file")
+			if (name.contains("..") || name.contains("\\") || name.contains(":")) {
+				return null;
+			}
 			URL[] urls = getURLs();
 			if (urls != null) {
 				for (URL u : urls) {

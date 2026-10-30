@@ -217,12 +217,23 @@ public final class RobotClassVerifier {
 			"java/lang/Thread.setDefaultUncaughtExceptionHandler",
 			"java/lang/Thread.stop",
 			"java/lang/Thread.suspend",
-			// File modifications. Note that direct calls to File.delete(), mkdir(), and mkdirs() are replaced by the
-			// RobotClassRewriter with calls that check that the file is in the robot's data directory.
+			// File access. Note that direct calls to the File methods listed in RobotClassRewriter.FILE_METHODS, e.g.
+			// delete() and exists(), are replaced with calls that check that the robot is allowed to access the file.
+			"java/io/File.canExecute",
+			"java/io/File.canRead",
+			"java/io/File.canWrite",
 			"java/io/File.createNewFile",
 			"java/io/File.createTempFile",
 			"java/io/File.delete",
 			"java/io/File.deleteOnExit",
+			"java/io/File.exists",
+			"java/io/File.isDirectory",
+			"java/io/File.isFile",
+			"java/io/File.isHidden",
+			"java/io/File.lastModified",
+			"java/io/File.length",
+			"java/io/File.list",
+			"java/io/File.listFiles",
 			"java/io/File.mkdir",
 			"java/io/File.mkdirs",
 			"java/io/File.renameTo",
@@ -233,6 +244,9 @@ public final class RobotClassVerifier {
 			"java/io/File.setWritable"
 	));
 
+	// Classes that robots are not allowed to extend, as these are replaced with subclasses by the RobotClassRewriter
+	private static final Set<String> FINAL_CLASSES = RobotClassRewriter.SUBCLASSES.keySet();
+
 	// Prefixes of members including their descriptor that robots are not allowed to use, written as "class.member(descriptor"
 	private static final String[] DENIED_MEMBER_PREFIXES = {
 			// Constructors that open a file for writing
@@ -242,6 +256,17 @@ public final class RobotClassVerifier {
 			"java/io/PrintWriter.<init>(Ljava/io/File;",
 			"java/util/Formatter.<init>(Ljava/lang/String;",
 			"java/util/Formatter.<init>(Ljava/io/File;",
+			// Constructors and methods that open a file for reading
+			"java/util/Scanner.<init>(Ljava/io/File;",
+			"java/util/Scanner.<init>(Ljava/nio/file/Path;",
+			"java/util/zip/ZipFile.<init>",
+			"java/awt/Font.createFont(ILjava/io/File;",
+			// Constructors of the classes replaced with subclasses by the RobotClassRewriter. Constructors supported by
+			// the subclasses have already been replaced when the class is verified, e.g. FileInputStream(File), so only
+			// the unsupported ones are left, e.g. FileInputStream(FileDescriptor).
+			"java/io/FileInputStream.<init>",
+			"java/io/FileReader.<init>",
+			"java/io/ObjectInputStream.<init>",
 	};
 
 	// Members that robots are allowed to use in classes that are otherwise not allowed.
@@ -296,6 +321,11 @@ public final class RobotClassVerifier {
 
 		if (cf.superName != null) {
 			checkClassAllowed(cf.thisName, cf.superName);
+
+			if (FINAL_CLASSES.contains(cf.superName)) {
+				throw new SecurityException(cf.thisName.replace('/', '.') + " is not allowed to extend "
+						+ cf.superName.replace('/', '.'));
+			}
 		}
 		for (String interfaceName : cf.interfaceNames) {
 			checkClassAllowed(cf.thisName, interfaceName);

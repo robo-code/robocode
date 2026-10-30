@@ -16,27 +16,68 @@ import java.util.*;
 
 
 /**
- * Rewrites robot class files so file modifications are checked by Robocode.
+ * Rewrites robot class files so file access and deserialization done by robots are checked by Robocode.
  * <p>
- * Without the SecurityManager (removed with Java 24), the JDK does not check if a robot is allowed to delete a file
- * or create a directory. Robots are only allowed to do this in their own data directory, so calls to
- * {@code java.io.File.delete()}, {@code mkdir()}, and {@code mkdirs()} are replaced with calls to the static methods
- * with the same names in {@link robocode.util.RobotFileAccess}, which perform the checks.
- * <p>
- * The rewrite changes the existing method reference in the constant pool to the static method, and changes the
- * invoke instructions using it into {@code invokestatic}. These instructions have the same length and stack effect,
- * so no other part of the class file needs to be changed.
+ * Without the SecurityManager (removed with Java 24), the JDK does not check if a robot is allowed to read or modify
+ * a file, or which classes it deserializes. Hence, the class files of robots are rewritten as follows:
+ * <ul>
+ * <li>Calls to methods of {@code java.io.File} that modify files or read information about files, e.g.
+ * {@code delete()} and {@code exists()}, are replaced with calls to static methods with the same names in
+ * {@link robocode.util.RobotFileAccess}, which take the file as the first parameter.</li>
+ * <li>Creating a {@code FileInputStream}, {@code FileReader}, or {@code ObjectInputStream} is replaced with creating
+ * the corresponding subclass in the {@code robocode.util} package, e.g. {@link robocode.util.RobotFileInputStream},
+ * which performs the checks.</li>
+ * </ul>
+ * The rewrite changes the existing method references in the constant pool, and changes the instructions using them,
+ * i.e. {@code invokevirtual} into {@code invokestatic}, and {@code new} of the Java class into {@code new} of the
+ * subclass. These instructions have the same length and stack effect, so no other part of the class file needs to be
+ * changed. Uses of these classes and methods that cannot be rewritten are rejected by the {@link RobotClassVerifier}.
  *
  * @author Flemming N. Larsen (original)
  */
 final class RobotClassRewriter {
 
 	private static final String FILE_CLASS = "java/io/File";
-	private static final Set<String> FILE_METHODS = new HashSet<String>(Arrays.asList("delete", "mkdir", "mkdirs"));
-	private static final String FILE_METHOD_DESCRIPTOR = "()Z";
+	private static final String FILE_ACCESS_CLASS = "robocode/util/RobotFileAccess";
 
-	private static final String ACCESS_CLASS = "robocode/util/RobotFileAccess";
-	private static final String ACCESS_METHOD_DESCRIPTOR = "(Ljava/io/File;)Z";
+	// Methods of java.io.File (name + descriptor) replaced with static methods of RobotFileAccess
+	static final Set<String> FILE_METHODS = new HashSet<String>(Arrays.asList(
+			"delete()Z",
+			"mkdir()Z",
+			"mkdirs()Z",
+			"exists()Z",
+			"isFile()Z",
+			"isDirectory()Z",
+			"isHidden()Z",
+			"canRead()Z",
+			"canWrite()Z",
+			"canExecute()Z",
+			"length()J",
+			"lastModified()J",
+			"list()[Ljava/lang/String;",
+			"list(Ljava/io/FilenameFilter;)[Ljava/lang/String;",
+			"listFiles()[Ljava/io/File;",
+			"listFiles(Ljava/io/FilenameFilter;)[Ljava/io/File;",
+			"listFiles(Ljava/io/FileFilter;)[Ljava/io/File;"
+	));
+
+	// Classes replaced with subclasses, and the constructor descriptors supported by the subclasses
+	static final Map<String, String> SUBCLASSES = new HashMap<String, String>();
+	static final Map<String, Set<String>> SUBCLASS_CONSTRUCTORS = new HashMap<String, Set<String>>();
+
+	static {
+		addSubclass("java/io/FileInputStream", "robocode/util/RobotFileInputStream",
+				"(Ljava/lang/String;)V", "(Ljava/io/File;)V");
+		addSubclass("java/io/FileReader", "robocode/util/RobotFileReader",
+				"(Ljava/lang/String;)V", "(Ljava/io/File;)V");
+		addSubclass("java/io/ObjectInputStream", "robocode/util/RobotObjectInputStream",
+				"(Ljava/io/InputStream;)V");
+	}
+
+	private static void addSubclass(String className, String subclassName, String... constructorDescriptors) {
+		SUBCLASSES.put(className, subclassName);
+		SUBCLASS_CONSTRUCTORS.put(className, new HashSet<String>(Arrays.asList(constructorDescriptors)));
+	}
 
 	private static final int CONSTANT_Utf8 = 1;
 	private static final int CONSTANT_Long = 5;
@@ -48,6 +89,7 @@ final class RobotClassRewriter {
 	private static final int INVOKEVIRTUAL = 0xb6;
 	private static final int INVOKESPECIAL = 0xb7;
 	private static final int INVOKESTATIC = 0xb8;
+	private static final int NEW = 0xbb;
 
 	private RobotClassRewriter() {
 	}
@@ -88,79 +130,82 @@ final class RobotClassRewriter {
 		}
 		final int constantPoolEnd = r.pos;
 
-		// Find the method references to rewrite, and the names used by them
-		Map<Integer, Integer> methodRefNameIndexes = new LinkedHashMap<Integer, Integer>();
+		// Find the constants to rewrite
+		Map<Integer, Integer> fileMethodNameIndexes = new HashMap<Integer, Integer>(); // methodref -> name index
+		Map<Integer, String> fileMethodDescriptors = new HashMap<Integer, String>(); // methodref -> new descriptor
+		Map<Integer, String> constructorSubclasses = new HashMap<Integer, String>(); // methodref -> subclass
+		Map<Integer, String> classSubclasses = new HashMap<Integer, String>(); // class -> subclass
 
 		for (int i = 1; i < count; i++) {
-			if (tags[i] != CONSTANT_Methodref) {
-				continue;
-			}
-			int classIndex = u2(bytes, offsets[i] + 1);
-			int nameAndTypeIndex = u2(bytes, offsets[i] + 3);
-			int classNameIndex = u2(bytes, offsets[classIndex] + 1);
-			int nameIndex = u2(bytes, offsets[nameAndTypeIndex] + 1);
-			int descriptorIndex = u2(bytes, offsets[nameAndTypeIndex] + 3);
+			if (tags[i] == CONSTANT_Class) {
+				String subclass = SUBCLASSES.get(utf8(utf8s, u2(bytes, offsets[i] + 1)));
+				if (subclass != null) {
+					classSubclasses.put(i, subclass);
+				}
+			} else if (tags[i] == CONSTANT_Methodref) {
+				int classIndex = checkIndex(tags, u2(bytes, offsets[i] + 1), CONSTANT_Class);
+				int nameAndTypeIndex = checkIndex(tags, u2(bytes, offsets[i] + 3), CONSTANT_NameAndType);
+				String className = utf8(utf8s, u2(bytes, offsets[classIndex] + 1));
+				int nameIndex = u2(bytes, offsets[nameAndTypeIndex] + 1);
+				String name = utf8(utf8s, nameIndex);
+				String descriptor = utf8(utf8s, u2(bytes, offsets[nameAndTypeIndex] + 3));
 
-			if (FILE_CLASS.equals(utf8s[classNameIndex]) && FILE_METHODS.contains(utf8s[nameIndex])
-					&& FILE_METHOD_DESCRIPTOR.equals(utf8s[descriptorIndex])) {
-				methodRefNameIndexes.put(i, nameIndex);
+				if (FILE_CLASS.equals(className) && FILE_METHODS.contains(name + descriptor)) {
+					fileMethodNameIndexes.put(i, nameIndex);
+					fileMethodDescriptors.put(i, "(L" + FILE_CLASS + ';' + descriptor.substring(1));
+				} else if ("<init>".equals(name) && SUBCLASSES.containsKey(className)
+						&& SUBCLASS_CONSTRUCTORS.get(className).contains(descriptor)) {
+					constructorSubclasses.put(i, SUBCLASSES.get(className));
+				}
 			}
 		}
-		if (methodRefNameIndexes.isEmpty()) {
+		if (fileMethodNameIndexes.isEmpty() && constructorSubclasses.isEmpty() && classSubclasses.isEmpty()) {
 			return classFile;
 		}
 
 		// Append the new constants to the constant pool
-		ByteArrayOutputStream newConstants = new ByteArrayOutputStream();
-		DataOutputStream out = new DataOutputStream(newConstants);
-		int nextIndex = count;
+		ConstantPoolAppender cp = new ConstantPoolAppender(count);
 
-		final int accessClassNameIndex = nextIndex++;
-		out.writeByte(CONSTANT_Utf8);
-		out.writeUTF(ACCESS_CLASS);
+		Map<Integer, Integer> newMethodClassIndexes = new HashMap<Integer, Integer>(); // methodref -> new class index
+		Map<Integer, Integer> newNameAndTypeIndexes = new HashMap<Integer, Integer>(); // methodref -> new name and type
 
-		final int accessClassIndex = nextIndex++;
-		out.writeByte(CONSTANT_Class);
-		out.writeShort(accessClassNameIndex);
-
-		final int descriptorIndex = nextIndex++;
-		out.writeByte(CONSTANT_Utf8);
-		out.writeUTF(ACCESS_METHOD_DESCRIPTOR);
-
-		Map<Integer, Integer> nameAndTypeIndexes = new HashMap<Integer, Integer>();
-
-		for (int nameIndex : new HashSet<Integer>(methodRefNameIndexes.values())) {
-			nameAndTypeIndexes.put(nameIndex, nextIndex++);
-			out.writeByte(CONSTANT_NameAndType);
-			out.writeShort(nameIndex);
-			out.writeShort(descriptorIndex);
+		for (Map.Entry<Integer, Integer> entry : fileMethodNameIndexes.entrySet()) {
+			int methodRef = entry.getKey();
+			newMethodClassIndexes.put(methodRef, cp.addClass(FILE_ACCESS_CLASS));
+			newNameAndTypeIndexes.put(methodRef, cp.addNameAndType(entry.getValue(), fileMethodDescriptors.get(methodRef)));
 		}
-		out.flush();
-
-		if (nextIndex > 0xFFFF) {
-			throw new IOException("Constant pool is too large");
+		for (Map.Entry<Integer, String> entry : constructorSubclasses.entrySet()) {
+			newMethodClassIndexes.put(entry.getKey(), cp.addClass(entry.getValue()));
 		}
+		Map<Integer, Integer> newClassIndexes = new HashMap<Integer, Integer>(); // class -> subclass class index
+		for (Map.Entry<Integer, String> entry : classSubclasses.entrySet()) {
+			newClassIndexes.put(entry.getKey(), cp.addClass(entry.getValue()));
+		}
+		byte[] newConstants = cp.toByteArray();
 
 		// Build the new class file
-		byte[] result = new byte[bytes.length + newConstants.size()];
+		byte[] result = new byte[bytes.length + newConstants.length];
 
 		System.arraycopy(bytes, 0, result, 0, constantPoolEnd);
-		System.arraycopy(newConstants.toByteArray(), 0, result, constantPoolEnd, newConstants.size());
-		System.arraycopy(bytes, constantPoolEnd, result, constantPoolEnd + newConstants.size(), bytes.length - constantPoolEnd);
+		System.arraycopy(newConstants, 0, result, constantPoolEnd, newConstants.length);
+		System.arraycopy(bytes, constantPoolEnd, result, constantPoolEnd + newConstants.length, bytes.length - constantPoolEnd);
 
-		putU2(result, countOffset, nextIndex);
+		putU2(result, countOffset, cp.getCount());
 
-		// Change the method references to the static methods
-		for (Map.Entry<Integer, Integer> entry : methodRefNameIndexes.entrySet()) {
+		// Change the method references
+		for (Map.Entry<Integer, Integer> entry : newMethodClassIndexes.entrySet()) {
 			int offset = offsets[entry.getKey()];
 
-			putU2(result, offset + 1, accessClassIndex);
-			putU2(result, offset + 3, nameAndTypeIndexes.get(entry.getValue()));
+			putU2(result, offset + 1, entry.getValue());
+			Integer nameAndTypeIndex = newNameAndTypeIndexes.get(entry.getKey());
+			if (nameAndTypeIndex != null) {
+				putU2(result, offset + 3, nameAndTypeIndex);
+			}
 		}
 
-		// Change the instructions invoking the method references into invokestatic
+		// Change the instructions
 		Reader cr = new Reader(result);
-		cr.pos = constantPoolEnd + newConstants.size();
+		cr.pos = constantPoolEnd + newConstants.length;
 		cr.u2(); // access flags
 		cr.u2(); // this class
 		cr.u2(); // super class
@@ -183,12 +228,26 @@ final class RobotClassRewriter {
 					cr.pos += 4; // max stack, max locals
 					int codeLength = cr.u4();
 
-					rewriteInstructions(result, cr.pos, codeLength, methodRefNameIndexes.keySet());
+					rewriteInstructions(result, cr.pos, codeLength, fileMethodNameIndexes.keySet(), newClassIndexes);
 				}
 				cr.pos = attributeEnd;
 			}
 		}
 		return ByteBuffer.wrap(result);
+	}
+
+	private static int checkIndex(int[] tags, int index, int expectedTag) throws IOException {
+		if (index <= 0 || index >= tags.length || tags[index] != expectedTag) {
+			throw new IOException("Invalid constant pool index: " + index);
+		}
+		return index;
+	}
+
+	private static String utf8(String[] utf8s, int index) throws IOException {
+		if (index <= 0 || index >= utf8s.length || utf8s[index] == null) {
+			throw new IOException("Invalid UTF-8 constant pool index: " + index);
+		}
+		return utf8s[index];
 	}
 
 	private static int constantSize(Reader r, int tag, String[] utf8s, int index) throws IOException {
@@ -222,7 +281,7 @@ final class RobotClassRewriter {
 		}
 	}
 
-	private static void skipMembers(Reader r) throws IOException {
+	private static void skipMembers(Reader r) {
 		int count = r.u2();
 		for (int i = 0; i < count; i++) {
 			r.pos += 6; // access flags, name index, descriptor index
@@ -235,15 +294,21 @@ final class RobotClassRewriter {
 		}
 	}
 
-	private static void rewriteInstructions(byte[] code, int start, int length, Set<Integer> methodRefs) throws IOException {
+	private static void rewriteInstructions(byte[] code, int start, int length, Set<Integer> staticMethodRefs,
+			Map<Integer, Integer> newClassIndexes) throws IOException {
 		int end = start + length;
 		int pc = start;
 
 		while (pc < end) {
 			int opcode = code[pc] & 0xFF;
 
-			if ((opcode == INVOKEVIRTUAL || opcode == INVOKESPECIAL) && methodRefs.contains(u2(code, pc + 1))) {
+			if ((opcode == INVOKEVIRTUAL || opcode == INVOKESPECIAL) && staticMethodRefs.contains(u2(code, pc + 1))) {
 				code[pc] = (byte) INVOKESTATIC;
+			} else if (opcode == NEW) {
+				Integer newClassIndex = newClassIndexes.get(u2(code, pc + 1));
+				if (newClassIndex != null) {
+					putU2(code, pc + 1, newClassIndex);
+				}
 			}
 			pc += instructionLength(code, start, pc);
 		}
@@ -337,6 +402,71 @@ final class RobotClassRewriter {
 	private static void putU2(byte[] b, int offset, int value) {
 		b[offset] = (byte) (value >> 8);
 		b[offset + 1] = (byte) value;
+	}
+
+	/**
+	 * Appends constants to the end of a constant pool, so the indexes of the existing constants are unchanged.
+	 */
+	private static final class ConstantPoolAppender {
+		private final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		private final DataOutputStream out = new DataOutputStream(bytes);
+		private final Map<String, Integer> utf8Indexes = new HashMap<String, Integer>();
+		private final Map<String, Integer> classIndexes = new HashMap<String, Integer>();
+		private final Map<String, Integer> nameAndTypeIndexes = new HashMap<String, Integer>();
+		private int count;
+
+		ConstantPoolAppender(int count) {
+			this.count = count;
+		}
+
+		int getCount() throws IOException {
+			if (count > 0xFFFF) {
+				throw new IOException("Constant pool is too large");
+			}
+			return count;
+		}
+
+		int addUtf8(String value) throws IOException {
+			Integer index = utf8Indexes.get(value);
+			if (index == null) {
+				index = count++;
+				out.writeByte(CONSTANT_Utf8);
+				out.writeUTF(value);
+				utf8Indexes.put(value, index);
+			}
+			return index;
+		}
+
+		int addClass(String internalName) throws IOException {
+			Integer index = classIndexes.get(internalName);
+			if (index == null) {
+				int nameIndex = addUtf8(internalName);
+				index = count++;
+				out.writeByte(CONSTANT_Class);
+				out.writeShort(nameIndex);
+				classIndexes.put(internalName, index);
+			}
+			return index;
+		}
+
+		int addNameAndType(int nameIndex, String descriptor) throws IOException {
+			String key = nameIndex + descriptor;
+			Integer index = nameAndTypeIndexes.get(key);
+			if (index == null) {
+				int descriptorIndex = addUtf8(descriptor);
+				index = count++;
+				out.writeByte(CONSTANT_NameAndType);
+				out.writeShort(nameIndex);
+				out.writeShort(descriptorIndex);
+				nameAndTypeIndexes.put(key, index);
+			}
+			return index;
+		}
+
+		byte[] toByteArray() throws IOException {
+			out.flush();
+			return bytes.toByteArray();
+		}
 	}
 
 	private static final class Reader {

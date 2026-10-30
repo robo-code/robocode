@@ -27,4 +27,21 @@ public interface IThreadManagerBase {
 	 * @throws SecurityException if the robot is not allowed to modify the file.
 	 */
 	void checkRobotFileWrite(File file);
+
+	/**
+	 * Checks that the current robot is allowed to read a file, i.e. that the file is in the robot's own root package
+	 * directory or data directory.
+	 *
+	 * @param file the file to read.
+	 * @throws SecurityException if the robot is not allowed to read the file.
+	 */
+	void checkRobotFileRead(File file);
+
+	/**
+	 * Returns the class loader of the current robot.
+	 *
+	 * @return the class loader of the robot.
+	 * @throws SecurityException if the current thread is not a robot thread.
+	 */
+	ClassLoader getRobotClassLoader();
 }

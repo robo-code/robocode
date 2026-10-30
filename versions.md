@@ -10,6 +10,11 @@
       a message explaining why.
     - `RobocodeFileOutputStream` now checks that the file is inside the robot's data directory.
     - Robots can only delete files and create directories in their own data directory.
+    - Robots can only read files and get information about files (e.g. `File.exists()` and `File.list()`) in their
+      own root package directory and data directory, like with the SecurityManager.
+    - Robots can only deserialize their own classes, Robocode classes, and common Java classes like strings,
+      collections, and geometry.
+    - Robots can no longer read files outside their class path via `getResourceAsStream()`.
     - Robots can no longer access the libraries used by Robocode.
 
 ### Changes

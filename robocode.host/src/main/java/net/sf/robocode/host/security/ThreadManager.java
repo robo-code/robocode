@@ -194,6 +194,42 @@ public class ThreadManager implements IThreadManager {
 		}
 	}
 
+	public void checkRobotFileRead(File file) {
+		final IHostedThread robotProxy = getLoadedOrLoadingRobotProxy(Thread.currentThread());
+
+		if (robotProxy == null) {
+			throw new SecurityException("Preventing unknown thread " + Thread.currentThread().getName()
+					+ " from access: " + file);
+		}
+
+		// For development purposes, allow read any file if override is set.
+		if (System.getProperty("OVERRIDEFILEREADSECURITY", "false").equals("true")) {
+			return;
+		}
+
+		final RobotFileSystemManager fileSystemManager = robotProxy.getRobotFileSystemManager();
+		final String fileName = file.getPath();
+
+		// isReadable() throws a SecurityException, if the file is in another robot's data directory
+		if (fileSystemManager.getReadableDirectory() == null
+				|| !(fileSystemManager.isWritable(fileName) || fileSystemManager.isReadable(fileName))) {
+			final String message = "Preventing " + robotProxy.getStatics().getName() + " from access: " + file
+					+ ". You may only read files in your own root package directory.";
+
+			robotProxy.punishSecurityViolation(message);
+			throw new SecurityException(message);
+		}
+	}
+
+	public ClassLoader getRobotClassLoader() {
+		final IHostedThread robotProxy = getLoadedOrLoadingRobotProxy(Thread.currentThread());
+
+		if (robotProxy == null || robotProxy.getRobotClassloader() == null) {
+			throw new SecurityException("Thread " + Thread.currentThread().getName() + " is not a robot thread");
+		}
+		return robotProxy.getRobotClassloader();
+	}
+
 	public boolean checkRobotFileStream() {
 		final Thread c = Thread.currentThread();
 

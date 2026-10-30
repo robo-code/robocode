@@ -208,7 +208,11 @@ public class RobotFileSystemManager {
 			return true; // recursive check
 		}
 
-		if (attemptedFile.getParent().indexOf(allowedDirectory.toString()) == 0) {
+		String parent = attemptedFile.getParent();
+		String allowedPath = allowedDirectory.toString();
+
+		if (parent != null && (parent.equals(allowedPath) || parent.startsWith(
+				allowedPath.endsWith(File.separator) ? allowedPath : allowedPath + File.separator))) {
 			String fs = attemptedFile.toString();
 			int dataIndex = fs.indexOf(".data", allowedDirectory.toString().length());
 
@@ -241,7 +245,7 @@ public class RobotFileSystemManager {
 			return false;
 		}
 
-		return attemptedFile.equals(allowedDirectory) || attemptedFile.getParentFile().equals(allowedDirectory);
+		return attemptedFile.equals(allowedDirectory) || allowedDirectory.equals(attemptedFile.getParentFile());
 	}
 
 	void removeStream(RobotFileOutputStream s) {
