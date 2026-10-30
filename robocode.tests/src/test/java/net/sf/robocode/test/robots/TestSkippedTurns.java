@@ -11,14 +11,14 @@ package net.sf.robocode.test.robots;
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.Test;
-import org.junit.Ignore;
 import robocode.control.events.TurnEndedEvent;
 
 
 /**
+ * Tests that a robot responding too slowly skips turns and receives SkippedTurnEvents.
+ *
  * @author Pavel Savara (original)
  */
-@Ignore("is very timing sensitive test, so it usually fails on different machines, please run explicitly if you did something to security or timing")
 public class TestSkippedTurns extends RobocodeTestBed {
 	boolean messagedEvent;
 
@@ -43,6 +43,6 @@ public class TestSkippedTurns extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue(messagedEvent);
+		Assert.assertTrue("Robot did not receive a SkippedTurnEvent", messagedEvent);
 	}
 }

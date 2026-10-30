@@ -24,6 +24,8 @@
 ### Bugfix
 
 - Robots in a jar file inside another jar file, e.g. in a team jar, could not be loaded with Java 9 and newer.
+- Battles were not deterministic with Java 9 and newer, e.g. when using the `RANDOMSEED` system property, if robots
+  used `Math.random()`. Calls to `Math.random()` in robots now use the random number generator of Robocode.
 
 ### Changes
 

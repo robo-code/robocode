@@ -28,6 +28,8 @@ import java.util.*;
  * <li>Calls to methods that use members via reflection, e.g. {@code Method.invoke()} and {@code Field.get()}, are
  * replaced with calls to static methods with the same names in {@link robocode.util.RobotReflection}, which take the
  * member as the first parameter.</li>
+ * <li>Calls to {@code Math.random()} are replaced with calls to {@link robocode.util.RobotMath#random()}, so the random
+ * numbers of robots are deterministic, when Robocode is set up for deterministic battles.</li>
  * <li>Creating a {@code FileInputStream}, {@code FileReader}, or {@code ObjectInputStream} is replaced with creating
  * the corresponding subclass in the {@code robocode.util} package, e.g. {@link robocode.util.RobotFileInputStream},
  * which performs the checks.</li>
@@ -120,6 +122,16 @@ final class RobotClassRewriter {
 				"(Ljava/io/InputStream;)V");
 	}
 
+	// Static methods ("class.name" + descriptor) replaced with static methods with the same name and descriptor in a
+	// Robocode class. Math.random() is replaced so the random numbers of robots are deterministic, when Robocode is set
+	// up for deterministic battles, which is not possible by replacing the random number generator of Math with Java 9+.
+	static final Map<String, String> REPLACED_STATIC_METHODS = new HashMap<String, String>();
+
+	static {
+		REPLACED_STATIC_METHODS.put("java/lang/Math.random()D", "robocode/util/RobotMath");
+		REPLACED_STATIC_METHODS.put("java/lang/StrictMath.random()D", "robocode/util/RobotMath");
+	}
+
 	private static void addSubclass(String className, String subclassName, String... constructorDescriptors) {
 		SUBCLASSES.put(className, subclassName);
 		SUBCLASS_CONSTRUCTORS.put(className, new HashSet<String>(Arrays.asList(constructorDescriptors)));
@@ -180,7 +192,7 @@ final class RobotClassRewriter {
 		Map<Integer, Integer> staticMethodNameIndexes = new HashMap<Integer, Integer>(); // methodref -> name index
 		Map<Integer, String> staticMethodDescriptors = new HashMap<Integer, String>(); // methodref -> new descriptor
 		Map<Integer, String> staticMethodClasses = new HashMap<Integer, String>(); // methodref -> new class
-		Map<Integer, String> constructorSubclasses = new HashMap<Integer, String>(); // methodref -> subclass
+		Map<Integer, String> methodClasses = new HashMap<Integer, String>(); // methodref -> new class, same name and type
 		Map<Integer, String> classSubclasses = new HashMap<Integer, String>(); // class -> subclass
 
 		for (int i = 1; i < count; i++) {
@@ -205,11 +217,13 @@ final class RobotClassRewriter {
 					staticMethodClasses.put(i, staticClassName);
 				} else if ("<init>".equals(name) && SUBCLASSES.containsKey(className)
 						&& SUBCLASS_CONSTRUCTORS.get(className).contains(descriptor)) {
-					constructorSubclasses.put(i, SUBCLASSES.get(className));
+					methodClasses.put(i, SUBCLASSES.get(className));
+				} else if (REPLACED_STATIC_METHODS.containsKey(className + '.' + name + descriptor)) {
+					methodClasses.put(i, REPLACED_STATIC_METHODS.get(className + '.' + name + descriptor));
 				}
 			}
 		}
-		if (staticMethodNameIndexes.isEmpty() && constructorSubclasses.isEmpty() && classSubclasses.isEmpty()) {
+		if (staticMethodNameIndexes.isEmpty() && methodClasses.isEmpty() && classSubclasses.isEmpty()) {
 			return classFile;
 		}
 
@@ -224,7 +238,7 @@ final class RobotClassRewriter {
 			newMethodClassIndexes.put(methodRef, cp.addClass(staticMethodClasses.get(methodRef)));
 			newNameAndTypeIndexes.put(methodRef, cp.addNameAndType(entry.getValue(), staticMethodDescriptors.get(methodRef)));
 		}
-		for (Map.Entry<Integer, String> entry : constructorSubclasses.entrySet()) {
+		for (Map.Entry<Integer, String> entry : methodClasses.entrySet()) {
 			newMethodClassIndexes.put(entry.getKey(), cp.addClass(entry.getValue()));
 		}
 		Map<Integer, Integer> newClassIndexes = new HashMap<Integer, Integer>(); // class -> subclass class index

@@ -14,6 +14,8 @@ import robocode.StatusEvent;
 
 
 /**
+ * Responds slowly until it has skipped a few turns, and then continues normally.
+ *
  * @author Pavel Savara (original)
  */
 public class SkipTurns extends AdvancedRobot {
@@ -25,24 +27,9 @@ public class SkipTurns extends AdvancedRobot {
 	public void run() {
 		// noinspection InfiniteLoopStatement
 		for (;;) {
-			if (skipped > LIMIT) {
-				throw new Error("satisfied, end battle please");
-			}
 			turnLeft(10);
-			if (skipped > LIMIT) {
-				// satisfied, end battle please
-				throw new Error();
-			}
 			ahead(1);
-			if (skipped > LIMIT) {
-				// satisfied, end battle please
-				throw new Error();
-			}
 			turnLeft(10);
-			if (skipped > LIMIT) {
-				// satisfied, end battle please
-				throw new Error();
-			}
 			back(1);
 		}
 	}
@@ -50,7 +37,9 @@ public class SkipTurns extends AdvancedRobot {
 	@Override
 	public void onStatus(StatusEvent e) {
 		out.println("live");
-		slowResponse();
+		if (skipped <= LIMIT) {
+			slowResponse();
+		}
 	}
 
 	@Override
@@ -66,11 +55,7 @@ public class SkipTurns extends AdvancedRobot {
 
 		synchronized (w) {
 			try {
-				if (skipped > 3) {
-					w.wait(3000);
-				} else {
-					w.wait(130);
-				}
+				w.wait(130);
 			} catch (InterruptedException e) {
 				// eat interrupt
 				e.printStackTrace(out);
