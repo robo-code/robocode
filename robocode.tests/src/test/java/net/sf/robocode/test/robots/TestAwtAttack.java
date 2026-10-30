@@ -57,7 +57,7 @@ public class TestAwtAttack extends RobocodeTestBed {
 
     @Override
     protected int getExpectedErrors() {
-        return 2;
+        return 1; // The robot cannot be loaded
     }
 
     @Override

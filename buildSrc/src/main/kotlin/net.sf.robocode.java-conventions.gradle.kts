@@ -36,6 +36,13 @@ tasks {
             maxFailures.set(20)
             failOnPassedAfterRetry.set(false)
         }
+        // Run tests on another Java version than the Java 8 toolchain, e.g. -PtestJavaVersion=25,
+        // as robot security works differently on Java 24+ where the SecurityManager is removed.
+        providers.gradleProperty("testJavaVersion").orNull?.let { version ->
+            javaLauncher.set(javaToolchains.launcherFor {
+                languageVersion.set(JavaLanguageVersion.of(version))
+            })
+        }
     }
 }
 

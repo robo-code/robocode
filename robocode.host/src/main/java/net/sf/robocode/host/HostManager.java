@@ -101,23 +101,19 @@ public class HostManager implements IHostManager {
 		JarJarURLConnection.register();
 
 		if (RobocodeProperties.isSecurityOn()) {
-			// Check if we're running on Java 24 or later
+			// Robot classes are always verified by the RobotClassLoader before they are loaded, which is the only
+			// robot security available with Java 24+, where the SecurityManager has been removed.
 			int majorVersion = net.sf.robocode.util.JavaVersion.getJavaMajorVersion();
 
 			if (majorVersion >= 24) {
-				// Use the Java 24+ compatible security adapter
-				RobocodeSecurityAdapter securityAdapter = new RobocodeSecurityAdapter(threadManager);
-				securityAdapter.init();
+				Logger.logMessage("Robocode security: Robot classes are verified when loaded (no SecurityManager with Java 24+)");
 			} else {
-				// Use traditional security policy for Java < 24
 				try {
 					new RobocodeSecurityPolicy(threadManager);
 					new RobocodeSecurityManager(threadManager);
 				} catch (UnsupportedOperationException e) {
-					// Fallback to adapter if policy fails for any reason
-					Logger.logWarning("Falling back to alternative security implementation due to: " + e.getMessage());
-					RobocodeSecurityAdapter securityAdapter = new RobocodeSecurityAdapter(threadManager);
-					securityAdapter.init();
+					Logger.logWarning("Could not install the SecurityManager, so robot classes are only verified when loaded: "
+							+ e.getMessage());
 				}
 			}
 		}

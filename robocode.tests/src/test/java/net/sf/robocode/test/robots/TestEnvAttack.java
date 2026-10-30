@@ -8,29 +8,16 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
-import robocode.control.events.TurnEndedEvent;
-
-import java.security.AccessControlException;
+import net.sf.robocode.test.helpers.RobotRejectedTestBed;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestEnvAttack extends RobocodeTestBed {
-	boolean messagedAttack;
-
-	@Test(expected = AccessControlException.class)
-	public void run() {
-		super.run();
-	}
+public class TestEnvAttack extends RobotRejectedTestBed {
 
 	@Override
 	public String getRobotName() {
 		return "tested.robots.EnvAttack";
 	}
-
-
 }

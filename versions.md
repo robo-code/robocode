@@ -1,3 +1,21 @@
+## Version 1.11.2 (not released yet)
+
+### Security
+
+- GHSA-h2ch-39mm-r68h: The robot sandbox was not enforced on Java 24 and newer, where the SecurityManager has been
+  removed. A malicious robot could execute commands, access the network, and read and write files on the host.
+  Reported by Hongwei Li, Junmin Zhu, Zhun Wang, Jiacheng Zhong, Han Dai, Suyue Guo, Songyang Peng, and Ziyue Pan.
+    - Robot classes are now verified when they are loaded, on all Java versions. Robots using something that is not
+      allowed (e.g. sockets, processes, reflection, or writing files outside their data directory) are rejected with
+      a message explaining why.
+    - `RobocodeFileOutputStream` now checks that the file is inside the robot's data directory.
+    - Robots can only delete files and create directories in their own data directory.
+    - Robots can no longer access the libraries used by Robocode.
+
+### Changes
+
+- Tests can be run on another Java version than the Java 8 toolchain, e.g. `./gradlew test -PtestJavaVersion=25`.
+
 ## Version 1.11.1 (13-Jul-2026)
 
 ### Bugfix

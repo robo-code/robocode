@@ -8,54 +8,16 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Assert;
-import org.junit.Test;
-import robocode.control.events.TurnEndedEvent;
+import net.sf.robocode.test.helpers.RobotRejectedTestBed;
 
 
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestConstructorSocketAttack extends RobocodeTestBed {
-
-	private boolean messagedInitialization;
-	private boolean messagedAccessDenied;
-
-	@Test
-	public void run() {
-		super.run();
-	}
+public class TestConstructorSocketAttack extends RobotRejectedTestBed {
 
 	@Override
 	public String getRobotName() {
 		return "tested.robots.ConstructorSocketAttack";
-	}
-
-	@Override
-	public void onTurnEnded(TurnEndedEvent event) {
-		super.onTurnEnded(event);
-
-		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
-
-		if (out.contains("An error occurred during initialization")) {
-			messagedInitialization = true;	
-		}	
-
-		if (out.contains("access denied (java.net.SocketPermission")
-				|| out.contains("access denied (\"java.net.SocketPermission\"")) {
-			messagedAccessDenied = true;	
-		}	
-	}
-
-	@Override
-	protected void runTeardown() {
-		Assert.assertTrue("Error during initialization", messagedInitialization);
-		Assert.assertTrue("Socket connection is not allowed", messagedAccessDenied);
-	}
-
-	@Override
-	protected int getExpectedErrors() {
-		return 2; // Security error must be reported as an error
 	}
 }

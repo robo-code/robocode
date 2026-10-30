@@ -132,7 +132,17 @@ public class ThreadManager implements IThreadManager {
 			throw new RobotException("Only advanced robots could create files");
 		}
 
-		final File dir = robotProxy.getRobotFileSystemManager().getWritableDirectory();
+		final RobotFileSystemManager fileSystemManager = robotProxy.getRobotFileSystemManager();
+		final File dir = fileSystemManager.getWritableDirectory();
+
+		// The file must be checked here, as the SecurityManager is not available for checking this with Java 24+
+		if (dir == null || !fileSystemManager.isWritable(fileName)) {
+			final String message = "Preventing " + robotProxy.getStatics().getName() + " from access: " + fileName
+					+ ". You may only write files in your own data directory: " + dir;
+
+			robotProxy.punishSecurityViolation(message);
+			throw new SecurityException(message);
+		}
 
 		if (!dir.exists()) {
 			robotProxy.println("SYSTEM: Creating a data directory for you.");
@@ -146,8 +156,6 @@ public class ThreadManager implements IThreadManager {
 				}
 			});
 		}
-
-		final RobotFileSystemManager fileSystemManager = robotProxy.getRobotFileSystemManager();
 
 		File f = new File(fileName);
 		long len;
@@ -165,6 +173,25 @@ public class ThreadManager implements IThreadManager {
 
 		outputStreamThreads.add(c);
 		return new RobotFileOutputStream(fileName, append, fileSystemManager);
+	}
+
+	public void checkRobotFileWrite(File file) {
+		final IHostedThread robotProxy = getLoadedOrLoadingRobotProxy(Thread.currentThread());
+
+		if (robotProxy == null) {
+			throw new SecurityException("Preventing unknown thread " + Thread.currentThread().getName()
+					+ " from access: " + file);
+		}
+
+		final RobotFileSystemManager fileSystemManager = robotProxy.getRobotFileSystemManager();
+
+		if (!fileSystemManager.isWritable(file.getPath())) {
+			final String message = "Preventing " + robotProxy.getStatics().getName() + " from access: " + file
+					+ ". You may only modify files in your own data directory: " + fileSystemManager.getWritableDirectory();
+
+			robotProxy.punishSecurityViolation(message);
+			throw new SecurityException(message);
+		}
 	}
 
 	public boolean checkRobotFileStream() {

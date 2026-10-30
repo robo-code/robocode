@@ -8,28 +8,13 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import net.sf.robocode.test.helpers.RobotRejectedTestBed;
 
 
 /**
  * @author Pavel Savara (original)
  */
-public class TestIncludeNamespaceAttack extends RobocodeTestBed {
-	@Test
-	public void run() {
-		super.run();
-	}
-
-	@Override
-	protected int getExpectedErrors() {
-		return 2;
-	}
-
-	@Override
-	public int getExpectedRobotCount(String list) {
-		return 1;
-	}
+public class TestIncludeNamespaceAttack extends RobotRejectedTestBed {
 
 	@Override
 	public String getRobotName() {

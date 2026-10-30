@@ -8,40 +8,16 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
-import robocode.control.events.TurnEndedEvent;
+import net.sf.robocode.test.helpers.RobotRejectedTestBed;
 
 
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestConstructorThreadAttack extends RobocodeTestBed {
-	boolean messagedUnknown;
-
-	@Test
-	public void run() {
-		super.run();
-	}
-
-	@Override
-	public void onTurnEnded(TurnEndedEvent event) {
-		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
-
-		if (out.contains("Preventing Thread-") && out.contains("from access to MyAttack")) {
-			messagedUnknown = true;
-		}
-	}
+public class TestConstructorThreadAttack extends RobotRejectedTestBed {
 
 	@Override
 	public String getRobotName() {
 		return "tested.robots.ConstructorThreadAttack";
-	}
-
-	@Override
-	protected void runTeardown() {
-		Assert.assertTrue(messagedUnknown);
 	}
 }

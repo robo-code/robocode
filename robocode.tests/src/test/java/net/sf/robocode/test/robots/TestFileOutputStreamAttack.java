@@ -8,26 +8,16 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
-
-import java.security.AccessControlException;
+import net.sf.robocode.test.helpers.RobotRejectedTestBed;
 
 
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestFileOutputStreamAttack extends RobocodeTestBed {
-
-	@Test(expected = AccessControlException.class)
-	public void run() {
-		super.run();
-	}
+public class TestFileOutputStreamAttack extends RobotRejectedTestBed {
 
 	@Override
 	public String getRobotName() {
 		return "tested.robots.FileOutputStreamAttack";
 	}
-
-
 }

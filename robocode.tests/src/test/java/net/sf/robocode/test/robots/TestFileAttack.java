@@ -9,9 +9,7 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.Assert;
-import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
-import robocode.control.events.TurnEndedEvent;
+import net.sf.robocode.test.helpers.RobotRejectedTestBed;
 
 import java.io.File;
 
@@ -19,32 +17,7 @@ import java.io.File;
 /**
  * @author Pavel Savara (original)
  */
-public class TestFileAttack extends RobocodeTestBed {
-	boolean messagedWrite;
-	boolean messagedRead;
-
-	@Test
-	public void run() {
-		super.run();
-	}
-
-	@Override
-	public void onTurnEnded(TurnEndedEvent event) {
-		super.onTurnEnded(event);
-		final String out = event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot();
-
-		if (out.contains("Preventing tested.robots.FileAttack from access: (java.io.FilePermission C:\\MSDOS.SYS read)")
-				|| out.contains(
-						"Preventing tested.robots.FileAttack from access: (\"java.io.FilePermission\" \"C:\\MSDOS.SYS\" \"read\")")) {
-			messagedRead = true;
-		}
-		if (out.contains(
-				"Preventing tested.robots.FileAttack from access: (java.io.FilePermission C:\\Robocode.attack write)")
-						|| out.contains(
-								"Preventing tested.robots.FileAttack from access: (\"java.io.FilePermission\" \"C:\\Robocode.attack\" \"write\")")) {
-			messagedWrite = true;
-		}
-	}
+public class TestFileAttack extends RobotRejectedTestBed {
 
 	@Override
 	public String getRobotName() {
@@ -62,13 +35,7 @@ public class TestFileAttack extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue("Didn't seen preventing read", messagedRead);
-		Assert.assertTrue("Didn't seen preventing write", messagedWrite);
+		super.runTeardown();
 		Assert.assertFalse("Found attack file", new File("C:\\Robocode.attack").exists());
-	}
-
-	@Override
-	protected int getExpectedErrors() {
-		return 2; // Security error must be reported as an error
 	}
 }

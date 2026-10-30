@@ -8,6 +8,7 @@
 package net.sf.robocode.security;
 
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -18,4 +19,12 @@ import java.io.IOException;
 public interface IThreadManagerBase {
 	boolean isSafeThread();
 	FileOutputStream createRobotFileStream(String fileName, boolean append) throws IOException;
+
+	/**
+	 * Checks that the current robot is allowed to modify a file, i.e. that the file is in the robot's data directory.
+	 *
+	 * @param file the file to modify.
+	 * @throws SecurityException if the robot is not allowed to modify the file.
+	 */
+	void checkRobotFileWrite(File file);
 }

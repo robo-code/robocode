@@ -8,23 +8,16 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import net.sf.robocode.test.helpers.RobotRejectedTestBed;
 
 
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestHttpAttack extends RobocodeTestBed {
+public class TestHttpAttack extends RobotRejectedTestBed {
 
-    @Test(expected = SecurityException.class)
-    public void run() {
-        super.run();
-    }
-
-    @Override
-    public String getRobotName() {
-        return "tested.robots.HttpAttack";
-    }
-
+	@Override
+	public String getRobotName() {
+		return "tested.robots.HttpAttack";
+	}
 }
