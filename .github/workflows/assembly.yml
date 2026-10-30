@@ -19,15 +19,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-      - name: Set up JDK 17
+      # JDK 25 is used for testing robot security without the SecurityManager (removed with Java 24).
+      # The last listed version (17) is the default JDK.
+      - name: Set up JDK 25 and 17
         uses: actions/setup-java@v6
         with:
-          java-version: '17'
+          java-version: |
+            25
+            17
           distribution: 'temurin'
           cache: gradle
 
       - name: Build with Gradle
         run: ./gradlew build --stacktrace
+
+      - name: Test robots with Java 25
+        run: ./gradlew :robocode.tests:test -PtestJavaVersion=25 --stacktrace
 
       - name: robocode.core test artifacts
         if: always()
