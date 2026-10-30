@@ -17,6 +17,8 @@
     - Robots can use reflection on their own classes, but can only use the members of other classes via reflection
       that they are allowed to use directly, and cannot make these accessible with `setAccessible()`.
     - Robots can no longer read files outside their class path via `getResourceAsStream()`.
+    - Robots are punished if they create more than 5 threads, which is now checked every turn, and cannot use
+      virtual threads, as these are not counted.
     - Robots can no longer access the libraries used by Robocode.
 
 ### Bugfix

@@ -46,7 +46,8 @@ public class RobotClassVerifierTest {
 			"ReflectionAttack.class",
 			"ReflectionExecAttack.class",
 			"ResourceTraversalAttack.class",
-			"RobocodeFileOutputStreamAttack.class");
+			"RobocodeFileOutputStreamAttack.class",
+			"ThreadLimitAttack.class");
 
 	@BeforeClass
 	public static void init() throws IOException {

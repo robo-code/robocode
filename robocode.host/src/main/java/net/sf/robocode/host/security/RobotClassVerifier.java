@@ -150,6 +150,7 @@ public final class RobotClassVerifier {
 			"java/lang/ProcessHandle",
 			"java/lang/ProcessHandle$Info",
 			"java/lang/SecurityManager",
+			"java/lang/Thread$Builder$OfVirtual",
 			"java/lang/ThreadGroup",
 			"java/lang/reflect/Proxy",
 			"java/io/FileOutputStream",
@@ -226,11 +227,14 @@ public final class RobotClassVerifier {
 			"java/lang/Thread.enumerate",
 			"java/lang/Thread.getAllStackTraces",
 			"java/lang/Thread.getContextClassLoader",
+			"java/lang/Thread.ofVirtual", // virtual threads are not in the robot's thread group, so they are not counted
 			"java/lang/Thread.resume",
 			"java/lang/Thread.setContextClassLoader",
 			"java/lang/Thread.setDefaultUncaughtExceptionHandler",
+			"java/lang/Thread.startVirtualThread",
 			"java/lang/Thread.stop",
 			"java/lang/Thread.suspend",
+			"java/util/concurrent/Executors.newVirtualThreadPerTaskExecutor",
 			// File access. Note that direct calls to the File methods listed in RobotClassRewriter.STATIC_METHODS, e.g.
 			// delete() and exists(), are replaced with calls that check that the robot is allowed to access the file.
 			"java/io/File.canExecute",

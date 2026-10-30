@@ -359,6 +359,7 @@ public class BasicRobotProxy extends HostingRobotProxy implements IBasicRobotPee
 
 		// Entering tick
 		robotThreadManager.checkRunThread();
+		robotThreadManager.checkThreadCount();
 		if (testingCondition) {
 			throw new RobotException(
 					"You cannot take action inside Condition.test().  You should handle onCustomEvent instead.");

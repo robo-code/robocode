@@ -38,6 +38,9 @@ public class RobotThreadManager {
 	private static final long INTERRUPT_JOIN_MS = 1000;
 	private static final long STOP_JOIN_MS = 3000;
 
+	// The maximum number of threads that a robot is allowed to create in addition to its run thread
+	private static final int MAX_THREADS = 5;
+
 	private final IHostedThread robotProxy;
 	private Thread runThread;
 	private ThreadGroup runThreadGroup;
@@ -85,6 +88,34 @@ public class RobotThreadManager {
 	public void checkRunThread() {
 		if (Thread.currentThread() != runThread) {
 			throw new RobotException("You cannot take action in this thread!");
+		}
+	}
+
+	/**
+	 * Checks that the robot has not created more threads than allowed. The SecurityManager prevented robots from
+	 * creating too many threads, but this is not possible with Java 24+, where the SecurityManager has been removed.
+	 * Hence, the number of threads is checked every turn instead, and the robot is punished if it has too many
+	 * threads, and the extra threads are interrupted.
+	 */
+	public void checkThreadCount() {
+		final ThreadGroup group = runThreadGroup;
+
+		if (group == null || group.activeCount() <= MAX_THREADS + 1) { // + 1 for the run thread
+			return;
+		}
+		robotProxy.punishSecurityViolation("Robots are only allowed to create up to " + MAX_THREADS + " threads!");
+
+		try {
+			Thread[] threads = new Thread[group.activeCount() + 10];
+			int count = group.enumerate(threads);
+
+			for (int i = 0; i < count; i++) {
+				if (threads[i] != runThread) {
+					threads[i].interrupt();
+				}
+			}
+		} catch (SecurityException ignore) {
+			// The SecurityManager (Java < 24) has already prevented the robot from creating too many threads
 		}
 	}
 
