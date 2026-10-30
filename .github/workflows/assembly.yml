@@ -70,4 +70,6 @@ jobs:
           name: Unit test results
           path: '**/build/test-results/test/*.xml'
           reporter: java-junit
-          fail-on-error: true
+          # The Gradle steps fail the build on test failures. They retry flaky robot battle tests, but the failed
+          # attempts are still in the test results, so the summary must not fail the build because of these.
+          fail-on-error: false
