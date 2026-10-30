@@ -132,9 +132,14 @@ public final class RobotClassVerifier {
 			"java/awt/Shape",
 			"java/awt/Stroke",
 			"java/awt/Transparency",
-			// Harmless reflection utilities
+			// Harmless reflection utilities, and types describing generic types, which cannot be used for invoking code
 			"java/lang/reflect/Array",
+			"java/lang/reflect/GenericArrayType",
 			"java/lang/reflect/Modifier",
+			"java/lang/reflect/ParameterizedType",
+			"java/lang/reflect/Type",
+			"java/lang/reflect/TypeVariable",
+			"java/lang/reflect/WildcardType",
 			// Used by the code generated for serializable lambdas
 			"java/lang/invoke/SerializedLambda"
 	));
@@ -166,8 +171,9 @@ public final class RobotClassVerifier {
 
 	// Members (any descriptor) that robots are not allowed to use, written as "class.member"
 	private static final Set<String> DENIED_MEMBERS = new HashSet<String>(Arrays.asList(
-			// Reflection and class loading
-			"java/lang/Class.forName",
+			// Reflection and class loading. Note that Class.forName(String) is allowed, as it is used by the code that
+			// old Java compilers generated for class literals, and as it can only load the classes that the robot class
+			// loader allows. Class.forName() with a class loader or module is denied below.
 			"java/lang/Class.getClassLoader",
 			"java/lang/Class.getConstructor",
 			"java/lang/Class.getConstructors",
@@ -249,6 +255,9 @@ public final class RobotClassVerifier {
 
 	// Prefixes of members including their descriptor that robots are not allowed to use, written as "class.member(descriptor"
 	private static final String[] DENIED_MEMBER_PREFIXES = {
+			// Loading classes with another class loader than the robot's, or from a module
+			"java/lang/Class.forName(Ljava/lang/String;ZLjava/lang/ClassLoader;",
+			"java/lang/Class.forName(Ljava/lang/Module;",
 			// Constructors that open a file for writing
 			"java/io/PrintStream.<init>(Ljava/lang/String;",
 			"java/io/PrintStream.<init>(Ljava/io/File;",

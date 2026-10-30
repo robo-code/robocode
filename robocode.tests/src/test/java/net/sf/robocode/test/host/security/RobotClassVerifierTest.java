@@ -63,6 +63,7 @@ public class RobotClassVerifierTest {
 		Map<String, String> attacks = new LinkedHashMap<String, String>();
 
 		attacks.put("tested.robots.AwtAttack", "javax.swing");
+		attacks.put("tested.robots.ClassForNameLoaderAttack", "java.lang.Class.forName");
 		attacks.put("tested.robots.ClassLoaderAttack", "java.lang.ClassLoader");
 		attacks.put("tested.robots.ConstructorAwtAttack", "javax.swing");
 		attacks.put("tested.robots.ConstructorHttpAttack", "java.net.URL");
