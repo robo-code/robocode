@@ -20,8 +20,6 @@ public interface IHostingRobotProxy {
 
 	void startRound(ExecCommands commands, RobotStatus status);
 
-	void forceStopThread();
-
 	void waitForStopThread();
 
 	void cleanup();

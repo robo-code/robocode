@@ -53,9 +53,11 @@ public class SkipTurns extends AdvancedRobot {
 
 	private void slowResponse() {
 
+		// Must be longer than a turn, which can last more than 170 ms on Windows with Java 8, when the robot does not
+		// respond, but shorter than 30 turns, where a turn lasts about 10 ms on other systems
 		synchronized (w) {
 			try {
-				w.wait(130);
+				w.wait(250);
 			} catch (InterruptedException e) {
 				// eat interrupt
 				e.printStackTrace(out);

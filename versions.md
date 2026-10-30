@@ -26,6 +26,9 @@
 - Robots in a jar file inside another jar file, e.g. in a team jar, could not be loaded with Java 9 and newer.
 - Battles were not deterministic with Java 9 and newer, e.g. when using the `RANDOMSEED` system property, if robots
   used `Math.random()`. Calls to `Math.random()` in robots now use the random number generator of Robocode.
+- A robot that skipped too many turns was not stopped properly since version 1.10.1. Robocode waited several seconds
+  for the robot thread to stop itself, reported "Unable to stop thread" and punished the robot as unstoppable, and
+  the robot then failed with "You cannot take action in this thread!".
 
 ### Changes
 

@@ -596,15 +596,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	private void waitWakeupNoWait() {
-		synchronized (isSleeping) {
-			if (isSleeping()) {
-				// Wake up the thread
-				isSleeping.notifyAll();
-			}
-		}
-	}
-
 	public void waitSleeping(long millisWait, int nanosWait) {
 		synchronized (isSleeping) {
 			// It's quite possible for simple robots to
@@ -650,9 +641,13 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				println("SYSTEM: " + getShortName() + " has not performed any actions in a reasonable amount of time.");
 				println("SYSTEM: No score will be generated.");
 				setHalt(true);
-				waitWakeupNoWait();
 				punishBadBehavior(BadBehavior.SKIPPED_TOO_MANY_TURNS);
-				robotProxy.forceStopThread();
+
+				// This method is called on the robot thread, which cannot stop itself, as Thread.stop() is no longer
+				// available with newer Java versions. Hence, the robot thread is ended like when the robot dies.
+				// Other threads of the robot are stopped when the round ends.
+				isExecFinishedAndDisabled = true;
+				throw new DeathException();
 			}
 		}
 	}

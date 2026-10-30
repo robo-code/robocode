@@ -11,7 +11,6 @@ package net.sf.robocode.test.robots;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import robocode.control.events.BattleFinishedEvent;
@@ -23,7 +22,6 @@ import robocode.control.snapshot.ITurnSnapshot;
 /**
  * @author Flemming N. Larsen (original)
  */
-@Ignore("Unstable; run explicitly when needed")
 public class TestFairPlay extends RobocodeTestBed {
 
 	ITurnSnapshot lastTurnSnapshot;

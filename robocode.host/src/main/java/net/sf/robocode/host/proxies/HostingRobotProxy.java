@@ -148,13 +148,6 @@ abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
 		robotThreadManager.start(threadManager);
 	}
 
-	public void forceStopThread() {
-		if (!robotThreadManager.forceStop()) {
-			peer.punishBadBehavior(BadBehavior.UNSTOPPABLE);
-			peer.setRunning(false);
-		}
-	}
-
 	public void waitForStopThread() {
 		if (!robotThreadManager.waitForStop()) {
 			peer.punishBadBehavior(BadBehavior.UNSTOPPABLE);

@@ -212,7 +212,7 @@ public class RobotThreadManager {
 			}
 			if (t.isAlive()) {
 				// t.suspend();
-				logError("Unable to stop thread: " + runThread.getName());
+				logError("Unable to stop thread: " + t.getName());
 			} else {
 				logMessage(robotProxy.getStatics().getName() + " has been stopped.");
 			}
