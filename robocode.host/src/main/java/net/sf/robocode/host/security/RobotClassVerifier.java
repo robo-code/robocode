@@ -57,6 +57,7 @@ public final class RobotClassVerifier {
 			"java/lang",
 			"java/lang/annotation",
 			"java/lang/ref",
+			"java/lang/reflect", // the use of members is checked, see DENIED_MEMBERS
 			"java/util",
 			"java/util/concurrent",
 			"java/util/concurrent/atomic",
@@ -132,14 +133,6 @@ public final class RobotClassVerifier {
 			"java/awt/Shape",
 			"java/awt/Stroke",
 			"java/awt/Transparency",
-			// Harmless reflection utilities, and types describing generic types, which cannot be used for invoking code
-			"java/lang/reflect/Array",
-			"java/lang/reflect/GenericArrayType",
-			"java/lang/reflect/Modifier",
-			"java/lang/reflect/ParameterizedType",
-			"java/lang/reflect/Type",
-			"java/lang/reflect/TypeVariable",
-			"java/lang/reflect/WildcardType",
 			// Used by the code generated for serializable lambdas
 			"java/lang/invoke/SerializedLambda"
 	));
@@ -158,6 +151,7 @@ public final class RobotClassVerifier {
 			"java/lang/ProcessHandle$Info",
 			"java/lang/SecurityManager",
 			"java/lang/ThreadGroup",
+			"java/lang/reflect/Proxy",
 			"java/io/FileOutputStream",
 			"java/io/FileWriter",
 			"java/io/RandomAccessFile",
@@ -171,28 +165,42 @@ public final class RobotClassVerifier {
 
 	// Members (any descriptor) that robots are not allowed to use, written as "class.member"
 	private static final Set<String> DENIED_MEMBERS = new HashSet<String>(Arrays.asList(
-			// Reflection and class loading. Note that Class.forName(String) is allowed, as it is used by the code that
-			// old Java compilers generated for class literals, and as it can only load the classes that the robot class
-			// loader allows. Class.forName() with a class loader or module is denied below.
+			// Class loading. Note that Class.forName(String) is allowed, as it is used by the code that old Java
+			// compilers generated for class literals, and as it can only load the classes that the robot class loader
+			// allows. Class.forName() with a class loader or module is denied below.
 			"java/lang/Class.getClassLoader",
-			"java/lang/Class.getConstructor",
-			"java/lang/Class.getConstructors",
-			"java/lang/Class.getDeclaredConstructor",
-			"java/lang/Class.getDeclaredConstructors",
-			"java/lang/Class.getDeclaredField",
-			"java/lang/Class.getDeclaredFields",
-			"java/lang/Class.getDeclaredMethod",
-			"java/lang/Class.getDeclaredMethods",
-			"java/lang/Class.getEnclosingConstructor",
-			"java/lang/Class.getEnclosingMethod",
-			"java/lang/Class.getField",
-			"java/lang/Class.getFields",
-			"java/lang/Class.getMethod",
-			"java/lang/Class.getMethods",
 			"java/lang/Class.getModule",
 			"java/lang/Class.getProtectionDomain",
-			"java/lang/Class.getRecordComponents",
+			// Reflection. Robots may look up members with reflection, but the direct calls that use the members, e.g.
+			// Method.invoke(), are replaced with calls that check the member with the same rules as this verifier (see
+			// RobotClassRewriter.STATIC_METHODS). Other calls that use members are denied here.
 			"java/lang/Class.newInstance",
+			"java/lang/reflect/AccessibleObject.setAccessible",
+			"java/lang/reflect/AccessibleObject.trySetAccessible",
+			"java/lang/reflect/Constructor.newInstance",
+			"java/lang/reflect/Constructor.setAccessible",
+			"java/lang/reflect/Executable.setAccessible",
+			"java/lang/reflect/Field.get",
+			"java/lang/reflect/Field.getBoolean",
+			"java/lang/reflect/Field.getByte",
+			"java/lang/reflect/Field.getChar",
+			"java/lang/reflect/Field.getDouble",
+			"java/lang/reflect/Field.getFloat",
+			"java/lang/reflect/Field.getInt",
+			"java/lang/reflect/Field.getLong",
+			"java/lang/reflect/Field.getShort",
+			"java/lang/reflect/Field.set",
+			"java/lang/reflect/Field.setAccessible",
+			"java/lang/reflect/Field.setBoolean",
+			"java/lang/reflect/Field.setByte",
+			"java/lang/reflect/Field.setChar",
+			"java/lang/reflect/Field.setDouble",
+			"java/lang/reflect/Field.setFloat",
+			"java/lang/reflect/Field.setInt",
+			"java/lang/reflect/Field.setLong",
+			"java/lang/reflect/Field.setShort",
+			"java/lang/reflect/Method.invoke",
+			"java/lang/reflect/Method.setAccessible",
 			// Process execution, native code, and JVM shutdown
 			"java/lang/Runtime.addShutdownHook",
 			"java/lang/Runtime.exec",
@@ -223,7 +231,7 @@ public final class RobotClassVerifier {
 			"java/lang/Thread.setDefaultUncaughtExceptionHandler",
 			"java/lang/Thread.stop",
 			"java/lang/Thread.suspend",
-			// File access. Note that direct calls to the File methods listed in RobotClassRewriter.FILE_METHODS, e.g.
+			// File access. Note that direct calls to the File methods listed in RobotClassRewriter.STATIC_METHODS, e.g.
 			// delete() and exists(), are replaced with calls that check that the robot is allowed to access the file.
 			"java/io/File.canExecute",
 			"java/io/File.canRead",
@@ -428,6 +436,24 @@ public final class RobotClassVerifier {
 			queue.addAll(cf.interfaceNames);
 		}
 		return hostAncestors;
+	}
+
+	/**
+	 * Checks if robots are allowed to use a member of a Java or Robocode API class, which is used for checking the
+	 * members that robots use via reflection.
+	 *
+	 * @param internalClassName the internal name of the class declaring the member, e.g. "java/lang/Runtime".
+	 * @param name              the name of the member, e.g. "exec", or "&lt;init&gt;" for a constructor.
+	 * @param descriptor        the descriptor of the member, e.g. "(Ljava/lang/String;)Ljava/lang/Process;".
+	 * @param isField           true if the member is a field; false if it is a method or constructor.
+	 * @return true if robots are allowed to use the member; false otherwise.
+	 */
+	public static boolean isHostMemberAllowed(String internalClassName, String name, String descriptor, boolean isField) {
+		if (ALLOWED_MEMBERS.contains(internalClassName + '.' + name)) {
+			return true;
+		}
+		return isAllowedHostClass(internalClassName)
+				&& !isDeniedMember(internalClassName, new MemberRef(internalClassName, name, descriptor, isField));
 	}
 
 	private static boolean isAllowedHostClass(String internalName) {

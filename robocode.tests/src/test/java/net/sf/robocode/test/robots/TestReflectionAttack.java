@@ -8,16 +8,43 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.RobotRejectedTestBed;
+import net.sf.robocode.test.helpers.Assert;
+import net.sf.robocode.test.helpers.RobocodeTestBed;
+import org.junit.Test;
+import robocode.control.events.TurnEndedEvent;
 
 
 /**
  * @author Flemming N. Larsen (original)
  */
-public class TestReflectionAttack extends RobotRejectedTestBed {
+public class TestReflectionAttack extends RobocodeTestBed {
+	private final StringBuilder output = new StringBuilder();
+
+	@Test
+	public void run() {
+		super.run();
+	}
 
 	@Override
 	public String getRobotName() {
 		return "tested.robots.ReflectionAttack";
+	}
+
+	@Override
+	public void onTurnEnded(TurnEndedEvent event) {
+		super.onTurnEnded(event);
+		output.append(event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot());
+	}
+
+	@Override
+	protected void runTeardown() {
+		Assert.assertTrue("Reflection is not allowed:\n" + output,
+				output.toString().contains("java.lang.System.out cannot be made accessible"));
+		Assert.assertFalse("Robot used reflection", output.toString().contains("Hello World"));
+	}
+
+	@Override
+	protected int getExpectedErrors() {
+		return 1; // Security error must be reported as an error
 	}
 }

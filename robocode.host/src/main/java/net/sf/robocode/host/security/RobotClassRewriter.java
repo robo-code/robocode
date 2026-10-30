@@ -16,14 +16,18 @@ import java.util.*;
 
 
 /**
- * Rewrites robot class files so file access and deserialization done by robots are checked by Robocode.
+ * Rewrites robot class files so file access, reflection, and deserialization done by robots are checked by Robocode.
  * <p>
  * Without the SecurityManager (removed with Java 24), the JDK does not check if a robot is allowed to read or modify
- * a file, or which classes it deserializes. Hence, the class files of robots are rewritten as follows:
+ * a file, which members it uses via reflection, or which classes it deserializes. Hence, the class files of robots
+ * are rewritten as follows:
  * <ul>
  * <li>Calls to methods of {@code java.io.File} that modify files or read information about files, e.g.
  * {@code delete()} and {@code exists()}, are replaced with calls to static methods with the same names in
  * {@link robocode.util.RobotFileAccess}, which take the file as the first parameter.</li>
+ * <li>Calls to methods that use members via reflection, e.g. {@code Method.invoke()} and {@code Field.get()}, are
+ * replaced with calls to static methods with the same names in {@link robocode.util.RobotReflection}, which take the
+ * member as the first parameter.</li>
  * <li>Creating a {@code FileInputStream}, {@code FileReader}, or {@code ObjectInputStream} is replaced with creating
  * the corresponding subclass in the {@code robocode.util} package, e.g. {@link robocode.util.RobotFileInputStream},
  * which performs the checks.</li>
@@ -37,29 +41,71 @@ import java.util.*;
  */
 final class RobotClassRewriter {
 
-	private static final String FILE_CLASS = "java/io/File";
-	private static final String FILE_ACCESS_CLASS = "robocode/util/RobotFileAccess";
+	// Instance methods ("class.name" + descriptor) replaced with static methods of the same name in a Robocode class,
+	// which take the instance as the first parameter
+	static final Map<String, String> STATIC_METHODS = new HashMap<String, String>();
 
-	// Methods of java.io.File (name + descriptor) replaced with static methods of RobotFileAccess
-	static final Set<String> FILE_METHODS = new HashSet<String>(Arrays.asList(
-			"delete()Z",
-			"mkdir()Z",
-			"mkdirs()Z",
-			"exists()Z",
-			"isFile()Z",
-			"isDirectory()Z",
-			"isHidden()Z",
-			"canRead()Z",
-			"canWrite()Z",
-			"canExecute()Z",
-			"length()J",
-			"lastModified()J",
-			"list()[Ljava/lang/String;",
-			"list(Ljava/io/FilenameFilter;)[Ljava/lang/String;",
-			"listFiles()[Ljava/io/File;",
-			"listFiles(Ljava/io/FilenameFilter;)[Ljava/io/File;",
-			"listFiles(Ljava/io/FileFilter;)[Ljava/io/File;"
-	));
+	static {
+		addStaticMethods("java/io/File", "robocode/util/RobotFileAccess",
+				"delete()Z",
+				"mkdir()Z",
+				"mkdirs()Z",
+				"exists()Z",
+				"isFile()Z",
+				"isDirectory()Z",
+				"isHidden()Z",
+				"canRead()Z",
+				"canWrite()Z",
+				"canExecute()Z",
+				"length()J",
+				"lastModified()J",
+				"list()[Ljava/lang/String;",
+				"list(Ljava/io/FilenameFilter;)[Ljava/lang/String;",
+				"listFiles()[Ljava/io/File;",
+				"listFiles(Ljava/io/FilenameFilter;)[Ljava/io/File;",
+				"listFiles(Ljava/io/FileFilter;)[Ljava/io/File;");
+
+		final String reflection = "robocode/util/RobotReflection";
+
+		addStaticMethods("java/lang/Class", reflection,
+				"newInstance()Ljava/lang/Object;");
+		addStaticMethods("java/lang/reflect/Method", reflection,
+				"invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;",
+				"setAccessible(Z)V");
+		addStaticMethods("java/lang/reflect/Constructor", reflection,
+				"newInstance([Ljava/lang/Object;)Ljava/lang/Object;",
+				"setAccessible(Z)V");
+		addStaticMethods("java/lang/reflect/Executable", reflection,
+				"setAccessible(Z)V");
+		addStaticMethods("java/lang/reflect/AccessibleObject", reflection,
+				"setAccessible(Z)V");
+		addStaticMethods("java/lang/reflect/Field", reflection,
+				"setAccessible(Z)V",
+				"get(Ljava/lang/Object;)Ljava/lang/Object;",
+				"getBoolean(Ljava/lang/Object;)Z",
+				"getByte(Ljava/lang/Object;)B",
+				"getChar(Ljava/lang/Object;)C",
+				"getShort(Ljava/lang/Object;)S",
+				"getInt(Ljava/lang/Object;)I",
+				"getLong(Ljava/lang/Object;)J",
+				"getFloat(Ljava/lang/Object;)F",
+				"getDouble(Ljava/lang/Object;)D",
+				"set(Ljava/lang/Object;Ljava/lang/Object;)V",
+				"setBoolean(Ljava/lang/Object;Z)V",
+				"setByte(Ljava/lang/Object;B)V",
+				"setChar(Ljava/lang/Object;C)V",
+				"setShort(Ljava/lang/Object;S)V",
+				"setInt(Ljava/lang/Object;I)V",
+				"setLong(Ljava/lang/Object;J)V",
+				"setFloat(Ljava/lang/Object;F)V",
+				"setDouble(Ljava/lang/Object;D)V");
+	}
+
+	private static void addStaticMethods(String className, String staticClassName, String... methods) {
+		for (String method : methods) {
+			STATIC_METHODS.put(className + '.' + method, staticClassName);
+		}
+	}
 
 	// Classes replaced with subclasses, and the constructor descriptors supported by the subclasses
 	static final Map<String, String> SUBCLASSES = new HashMap<String, String>();
@@ -131,8 +177,9 @@ final class RobotClassRewriter {
 		final int constantPoolEnd = r.pos;
 
 		// Find the constants to rewrite
-		Map<Integer, Integer> fileMethodNameIndexes = new HashMap<Integer, Integer>(); // methodref -> name index
-		Map<Integer, String> fileMethodDescriptors = new HashMap<Integer, String>(); // methodref -> new descriptor
+		Map<Integer, Integer> staticMethodNameIndexes = new HashMap<Integer, Integer>(); // methodref -> name index
+		Map<Integer, String> staticMethodDescriptors = new HashMap<Integer, String>(); // methodref -> new descriptor
+		Map<Integer, String> staticMethodClasses = new HashMap<Integer, String>(); // methodref -> new class
 		Map<Integer, String> constructorSubclasses = new HashMap<Integer, String>(); // methodref -> subclass
 		Map<Integer, String> classSubclasses = new HashMap<Integer, String>(); // class -> subclass
 
@@ -150,16 +197,19 @@ final class RobotClassRewriter {
 				String name = utf8(utf8s, nameIndex);
 				String descriptor = utf8(utf8s, u2(bytes, offsets[nameAndTypeIndex] + 3));
 
-				if (FILE_CLASS.equals(className) && FILE_METHODS.contains(name + descriptor)) {
-					fileMethodNameIndexes.put(i, nameIndex);
-					fileMethodDescriptors.put(i, "(L" + FILE_CLASS + ';' + descriptor.substring(1));
+				String staticClassName = STATIC_METHODS.get(className + '.' + name + descriptor);
+
+				if (staticClassName != null) {
+					staticMethodNameIndexes.put(i, nameIndex);
+					staticMethodDescriptors.put(i, "(L" + className + ';' + descriptor.substring(1));
+					staticMethodClasses.put(i, staticClassName);
 				} else if ("<init>".equals(name) && SUBCLASSES.containsKey(className)
 						&& SUBCLASS_CONSTRUCTORS.get(className).contains(descriptor)) {
 					constructorSubclasses.put(i, SUBCLASSES.get(className));
 				}
 			}
 		}
-		if (fileMethodNameIndexes.isEmpty() && constructorSubclasses.isEmpty() && classSubclasses.isEmpty()) {
+		if (staticMethodNameIndexes.isEmpty() && constructorSubclasses.isEmpty() && classSubclasses.isEmpty()) {
 			return classFile;
 		}
 
@@ -169,10 +219,10 @@ final class RobotClassRewriter {
 		Map<Integer, Integer> newMethodClassIndexes = new HashMap<Integer, Integer>(); // methodref -> new class index
 		Map<Integer, Integer> newNameAndTypeIndexes = new HashMap<Integer, Integer>(); // methodref -> new name and type
 
-		for (Map.Entry<Integer, Integer> entry : fileMethodNameIndexes.entrySet()) {
+		for (Map.Entry<Integer, Integer> entry : staticMethodNameIndexes.entrySet()) {
 			int methodRef = entry.getKey();
-			newMethodClassIndexes.put(methodRef, cp.addClass(FILE_ACCESS_CLASS));
-			newNameAndTypeIndexes.put(methodRef, cp.addNameAndType(entry.getValue(), fileMethodDescriptors.get(methodRef)));
+			newMethodClassIndexes.put(methodRef, cp.addClass(staticMethodClasses.get(methodRef)));
+			newNameAndTypeIndexes.put(methodRef, cp.addNameAndType(entry.getValue(), staticMethodDescriptors.get(methodRef)));
 		}
 		for (Map.Entry<Integer, String> entry : constructorSubclasses.entrySet()) {
 			newMethodClassIndexes.put(entry.getKey(), cp.addClass(entry.getValue()));
@@ -228,7 +278,7 @@ final class RobotClassRewriter {
 					cr.pos += 4; // max stack, max locals
 					int codeLength = cr.u4();
 
-					rewriteInstructions(result, cr.pos, codeLength, fileMethodNameIndexes.keySet(), newClassIndexes);
+					rewriteInstructions(result, cr.pos, codeLength, staticMethodNameIndexes.keySet(), newClassIndexes);
 				}
 				cr.pos = attributeEnd;
 			}

@@ -11,6 +11,7 @@ package net.sf.robocode.security;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Member;
 
 
 /**
@@ -44,4 +45,16 @@ public interface IThreadManagerBase {
 	 * @throws SecurityException if the current thread is not a robot thread.
 	 */
 	ClassLoader getRobotClassLoader();
+
+	/**
+	 * Checks that the current robot is allowed to use a member via reflection, i.e. that the member belongs to a class
+	 * of the robot, or that robots are allowed to use the member directly in their code.
+	 *
+	 * @param member        the field, method, or constructor to use.
+	 * @param setAccessible true if the robot wants to suppress the Java language access checks for the member, which
+	 *                      is only allowed for members of the robot's own classes.
+	 * @return true if the member belongs to a class of the robot; false otherwise.
+	 * @throws SecurityException if the robot is not allowed to use the member.
+	 */
+	boolean checkRobotReflection(Member member, boolean setAccessible);
 }

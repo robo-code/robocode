@@ -18,6 +18,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.List;
@@ -228,6 +232,81 @@ public class ThreadManager implements IThreadManager {
 			throw new SecurityException("Thread " + Thread.currentThread().getName() + " is not a robot thread");
 		}
 		return robotProxy.getRobotClassloader();
+	}
+
+	public boolean checkRobotReflection(Member member, boolean setAccessible) {
+		final IHostedThread robotProxy = getLoadedOrLoadingRobotProxy(Thread.currentThread());
+
+		if (robotProxy == null) {
+			throw new SecurityException("Preventing unknown thread " + Thread.currentThread().getName()
+					+ " from access: " + member);
+		}
+
+		final Class<?> declaringClass = member.getDeclaringClass();
+		final ClassLoader classLoader = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+			public ClassLoader run() {
+				return declaringClass.getClassLoader();
+			}
+		});
+
+		if (classLoader == robotProxy.getRobotClassloader()) {
+			return true; // A member of the robot's own classes
+		}
+
+		final boolean isConstructor = member instanceof Constructor;
+		final String name = isConstructor ? "<init>" : member.getName();
+
+		if (!setAccessible && RobotClassVerifier.isHostMemberAllowed(declaringClass.getName().replace('.', '/'), name,
+				getDescriptor(member), member instanceof Field)) {
+			return false;
+		}
+
+		final String message = "Preventing " + robotProxy.getStatics().getName() + " from access: "
+				+ declaringClass.getName() + '.' + name + (setAccessible ? " cannot be made accessible" : "")
+				+ " (reflection)";
+
+		robotProxy.punishSecurityViolation(message);
+		throw new SecurityException(message);
+	}
+
+	private static String getDescriptor(Member member) {
+		if (member instanceof Field) {
+			return getDescriptor(((Field) member).getType());
+		}
+		Class<?>[] parameterTypes;
+		Class<?> returnType;
+
+		if (member instanceof Method) {
+			parameterTypes = ((Method) member).getParameterTypes();
+			returnType = ((Method) member).getReturnType();
+		} else {
+			parameterTypes = ((Constructor<?>) member).getParameterTypes();
+			returnType = void.class;
+		}
+		StringBuilder descriptor = new StringBuilder("(");
+
+		for (Class<?> parameterType : parameterTypes) {
+			descriptor.append(getDescriptor(parameterType));
+		}
+		return descriptor.append(')').append(getDescriptor(returnType)).toString();
+	}
+
+	private static String getDescriptor(Class<?> type) {
+		if (type.isArray()) {
+			return '[' + getDescriptor(type.getComponentType());
+		}
+		if (type.isPrimitive()) {
+			if (type == void.class) return "V";
+			if (type == boolean.class) return "Z";
+			if (type == byte.class) return "B";
+			if (type == char.class) return "C";
+			if (type == short.class) return "S";
+			if (type == int.class) return "I";
+			if (type == long.class) return "J";
+			if (type == float.class) return "F";
+			return "D";
+		}
+		return 'L' + type.getName().replace('.', '/') + ';';
 	}
 
 	public boolean checkRobotFileStream() {

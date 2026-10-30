@@ -14,6 +14,8 @@
       own root package directory and data directory, like with the SecurityManager.
     - Robots can only deserialize their own classes, Robocode classes, and common Java classes like strings,
       collections, and geometry.
+    - Robots can use reflection on their own classes, but can only use the members of other classes via reflection
+      that they are allowed to use directly, and cannot make these accessible with `setAccessible()`.
     - Robots can no longer read files outside their class path via `getResourceAsStream()`.
     - Robots can no longer access the libraries used by Robocode.
 

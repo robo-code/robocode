@@ -37,10 +37,14 @@ public class RobotClassVerifierTest {
 
 	// Attack robots that can be loaded, as their attacks are prevented by checks when the robot runs
 	static final List<String> RUNTIME_CHECKED_ATTACKS = java.util.Arrays.asList(
+			"ConstructorReflectionAttack.class",
 			"DeserializationAttack.class",
 			"FileDeleteAttack.class",
 			"FileListAttack.class",
 			"FileReadAttack.class",
+			"ReflectionAccessibleAttack.class",
+			"ReflectionAttack.class",
+			"ReflectionExecAttack.class",
 			"ResourceTraversalAttack.class",
 			"RobocodeFileOutputStreamAttack.class");
 
@@ -67,7 +71,6 @@ public class RobotClassVerifierTest {
 		attacks.put("tested.robots.ClassLoaderAttack", "java.lang.ClassLoader");
 		attacks.put("tested.robots.ConstructorAwtAttack", "javax.swing");
 		attacks.put("tested.robots.ConstructorHttpAttack", "java.net.URL");
-		attacks.put("tested.robots.ConstructorReflectionAttack", "java.lang.Class.getField");
 		attacks.put("tested.robots.ConstructorSocketAttack", "java.net.ServerSocket");
 		attacks.put("tested.robots.ConstructorThreadAttack", "java.lang.ThreadGroup");
 		attacks.put("tested.robots.DnsAttack", "java.net.URL");
@@ -82,7 +85,6 @@ public class RobotClassVerifierTest {
 		attacks.put("tested.robots.ObjectInputStreamSubclassAttack", "java.io.ObjectInputStream");
 		attacks.put("tested.robots.PrintStreamFileAttack", "java.io.PrintStream.<init>");
 		attacks.put("tested.robots.ProcessExecAttack", "java.lang.ProcessBuilder");
-		attacks.put("tested.robots.ReflectionAttack", "java.lang.Class.getField");
 		attacks.put("tested.robots.SocketAttack", "java.net.ServerSocket");
 		attacks.put("tested.robots.SystemPropertiesAttack", "java.lang.System.getProperties");
 		attacks.put("tested.robots.ThreadAttack", "java.lang.ThreadGroup");
