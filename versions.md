@@ -17,9 +17,14 @@
     - Robots can no longer read files outside their class path via `getResourceAsStream()`.
     - Robots can no longer access the libraries used by Robocode.
 
+### Bugfix
+
+- Robots in a jar file inside another jar file, e.g. in a team jar, could not be loaded with Java 9 and newer.
+
 ### Changes
 
 - Tests can be run on another Java version than the Java 8 toolchain, e.g. `./gradlew test -PtestJavaVersion=25`.
+  The CI build now runs all tests with both Java 8 and Java 25.
 
 ## Version 1.11.1 (13-Jul-2026)
 

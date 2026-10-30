@@ -130,8 +130,30 @@ public class JarJarURLConnection extends URLConnection {
 
 				file = toBangSlash + afterBangSlash;
 			}
-			file = file != null ? "jar:" + file.replaceFirst("\\" + SEPARATOR, "!/") : null;
+			// With an anchor-only spec, the file is taken from the context URL, which has already been converted into a
+			// jar URL. This happens with Java 9+, where the JDK appends a #runtime anchor to the URL of the jar file.
+			if (file != null && !refOnly) {
+				file = "jar:" + file.replaceFirst("\\" + SEPARATOR, "!/");
+			}
 			setURL(url, "jarjar", "", -1, null, null, file, null, ref);
+		}
+
+		@Override
+		protected String toExternalForm(URL url) {
+			// The file is stored as a jar URL, e.g. "jar:file:outer.jar!/inner.jar", which must be converted back into
+			// the form parsed by parseURL(), e.g. "jarjar:file:outer.jar^/inner.jar". Otherwise, the URL cannot be
+			// recreated from its string, which is done by the JDK with Java 9+ when loading classes from the jar.
+			String file = url.getFile();
+
+			if (file.startsWith("jar:")) {
+				file = file.substring(4).replaceFirst("!/", SEPARATOR);
+			}
+			StringBuilder result = new StringBuilder("jarjar:").append(file);
+
+			if (url.getRef() != null) {
+				result.append('#').append(url.getRef());
+			}
+			return result.toString();
 		}
 
 		private String parseAbsoluteSpec(String spec) {

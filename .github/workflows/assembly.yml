@@ -33,8 +33,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build --stacktrace
 
-      - name: Test robots with Java 25
-        run: ./gradlew :robocode.tests:test -PtestJavaVersion=25 --stacktrace
+      - name: Test with Java 25
+        run: ./gradlew test -PtestJavaVersion=25 --stacktrace
 
       - name: robocode.core test artifacts
         if: always()
