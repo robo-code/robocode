@@ -33,6 +33,7 @@ public class BattlesRunner {
 	private final int numrounds;
 	private final int fieldlen;
 	private final int fieldhei;
+	private final boolean hidenames;
 	private final String outfile;
 	private final String user;
 	private final String game;
@@ -45,6 +46,7 @@ public class BattlesRunner {
 		numrounds = Integer.parseInt(parameters.getProperty("ROUNDS", "10"));
 		fieldlen = Integer.parseInt(parameters.getProperty("FIELDL", "800"));
 		fieldhei = Integer.parseInt(parameters.getProperty("FIELDH", "600"));
+		hidenames = parameters.getProperty("HIDENAMES", "NOT").equals("YES");
 		outfile = parameters.getProperty("OUTPUT", "");
 		user = parameters.getProperty("USER", "");
 		this.game = game;
@@ -97,8 +99,9 @@ public class BattlesRunner {
 				final String teamLast = robotsList[robotsList.length - 1].getTeamId();
 
 				if (team0 == null || !team0.equals(teamLast)) {
-					final BattleSpecification specification = new BattleSpecification(battle.getNumRounds(),
-							battle.getBattlefield(), robotsList);
+					final BattleSpecification specification = new BattleSpecification(battle.getBattlefield(),
+							battle.getNumRounds(), battle.getInactivityTime(), battle.getGunCoolingRate(),
+							battle.getSentryBorderSize(), hidenames, robotsList);
 
 					lastResults = null;
 					engine.runBattle(specification, true);
