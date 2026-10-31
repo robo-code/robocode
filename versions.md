@@ -1,4 +1,4 @@
-## Version 1.11.2 (not released yet)
+## Version 1.11.2 (31-Oct-2026)
 
 ### Security
 
