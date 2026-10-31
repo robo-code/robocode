@@ -17,6 +17,7 @@
 import java.net.HttpURLConnection
 import java.net.URI
 import java.net.URLEncoder
+import java.time.Year
 
 plugins {
     `java-library`
@@ -67,6 +68,18 @@ fun runCommand(vararg command: String): String {
     return output.trim()
 }
 
+// The end year in Robocode copyright notices like "Copyright (c) 2001-YYYY", but not in copyrights of others
+val copyrightYearRegex = Regex("(?i)(copyright\\b.{0,40}?\\b2001-)(\\d{4})")
+val currentYear = Year.now().value.toString()
+
+// Files are read and written as ISO-8859-1, which keeps all bytes as they are, whatever the encoding of the file
+fun readBytesAsText(file: File): String = file.readText(Charsets.ISO_8859_1)
+
+// The files in git with a Robocode copyright notice that does not end with the current year
+fun filesWithOutdatedCopyrightYear(): List<File> =
+    runCommand("git", "ls-files", "-z").split('\u0000').filter { it.isNotBlank() }.map { file(it) }
+        .filter { it.isFile && copyrightYearRegex.findAll(readBytesAsText(it)).any { m -> m.groupValues[2] != currentYear } }
+
 // Joins the hard-wrapped lines of versions.md, as GitHub renders each line break in release notes as a new line
 fun unwrapMarkdown(markdown: String): String {
     val newBlock = Regex("^(#|[-*+] |\\d+\\. |```|\\|)")
@@ -100,6 +113,19 @@ subprojects {
 tasks {
     named("clean") {
         delete(".sandbox")
+    }
+
+    register("updateCopyrightYear") {
+        group = "build"
+        description = "Sets the end year of the Robocode copyright notices in all files in git to the current year"
+        doLast {
+            val files = filesWithOutdatedCopyrightYear()
+            files.forEach { file ->
+                val text = readBytesAsText(file)
+                file.writeText(copyrightYearRegex.replace(text) { "${it.groupValues[1]}$currentYear" }, Charsets.ISO_8859_1)
+            }
+            println("Updated the copyright year to $currentYear in ${files.size} files")
+        }
     }
 
     val validateReleaseCredentials by registering {
@@ -142,6 +168,9 @@ tasks {
                 .firstOrNull { it.startsWith("## Version ${project.version} ") }
             val releaseNotesOk = versionHeader != null && !versionHeader.contains("not released yet")
 
+            val outdatedCopyrightFiles = filesWithOutdatedCopyrightYear()
+            val copyrightOk = outdatedCopyrightFiles.isEmpty()
+
             check("signingKey",      signingKey)
             check("signingPassword", signingPassword, rejectDummy = false)
             check("ossrhUsername",   ossrhUser)
@@ -161,6 +190,7 @@ tasks {
             println("  ${if (tagOk) "✅" else "❌"} git tag $expectedTag on HEAD")
             println("  ${if (pushedOk) "✅" else "❌"} HEAD is pushed to origin")
             println("  ${if (releaseNotesOk) "✅" else "❌"} versions.md has a dated section for ${project.version}")
+            println("  ${if (copyrightOk) "✅" else "❌"} Copyright year is $currentYear")
             println()
 
             val failures = labels.zip(results).filter { !it.second }.map { it.first } +
@@ -169,7 +199,9 @@ tasks {
                     if (!ghOk)  "GitHub CLI (gh auth status)" else null,
                     if (!tagOk) "git tag $expectedTag not found on HEAD — run: git tag $expectedTag" else null,
                     if (!pushedOk) "HEAD is not pushed to origin — run: git push origin main" else null,
-                    if (!releaseNotesOk) "versions.md has no section '## Version ${project.version} (<date>)'" else null
+                    if (!releaseNotesOk) "versions.md has no section '## Version ${project.version} (<date>)'" else null,
+                    if (!copyrightOk) "Copyright year is not $currentYear in ${outdatedCopyrightFiles.size} files " +
+                            "— run: ./gradlew updateCopyrightYear" else null
                 )
             if (failures.isNotEmpty()) {
                 throw GradleException(

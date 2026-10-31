@@ -4,7 +4,8 @@
 
 **Option A — local release**
 
-Bump the version in `gradle.properties`, set the release date in `versions.md`, commit, tag HEAD, and push `main`
+Bump the version in `gradle.properties`, set the release date in `versions.md`, update the copyright year
+(see [Step 2](#step-2--update-the-changelog)), commit, tag HEAD, and push `main`
 (but not the tag, see [Step 3](#step-3--commit-and-tag)). Then one command does everything: pre-flight checks → build →
 Maven Central → Chocolatey (Windows only) → GitHub Release → SourceForge (setup JAR, README.md, default download,
 `version.html`) → blog post HTML:
@@ -165,6 +166,15 @@ version=1.10.3
 
 Edit `versions.md` — add a new section at the top with the version and date, and describe all changes
 and bugfixes included in this release.
+
+Update the copyright year in all files, if this is the first release of the year:
+
+```shell
+./gradlew updateCopyrightYear
+```
+
+It sets the end year of the Robocode copyright notices (e.g. `Copyright (c) 2001-2025`) to the current year. The
+pre-flight checks of `./gradlew release` fail if a copyright notice does not end with the current year.
 
 ### Step 3 — Commit and tag
 
