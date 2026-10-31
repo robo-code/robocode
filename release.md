@@ -173,8 +173,9 @@ Update the copyright year in all files, if this is the first release of the year
 ./gradlew updateCopyrightYear
 ```
 
-It sets the end year of the Robocode copyright notices (e.g. `Copyright (c) 2001-2025`) to the current year. The
-pre-flight checks of `./gradlew release` fail if a copyright notice does not end with the current year.
+It sets the end year of the Robocode copyright notices (the `YYYY` in `Copyright (c) 2001-YYYY`) to the current year. The
+pre-flight checks of `./gradlew release` and the release workflow on GitHub fail if a copyright notice does not end
+with the current year. Run `./gradlew checkCopyrightYear` to check it.
 
 ### Step 3 — Commit and tag
 

@@ -128,6 +128,21 @@ tasks {
         }
     }
 
+    register("checkCopyrightYear") {
+        group = "verification"
+        description = "Fails if a Robocode copyright notice in a file in git does not end with the current year"
+        doLast {
+            val files = filesWithOutdatedCopyrightYear()
+            if (files.isNotEmpty()) {
+                throw GradleException(
+                    "The copyright year is not $currentYear in ${files.size} files — run: ./gradlew updateCopyrightYear\n" +
+                            files.joinToString("\n") { "  ${it.relativeTo(rootDir).invariantSeparatorsPath}" }
+                )
+            }
+            println("The copyright year is $currentYear in all files")
+        }
+    }
+
     val validateReleaseCredentials by registering {
         group = "publishing"
         description = "Pre-flight credential checks required for release"
