@@ -156,6 +156,12 @@ This produces:
 - `build/robocode-{version}-setup.jar` (self-extracting installer)
 - Chocolatey package in `robocode.installer/build/choco/`
 
+Gradle itself must run on Java 17 or newer (`JAVA_HOME`), but all modules are compiled with a Java 8 toolchain
+(`languageVersion.set(JavaLanguageVersion.of(8))` in `build.gradle.kts`). This way, the setup JAR runs on Java 8 and
+newer. A JDK 8 must be installed, so Gradle can detect it; check with `./gradlew javaToolchains`.
+
+`versions.md` is included in the setup JAR, so set the release date in `versions.md` before building the release.
+
 ### Step 5 — Publish to Maven Central
 
 Stage and release in one step:
