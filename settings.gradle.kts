@@ -2,6 +2,12 @@ rootProject.name = "robocode"
 
 val version: String = providers.gradleProperty("version").get()
 
+// When releasing, a failing release step (e.g. Chocolatey) must not stop the other release steps (e.g. SourceForge).
+// Steps that depend on a failed step are still skipped, and the build fails at the end, if any step failed.
+if (gradle.startParameter.taskNames.any { it == "release" || it == ":release" }) {
+    gradle.startParameter.isContinueOnFailure = true
+}
+
 include("robocode.api")
 include("robocode.battle")
 include("robocode.core")

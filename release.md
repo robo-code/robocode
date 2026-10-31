@@ -4,11 +4,19 @@
 
 **Option A — local release**
 
-One command does everything: pre-flight checks → build → Maven Central → Chocolatey (Windows only) → GitHub Release:
+Bump the version in `gradle.properties`, set the release date in `versions.md`, commit, tag HEAD, and push `main`
+(but not the tag, see [Step 3](#step-3--commit-and-tag)). Then one command does everything: pre-flight checks → build →
+Maven Central → Chocolatey (Windows only) → GitHub Release → SourceForge (setup JAR, README.md, default download,
+`version.html`) → blog post HTML:
 
 ```shell
 ./gradlew release
 ```
+
+If a step fails, the error is shown, but the other steps continue. Steps that depend on a failed step are skipped
+(e.g. nothing is published if the pre-flight checks or the build fail, and `version.html` is not updated if the upload
+to SourceForge failed). A summary at the end shows the result of each step and the remaining manual steps:
+posting on Blogger and SourceForge news.
 
 Docker push is not included — run `./gradlew dockerPush` separately if needed.
 
@@ -27,7 +35,8 @@ git push origin main v1.10.3
 ```
 
 Requires [GitHub secrets](#github-secrets) to be configured once. Docker push is not automated — run it
-manually when needed (see [Step 6](#step-6--push-docker-image-optional)).
+manually when needed (see [Step 7](#step-7--push-docker-image-optional)). SourceForge and the announcements are not
+automated by GitHub Actions — see [Step 9](#step-9--publish-to-sourceforge) and [Step 10](#step-10--announce-the-release).
 
 ---
 
@@ -38,7 +47,9 @@ manually when needed (see [Step 6](#step-6--push-docker-image-optional)).
 | `robocode.api`, `robocode.core`, etc. (JARs) | Maven Central (`net.sf.robocode`) | `./gradlew publishAllPublicationsToSonatypeRepository closeAndReleaseSonatypeStagingRepository` (or `./gradlew release`) |
 | `robocode` (Windows GUI installer) | Chocolatey Community Repository | `./gradlew chocoPush` |
 | `zamboch/roborumble` (RoboRumble server) | Docker Hub | `./gradlew dockerPush` |
-| `robocode-{version}-setup.jar` | GitHub Release (manual upload) | — |
+| `robocode-{version}-setup.jar` + release notes | GitHub Release | `./gradlew createGitHubRelease` |
+| `robocode-{version}-setup.jar` + `README.md` | SourceForge Files (also the default download) | `./gradlew setSourceForgeDefaultDownload` |
+| `version.html` (read by Robocode to check for new versions) | SourceForge web (`robocode.sourceforge.io/version/`) | `./gradlew updateSourceForgeVersion` |
 
 ---
 
@@ -119,6 +130,25 @@ Log in to Docker Hub before running `dockerPush`:
 docker login
 ```
 
+### 8. SourceForge
+
+SourceForge only accepts file uploads via SSH, and the release uses an SSH key without a passphrase for this:
+
+```shell
+ssh-keygen -t ed25519 -N "" -C "robocode-release@sourceforge" -f ~/.ssh/sourceforge
+```
+
+Add the public key (`~/.ssh/sourceforge.pub`) at [sourceforge.net/auth/shell_services](https://sourceforge.net/auth/shell_services).
+Then add these to `~/.gradle/gradle.properties`:
+
+```properties
+sourceforgeUsername=$SOURCEFORGE_USERNAME
+# Release API key from https://sourceforge.net/auth/preferences/, used to set the default download
+sourceforgeReleaseApiKey=$SOURCEFORGE_RELEASE_API_KEY
+# Optional, if the SSH key is not ~/.ssh/sourceforge
+sourceforgeSshKey=$PATH_TO_PRIVATE_KEY
+```
+
 ---
 
 ## Release steps
@@ -142,8 +172,12 @@ and bugfixes included in this release.
 git add gradle.properties versions.md
 git commit -m "Release version 1.10.3"
 git tag v1.10.3
-git push origin main --tags
+git push origin main
 ```
+
+With the local release (Option A), push `main` but not the tag. `./gradlew release` creates the tag on GitHub together
+with the GitHub Release, and the release workflow then sees that the release exists and skips publishing. If the tag is
+pushed first, the release workflow publishes the release too (Option B).
 
 ### Step 4 — Build all artifacts
 
@@ -211,12 +245,36 @@ This tags and pushes `zamboch/roborumble:{version}` and `zamboch/roborumble:late
 
 ### Step 8 — Create GitHub Release
 
-1. Go to [github.com/robo-code/robocode/releases/new](https://github.com/robo-code/robocode/releases/new).
-2. Select the tag `v{version}` created in Step 3.
-3. Set the title to `Robocode {version}`.
-4. Copy the relevant section from `versions.md` into the release notes.
-5. Attach `build/robocode-{version}-setup.jar`.
-6. Publish the release.
+```shell
+./gradlew createGitHubRelease
+```
+
+This creates the release `v{version}` titled `Robocode {version}` with the section of the version in `versions.md` as
+release notes, and attaches `build/robocode-{version}-setup.jar`. The tag is created on GitHub from the HEAD commit,
+which must be pushed.
+
+### Step 9 — Publish to SourceForge
+
+```shell
+./gradlew updateSourceForgeVersion
+```
+
+This runs these steps in order, where each step only runs if the previous one succeeded:
+
+1. `uploadToSourceForge`: uploads the setup JAR and the section of the version in `versions.md` as `README.md` to
+   [sourceforge.net/projects/robocode/files/robocode/{version}/](https://sourceforge.net/projects/robocode/files/robocode/).
+2. `setSourceForgeDefaultDownload`: makes the setup JAR the default download for all platforms. The download link in
+   Robocode leads to this download.
+3. `updateSourceForgeVersion`: writes the version to `htdocs/version/version.html`. Installed versions of Robocode read
+   this file to tell users about the new version, so it must be updated last.
+
+### Step 10 — Announce the release
+
+`./gradlew prepareBlogPost` (part of `./gradlew release`) converts the release notes to HTML in
+`build/release/blog-post.html`.
+
+1. Create a post on [Blogger](https://www.blogger.com/blog/posts/7868270166586050549) with `build/release/blog-post.html`.
+2. Create a post on [SourceForge news](https://sourceforge.net/p/robocode/news/) with `build/release/release-notes.md`.
 
 ---
 
