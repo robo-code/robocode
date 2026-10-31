@@ -62,7 +62,7 @@ jobs:
           java-version: '17'
           cache: gradle
 
-      - uses: gradle/actions/setup-gradle@v6.3.0
+      - uses: gradle/actions/setup-gradle@v6.4.0
 
       - name: Extract version from tag
         id: version
@@ -117,7 +117,7 @@ jobs:
           java-version: '17'
           cache: gradle
 
-      - uses: gradle/actions/setup-gradle@v6.3.0
+      - uses: gradle/actions/setup-gradle@v6.4.0
 
       - name: Publish to Chocolatey
         run: ./gradlew :robocode.installer:chocoPush
