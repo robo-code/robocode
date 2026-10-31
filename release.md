@@ -263,7 +263,7 @@ This runs these steps in order, where each step only runs if the previous one su
 
 1. `uploadToSourceForge`: uploads the setup JAR and the section of the version in `versions.md` as `README.md` to
    [sourceforge.net/projects/robocode/files/robocode/{version}/](https://sourceforge.net/projects/robocode/files/robocode/).
-2. `setSourceForgeDefaultDownload`: makes the setup JAR the default download for all platforms. The download link in
+2. `setSourceForgeDefaultDownload`: makes the setup JAR the default download for Windows, macOS, Linux, and BSD. The download link in
    Robocode leads to this download.
 3. `updateSourceForgeVersion`: writes the version to `htdocs/version/version.html`. Installed versions of Robocode read
    this file to tell users about the new version, so it must be updated last.

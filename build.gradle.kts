@@ -242,13 +242,13 @@ tasks {
 
     val setSourceForgeDefaultDownload by registering {
         group = "publishing"
-        description = "Makes the setup JAR the default download on SourceForge for all platforms"
+        description = "Makes the setup JAR the default download on SourceForge for Windows, macOS, Linux, and BSD"
         dependsOn(uploadToSourceForge)
         val version = project.version.toString()
         doLast {
             val apiKey = project.findProperty("sourceforgeReleaseApiKey") as String
             val url = "https://sourceforge.net/projects/robocode/files/robocode/$version/robocode-$version-setup.jar"
-            val body = (listOf("windows", "mac", "linux", "bsd", "solaris", "others").map { "default=$it" } +
+            val body = (listOf("windows", "mac", "linux", "bsd").map { "default=$it" } +
                     "api_key=${URLEncoder.encode(apiKey, "UTF-8")}").joinToString("&")
 
             // SourceForge might not know an uploaded file right away, so retry for a while
