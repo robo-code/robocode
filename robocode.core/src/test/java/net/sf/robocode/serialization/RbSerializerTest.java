@@ -15,10 +15,10 @@ import net.sf.robocode.peer.TeamMessage;
 import net.sf.robocode.robotpaint.Graphics2DSerialized;
 import net.sf.robocode.security.HiddenAccess;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import robocode.util.Utils;
 
@@ -39,7 +39,7 @@ public class RbSerializerTest {
 
 	Exception exception = null;
 	
-	@BeforeClass
+	@BeforeAll
 	public static void init() {
 		if (!new File("").getAbsolutePath().endsWith("robocode.core")) {
 			throw new Error("Please run test with current directory in 'robocode.core'");
@@ -51,7 +51,7 @@ public class RbSerializerTest {
 		HiddenAccess.initContainer();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void cleanup() {
 		System.setProperty("NOSECURITY", "false");
 	}
@@ -72,7 +72,7 @@ public class RbSerializerTest {
 		ExecCommands ec2 = (ExecCommands) rbs.deserialize(in);
 
 		assertNear(ec2.getBodyTurnRemaining(), ec.getBodyTurnRemaining());
-        Assert.assertTrue(ec2.isTryingToPaint());
+        Assertions.assertTrue(ec2.isTryingToPaint());
 	}
 
 	@Test
@@ -93,9 +93,9 @@ public class RbSerializerTest {
 
 		assertNear(ec2.getBodyTurnRemaining(), ec.getBodyTurnRemaining());
 		assertNear(ec2.getBullets().get(0).getPower(), 1.0);
-        Assert.assertFalse(ec2.getBullets().get(1).isFireAssistValid());
-        Assert.assertTrue(ec2.getBullets().get(2).isFireAssistValid());
-		Assert.assertEquals(ec2.getBullets().get(2).getBulletId(), -128);
+        Assertions.assertFalse(ec2.getBullets().get(1).isFireAssistValid());
+        Assertions.assertTrue(ec2.getBullets().get(2).isFireAssistValid());
+		Assertions.assertEquals(ec2.getBullets().get(2).getBulletId(), -128);
 	}
 
 	@Test
@@ -117,11 +117,11 @@ public class RbSerializerTest {
 		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 		ExecCommands ec2 = (ExecCommands) rbs.deserialize(in);
 
-		Assert.assertEquals(ec2.getTeamMessages().get(0).message[0], 0);
-		Assert.assertEquals(ec2.getTeamMessages().get(0).message[10], 10);
-		Assert.assertEquals(ec2.getTeamMessages().get(0).sender, "Foo");
-		Assert.assertEquals(ec2.getTeamMessages().get(0).recipient, "Bar");
-        Assert.assertNull(ec2.getTeamMessages().get(1).message);
+		Assertions.assertEquals(ec2.getTeamMessages().get(0).message[0], 0);
+		Assertions.assertEquals(ec2.getTeamMessages().get(0).message[10], 10);
+		Assertions.assertEquals(ec2.getTeamMessages().get(0).sender, "Foo");
+		Assertions.assertEquals(ec2.getTeamMessages().get(0).recipient, "Bar");
+        Assertions.assertNull(ec2.getTeamMessages().get(1).message);
 	}
 
 	@Test
@@ -141,8 +141,8 @@ public class RbSerializerTest {
 		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 		ExecCommands ec2 = (ExecCommands) rbs.deserialize(in);
 
-		Assert.assertEquals(ec2.getDebugProperties().get(0).getKey(), "UTF8 Native characters");
-		Assert.assertEquals(ec2.getDebugProperties().get(0).getValue(), "Příliš žluťoučký kůň úpěl ďábelské ódy.");
+		Assertions.assertEquals(ec2.getDebugProperties().get(0).getKey(), "UTF8 Native characters");
+		Assertions.assertEquals(ec2.getDebugProperties().get(0).getValue(), "Příliš žluťoučký kůň úpěl ďábelské ódy.");
 	}
 
 	// @Test
@@ -169,7 +169,7 @@ public class RbSerializerTest {
 			ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 			ExecCommands ec2 = (ExecCommands) rbs.deserialize(in);
 
-			Assert.assertEquals(ec2.getGunColor(), i);
+			Assertions.assertEquals(ec2.getGunColor(), i);
 		}
 	}
 
@@ -192,7 +192,7 @@ public class RbSerializerTest {
 			ec.setGunColor(i);
 			ExecCommands ec2 = (ExecCommands) ObjectCloner.deepCopy(ec);
 
-			Assert.assertEquals(ec2.getGunColor(), i);
+			Assertions.assertEquals(ec2.getGunColor(), i);
 		}
 	}
 
@@ -258,10 +258,10 @@ public class RbSerializerTest {
 			f.setVisible(false);
 		}
 
-		Assert.assertNull("Exception occured: " + exception, exception);
+		Assertions.assertNull(exception, "Exception occured: " + exception);
 	}
 
 	public static void assertNear(double v1, double v2) {
-		org.junit.Assert.assertEquals(v1, v2, Utils.NEAR_DELTA);
+		Assertions.assertEquals(v1, v2, Utils.NEAR_DELTA);
 	}
 }

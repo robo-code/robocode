@@ -8,8 +8,8 @@
 package net.sf.robocode.host.jarjar;
 
 
-import org.junit.Test;
-import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import java.io.File;
 import java.net.URL;
@@ -50,12 +50,12 @@ public class JarJarTest {
 
 		int len = isr.read(c);
 
-		Assert.assertEquals(len, 4);
-		Assert.assertEquals('T', c[0]);
-		Assert.assertEquals('e', c[1]);
-		Assert.assertEquals('s', c[2]);
-		Assert.assertEquals('t', c[3]);
-		Assert.assertFalse(isr.ready());
+		Assertions.assertEquals(len, 4);
+		Assertions.assertEquals('T', c[0]);
+		Assertions.assertEquals('e', c[1]);
+		Assertions.assertEquals('s', c[2]);
+		Assertions.assertEquals('t', c[3]);
+		Assertions.assertFalse(isr.ready());
 		isr.close();
 		inputStream.close();
 	}

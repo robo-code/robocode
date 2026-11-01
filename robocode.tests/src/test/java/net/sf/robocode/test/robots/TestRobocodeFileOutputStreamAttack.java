@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import tested.robots.RobocodeFileOutputStreamAttack;
 
 import java.io.File;
@@ -23,9 +23,11 @@ import java.io.File;
  */
 public class TestRobocodeFileOutputStreamAttack extends RobocodeTestBed {
 
-	@Test(expected = SecurityException.class)
+	@Test
 	public void run() {
-		super.run();
+		Assert.assertThrows(SecurityException.class, () -> {
+			super.run();
+		});
 	}
 
 	@Override
@@ -54,6 +56,6 @@ public class TestRobocodeFileOutputStreamAttack extends RobocodeTestBed {
 		if (found) {
 			attack.delete();
 		}
-		Assert.assertFalse("Found attack file outside the robot data directory: " + attack, found);
+		Assert.assertFalse(found, "Found attack file outside the robot data directory: " + attack);
 	}
 }

@@ -5,7 +5,9 @@ plugins {
 
 dependencies {
     implementation(project(":robocode.api"))
-    implementation(testLibs.junit)
+    implementation(testLibs.junit.jupiter)
+    implementation(testLibs.hamcrest)
+    testRuntimeOnly(testLibs.junit.platform.launcher)
 
     testImplementation(project(":robocode.core"))
     testImplementation(project(":robocode.host"))

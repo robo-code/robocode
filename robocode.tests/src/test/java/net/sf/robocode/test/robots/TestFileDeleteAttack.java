@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import tested.robots.FileDeleteAttack;
 
 import java.io.File;
@@ -24,9 +24,11 @@ import java.io.IOException;
  */
 public class TestFileDeleteAttack extends RobocodeTestBed {
 
-	@Test(expected = SecurityException.class)
+	@Test
 	public void run() {
-		super.run();
+		Assert.assertThrows(SecurityException.class, () -> {
+			super.run();
+		});
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class TestFileDeleteAttack extends RobocodeTestBed {
 	protected void runSetup() {
 		try {
 			File victim = getVictimFile();
-			Assert.assertTrue("Could not create victim file", victim.exists() || victim.createNewFile());
+			Assert.assertTrue(victim.exists() || victim.createNewFile(), "Could not create victim file");
 		} catch (IOException e) {
 			throw new AssertionError(e);
 		}
@@ -54,6 +56,6 @@ public class TestFileDeleteAttack extends RobocodeTestBed {
 		boolean exists = victim.exists();
 
 		victim.delete();
-		Assert.assertTrue("Robot deleted a file outside its data directory: " + victim, exists);
+		Assert.assertTrue(exists, "Robot deleted a file outside its data directory: " + victim);
 	}
 }

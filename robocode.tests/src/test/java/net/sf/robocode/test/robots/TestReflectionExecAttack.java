@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
 import tested.robots.ReflectionExecAttack;
 
@@ -23,9 +23,11 @@ import tested.robots.ReflectionExecAttack;
 public class TestReflectionExecAttack extends RobocodeTestBed {
 	private final StringBuilder output = new StringBuilder();
 
-	@Test(expected = SecurityException.class)
+	@Test
 	public void run() {
-		super.run();
+		Assert.assertThrows(SecurityException.class, () -> {
+			super.run();
+		});
 	}
 
 	@Override
@@ -41,7 +43,7 @@ public class TestReflectionExecAttack extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertFalse("Robot executed a host command via reflection",
-				output.toString().contains(ReflectionExecAttack.EXECUTED_MESSAGE));
+		Assert.assertFalse(output.toString().contains(ReflectionExecAttack.EXECUTED_MESSAGE),
+				"Robot executed a host command via reflection");
 	}
 }

@@ -12,8 +12,8 @@ import java.util.Arrays;
 
 import net.sf.robocode.util.AlphanumericComparator;
 
-import org.junit.Assert;
-import org.junit.Test;
+import net.sf.robocode.test.helpers.Assert;
+import org.junit.jupiter.api.Test;
 
 
 /**

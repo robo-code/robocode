@@ -9,8 +9,8 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Assert;
-import org.junit.Test;
+import net.sf.robocode.test.helpers.Assert;
+import org.junit.jupiter.api.Test;
 import robocode.BattleResults;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.TurnEndedEvent;
@@ -81,27 +81,27 @@ public class TestWin extends RobocodeTestBed {
 			}
 		}
 
-		Assert.assertEquals("Should have exactly one BattleEnded!", 1, count(events, "BattleEnded!"));
-		Assert.assertEquals("Should have five RoundEnded!", 5, count(events, "RoundEnded!"));
-		Assert.assertEquals("Win! + Death! should equal 5", 5, count(events, "Win!") + count(events, "Death!"));
+		Assert.assertEquals(1, count(events, "BattleEnded!"), "Should have exactly one BattleEnded!");
+		Assert.assertEquals(5, count(events, "RoundEnded!"), "Should have five RoundEnded!");
+		Assert.assertEquals(5, count(events, "Win!") + count(events, "Death!"), "Win! + Death! should equal 5");
 
 		// The output must contain each round header exactly once for this robot.
-		Assert.assertTrue("Missing round header", outputBuf.toString().contains("Round 1 of 5"));
-		Assert.assertTrue("Missing round header", outputBuf.toString().contains("Round 2 of 5"));
-		Assert.assertTrue("Missing round header", outputBuf.toString().contains("Round 3 of 5"));
-		Assert.assertTrue("Missing round header", outputBuf.toString().contains("Round 4 of 5"));
-		Assert.assertTrue("Missing round header", outputBuf.toString().contains("Round 5 of 5"));
+		Assert.assertTrue(outputBuf.toString().contains("Round 1 of 5"), "Missing round header");
+		Assert.assertTrue(outputBuf.toString().contains("Round 2 of 5"), "Missing round header");
+		Assert.assertTrue(outputBuf.toString().contains("Round 3 of 5"), "Missing round header");
+		Assert.assertTrue(outputBuf.toString().contains("Round 4 of 5"), "Missing round header");
+		Assert.assertTrue(outputBuf.toString().contains("Round 5 of 5"), "Missing round header");
 
 		// Check that at least one Win! was received (BattleWin must win some rounds).
-		Assert.assertTrue("BattleWin should win at least one round", count(events, "Win!") > 0);
+		Assert.assertTrue(count(events, "Win!") > 0, "BattleWin should win at least one round");
 
 		// Score verification - results are sorted by score descending.
-		Assert.assertNotNull("Battle results should not be null", results);
-		Assert.assertEquals("Expected 2 robots in results", 2, results.length);
-		Assert.assertTrue("Winner score must be positive", results[0].getScore() > 0);
-		Assert.assertTrue("Loser score must be positive", results[1].getScore() > 0);
-		Assert.assertTrue("Winner must have >= loser score",
-				results[0].getScore() >= results[1].getScore());
+		Assert.assertNotNull(results, "Battle results should not be null");
+		Assert.assertEquals(2, results.length, "Expected 2 robots in results");
+		Assert.assertTrue(results[0].getScore() > 0, "Winner score must be positive");
+		Assert.assertTrue(results[1].getScore() > 0, "Loser score must be positive");
+		Assert.assertTrue(results[0].getScore() >= results[1].getScore(),
+				"Winner must have >= loser score");
 	}
 
 	private static int count(List<String> list, String item) {

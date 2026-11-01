@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
 
 
@@ -38,9 +38,9 @@ public class TestReflectionAttack extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue("Reflection is not allowed:\n" + output,
-				output.toString().contains("java.lang.System.out cannot be made accessible"));
-		Assert.assertFalse("Robot used reflection", output.toString().contains("Hello World"));
+		Assert.assertTrue(output.toString().contains("java.lang.System.out cannot be made accessible"),
+				"Reflection is not allowed:\n" + output);
+		Assert.assertFalse(output.toString().contains("Hello World"), "Robot used reflection");
 	}
 
 	@Override

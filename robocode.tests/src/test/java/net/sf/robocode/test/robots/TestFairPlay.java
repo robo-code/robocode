@@ -10,8 +10,8 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 
-import org.junit.Assert;
-import org.junit.Test;
+import net.sf.robocode.test.helpers.Assert;
+import org.junit.jupiter.api.Test;
 
 import robocode.control.events.BattleFinishedEvent;
 import robocode.control.events.TurnEndedEvent;
@@ -62,11 +62,11 @@ public class TestFairPlay extends RobocodeTestBed {
 		double minTotal = Math.min(score1.getTotalScore(), score2.getTotalScore());
 		double maxTotal = Math.max(score1.getTotalScore(), score2.getTotalScore());
 
-		Assert.assertTrue("The total scores should be almost the same", maxTotal / minTotal <= 1.08);
+		Assert.assertTrue(maxTotal / minTotal <= 1.08, "The total scores should be almost the same");
 
 		double minFirsts = Math.min(score1.getTotalFirsts(), score2.getTotalFirsts());
 		double maxFirsts = Math.max(score1.getTotalFirsts(), score2.getTotalFirsts());
 
-		Assert.assertTrue("The total firsts should be almost the same", maxFirsts / minFirsts <= 1.08);
+		Assert.assertTrue(maxFirsts / minFirsts <= 1.08, "The total firsts should be almost the same");
 	}
 }

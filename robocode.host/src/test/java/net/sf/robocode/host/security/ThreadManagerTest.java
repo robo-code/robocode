@@ -13,10 +13,9 @@ import net.sf.robocode.host.RobotStatics;
 import net.sf.robocode.host.io.RobotFileSystemManager;
 import net.sf.robocode.repository.IRobotItem;
 import net.sf.robocode.security.HiddenAccess;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import robocode.control.RobotSpecification;
 
 import java.io.File;
@@ -32,13 +31,15 @@ import java.lang.reflect.Proxy;
  */
 public class ThreadManagerTest {
 
-	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
+	@TempDir
+	File folder;
 
 	// The thread would keep the whole robot in memory, and Java 24+ has no SecurityManager to remove it
 	@Test
 	public void aThreadIsNotKeptAfterItOpensAFile() throws IOException {
-		File root = folder.newFolder("data");
+		File root = new File(folder, "data");
+
+		Assertions.assertTrue(root.mkdir());
 		IHostedThread robot = createAdvancedRobot(root);
 		ThreadManager manager = new ThreadManager();
 
@@ -48,7 +49,7 @@ public class ThreadManagerTest {
 
 		stream.close();
 
-		Assert.assertFalse(manager.checkRobotFileStream());
+		Assertions.assertFalse(manager.checkRobotFileStream());
 	}
 
 	private static IHostedThread createAdvancedRobot(final File root) {

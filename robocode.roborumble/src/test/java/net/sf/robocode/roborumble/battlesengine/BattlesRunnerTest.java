@@ -8,10 +8,9 @@
 package net.sf.robocode.roborumble.battlesengine;
 
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,51 +22,65 @@ import java.io.IOException;
  */
 public class BattlesRunnerTest {
 
-	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
+	@TempDir
+	File folder;
+
+	private File newFolder(String name) {
+		File directory = new File(folder, name);
+
+		Assertions.assertTrue(directory.mkdir());
+		return directory;
+	}
+
+	private File newFile(String name) throws IOException {
+		File file = new File(folder, name);
+
+		Assertions.assertTrue(file.createNewFile());
+		return file;
+	}
 
 	@Test
 	public void deletesEverythingInTheDirectoryAndKeepsIt() throws IOException {
-		File data = folder.newFolder("data");
+		File data = newFolder("data");
 		File robot = new File(data, "a/b/One.data");
 
-		Assert.assertTrue(robot.mkdirs());
-		Assert.assertTrue(new File(robot, "#1").createNewFile());
-		Assert.assertTrue(new File(data, "loose").createNewFile());
+		Assertions.assertTrue(robot.mkdirs());
+		Assertions.assertTrue(new File(robot, "#1").createNewFile());
+		Assertions.assertTrue(new File(data, "loose").createNewFile());
 
-		Assert.assertTrue(BattlesRunner.deleteContents(data));
+		Assertions.assertTrue(BattlesRunner.deleteContents(data));
 
-		Assert.assertTrue(data.isDirectory());
-		Assert.assertEquals(0, data.list().length);
+		Assertions.assertTrue(data.isDirectory());
+		Assertions.assertEquals(0, data.list().length);
 	}
 
 	@Test
 	public void aMissingDirectoryIsFine() {
-		Assert.assertTrue(BattlesRunner.deleteContents(new File(folder.getRoot(), "missing")));
+		Assertions.assertTrue(BattlesRunner.deleteContents(new File(folder, "missing")));
 	}
 
 	@Test
 	public void aPathThatCannotBeListedIsAFailure() throws IOException {
-		Assert.assertFalse(BattlesRunner.deleteContents(folder.newFile("not-a-directory")));
+		Assertions.assertFalse(BattlesRunner.deleteContents(newFile("not-a-directory")));
 	}
 
 	@Test
 	public void aFileLeftOpenForReadingIsDeletedAfterACollection() throws IOException {
-		File data = folder.newFolder("data");
+		File data = newFolder("data");
 
 		leaveOpenForReading(new File(data, "kept"));
 
-		Assert.assertTrue(BattlesRunner.clearRobotData(data, 0));
-		Assert.assertEquals(0, data.list().length);
+		Assertions.assertTrue(BattlesRunner.clearRobotData(data, 0));
+		Assertions.assertEquals(0, data.list().length);
 	}
 
 	@Test
 	public void dataThatCannotBeDeletedIsAFailure() throws IOException {
-		Assert.assertFalse(BattlesRunner.clearRobotData(folder.newFile("not-a-directory"), 0));
+		Assertions.assertFalse(BattlesRunner.clearRobotData(newFile("not-a-directory"), 0));
 	}
 
 	private static void leaveOpenForReading(File file) throws IOException {
-		Assert.assertTrue(file.createNewFile());
+		Assertions.assertTrue(file.createNewFile());
 		new FileInputStream(file).read();
 	}
 }

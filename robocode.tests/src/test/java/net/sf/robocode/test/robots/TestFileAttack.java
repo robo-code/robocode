@@ -36,6 +36,6 @@ public class TestFileAttack extends RobotRejectedTestBed {
 	@Override
 	protected void runTeardown() {
 		super.runTeardown();
-		Assert.assertFalse("Found attack file", new File("C:\\Robocode.attack").exists());
+		Assert.assertFalse(new File("C:\\Robocode.attack").exists(), "Found attack file");
 	}
 }

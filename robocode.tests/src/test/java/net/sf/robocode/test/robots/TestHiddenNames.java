@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import robocode.control.BattleSpecification;
 import robocode.control.RobotSpecification;
 import robocode.control.events.TurnEndedEvent;
@@ -28,7 +28,7 @@ public class TestHiddenNames extends RobocodeTestBed {
 	@Test
 	public void run() {
 		super.run();
-		Assert.assertTrue("The robot never saw a hidden name", sawHiddenName);
+		Assert.assertTrue(sawHiddenName, "The robot never saw a hidden name");
 	}
 
 	@Override

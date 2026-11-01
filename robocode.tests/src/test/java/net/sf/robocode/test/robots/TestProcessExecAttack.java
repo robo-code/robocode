@@ -42,6 +42,6 @@ public class TestProcessExecAttack extends RobotRejectedTestBed {
 	@Override
 	protected void runTeardown() {
 		super.runTeardown();
-		Assert.assertFalse("Robot executed a host command", executed);
+		Assert.assertFalse(executed, "Robot executed a host command");
 	}
 }

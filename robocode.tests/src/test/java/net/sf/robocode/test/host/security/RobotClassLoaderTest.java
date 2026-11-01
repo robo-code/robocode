@@ -13,9 +13,9 @@ import net.sf.robocode.core.EngineClassLoader;
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import net.sf.robocode.test.helpers.Assert;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class RobotClassLoaderTest {
 	final String badRobot = "tested.robots.IncludeNamespaceAttack";
 	final String goodRobot = "tested.robots.Ahead";
 
-	@BeforeClass
+	@BeforeAll
 	public static void init() throws IOException {
 		HiddenAccess.initContainer();
 		try {
@@ -71,24 +71,30 @@ public class RobotClassLoaderTest {
 		Assert.assertEquals(cl, c.getClassLoader());
 	}
 
-	@Test(expected = ClassNotFoundException.class)
+	@Test
 	public void robotBlockedBad() throws ClassNotFoundException {
-		RobotClassLoader cl = new RobotClassLoader(classPath, badRobot);
+		Assert.assertThrows(ClassNotFoundException.class, () -> {
+			RobotClassLoader cl = new RobotClassLoader(classPath, badRobot);
 
-		cl.loadRobotMainClass(true);
+			cl.loadRobotMainClass(true);
+		});
 	}
 
-	@Test(expected = ClassNotFoundException.class)
+	@Test
 	public void robotBlockedRobocode() throws ClassNotFoundException {
-		RobotClassLoader cl = new RobotClassLoader(classPath, goodRobot);
+		Assert.assertThrows(ClassNotFoundException.class, () -> {
+			RobotClassLoader cl = new RobotClassLoader(classPath, goodRobot);
 
-		cl.loadClass("net.sf.robocode.host.proxies.BasicRobotProxy");
+			cl.loadClass("net.sf.robocode.host.proxies.BasicRobotProxy");
+		});
 	}
 
-	@Test(expected = ClassNotFoundException.class)
+	@Test
 	public void robotBlockedControl() throws ClassNotFoundException {
-		RobotClassLoader cl = new RobotClassLoader(classPath, goodRobot);
+		Assert.assertThrows(ClassNotFoundException.class, () -> {
+			RobotClassLoader cl = new RobotClassLoader(classPath, goodRobot);
 
-		cl.loadClass("robocode.control.RobocodeEngine");
+			cl.loadClass("robocode.control.RobocodeEngine");
+		});
 	}
 }
