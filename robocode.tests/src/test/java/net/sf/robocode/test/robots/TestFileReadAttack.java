@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
 import tested.robots.FileReadAttack;
 
@@ -29,9 +29,11 @@ public class TestFileReadAttack extends RobocodeTestBed {
 
 	private final StringBuilder output = new StringBuilder();
 
-	@Test(expected = SecurityException.class)
+	@Test
 	public void run() {
-		super.run();
+		Assert.assertThrows(SecurityException.class, () -> {
+			super.run();
+		});
 	}
 
 	@Override
@@ -63,6 +65,6 @@ public class TestFileReadAttack extends RobocodeTestBed {
 	@Override
 	protected void runTeardown() {
 		getVictimFile().delete();
-		Assert.assertFalse("Robot read a file outside its directories", output.toString().contains(SECRET));
+		Assert.assertFalse(output.toString().contains(SECRET), "Robot read a file outside its directories");
 	}
 }

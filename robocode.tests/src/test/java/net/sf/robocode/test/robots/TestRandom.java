@@ -10,8 +10,9 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import robocode.control.RandomFactory;
 import robocode.control.events.BattleStartedEvent;
 import robocode.control.events.TurnEndedEvent;
@@ -43,6 +44,7 @@ public class TestRandom extends RobocodeTestBed {
         return "tested.robots.Random";
     }
 
+    @BeforeEach
     public void before() {
         super.before();
         Assert.assertNear(0.730967, RandomFactory.getRandom().nextDouble());
@@ -83,7 +85,7 @@ public class TestRandom extends RobocodeTestBed {
     protected void runTeardown() {
         // The battle is deterministic, as the random numbers of the robots come from the deterministic random number
         // generator of Robocode, so the robots must always be at the same positions, and the battle must end the same way.
-        Assert.assertTrue("The positions at turn 200 were not checked", positionsChecked);
-        Assert.assertEquals("Turn where tested.robots.Random died", 682, randomDeathTurn);
+        Assert.assertTrue(positionsChecked, "The positions at turn 200 were not checked");
+        Assert.assertEquals(682, randomDeathTurn, "Turn where tested.robots.Random died");
     }
 }

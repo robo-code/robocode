@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
 import tested.robots.FileListAttack;
 
@@ -23,9 +23,11 @@ import tested.robots.FileListAttack;
 public class TestFileListAttack extends RobocodeTestBed {
 	private final StringBuilder output = new StringBuilder();
 
-	@Test(expected = SecurityException.class)
+	@Test
 	public void run() {
-		super.run();
+		Assert.assertThrows(SecurityException.class, () -> {
+			super.run();
+		});
 	}
 
 	@Override
@@ -41,7 +43,7 @@ public class TestFileListAttack extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertFalse("Robot listed a directory outside its directories",
-				output.toString().contains(FileListAttack.LISTED_MESSAGE));
+		Assert.assertFalse(output.toString().contains(FileListAttack.LISTED_MESSAGE),
+				"Robot listed a directory outside its directories");
 	}
 }

@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
 import tested.robots.DeserializationAttack;
 
@@ -43,9 +43,9 @@ public class TestDeserializationAttack extends RobocodeTestBed {
 	protected void runTeardown() {
 		String out = output.toString();
 
-		Assert.assertTrue("Robot could not deserialize its own data", out.contains(DeserializationAttack.OWN_DATA_MESSAGE));
-		Assert.assertFalse("Robot deserialized a class that is not allowed",
-				out.contains(DeserializationAttack.DESERIALIZED_MESSAGE));
-		Assert.assertTrue("Deserialization was not prevented", out.contains(DeserializationAttack.PREVENTED_MESSAGE));
+		Assert.assertTrue(out.contains(DeserializationAttack.OWN_DATA_MESSAGE), "Robot could not deserialize its own data");
+		Assert.assertFalse(out.contains(DeserializationAttack.DESERIALIZED_MESSAGE),
+				"Robot deserialized a class that is not allowed");
+		Assert.assertTrue(out.contains(DeserializationAttack.PREVENTED_MESSAGE), "Deserialization was not prevented");
 	}
 }

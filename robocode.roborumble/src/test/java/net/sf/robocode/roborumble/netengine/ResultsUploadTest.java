@@ -8,8 +8,8 @@
 package net.sf.robocode.roborumble.netengine;
 
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -21,19 +21,19 @@ public class ResultsUploadTest {
 	public void aHeaderCanHoldSeveralSettings() {
 		String[] header = "game,35,800x600,user,1000,GENERAL,ONE=YES,TWO=YES".split(",");
 
-		Assert.assertTrue(ResultsUpload.hasSetting(header, "ONE=YES"));
-		Assert.assertTrue(ResultsUpload.hasSetting(header, "TWO=YES"));
-		Assert.assertFalse(ResultsUpload.hasSetting(header, "THREE=YES"));
+		Assertions.assertTrue(ResultsUpload.hasSetting(header, "ONE=YES"));
+		Assertions.assertTrue(ResultsUpload.hasSetting(header, "TWO=YES"));
+		Assertions.assertFalse(ResultsUpload.hasSetting(header, "THREE=YES"));
 	}
 
 	@Test
 	public void aHeaderFromAnEarlierClientHasNoSettings() {
-		Assert.assertFalse(ResultsUpload.hasSetting("game,35,800x600,user,1000,GENERAL".split(","), "ONE=YES"));
-		Assert.assertFalse(ResultsUpload.hasSetting("game,35,800x600,user,1000".split(","), "ONE=YES"));
+		Assertions.assertFalse(ResultsUpload.hasSetting("game,35,800x600,user,1000,GENERAL".split(","), "ONE=YES"));
+		Assertions.assertFalse(ResultsUpload.hasSetting("game,35,800x600,user,1000".split(","), "ONE=YES"));
 	}
 
 	@Test
 	public void onlyTheSettingsCount() {
-		Assert.assertFalse(ResultsUpload.hasSetting("game,35,800x600,ONE=YES,1000,ONE=YES".split(","), "ONE=YES"));
+		Assertions.assertFalse(ResultsUpload.hasSetting("game,35,800x600,ONE=YES,1000,ONE=YES".split(","), "ONE=YES"));
 	}
 }

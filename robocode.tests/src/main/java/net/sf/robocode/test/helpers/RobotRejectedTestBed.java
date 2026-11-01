@@ -8,7 +8,7 @@
 package net.sf.robocode.test.helpers;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -39,7 +39,7 @@ public abstract class RobotRejectedTestBed extends RobocodeTestBed {
 	@Override
 	protected void runTeardown() {
 		// The error is e.g. "Can't load 'x.Robot' because it is an invalid robot or team." or "Could not load robot: x.Robot"
-		Assert.assertTrue("Robot must be rejected: " + getRobotName() + "\n" + errorText,
-				errorText.toString().contains(getRobotName()));
+		Assert.assertTrue(errorText.toString().contains(getRobotName()),
+				"Robot must be rejected: " + getRobotName() + "\n" + errorText);
 	}
 }

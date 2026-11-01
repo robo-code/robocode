@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
 import tested.robots.ResourceTraversalAttack;
 
@@ -63,7 +63,7 @@ public class TestResourceTraversalAttack extends RobocodeTestBed {
 	@Override
 	protected void runTeardown() {
 		getVictimFile().delete();
-		Assert.assertFalse("Robot read a file outside its class path", output.toString().contains(SECRET));
-		Assert.assertTrue("Robot did not run", output.toString().contains("Resource not found"));
+		Assert.assertFalse(output.toString().contains(SECRET), "Robot read a file outside its class path");
+		Assert.assertTrue(output.toString().contains("Resource not found"), "Robot did not run");
 	}
 }

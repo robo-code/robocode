@@ -11,8 +11,8 @@ package net.sf.robocode.test.robots;
 import java.io.File;
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Assert;
-import org.junit.Test;
+import net.sf.robocode.test.helpers.Assert;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
 
 
@@ -67,10 +67,10 @@ public class TestFileWriteSize extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue("Data quota must be 200000", messagedDataQuota);
-		Assert.assertTrue("Data directory path is wrong", messagedDataDirectory);
-		Assert.assertTrue("Data file path is wrong", messagedDataFile);
-		Assert.assertTrue("Error must be output that file quota has been exceeded", messageQuotaReached);
-		Assert.assertTrue("Game must terminate the robot", robotTerminated);
+		Assert.assertTrue(messagedDataQuota, "Data quota must be 200000");
+		Assert.assertTrue(messagedDataDirectory, "Data directory path is wrong");
+		Assert.assertTrue(messagedDataFile, "Data file path is wrong");
+		Assert.assertTrue(messageQuotaReached, "Error must be output that file quota has been exceeded");
+		Assert.assertTrue(robotTerminated, "Game must terminate the robot");
 	}
 }

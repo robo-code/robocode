@@ -8,7 +8,7 @@
 package net.sf.robocode.test.robots;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import net.sf.robocode.test.helpers.Assert;
 import robocode.control.events.TurnEndedEvent;
@@ -55,7 +55,7 @@ public class TestCustomEvents extends RobocodeTestBed {
 	}
 
 	private void test(IRobotSnapshot gh, String s) {
-		Assert.assertTrue("got: " + gh.getOutputStreamSnapshot() + ", expected: " + s,
-				gh.getOutputStreamSnapshot().contains(s));
+		Assert.assertTrue(gh.getOutputStreamSnapshot().contains(s),
+				"got: " + gh.getOutputStreamSnapshot() + ", expected: " + s);
 	}
 }

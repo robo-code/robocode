@@ -10,8 +10,8 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 
-import org.junit.Assert;
-import org.junit.Test;
+import net.sf.robocode.test.helpers.Assert;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IRobotSnapshot;
 
@@ -53,6 +53,6 @@ public class TestJunior extends RobocodeTestBed {
 	}
 
 	private void test(String out, String in) {
-		Assert.assertTrue(in, out.contains(in));
+		Assert.assertTrue(out.contains(in), in);
 	}
 }

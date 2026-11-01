@@ -31,6 +31,7 @@ tasks {
     // engine errors (e.g. "Unable to stop thread") on slow/loaded CI machines.
     // Retry failed tests a few times so such flakiness does not fail the build.
     withType<Test> {
+        useJUnitPlatform()
         retry {
             maxRetries.set(2)
             maxFailures.set(20)

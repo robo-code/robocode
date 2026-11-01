@@ -10,8 +10,8 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import static org.hamcrest.CoreMatchers.is;
-import org.junit.Assert;
-import org.junit.Test;
+import net.sf.robocode.test.helpers.Assert;
+import org.junit.jupiter.api.Test;
 import robocode.BattleResults;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleFinishedEvent;

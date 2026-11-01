@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
 import tested.robots.ThreadsWithinLimit;
 
@@ -41,9 +41,9 @@ public class TestThreadsWithinLimit extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue("Robot could not use threads:\n" + output,
-				output.toString().contains(ThreadsWithinLimit.OK_MESSAGE));
-		Assert.assertFalse("Robot was punished for using threads", output.toString().contains("SYSTEM: Preventing")
-				|| output.toString().contains("only allowed to create"));
+		Assert.assertTrue(output.toString().contains(ThreadsWithinLimit.OK_MESSAGE),
+				"Robot could not use threads:\n" + output);
+		Assert.assertFalse(output.toString().contains("SYSTEM: Preventing")
+				|| output.toString().contains("only allowed to create"), "Robot was punished for using threads");
 	}
 }

@@ -1,10 +1,14 @@
 [versions]
 
-junit = "4.13.2"
+junit = "5.14.4"
+junit-platform = "1.14.4"
+hamcrest = "3.0"
 
 [libraries]
 
-junit = { module = "junit:junit", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+hamcrest = { module = "org.hamcrest:hamcrest", version.ref = "hamcrest" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform" }
 
 [bundles]
 

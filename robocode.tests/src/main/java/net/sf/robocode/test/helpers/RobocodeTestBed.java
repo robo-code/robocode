@@ -8,8 +8,8 @@
 package net.sf.robocode.test.helpers;
 
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import robocode.control.RobotTestBed;
 
 import java.io.File;
@@ -27,12 +27,12 @@ public abstract class RobocodeTestBed extends RobotTestBed {
         super.beforeInit();
     }
 
-    @Before
+    @BeforeEach
     public void before() {
         super.before();
     }
 
-    @After
+    @AfterEach
     public void after() {
         super.after();
     }

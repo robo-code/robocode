@@ -8,33 +8,30 @@
 package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.util.Utils;
 
-import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * Statistical score test with multiple opponents
  *
  * @author Pavel Savara (original)
  */
-@RunWith(Parameterized.class)
 public class TestScore extends RobocodeTestBed {
     String enemy;
     int expectedScore;
 
 
-    @Parameterized.Parameters(name = "{index}: Test with {0}, expected score: {1}")
-    public static Iterable<Object[]> battles() {
-        return Arrays.asList(new Object[][]{
-                {"tested.robots.Random", 5000},
-                {"sample.SittingDuck", 5000},
-                {"sample.Corners", 4500},
-                {"sample.Fire", 4000},
-        });
+    static Stream<Arguments> battles() {
+        return Stream.of(
+                Arguments.of("tested.robots.Random", 5000),
+                Arguments.of("sample.SittingDuck", 5000),
+                Arguments.of("sample.Corners", 4500),
+                Arguments.of("sample.Fire", 4000));
     }
 
     public void onBattleCompleted(final BattleCompletedEvent event) {
@@ -42,13 +39,11 @@ public class TestScore extends RobocodeTestBed {
         Utils.assertTrue("Score has to be at least " + expectedScore + " but was " + actualScore, actualScore > expectedScore);
     }
 
-    public TestScore(String enemy, int expectedScore) {
+    @ParameterizedTest(name = "{index}: Test with {0}, expected score: {1}")
+    @MethodSource("battles")
+    public void run(String enemy, int expectedScore) {
         this.enemy = enemy;
         this.expectedScore = expectedScore;
-    }
-
-    @Test
-    public void run() {
         super.run();
     }
 

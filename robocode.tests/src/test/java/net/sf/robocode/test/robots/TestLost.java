@@ -9,8 +9,8 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Assert;
-import org.junit.Test;
+import net.sf.robocode.test.helpers.Assert;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IRobotSnapshot;
 
@@ -62,8 +62,8 @@ public class TestLost extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertEquals("should not get SkippedTurn event", 0, skip);
-		Assert.assertEquals("always should loose", getNumRounds(), lost);
-		Assert.assertEquals("should get BattleEnded event", 1, end);
+		Assert.assertEquals(0, skip, "should not get SkippedTurn event");
+		Assert.assertEquals(getNumRounds(), lost, "always should loose");
+		Assert.assertEquals(1, end, "should get BattleEnded event");
 	}
 }

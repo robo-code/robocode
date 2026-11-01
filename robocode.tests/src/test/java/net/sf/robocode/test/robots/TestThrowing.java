@@ -10,8 +10,8 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 
-import org.junit.Assert;
-import org.junit.Test;
+import net.sf.robocode.test.helpers.Assert;
+import org.junit.jupiter.api.Test;
 import robocode.control.RobocodeEngine;
 import robocode.control.events.BattleErrorEvent;
 
@@ -23,9 +23,11 @@ import robocode.control.events.BattleErrorEvent;
  */
 public class TestThrowing extends RobocodeTestBed {
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void run() {
-        super.run();
+        Assert.assertThrows(NullPointerException.class, () -> {
+            super.run();
+        });
     }
 
     @Override

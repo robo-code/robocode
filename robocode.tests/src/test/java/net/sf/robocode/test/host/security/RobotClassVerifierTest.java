@@ -12,9 +12,9 @@ import net.sf.robocode.core.Container;
 import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import net.sf.robocode.test.helpers.Assert;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class RobotClassVerifierTest {
 			"RobocodeFileOutputStreamAttack.class",
 			"ThreadLimitAttack.class");
 
-	@BeforeClass
+	@BeforeAll
 	public static void init() throws IOException {
 		HiddenAccess.initContainer();
 		try {
@@ -110,7 +110,7 @@ public class RobotClassVerifierTest {
 				cl.cleanup();
 			}
 		}
-		Assert.assertTrue(failures.toString(), failures.isEmpty());
+		Assert.assertTrue(failures.isEmpty(), failures.toString());
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class RobotClassVerifierTest {
 		for (String packageName : new String[] {"sample", "sampleex", "samplesentry", "sampleteam", "tested.robots"}) {
 			File[] files = new File(robotsDir, packageName.replace('.', File.separatorChar)).listFiles();
 
-			Assert.assertNotNull("Missing robot directory for package: " + packageName, files);
+			Assert.assertNotNull(files, "Missing robot directory for package: " + packageName);
 			for (File file : files) {
 				String name = file.getName();
 
@@ -132,7 +132,7 @@ public class RobotClassVerifierTest {
 				}
 			}
 		}
-		Assert.assertTrue("Too few robots found: " + robots, robots.size() > 40);
+		Assert.assertTrue(robots.size() > 40, "Too few robots found: " + robots);
 
 		List<String> failures = new ArrayList<String>();
 
@@ -146,19 +146,21 @@ public class RobotClassVerifierTest {
 				cl.cleanup();
 			}
 		}
-		Assert.assertTrue(failures.toString(), failures.isEmpty());
+		Assert.assertTrue(failures.isEmpty(), failures.toString());
 	}
 
-	@Test(expected = ClassNotFoundException.class)
+	@Test
 	public void robotBlockedFromHostLibraries() throws ClassNotFoundException {
-		final String hostLibraryClass = "org.picocontainer.DefaultPicoContainer";
+		Assert.assertThrows(ClassNotFoundException.class, () -> {
+			final String hostLibraryClass = "org.picocontainer.DefaultPicoContainer";
 
-		// The library is available for the game engine ...
-		Assert.assertNotNull(Container.systemLoader.loadClass(hostLibraryClass));
+			// The library is available for the game engine ...
+			Assert.assertNotNull(Container.systemLoader.loadClass(hostLibraryClass));
 
-		// ... but not for robots
-		RobotClassLoader cl = new RobotClassLoader(classPath, "tested.robots.Ahead");
+			// ... but not for robots
+			RobotClassLoader cl = new RobotClassLoader(classPath, "tested.robots.Ahead");
 
-		cl.loadClass(hostLibraryClass);
+			cl.loadClass(hostLibraryClass);
+		});
 	}
 }

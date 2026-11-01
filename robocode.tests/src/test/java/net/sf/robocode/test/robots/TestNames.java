@@ -9,7 +9,7 @@ package net.sf.robocode.test.robots;
 
 
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 /**

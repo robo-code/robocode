@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.BattleMessageEvent;
 import robocode.control.events.TurnEndedEvent;
 
@@ -32,9 +32,9 @@ public class TestLeftOpenFile extends RobocodeTestBed {
 	@Test
 	public void run() {
 		super.run();
-		Assert.assertNotNull("The robot did not write its file", dataFile);
-		Assert.assertTrue("There was no warning about the open file", warned);
-		Assert.assertTrue("The file could not be deleted after the battle", new File(dataFile).delete());
+		Assert.assertNotNull(dataFile, "The robot did not write its file");
+		Assert.assertTrue(warned, "There was no warning about the open file");
+		Assert.assertTrue(new File(dataFile).delete(), "The file could not be deleted after the battle");
 	}
 
 	@Override

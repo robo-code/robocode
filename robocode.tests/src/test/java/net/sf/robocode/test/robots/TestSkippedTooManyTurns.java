@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.RobotState;
@@ -50,7 +50,7 @@ public class TestSkippedTooManyTurns extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue("The robot was not told that it has skipped too many turns", messagedNoActions);
-		Assert.assertTrue("The robot was not killed for skipping too many turns", died);
+		Assert.assertTrue(messagedNoActions, "The robot was not told that it has skipped too many turns");
+		Assert.assertTrue(died, "The robot was not killed for skipping too many turns");
 	}
 }

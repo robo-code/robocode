@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
 import tested.robots.ReflectionOnOwnClasses;
 
@@ -41,7 +41,7 @@ public class TestReflectionOnOwnClasses extends RobocodeTestBed {
 
 	@Override
 	protected void runTeardown() {
-		Assert.assertTrue("Robot could not use reflection on its own classes:\n" + output,
-				output.toString().contains(ReflectionOnOwnClasses.OK_MESSAGE));
+		Assert.assertTrue(output.toString().contains(ReflectionOnOwnClasses.OK_MESSAGE),
+				"Robot could not use reflection on its own classes:\n" + output);
 	}
 }

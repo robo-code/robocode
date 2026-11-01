@@ -10,7 +10,7 @@ package net.sf.robocode.test.robots;
 
 import static robocode.util.Utils.normalRelativeAngle;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import robocode.control.events.RoundStartedEvent;
 import robocode.control.events.TurnEndedEvent;

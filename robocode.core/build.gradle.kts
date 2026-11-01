@@ -7,7 +7,8 @@ dependencies {
     implementation(project(":robocode.api"))
     implementation(libs.picocontainer)
 
-    testImplementation(testLibs.junit)
+    testImplementation(testLibs.junit.jupiter)
+    testRuntimeOnly(testLibs.junit.platform.launcher)
 }
 
 description = "Robocode Core"
