@@ -36,6 +36,8 @@ public class BattlesRunner {
 	private final int fieldlen;
 	private final int fieldhei;
 	private final String outfile;
+	// The settings saved with each battle's results, which an upload may only read much later
+	private final StringBuilder resultSettings = new StringBuilder();
 	private final String user;
 	private final String game;
 	private final boolean cleardata;
@@ -52,6 +54,9 @@ public class BattlesRunner {
 		user = parameters.getProperty("USER", "");
 		this.game = game;
 		cleardata = parameters.getProperty("CLEARDATA", "NOT").equals("YES");
+		if (cleardata) {
+			resultSettings.append(",CLEARDATA=YES");
+		}
 
 		initialize();
 	}
@@ -197,7 +202,7 @@ public class BattlesRunner {
 
 						outtxt.println(
 								game + "," + numrounds + "," + fieldlen + "x" + fieldhei + "," + user + ","
-										+ System.currentTimeMillis() + "," + rumbleBattle.getRunonly());
+										+ System.currentTimeMillis() + "," + rumbleBattle.getRunonly() + resultSettings);
 						outtxt.println(name1 + "," + points1 + "," + bullets1 + "," + survival1);
 						outtxt.println(name2 + "," + points2 + "," + bullets2 + "," + survival2);
 					}
