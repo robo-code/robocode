@@ -32,6 +32,9 @@ import java.util.*;
  * @author Robert D. Maupin (contributor)
  */
 public class BattlesRunner {
+	// How long to wait in milliseconds before going on when the robot data could not be deleted
+	private static final long CLEARDATA_RETRY_WAIT = 60000;
+
 	private final BattlesFile inputfile;
 	private final int numrounds;
 	private final int fieldlen;
@@ -117,7 +120,7 @@ public class BattlesRunner {
 							battle.getSentryBorderSize(), hidenames, robotsList);
 
 					lastResults = null;
-					if (cleardata && !deleteContents(FileUtil.getRobotsDataDir())) {
+					if (cleardata && !clearRobotData(FileUtil.getRobotsDataDir(), CLEARDATA_RETRY_WAIT)) {
 						// The results would claim that the data was cleared
 						Logger.realErr.println("Skipping battle because the robot data could not be deleted: " + enemies);
 					} else {
@@ -135,6 +138,34 @@ public class BattlesRunner {
 
 		// close
 		outtxt.close();
+	}
+
+	/**
+	 * Deletes the data robots saved. A robot may have left a file open for reading, which keeps it from being deleted
+	 * on Windows until the stream is garbage collected, so this collects the garbage before trying again. If that does
+	 * not help either, it waits, so that a client that cannot fight does not keep asking the server for the ratings.
+	 *
+	 * @return true if nothing is left of the data; false otherwise.
+	 */
+	static boolean clearRobotData(File data, long waitAfterFailure) {
+		if (deleteContents(data)) {
+			return true;
+		}
+		System.gc();
+		pause(100); // A separate thread closes the stream after the collection
+		if (deleteContents(data)) {
+			return true;
+		}
+		pause(waitAfterFailure);
+		return false;
+	}
+
+	private static void pause(long milliseconds) {
+		try {
+			Thread.sleep(milliseconds);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	/**
