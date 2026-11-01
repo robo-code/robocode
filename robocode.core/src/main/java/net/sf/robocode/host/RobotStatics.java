@@ -56,12 +56,16 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 	private final int robotIndex;
 	private final int teamIndex;
 
+	// One object, like the real name, because many robots compare enemy names with == or !=
+	private final String annonymousName;
+
 	public RobotStatics(RobotSpecification robotSpecification, String name, String suffix, boolean isLeader, BattleRules rules, String teamName,
 			List<String> teamMembers, int robotIndex, int teamIndex) {
 		IRobotItem robotItem = (IRobotItem) HiddenAccess.getFileSpecification(robotSpecification);
 
 		this.robotIndex = robotIndex;
 		this.teamIndex = teamIndex;
+		this.annonymousName = "#" + robotIndex;
 
 		this.shortClassName = robotItem.getShortClassName();
 		this.fullClassName = robotItem.getFullClassName();
@@ -120,6 +124,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 		this.teamName = teamName;
 		this.robotIndex = robotIndex;
 		this.teamIndex = teamIndex;
+		this.annonymousName = "#" + robotIndex;
 	}
 
 	public String getRobocodeVersion() {
@@ -127,7 +132,7 @@ public final class RobotStatics implements IRobotStatics, Serializable {
 	}
 
 	public String getAnnonymousName() {
-		return "#" + robotIndex;
+		return annonymousName;
 	}
 
 	public boolean isJuniorRobot() {
