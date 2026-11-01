@@ -1,0 +1,110 @@
+/*
+ * Copyright (c) 2001-2026 Mathew A. Nelson and Robocode contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * https://robocode.sourceforge.io/license/epl-v10.html
+ */
+package net.sf.robocode.host.security;
+
+
+import net.sf.robocode.host.IHostedThread;
+import net.sf.robocode.host.RobotStatics;
+import net.sf.robocode.host.io.RobotFileSystemManager;
+import net.sf.robocode.repository.IRobotItem;
+import net.sf.robocode.security.HiddenAccess;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import robocode.control.RobotSpecification;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+
+/**
+ * @author Robert Maupin (original)
+ */
+public class ThreadManagerTest {
+
+	@Rule
+	public TemporaryFolder folder = new TemporaryFolder();
+
+	// The thread would keep the whole robot in memory, and Java 24+ has no SecurityManager to remove it
+	@Test
+	public void aThreadIsNotKeptAfterItOpensAFile() throws IOException {
+		File root = folder.newFolder("data");
+		IHostedThread robot = createAdvancedRobot(root);
+		ThreadManager manager = new ThreadManager();
+
+		manager.addThreadGroup(Thread.currentThread().getThreadGroup(), robot);
+
+		FileOutputStream stream = manager.createRobotFileStream(new File(root, "Robot.data/file").getPath(), false);
+
+		stream.close();
+
+		Assert.assertFalse(manager.checkRobotFileStream());
+	}
+
+	private static IHostedThread createAdvancedRobot(final File root) {
+		HiddenAccess.init();
+
+		IRobotItem item = stub(IRobotItem.class, new InvocationHandler() {
+			public Object invoke(Object proxy, Method method, Object[] args) {
+				switch (method.getName()) {
+				case "isAdvancedRobot":
+					return true;
+
+				case "getFullClassName":
+					return "test.Robot";
+
+				case "getShortClassName":
+					return "Robot";
+
+				default:
+					return defaultValue(method.getReturnType());
+				}
+			}
+		});
+		RobotSpecification specification = HiddenAccess.createSpecification(item, "test.Robot 1.0", null, null, "1.0", null, null,
+				"test.Robot", null);
+		final RobotStatics statics = new RobotStatics(specification, "test.Robot 1.0", "", false, null, null, null, 0, 0);
+
+		return stub(IHostedThread.class, new InvocationHandler() {
+			private RobotFileSystemManager manager;
+
+			public Object invoke(Object proxy, Method method, Object[] args) {
+				switch (method.getName()) {
+				case "getStatics":
+					return statics;
+
+				case "getRobotFileSystemManager":
+					if (manager == null) {
+						manager = new RobotFileSystemManager((IHostedThread) proxy, 200000, root.getPath(), root.getPath(), null);
+					}
+					return manager;
+
+				default:
+					return defaultValue(method.getReturnType());
+				}
+			}
+		});
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> T stub(Class<T> type, InvocationHandler handler) {
+		return (T) Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type}, handler);
+	}
+
+	private static Object defaultValue(Class<?> type) {
+		if (type == boolean.class) {
+			return false;
+		}
+		return type.isPrimitive() && type != void.class ? 0 : null;
+	}
+}
