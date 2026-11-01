@@ -33,6 +33,9 @@ import java.util.*;
  * <li>Creating a {@code FileInputStream}, {@code FileReader}, or {@code ObjectInputStream} is replaced with creating
  * the corresponding subclass in the {@code robocode.util} package, e.g. {@link robocode.util.RobotFileInputStream},
  * which performs the checks.</li>
+ * <li>{@code finalize()} methods, and calls to them, except calls to the ones of Java classes, are renamed to
+ * {@code robocode$finalize()}, so they no longer override {@code Object.finalize()}. Otherwise, the JVM would call them
+ * on its finalizer thread, where robot code is not checked like on the robot's own threads.</li>
  * </ul>
  * The rewrite changes the existing method references in the constant pool, and changes the instructions using them,
  * i.e. {@code invokevirtual} into {@code invokestatic}, and {@code new} of the Java class into {@code new} of the
@@ -137,6 +140,8 @@ final class RobotClassRewriter {
 		SUBCLASS_CONSTRUCTORS.put(className, new HashSet<String>(Arrays.asList(constructorDescriptors)));
 	}
 
+	private static final String FINALIZE_NAME = "robocode$finalize";
+
 	private static final int CONSTANT_Utf8 = 1;
 	private static final int CONSTANT_Long = 5;
 	private static final int CONSTANT_Double = 6;
@@ -194,9 +199,13 @@ final class RobotClassRewriter {
 		Map<Integer, String> staticMethodClasses = new HashMap<Integer, String>(); // methodref -> new class
 		Map<Integer, String> methodClasses = new HashMap<Integer, String>(); // methodref -> new class, same name and type
 		Map<Integer, String> classSubclasses = new HashMap<Integer, String>(); // class -> subclass
+		Set<Integer> finalizeMethodRefs = new HashSet<Integer>();
+		boolean hasFinalize = false;
 
 		for (int i = 1; i < count; i++) {
-			if (tags[i] == CONSTANT_Class) {
+			if ("finalize".equals(utf8s[i])) {
+				hasFinalize = true; // the class might declare a finalize() method
+			} else if (tags[i] == CONSTANT_Class) {
 				String subclass = SUBCLASSES.get(utf8(utf8s, u2(bytes, offsets[i] + 1)));
 				if (subclass != null) {
 					classSubclasses.put(i, subclass);
@@ -220,10 +229,14 @@ final class RobotClassRewriter {
 					methodClasses.put(i, SUBCLASSES.get(className));
 				} else if (REPLACED_STATIC_METHODS.containsKey(className + '.' + name + descriptor)) {
 					methodClasses.put(i, REPLACED_STATIC_METHODS.get(className + '.' + name + descriptor));
+				} else if ("finalize".equals(name) && "()V".equals(descriptor) && !className.startsWith("java/")) {
+					// A call to a finalize() that the class only inherits, e.g. super.finalize() with robocode.Robot as
+					// superclass, throws NoSuchMethodError, but only if a robot calls it itself, as the JVM no longer does
+					finalizeMethodRefs.add(i);
 				}
 			}
 		}
-		if (staticMethodNameIndexes.isEmpty() && methodClasses.isEmpty() && classSubclasses.isEmpty()) {
+		if (staticMethodNameIndexes.isEmpty() && methodClasses.isEmpty() && classSubclasses.isEmpty() && !hasFinalize) {
 			return classFile;
 		}
 
@@ -245,6 +258,8 @@ final class RobotClassRewriter {
 		for (Map.Entry<Integer, String> entry : classSubclasses.entrySet()) {
 			newClassIndexes.put(entry.getKey(), cp.addClass(entry.getValue()));
 		}
+		int finalizeNameIndex = hasFinalize ? cp.addUtf8(FINALIZE_NAME) : 0;
+		int finalizeNameAndTypeIndex = hasFinalize ? cp.addNameAndType(finalizeNameIndex, "()V") : 0;
 		byte[] newConstants = cp.toByteArray();
 
 		// Build the new class file
@@ -266,6 +281,9 @@ final class RobotClassRewriter {
 				putU2(result, offset + 3, nameAndTypeIndex);
 			}
 		}
+		for (int methodRef : finalizeMethodRefs) {
+			putU2(result, offsets[methodRef] + 3, finalizeNameAndTypeIndex);
+		}
 
 		// Change the instructions
 		Reader cr = new Reader(result);
@@ -280,7 +298,13 @@ final class RobotClassRewriter {
 
 		int methodsCount = cr.u2();
 		for (int m = 0; m < methodsCount; m++) {
-			cr.pos += 6; // access flags, name index, descriptor index
+			cr.u2(); // access flags
+			int methodNameOffset = cr.pos;
+			int methodNameIndex = cr.u2();
+			int descriptorIndex = cr.u2();
+			if ("finalize".equals(utf8s[methodNameIndex]) && "()V".equals(utf8s[descriptorIndex])) {
+				putU2(result, methodNameOffset, finalizeNameIndex);
+			}
 			int attributesCount = cr.u2();
 
 			for (int a = 0; a < attributesCount; a++) {
