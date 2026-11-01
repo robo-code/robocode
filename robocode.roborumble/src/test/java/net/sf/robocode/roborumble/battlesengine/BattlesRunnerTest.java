@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 
@@ -48,5 +49,25 @@ public class BattlesRunnerTest {
 	@Test
 	public void aPathThatCannotBeListedIsAFailure() throws IOException {
 		Assert.assertFalse(BattlesRunner.deleteContents(folder.newFile("not-a-directory")));
+	}
+
+	@Test
+	public void aFileLeftOpenForReadingIsDeletedAfterACollection() throws IOException {
+		File data = folder.newFolder("data");
+
+		leaveOpenForReading(new File(data, "kept"));
+
+		Assert.assertTrue(BattlesRunner.clearRobotData(data, 0));
+		Assert.assertEquals(0, data.list().length);
+	}
+
+	@Test
+	public void dataThatCannotBeDeletedIsAFailure() throws IOException {
+		Assert.assertFalse(BattlesRunner.clearRobotData(folder.newFile("not-a-directory"), 0));
+	}
+
+	private static void leaveOpenForReading(File file) throws IOException {
+		Assert.assertTrue(file.createNewFile());
+		new FileInputStream(file).read();
 	}
 }

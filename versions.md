@@ -19,8 +19,8 @@
   configuration, robots only see their enemies by anonymous names like `#1`, and uploads say `hidenames=YES`.
 - #118: New `CLEARDATA` setting for the RoboRumble client, by Chase-san. With `CLEARDATA=YES`, the data robots saved is
   deleted before each battle, so they only keep it between the rounds of one battle, and uploads say `cleardata=YES`.
-  Data in a robot's jar is not lost. If the data cannot be deleted, the client logs which file it was and skips the
-  battle.
+  Data in a robot's jar is not lost. If the data cannot be deleted, even after a garbage collection in case a robot left
+  a file open for reading, the client logs which file it was, waits a minute, and skips the battle.
 - Both settings default to `NOT` and must match the rumble on the server. The official LiteRumble rumbles need `NOT`.
 
 ## Version 1.11.2 (31-Oct-2026)
