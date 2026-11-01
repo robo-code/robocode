@@ -110,8 +110,9 @@ plugin, and the documentation files for it had got some serious issues that made
 
 To run Robocode, Java 8 or a newer version must be installed on your system. Both the Java Runtime Environment (JRE) and
 the Java Developer Kit (JDK) can be used. Note that the JRE does not include the standard Java compiler (javac) which
-comes with the JDK. However, Robocode comes with a built-in compiler ECJ (Eclipse Compiler for Java).
-Hence, it is sufficient to run Robocode with the JRE only.
+comes with the JDK. However, Robocode comes with a built-in compiler ECJ (Eclipse Compiler for Java), which needs
+Java 17 or newer. Hence, the JRE is enough to run Robocode, and with Java 17 or newer also to compile robots in the Robot
+Editor. To compile robots with an older version of Java, use the JDK.
 
 Also, note that it is important that these environment variables have been set up before running Robocode:
 

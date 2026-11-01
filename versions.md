@@ -22,6 +22,9 @@
   Data in a robot's jar is not lost. If the data cannot be deleted, even after a garbage collection in case a robot left
   a file open for reading, the client logs which file it was, waits a minute, and skips the battle.
 - Both settings default to `NOT` and must match the rumble on the server. The official LiteRumble rumbles need `NOT`.
+- The ReadMe now says that the built-in compiler needs Java 17 or newer, so compiling robots with an older version of
+  Java needs the JDK.
+- The tests now use JUnit 6, and run on Java 17 and 25 instead of Java 8 and 25. Robocode itself still runs on Java 8.
 
 ## Version 1.11.2 (31-Oct-2026)
 
