@@ -1,3 +1,27 @@
+## Version 1.12.0 (not released yet)
+
+### Bugfix
+
+- #117: With hidden enemy names, each event had a new String for the name of a robot, but robots may compare names
+  with `==` or `!=`, as these work for real names. RougeDC is one robot that did worse because of this. Fixed by
+  Robert Maupin ("Chase-san").
+- With hidden enemy names, a robot could see the real name of the robot that fired a bullet in `HitByBulletEvent` and
+  `BulletHitBulletEvent`, if the robot that fired was on a team.
+- Files that a robot left open were not closed when the battle ended. They are now closed, with a warning in the
+  console naming the robot and the file. On Windows, an open file cannot be deleted.
+
+### Changes
+
+- #117: New `HIDENAMES` setting for the RoboRumble client, by Robert Maupin ("Chase-san"). With `HIDENAMES=YES` in a
+  rumble's configuration, robots only see their enemies by anonymous names like `#1`, and uploads say `hidenames=YES`.
+- #118: New `CLEARDATA` setting for the RoboRumble client, by Robert Maupin ("Chase-san"). With `CLEARDATA=YES`, the
+  data robots saved is deleted before each battle, so they only keep it between the rounds of one battle, and uploads
+  say `cleardata=YES`. Data in a robot's jar is not lost. If the data cannot be deleted, the client logs which file it
+  was and skips the battle.
+- Both settings default to `NOT` and must match the rumble on the server. The official LiteRumble rumbles need `NOT`.
+- Added links to [AutoRumble](https://github.com/Chase-san/autorumble), a rumble server by Robert Maupin ("Chase-san")
+  that you can run yourself. It follows LiteRumble's scoring and upload protocol, and its rumbles use both settings.
+
 ## Version 1.11.2 (31-Oct-2026)
 
 ### Security

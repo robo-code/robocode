@@ -21,6 +21,8 @@ posting on Blogger and SourceForge news.
 
 Docker push is not included — run `./gradlew dockerPush` separately if needed.
 
+LiteRumble must be told about the new version separately (see [Step 1](#step-1--bump-the-version)).
+
 ---
 
 **Option B — fully automated**
@@ -161,6 +163,11 @@ Edit `gradle.properties` and update the version number:
 ```properties
 version=1.10.3
 ```
+
+LiteRumble only accepts results from the client versions in `allowed_clients` in `structures.py` in
+[robo-code/literumble](https://github.com/robo-code/literumble). Open a pull request there with `jkflying` as reviewer
+to add the new version. The release does not have to wait for it, as people running LiteRumble clients stay on an
+accepted version until then. Say in the pull request if the release changes how battles run or what the client uploads.
 
 ### Step 2 — Update the changelog
 
