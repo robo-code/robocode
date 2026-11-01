@@ -14,12 +14,18 @@ import net.sf.robocode.host.security.RobotClassLoader;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.security.HiddenAccess;
 import net.sf.robocode.test.helpers.Assert;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 
 /**
@@ -87,6 +93,33 @@ public class RobotClassLoaderTest {
 
 			cl.loadClass("net.sf.robocode.host.proxies.BasicRobotProxy");
 		});
+	}
+
+	@Test
+	public void finalizeIsRenamed() throws Exception {
+		URL robotClassPath = compileRobot("finalizer", "Finalizer", "{\n"
+				+ "\tprotected void finalize() throws Throwable { super.finalize(); }\n");
+
+		// The JVM must not call finalize() of robots on its finalizer thread
+		Class<?> c = new RobotClassLoader(robotClassPath, "finalizer.Finalizer").loadClass("finalizer.Finalizer", true);
+		Method renamed = c.getDeclaredMethod("robocode$finalize");
+
+		renamed.setAccessible(true);
+		renamed.invoke(c.getDeclaredConstructor().newInstance()); // super.finalize() still works
+		Assert.assertThrows(NoSuchMethodException.class, () -> c.getDeclaredMethod("finalize"));
+	}
+
+	// Compiles a class outside the class path of the tests, as its classes are otherwise treated as system classes
+	private static URL compileRobot(String packageName, String className, String body) throws IOException {
+		Path dir = Files.createTempDirectory("robots");
+		Path source = Files.createDirectories(dir.resolve(packageName)).resolve(className + ".java");
+		Files.write(source, ("package " + packageName + ";\n"
+				+ "public class " + className + " " + body + "}\n").getBytes("UTF-8"));
+		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		Assumptions.assumeTrue(compiler != null);
+		Assert.assertEquals(0, compiler.run(null, null, null, "-nowarn", "-cp", System.getProperty("java.class.path"),
+				source.toString()));
+		return dir.toUri().toURL();
 	}
 
 	@Test
