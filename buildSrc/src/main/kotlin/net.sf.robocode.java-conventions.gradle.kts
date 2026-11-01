@@ -23,9 +23,21 @@ java {
     }
 }
 
+// The product runs on Java 8, but JUnit 6 needs Java 17, so only the tests are compiled and run with Java 17 or newer
+val testJavaLanguageVersion = 17
+
+configurations.matching { it.name == "testCompileClasspath" || it.name == "testRuntimeClasspath" }.configureEach {
+    attributes.attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, testJavaLanguageVersion)
+}
+
 tasks {
     withType<JavaCompile> {
         options.encoding = "UTF-8"
+    }
+    named<JavaCompile>("compileTestJava") {
+        javaCompiler.set(javaToolchains.compilerFor {
+            languageVersion.set(JavaLanguageVersion.of(testJavaLanguageVersion))
+        })
     }
     // Robot battle tests are timing-sensitive and can intermittently report transient
     // engine errors (e.g. "Unable to stop thread") on slow/loaded CI machines.
@@ -37,13 +49,12 @@ tasks {
             maxFailures.set(20)
             failOnPassedAfterRetry.set(false)
         }
-        // Run tests on another Java version than the Java 8 toolchain, e.g. -PtestJavaVersion=25,
+        // Run tests on another Java version than Java 17, e.g. -PtestJavaVersion=25,
         // as robot security works differently on Java 24+ where the SecurityManager is removed.
-        providers.gradleProperty("testJavaVersion").orNull?.let { version ->
-            javaLauncher.set(javaToolchains.launcherFor {
-                languageVersion.set(JavaLanguageVersion.of(version))
-            })
-        }
+        val version = providers.gradleProperty("testJavaVersion").orNull ?: testJavaLanguageVersion.toString()
+        javaLauncher.set(javaToolchains.launcherFor {
+            languageVersion.set(JavaLanguageVersion.of(version))
+        })
     }
 }
 
