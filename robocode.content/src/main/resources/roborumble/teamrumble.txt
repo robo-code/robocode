@@ -74,6 +74,8 @@ TEAMS=YES
 #           If set to YES, the data robots saved is deleted before each battle,
 #           so they only keep it between the rounds of one battle. Data in a
 #           robot's jar is not lost. Use YES or NOT.
+#           This must match the rumble on the server. The official LiteRumble
+#           rumbles need NOT.
 
 CLEARDATA=NOT
 
@@ -93,6 +95,8 @@ ROUNDS=10
 # HIDENAMES
 #           If set to YES, robots only see their enemies by anonymous names like
 #           #1 instead of by their real names. Use YES or NOT.
+#           This must match the rumble on the server. The official LiteRumble
+#           rumbles need NOT.
 
 HIDENAMES=NOT
 

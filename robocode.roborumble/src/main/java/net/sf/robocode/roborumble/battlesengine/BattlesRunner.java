@@ -29,6 +29,7 @@ import java.util.*;
  * @author Flemming N. Larsen (contributor)
  * @author Joachim Hofer (contributor)
  * @author Pavel Savara (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class BattlesRunner {
 	private final BattlesFile inputfile;

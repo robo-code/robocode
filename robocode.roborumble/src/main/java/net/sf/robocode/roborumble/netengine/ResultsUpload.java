@@ -25,6 +25,7 @@ import java.util.Vector;
  * @author Albert Perez (original)
  * @author Flemming N. Larsen (contributor)
  * @author Pavel Savara (contributor)
+ * @author Robert D. Maupin (contributor)
  */
 public class ResultsUpload {
 

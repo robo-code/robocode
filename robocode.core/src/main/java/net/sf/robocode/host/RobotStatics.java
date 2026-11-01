@@ -24,6 +24,7 @@ import java.util.List;
 
 /**
  * @author Pavel Savara (original)
+ * @author Robert D. Maupin (contributor)
  */
 public final class RobotStatics implements IRobotStatics, Serializable {
 	private static final long serialVersionUID = 1L;
