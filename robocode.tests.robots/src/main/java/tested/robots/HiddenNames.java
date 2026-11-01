@@ -9,6 +9,7 @@ package tested.robots;
 
 
 import robocode.AdvancedRobot;
+import robocode.HitByBulletEvent;
 import robocode.ScannedRobotEvent;
 
 
@@ -36,5 +37,10 @@ public class HiddenNames extends AdvancedRobot {
 			out.println("The name is a new object");
 		}
 		lastName = name;
+	}
+
+	@Override
+	public void onHitByBullet(HitByBulletEvent e) {
+		out.println("Hit by: " + e.getName());
 	}
 }

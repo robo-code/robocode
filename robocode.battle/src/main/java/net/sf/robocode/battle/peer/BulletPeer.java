@@ -96,16 +96,29 @@ public class BulletPeer {
 				b.y = b.lastY;
 
 				// Bugfix #366
-				owner.addEvent(new BulletHitBulletEvent(createBullet(false), b.createBullet(true)));
-				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(false), createBullet(true)));
+				owner.addEvent(new BulletHitBulletEvent(createBullet(), b.createBulletSeenBy(owner)));
+				b.owner.addEvent(new BulletHitBulletEvent(b.createBullet(), createBulletSeenBy(b.owner)));
 				break;
 			}
 		}
 	}
 
-	private Bullet createBullet(boolean hideOwnerName) {
-		String ownerName = (owner == null) ? null : (hideOwnerName ? getNameForEvent(owner) : owner.getName());
-		String victimName = (victim == null) ? null : (hideOwnerName ? victim.getName() : getNameForEvent(victim));
+	/**
+	 * Creates the bullet as its owner sees it.
+	 */
+	private Bullet createBullet() {
+		String ownerName = (owner == null) ? null : owner.getName();
+		String victimName = (victim == null) ? null : getNameForEvent(victim);
+
+		return new Bullet(heading, x, y, power, ownerName, victimName, isActive(), bulletId);
+	}
+
+	/**
+	 * Creates the bullet as another robot sees it, where the name of the owner depends on that robot.
+	 */
+	private Bullet createBulletSeenBy(RobotPeer robot) {
+		String ownerName = (owner == null) ? null : robot.getNameForEvent(owner);
+		String victimName = (victim == null) ? null : victim.getName();
 
 		return new Bullet(heading, x, y, power, ownerName, victimName, isActive(), bulletId);
 	}
@@ -191,10 +204,10 @@ public class BulletPeer {
 				otherRobot.addEvent(
 						new HitByBulletEvent(
 								robocode.util.Utils.normalRelativeAngle(heading + Math.PI - otherRobot.getBodyHeading()),
-								createBullet(true))); // Bugfix #366
+								createBulletSeenBy(otherRobot))); // Bugfix #366
 
 				owner.addEvent(
-						new BulletHitEvent(owner.getNameForEvent(otherRobot), otherRobot.getEnergy(), createBullet(false))); // Bugfix #366
+						new BulletHitEvent(owner.getNameForEvent(otherRobot), otherRobot.getEnergy(), createBullet())); // Bugfix #366
 
 				double newX, newY;
 
@@ -222,7 +235,7 @@ public class BulletPeer {
 				|| (y + RADIUS >= battleRules.getBattlefieldHeight())) {
 			state = BulletState.HIT_WALL;
 			frame = 0;
-			owner.addEvent(new BulletMissedEvent(createBullet(false))); // Bugfix #366
+			owner.addEvent(new BulletMissedEvent(createBullet())); // Bugfix #366
 		}
 	}
 

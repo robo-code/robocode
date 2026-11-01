@@ -1,0 +1,6 @@
+#Robocode robot team
+team.members=tested.robots.HiddenNames,sample.Target
+team.author.name=
+robocode.version=unknown
+uuid=3f6a9c1e-7b52-4d08-9e41-c2d05a8b7f13
+team.description=A team for testing hidden names
