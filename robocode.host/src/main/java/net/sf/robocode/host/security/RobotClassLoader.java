@@ -322,7 +322,8 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 		Class<?> type = null;
 		try {
 			type = loadRobotClassLocally(className, false);
-			if (type != null) {
+			// Setting a static field initializes the class, which would run its static initializers on this thread
+			if (type != null && isInitialized(type)) {
 				for (Field field : getAllFields(new ArrayList<Field>(), type)) {
 					if (isStaticReference(field)) {
 						cleanStaticReference(field);
@@ -407,6 +408,26 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 			field.set(null, null);
 
 		} catch (Throwable ignore) {
+		}
+	}
+
+	/**
+	 * Checks if a class has been initialized, without initializing it.
+	 *
+	 * @param type the class to check.
+	 * @return true if the class has been initialized; false if not, or if this cannot be checked, as sun.misc.Unsafe
+	 * might not have shouldBeInitialized() with newer Java versions. Static references cannot be cleaned with
+	 * Java 12+ anyway.
+	 */
+	private static boolean isInitialized(Class<?> type) {
+		try {
+			Field theUnsafe = Class.forName("sun.misc.Unsafe").getDeclaredField("theUnsafe");
+			theUnsafe.setAccessible(true);
+			Object unsafe = theUnsafe.get(null);
+
+			return !(Boolean) unsafe.getClass().getMethod("shouldBeInitialized", Class.class).invoke(unsafe, type);
+		} catch (Throwable t) {
+			return false;
 		}
 	}
 
