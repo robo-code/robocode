@@ -24,6 +24,8 @@ Get started with Robocode today and unleash your inner programmer!
 - [Robocode home page]
 - [Introduction] to Robocode
 - [RoboWiki] — a community knowledge base collecting Robocode wisdom since 2003
+- [AutoRumble] is a rumble server by Robert Maupin ("Chase-san") that you can run yourself, where robots do not see
+  the names of their enemies
 - [Robocode group] is where you can ask questions
 - [Facebook group] is a community for enthusiasts of the Robocode programming game
 - [Robocode Application Developers] is for people that want to develop or experiment with the Robocode application
@@ -47,6 +49,8 @@ Happy Robocoding! 🤖⌨️
 [Introduction]: https://robocode.sourceforge.io/docs/ReadMe.html "Introduction into Robocode"
 
 [RoboWiki]: https://robowiki.net/ "RoboWiki - Collecting Robocode knowledge since 2003"
+
+[AutoRumble]: https://github.com/Chase-san/autorumble "AutoRumble - A rumble server for Robocode"
 
 [Robocode group]: https://groups.google.com/g/robocode "The Robocode Group"
 
