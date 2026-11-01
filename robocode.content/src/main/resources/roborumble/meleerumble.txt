@@ -70,6 +70,13 @@ TEAMS=NOT
 # Properties for the battle engine
 #------------------------------------------------------------------------------
 
+# CLEARDATA
+#           If set to YES, the data robots saved is deleted before each battle,
+#           so they only keep it between the rounds of one battle. Data in a
+#           robot's jar is not lost. Use YES or NOT.
+
+CLEARDATA=NOT
+
 # FIELDL      Battlefield width measured in pixels.
 # FIELDH      Battlefield height measured in pixels.
 #
