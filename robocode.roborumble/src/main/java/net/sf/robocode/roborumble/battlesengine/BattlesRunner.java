@@ -35,6 +35,8 @@ public class BattlesRunner {
 	private final int fieldhei;
 	private final boolean hidenames;
 	private final String outfile;
+	// The settings saved with each battle's results, which an upload may only read much later
+	private final StringBuilder resultSettings = new StringBuilder();
 	private final String user;
 	private final String game;
 	private static RobotResults[] lastResults;
@@ -47,6 +49,9 @@ public class BattlesRunner {
 		fieldlen = Integer.parseInt(parameters.getProperty("FIELDL", "800"));
 		fieldhei = Integer.parseInt(parameters.getProperty("FIELDH", "600"));
 		hidenames = parameters.getProperty("HIDENAMES", "NOT").equals("YES");
+		if (hidenames) {
+			resultSettings.append(",HIDENAMES=YES");
+		}
 		outfile = parameters.getProperty("OUTPUT", "");
 		user = parameters.getProperty("USER", "");
 		this.game = game;
@@ -174,7 +179,7 @@ public class BattlesRunner {
 
 						outtxt.println(
 								game + "," + numrounds + "," + fieldlen + "x" + fieldhei + "," + user + ","
-										+ System.currentTimeMillis() + "," + rumbleBattle.getRunonly());
+										+ System.currentTimeMillis() + "," + rumbleBattle.getRunonly() + resultSettings);
 						outtxt.println(name1 + "," + points1 + "," + bullets1 + "," + survival1);
 						outtxt.println(name2 + "," + points2 + "," + bullets2 + "," + survival2);
 					}

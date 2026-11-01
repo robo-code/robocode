@@ -43,7 +43,6 @@ public class ResultsUpload {
 	private final String priority;
 	private final String teams;
 	private final String melee;
-	private final boolean hidenames;
 
 	public ResultsUpload(String game, Properties parameters, String clientVersion) {
 
@@ -63,7 +62,6 @@ public class ResultsUpload {
 		client = clientVersion;
 		teams = parameters.getProperty("TEAMS", "NOT");
 		melee = parameters.getProperty("MELEE", "NOT");
-		hidenames = parameters.getProperty("HIDENAMES", "NOT").equals("YES");
 
 		// Open competitions selector
 		size = new CompetitionsSelector(sizesfile, botsrepository);
@@ -174,7 +172,7 @@ public class ResultsUpload {
 					+ "&rounds=" + header[1] + "&field=" + header[2] + "&user=" + user + "&time=" + header[4] + "&fname="
 					+ first[0] + "&fscore=" + first[1] + "&fbulletd=" + first[2] + "&fsurvival=" + first[3] + "&sname="
 					+ second[0] + "&sscore=" + second[1] + "&sbulletd=" + second[2] + "&ssurvival=" + second[3]
-					+ (hidenames ? "&hidenames=YES" : "");
+					+ (hasSetting(header, "HIDENAMES=YES") ? "&hidenames=YES" : "");
 
 			String data = "game=" + game + commonData;
 
@@ -234,6 +232,19 @@ public class ResultsUpload {
 			outtxt.println(bot2);
 		}
 		System.out.println("Unable to upload results " + match + " " + bot1 + " " + bot2);
+	}
+
+	/**
+	 * Returns whether a battle's saved header has a setting. Settings come after the match type, and a header
+	 * saved by an earlier version of the client has none.
+	 */
+	static boolean hasSetting(String[] header, String setting) {
+		for (int i = 6; i < header.length; i++) {
+			if (header[i].equals(setting)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean senddata(String game, String data, PrintStream outtxt, boolean saveonerror, Vector<String> results, int i, PrintStream battlesnum, PrintStream prioritybattles) {
