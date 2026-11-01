@@ -99,10 +99,6 @@ competitions.
 In 2012, the Robocode called Julian ("Skilgannon") created [LiteRumble](https://robowiki.net/wiki/LiteRumble), which is
 intended to be a lightweight, easily deployable RoboRumble system designed to run on the Google App Engine.
 
-In 2026, Robert Maupin ("Chase-san") created [AutoRumble](https://github.com/Chase-san/autorumble), a rumble server
-written in Rust that you can run yourself. It follows LiteRumble's scoring and upload protocol, and its rumbles hide
-enemy names from robots and delete the data robots save between battles.
-
 In May 2010 a **.Net plugin** was provided for Robocode using a .NET / Java bridge that made it possible to develop
 robots for the [.Net Framework](https://dotnet.microsoft.com/download/dotnet-framework/) version 3.5 beside developing
 robots in Java. This feature was provided by Pavel Savara, who is a major Robocode contributor.
