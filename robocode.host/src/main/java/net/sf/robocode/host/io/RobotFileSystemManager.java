@@ -255,6 +255,22 @@ public class RobotFileSystemManager {
 		streams.remove(s);
 	}
 
+	/**
+	 * Closes the files that the robot left open. An open file cannot be deleted on some systems, e.g. on Windows,
+	 * which can keep the robot data from being deleted, and the robot's author should know about it.
+	 */
+	public void closeOpenStreams() {
+		for (RobotFileOutputStream stream : new ArrayList<RobotFileOutputStream>(streams)) {
+			Logger.logWarning("Robot " + robotProxy.getStatics().getName() + " did not close the file "
+					+ stream.getFilename() + ", which was closed when the battle ended.");
+			try {
+				stream.close();
+			} catch (IOException e) {
+				Logger.logError("Could not close " + stream.getFilename(), e);
+			}
+		}
+	}
+
 	private void updateDataFiles() {
 		try {
 			if (rootPath.startsWith("jar:")) {

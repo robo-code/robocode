@@ -86,6 +86,9 @@ abstract class HostingRobotProxy implements IHostingRobotProxy, IHostedThread {
 		robot = null;
 
 		// Remove the file system and the manager
+		if (robotFileSystemManager != null) {
+			robotFileSystemManager.closeOpenStreams();
+		}
 		robotFileSystemManager = null;
 		if (out != null) {
 			out.close();

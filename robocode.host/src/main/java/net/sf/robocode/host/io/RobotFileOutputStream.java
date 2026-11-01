@@ -18,11 +18,17 @@ import java.io.IOException;
 public class RobotFileOutputStream extends FileOutputStream {
 
 	private final RobotFileSystemManager fileSystemManager;
+	private final String filename;
 
 	public RobotFileOutputStream(String filename, boolean append, RobotFileSystemManager fileSystemManager) throws IOException {
 		super(filename, append);
 		this.fileSystemManager = fileSystemManager;
+		this.filename = filename;
 		fileSystemManager.addStream(this);
+	}
+
+	String getFilename() {
+		return filename;
 	}
 
 	@Override
