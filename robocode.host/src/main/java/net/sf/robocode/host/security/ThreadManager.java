@@ -153,8 +153,12 @@ public class ThreadManager implements IThreadManager {
 			AccessController.doPrivileged(new PrivilegedAction<Object>() {
 				public Object run() {
 					outputStreamThreads.add(c);
-					if (!dir.exists() && !dir.mkdirs()) {
-						syserr.println("Can't create dir " + dir);
+					try {
+						if (!dir.exists() && !dir.mkdirs()) {
+							syserr.println("Can't create dir " + dir);
+						}
+					} finally {
+						outputStreamThreads.remove(c);
 					}
 					return null;
 				}
@@ -176,7 +180,12 @@ public class ThreadManager implements IThreadManager {
 		}
 
 		outputStreamThreads.add(c);
-		return new RobotFileOutputStream(fileName, append, fileSystemManager);
+		try {
+			return new RobotFileOutputStream(fileName, append, fileSystemManager);
+		} finally {
+			// The SecurityManager removes the thread when the file is opened, but Java 24+ has no SecurityManager
+			outputStreamThreads.remove(c);
+		}
 	}
 
 	public void checkRobotFileWrite(File file) {

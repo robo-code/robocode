@@ -9,6 +9,9 @@
   `BulletHitBulletEvent`, if the robot that fired was on a team.
 - Files that a robot left open were not closed when the battle ended. They are now closed, with a warning in the
   console naming the robot and the file. On Windows, an open file cannot be deleted.
+- With Java 24 and newer, a robot that wrote a file stayed in memory after the battle, as its thread was kept in a list
+  that only the SecurityManager removed threads from. Long runs, e.g. of the RoboRumble client, ran out of memory and
+  hung.
 
 ### Changes
 
