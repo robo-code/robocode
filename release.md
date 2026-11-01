@@ -23,6 +23,9 @@ Docker push is not included — run `./gradlew dockerPush` separately if needed.
 
 LiteRumble must be told about the new version separately (see [Step 1](#step-1--bump-the-version)).
 
+Always build and try Robocode before running `./gradlew release`, which publishes right after building
+(see [Step 4](#step-4--build-all-artifacts)).
+
 ---
 
 **Option B — fully automated**
@@ -213,6 +216,16 @@ Gradle itself must run on Java 17 or newer (`JAVA_HOME`), but all modules are co
 newer. A JDK 8 must be installed, so Gradle can detect it; check with `./gradlew javaToolchains`.
 
 `versions.md` is included in the setup JAR, so set the release date in `versions.md` before building the release.
+
+**Always try the build before publishing anything.** The automated tests cannot run on Java 8, as JUnit 6 needs Java 17,
+and they do not show whether the application itself works. Unpack the setup JAR in an empty folder, e.g. with
+`jar xf robocode-{version}-setup.jar`, and start `robocode.bat` or `robocode.sh`, both on Java 8 and on the newest Java:
+
+1. Run a battle until the results are shown.
+2. Compile a new robot in the Robot Editor, and run it in a battle. On Java 8, this needs the JDK.
+3. Check the console window for errors.
+
+Do not publish if any of this fails.
 
 ### Step 5 — Publish to Maven Central
 
