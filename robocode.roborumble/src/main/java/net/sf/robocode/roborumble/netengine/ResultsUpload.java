@@ -41,6 +41,7 @@ public class ResultsUpload {
 	private final CompetitionsSelector size;
 	private final String battlesnumfile;
 	private final String priority;
+	private final boolean cleardata;
 	private final String teams;
 	private final String melee;
 
@@ -60,6 +61,7 @@ public class ResultsUpload {
 		battlesnumfile = parameters.getProperty("BATTLESNUMFILE", "");
 		priority = parameters.getProperty("PRIORITYBATTLESFILE", "");
 		client = clientVersion;
+		cleardata = parameters.getProperty("CLEARDATA", "NOT").equals("YES");
 		teams = parameters.getProperty("TEAMS", "NOT");
 		melee = parameters.getProperty("MELEE", "NOT");
 
@@ -168,7 +170,7 @@ public class ResultsUpload {
 			// if the match mode was general, then send the results to all competitions (assuming codesize is used).
 			// if its not, then send results only to smaller size competitions
 
-			final String commonData = "&version=1" + "&client=" + client + "&teams=" + teams + "&melee=" + melee
+			final String commonData = "&version=1" + (cleardata ? "&cleardata=YES" : "") + "&client=" + client + "&teams=" + teams + "&melee=" + melee
 					+ "&rounds=" + header[1] + "&field=" + header[2] + "&user=" + user + "&time=" + header[4] + "&fname="
 					+ first[0] + "&fscore=" + first[1] + "&fbulletd=" + first[2] + "&fsurvival=" + first[3] + "&sname="
 					+ second[0] + "&sscore=" + second[1] + "&sbulletd=" + second[2] + "&ssurvival=" + second[3];

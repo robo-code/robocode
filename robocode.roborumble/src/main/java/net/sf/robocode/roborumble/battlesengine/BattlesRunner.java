@@ -8,6 +8,7 @@
 package net.sf.robocode.roborumble.battlesengine;
 
 
+import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import robocode.control.*;
 import robocode.control.events.BattleAdaptor;
@@ -15,6 +16,7 @@ import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.*;
 
 
@@ -36,6 +38,7 @@ public class BattlesRunner {
 	private final String outfile;
 	private final String user;
 	private final String game;
+	private final boolean cleardata;
 	private static RobotResults[] lastResults;
 	private static IRobocodeEngine engine;
 
@@ -48,6 +51,7 @@ public class BattlesRunner {
 		outfile = parameters.getProperty("OUTPUT", "");
 		user = parameters.getProperty("USER", "");
 		this.game = game;
+		cleardata = parameters.getProperty("CLEARDATA", "NOT").equals("YES");
 
 		initialize();
 	}
@@ -101,6 +105,9 @@ public class BattlesRunner {
 							battle.getBattlefield(), robotsList);
 
 					lastResults = null;
+					if (cleardata) {
+						deleteContents(FileUtil.getRobotsDataDir());
+					}
 					engine.runBattle(specification, true);
 					if (lastResults != null && lastResults.length > 1) {
 						dumpResults(outtxt, lastResults, rumbleBattle, melee);
@@ -114,6 +121,25 @@ public class BattlesRunner {
 
 		// close
 		outtxt.close();
+	}
+
+	/**
+	 * Deletes everything in a directory. For the robot data directory this is safe between battles, as
+	 * a robot gets back the data in its jar when a battle starts.
+	 */
+	static void deleteContents(File directory) {
+		final File[] files = directory.listFiles();
+
+		if (files != null) {
+			for (File file : files) {
+				if (file.isDirectory() && !Files.isSymbolicLink(file.toPath())) {
+					deleteContents(file);
+				}
+				if (!file.delete()) {
+					Logger.logWarning("Could not delete " + file);
+				}
+			}
+		}
 	}
 
 	private String getEnemies(boolean melee, String[] bots) {

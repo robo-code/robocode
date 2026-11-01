@@ -8,6 +8,7 @@ dependencies {
     runtimeOnly(project(":robocode.core"))
     runtimeOnly(project(":robocode.battle"))
     runtimeOnly(libs.codesize)
+    testImplementation(testLibs.junit)
 }
 
 description = "Roborumble Client"
