@@ -17,6 +17,12 @@ dependencies {
 
 description = "Robocode Tests"
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 tasks {
     publishMavenJavaPublicationToSonatypeRepository {
         enabled = false
