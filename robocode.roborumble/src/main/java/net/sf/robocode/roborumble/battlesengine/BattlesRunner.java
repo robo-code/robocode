@@ -116,12 +116,14 @@ public class BattlesRunner {
 							battle.getSentryBorderSize(), hidenames, robotsList);
 
 					lastResults = null;
-					if (cleardata) {
-						deleteContents(FileUtil.getRobotsDataDir());
-					}
-					engine.runBattle(specification, true);
-					if (lastResults != null && lastResults.length > 1) {
-						dumpResults(outtxt, lastResults, rumbleBattle, melee);
+					if (cleardata && !deleteContents(FileUtil.getRobotsDataDir())) {
+						// The results would claim that the data was cleared
+						Logger.realErr.println("Skipping battle because the robot data could not be deleted: " + enemies);
+					} else {
+						engine.runBattle(specification, true);
+						if (lastResults != null && lastResults.length > 1) {
+							dumpResults(outtxt, lastResults, rumbleBattle, melee);
+						}
 					}
 				}
 			} else {
@@ -137,20 +139,32 @@ public class BattlesRunner {
 	/**
 	 * Deletes everything in a directory. For the robot data directory this is safe between battles, as
 	 * a robot gets back the data in its jar when a battle starts.
+	 *
+	 * @return true if nothing is left in the directory; false otherwise. A missing directory counts as empty.
 	 */
-	static void deleteContents(File directory) {
+	static boolean deleteContents(File directory) {
 		final File[] files = directory.listFiles();
 
-		if (files != null) {
-			for (File file : files) {
-				if (file.isDirectory() && !Files.isSymbolicLink(file.toPath())) {
-					deleteContents(file);
-				}
-				if (!file.delete()) {
-					Logger.logWarning("Could not delete " + file);
-				}
+		if (files == null) {
+			if (directory.exists()) {
+				Logger.realErr.println("Could not read " + directory);
+				return false;
+			}
+			return true;
+		}
+		boolean deleted = true;
+
+		for (File file : files) {
+			boolean isDirectory = file.isDirectory() && !Files.isSymbolicLink(file.toPath());
+
+			if (isDirectory && !deleteContents(file)) {
+				deleted = false; // What could not be deleted has been reported, and keeps this directory from being deleted
+			} else if (!file.delete()) {
+				Logger.realErr.println("Could not delete " + file);
+				deleted = false;
 			}
 		}
+		return deleted;
 	}
 
 	private String getEnemies(boolean melee, String[] bots) {

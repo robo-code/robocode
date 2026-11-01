@@ -34,7 +34,7 @@ public class BattlesRunnerTest {
 		Assert.assertTrue(new File(robot, "#1").createNewFile());
 		Assert.assertTrue(new File(data, "loose").createNewFile());
 
-		BattlesRunner.deleteContents(data);
+		Assert.assertTrue(BattlesRunner.deleteContents(data));
 
 		Assert.assertTrue(data.isDirectory());
 		Assert.assertEquals(0, data.list().length);
@@ -42,6 +42,11 @@ public class BattlesRunnerTest {
 
 	@Test
 	public void aMissingDirectoryIsFine() {
-		BattlesRunner.deleteContents(new File(folder.getRoot(), "missing"));
+		Assert.assertTrue(BattlesRunner.deleteContents(new File(folder.getRoot(), "missing")));
+	}
+
+	@Test
+	public void aPathThatCannotBeListedIsAFailure() throws IOException {
+		Assert.assertFalse(BattlesRunner.deleteContents(folder.newFile("not-a-directory")));
 	}
 }
