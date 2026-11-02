@@ -12,6 +12,12 @@
 - With Java 24 and newer, a robot that wrote a file stayed in memory after the battle, as its thread was kept in a list
   that only the SecurityManager removed threads from. Long runs, e.g. of the RoboRumble client, ran out of memory and
   hung.
+- #123: Fix robot code running outside the robot's thread
+    - The `finalize()` method of a robot class ran on Java's finalizer thread, where robot code is not checked like on
+      the robot's own threads. Java no longer calls `finalize()` of robot classes, so robots cannot rely on it.
+    - With Java 8 to 11, the cleanup after a robot could run its static initializers. Their output went to the main
+      console instead of the robot's console, and building the robot database took longer.
+    - Thanks go to [Julian Kent](https://github.com/jkflying) for fixing this.
 
 ### Changes
 
