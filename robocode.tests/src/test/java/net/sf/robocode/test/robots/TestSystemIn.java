@@ -12,22 +12,25 @@ import net.sf.robocode.test.helpers.Assert;
 import net.sf.robocode.test.helpers.RobocodeTestBed;
 import org.junit.jupiter.api.Test;
 import robocode.control.events.TurnEndedEvent;
-import tested.robots.SystemInUse;
 
 import java.io.IOException;
 
 
 /**
- * Tests that the program using Robocode can read from System.in, which robots cannot with Java 24+.
+ * Tests that a robot is stopped when it tries to read from System.in, while the program using Robocode can read from it,
+ * also while the battle is running.
  *
  * @author Flemming N. Larsen (original)
  */
 public class TestSystemIn extends RobocodeTestBed {
-	private final StringBuilder output = new StringBuilder();
+	private SecurityException hostFailure;
+	private boolean hostReadDuringBattle;
 
 	@Test
 	public void run() {
-		super.run();
+		Assert.assertThrows(SecurityException.class, () -> {
+			super.run();
+		});
 	}
 
 	@Override
@@ -38,17 +41,24 @@ public class TestSystemIn extends RobocodeTestBed {
 	@Override
 	public void onTurnEnded(TurnEndedEvent event) {
 		super.onTurnEnded(event);
-		output.append(event.getTurnSnapshot().getRobots()[0].getOutputStreamSnapshot());
+		hostReadDuringBattle = true;
+		readAsHost();
+	}
+
+	private void readAsHost() {
+		try {
+			System.in.available();
+		} catch (IOException ignore) { // There might be no input in the test, but it must be allowed
+		} catch (SecurityException e) {
+			hostFailure = e;
+		}
 	}
 
 	@Override
 	protected void runTeardown() {
-		try {
-			System.in.available();
-		} catch (IOException ignore) { // There might be no input in the test, which is fine. It must only be allowed.
-		}
-		if (Runtime.version().feature() >= 24) {
-			Assert.assertTrue(output.toString().contains(SystemInUse.DENIED_MESSAGE), "Robot could read System.in:\n" + output);
-		}
+		readAsHost();
+		Assert.assertTrue(hostFailure == null, "The program could not read from System.in: " + hostFailure);
+		Assert.assertTrue(hostReadDuringBattle, "The program did not try to read during the battle");
+		Assert.assertTrue(errorText.toString().contains("from reading from System.in"), "Robot must be stopped:\n" + errorText);
 	}
 }

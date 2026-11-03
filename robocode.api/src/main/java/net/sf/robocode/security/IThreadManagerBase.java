@@ -47,6 +47,13 @@ public interface IThreadManagerBase {
 	ClassLoader getRobotClassLoader();
 
 	/**
+	 * Punishes the current robot for trying to read from System.in, and prevents it.
+	 *
+	 * @throws SecurityException always.
+	 */
+	void denyRobotSystemIn();
+
+	/**
 	 * Checks that the current robot is allowed to use a member via reflection, i.e. that the member belongs to a class
 	 * of the robot, or that robots are allowed to use the member directly in their code.
 	 *

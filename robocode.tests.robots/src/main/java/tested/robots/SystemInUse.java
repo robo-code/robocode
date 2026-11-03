@@ -14,24 +14,22 @@ import java.io.IOException;
 
 
 /**
- * Tries to read from System.in, which is not possible for robots with Java 24+.
+ * Tries to read from System.in, which must be prevented by the robot security. The robot must still be loaded, as
+ * existing robots may have code using System.in that never runs.
  *
  * @author Flemming N. Larsen (original)
  */
 public class SystemInUse extends AdvancedRobot {
 
-	public static final String DENIED_MESSAGE = "System.in was denied";
-
 	public void run() {
+		// Let the battle run for a while, so the program can read from System.in during the battle
+		for (int i = 0; i < 100; i++) {
+			doNothing();
+		}
 		try {
-			System.in.available();
-		} catch (SecurityException e) {
-			out.println(DENIED_MESSAGE);
+			System.in.read();
 		} catch (IOException e) {
 			e.printStackTrace(out);
-		}
-		for (int i = 0; i < 10; i++) {
-			turnLeft(10);
 		}
 	}
 }

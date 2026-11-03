@@ -216,7 +216,9 @@ public final class RobotClassVerifier {
 			"java/lang/System.loadLibrary",
 			// System properties and standard streams
 			"java/lang/System.clearProperty",
+			"java/lang/System.console",
 			"java/lang/System.getProperties",
+			"java/lang/System.in", // replaced by the RobotClassRewriter, so this is for reflection
 			"java/lang/System.setErr",
 			"java/lang/System.setIn",
 			"java/lang/System.setOut",

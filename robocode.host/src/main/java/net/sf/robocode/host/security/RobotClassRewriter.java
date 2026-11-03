@@ -33,6 +33,8 @@ import java.util.*;
  * <li>Creating a {@code FileInputStream}, {@code FileReader}, or {@code ObjectInputStream} is replaced with creating
  * the corresponding subclass in the {@code robocode.util} package, e.g. {@link robocode.util.RobotFileInputStream},
  * which performs the checks.</li>
+ * <li>Using the field {@code System.in} is replaced with using {@link robocode.util.RobotFileAccess#in}, so robots never
+ * get the real one, and a robot is only stopped if it really tries to read from it.</li>
  * <li>{@code finalize()} methods, and calls to them, except calls to the ones of Java classes, are renamed to
  * {@code robocode$finalize()}, so they no longer override {@code Object.finalize()}. Otherwise, the JVM would call them
  * on its finalizer thread, where robot code is not checked like on the robot's own threads.</li>
@@ -146,6 +148,7 @@ final class RobotClassRewriter {
 	private static final int CONSTANT_Long = 5;
 	private static final int CONSTANT_Double = 6;
 	private static final int CONSTANT_Class = 7;
+	private static final int CONSTANT_Fieldref = 9;
 	private static final int CONSTANT_Methodref = 10;
 	private static final int CONSTANT_NameAndType = 12;
 
@@ -233,6 +236,14 @@ final class RobotClassRewriter {
 					// A call to a finalize() that the class only inherits, e.g. super.finalize() with robocode.Robot as
 					// superclass, throws NoSuchMethodError, but only if a robot calls it itself, as the JVM no longer does
 					finalizeMethodRefs.add(i);
+				}
+			} else if (tags[i] == CONSTANT_Fieldref) {
+				int classIndex = checkIndex(tags, u2(bytes, offsets[i] + 1), CONSTANT_Class);
+				int nameAndTypeIndex = checkIndex(tags, u2(bytes, offsets[i] + 3), CONSTANT_NameAndType);
+
+				if ("java/lang/System".equals(utf8(utf8s, u2(bytes, offsets[classIndex] + 1)))
+						&& "in".equals(utf8(utf8s, u2(bytes, offsets[nameAndTypeIndex] + 1)))) {
+					methodClasses.put(i, "robocode/util/RobotFileAccess"); // field references have the same layout
 				}
 			}
 		}

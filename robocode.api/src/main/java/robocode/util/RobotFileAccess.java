@@ -14,6 +14,7 @@ import net.sf.robocode.security.IThreadManagerBase;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
+import java.io.InputStream;
 
 
 /**
@@ -27,6 +28,19 @@ import java.io.FilenameFilter;
  * @author Flemming N. Larsen (original)
  */
 public final class RobotFileAccess {
+
+	/**
+	 * Replaces {@link System#in} for robots when their classes are loaded, so they never get the real one. Existing robots
+	 * may have code using it, which must not prevent them from being loaded, and a robot is only stopped if it really
+	 * tries to read from it.
+	 */
+	public static final InputStream in = new InputStream() {
+		@Override
+		public int read() {
+			getThreadManager().denyRobotSystemIn();
+			throw new SecurityException("Robots cannot read from System.in");
+		}
+	};
 
 	private RobotFileAccess() {
 	}

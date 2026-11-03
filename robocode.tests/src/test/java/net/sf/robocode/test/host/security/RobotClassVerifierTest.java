@@ -87,6 +87,7 @@ public class RobotClassVerifierTest {
 		attacks.put("tested.robots.PrintStreamFileAttack", "java.io.PrintStream.<init>");
 		attacks.put("tested.robots.ProcessExecAttack", "java.lang.ProcessBuilder");
 		attacks.put("tested.robots.SocketAttack", "java.net.ServerSocket");
+		attacks.put("tested.robots.SystemConsoleAttack", "java.lang.System.console");
 		attacks.put("tested.robots.SystemPropertiesAttack", "java.lang.System.getProperties");
 		attacks.put("tested.robots.ThreadAttack", "java.lang.ThreadGroup");
 		attacks.put("tested.robots.ThreadGroupAttack", "java.lang.ThreadGroup");
