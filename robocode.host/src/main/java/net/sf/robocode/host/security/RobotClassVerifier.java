@@ -133,6 +133,10 @@ public final class RobotClassVerifier {
 			"java/awt/Shape",
 			"java/awt/Stroke",
 			"java/awt/Transparency",
+			// Used by existing robots. The members that change global state are denied, see DENIED_MEMBERS
+			"java/awt/AWTKeyStroke",
+			"java/util/logging/Level",
+			"java/util/logging/Logger",
 			// Used by the code generated for serializable lambdas
 			"java/lang/invoke/SerializedLambda"
 	));
@@ -259,7 +263,19 @@ public final class RobotClassVerifier {
 			"java/io/File.setLastModified",
 			"java/io/File.setReadOnly",
 			"java/io/File.setReadable",
-			"java/io/File.setWritable"
+			"java/io/File.setWritable",
+			// Global state, which the SecurityManager denied with LoggingPermission, and loading of resource bundles
+			"java/util/logging/Level.getLocalizedName",
+			"java/util/logging/Level.getResourceBundleName",
+			"java/util/logging/Logger.addHandler",
+			"java/util/logging/Logger.logrb",
+			"java/util/logging/Logger.removeHandler",
+			"java/util/logging/Logger.setFilter",
+			"java/util/logging/Logger.setLevel",
+			"java/util/logging/Logger.setParent",
+			"java/util/logging/Logger.setResourceBundle",
+			"java/util/logging/Logger.setUseParentHandlers",
+			"java/awt/AWTKeyStroke.registerSubclass"
 	));
 
 	// Classes that robots are not allowed to extend, as these are replaced with subclasses by the RobotClassRewriter
@@ -288,6 +304,10 @@ public final class RobotClassVerifier {
 			"java/io/FileInputStream.<init>",
 			"java/io/FileReader.<init>",
 			"java/io/ObjectInputStream.<init>",
+			// Loading of resource bundles
+			"java/util/logging/Level.<init>",
+			"java/util/logging/Logger.getAnonymousLogger(Ljava/lang/String;",
+			"java/util/logging/Logger.getLogger(Ljava/lang/String;Ljava/lang/String;",
 	};
 
 	// Members that robots are allowed to use in classes that are otherwise not allowed.

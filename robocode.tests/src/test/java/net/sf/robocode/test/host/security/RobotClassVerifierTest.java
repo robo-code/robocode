@@ -81,7 +81,11 @@ public class RobotClassVerifierTest {
 		attacks.put("tested.robots.FileOutputStreamAttack", "java.io.FileOutputStream");
 		attacks.put("tested.robots.FileSubclassDeleteAttack", "java.io.File.delete");
 		attacks.put("tested.robots.HttpAttack", "java.net.URL");
+		attacks.put("tested.robots.FileHandlerAttack", "java.util.logging.FileHandler");
 		attacks.put("tested.robots.IncludeNamespaceAttack", "net.sf.robocode.security.HiddenAccess");
+		attacks.put("tested.robots.KeyStrokeSubclassAttack", "java.awt.AWTKeyStroke.registerSubclass");
+		attacks.put("tested.robots.LogManagerAttack", "java.util.logging.LogManager");
+		attacks.put("tested.robots.LoggerGlobalStateAttack", "java.util.logging.Logger.addHandler");
 		attacks.put("tested.robots.MethodReferenceAttack", "java.lang.Runtime.exec");
 		attacks.put("tested.robots.ObjectInputStreamSubclassAttack", "java.io.ObjectInputStream");
 		attacks.put("tested.robots.PrintStreamFileAttack", "java.io.PrintStream.<init>");
