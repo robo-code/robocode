@@ -22,9 +22,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 
 /**
@@ -44,8 +50,12 @@ public class LegacyApiUse extends AdvancedRobot {
 			check(useScanner(), "Scanner");
 			check(useImageIO(), "ImageIO");
 			check(stopOwnThread(), "Thread.stop");
+			check(useZipFile(), "ZipFile");
+			check(useSecurityClasses(), "MessageDigest and SecureRandom");
 			out.println(OK_MESSAGE);
 		} catch (IOException e) {
+			e.printStackTrace(out);
+		} catch (GeneralSecurityException e) {
 			e.printStackTrace(out);
 		} catch (InterruptedException e) {
 			return;
@@ -60,6 +70,36 @@ public class LegacyApiUse extends AdvancedRobot {
 			out.println("Failed: " + what);
 			throw new IllegalStateException(what);
 		}
+	}
+
+	private boolean useZipFile() throws IOException {
+		File file = getDataFile("data.zip");
+		ZipOutputStream output = new ZipOutputStream(new RobocodeFileOutputStream(file));
+
+		output.putNextEntry(new ZipEntry("entry"));
+		output.write('h');
+		output.close();
+
+		ZipFile zip = new ZipFile(file);
+
+		try {
+			return zip.getInputStream(zip.getEntry("entry")).read() == 'h';
+		} finally {
+			zip.close();
+			file.delete();
+		}
+	}
+
+	private boolean useSecurityClasses() throws GeneralSecurityException {
+		MessageDigest digest = MessageDigest.getInstance("SHA-1");
+
+		digest.update(new byte[] {1});
+
+		SecureRandom random = new SecureRandom();
+		SecureRandom provided = SecureRandom.getInstance("SHA1PRNG", "SUN");
+
+		provided.setSeed(random.nextLong());
+		return digest.digest().length == 20 && provided.nextInt(2) < 2;
 	}
 
 	private boolean useLogger() {

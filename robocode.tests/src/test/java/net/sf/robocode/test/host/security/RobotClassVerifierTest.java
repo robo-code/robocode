@@ -53,7 +53,8 @@ public class RobotClassVerifierTest {
 			"ResourceTraversalAttack.class",
 			"RobocodeFileOutputStreamAttack.class",
 			"ScannerReadAttack.class",
-			"ThreadLimitAttack.class");
+			"ThreadLimitAttack.class",
+			"ZipFileReadAttack.class");
 
 	@BeforeAll
 	public static void init() throws IOException {
@@ -97,7 +98,10 @@ public class RobotClassVerifierTest {
 		attacks.put("tested.robots.PrintStreamFileAttack", "java.io.PrintStream.<init>");
 		attacks.put("tested.robots.ProcessExecAttack", "java.lang.ProcessBuilder");
 		attacks.put("tested.robots.ScannerPathAttack", "java.util.Scanner.<init>");
+		attacks.put("tested.robots.SecurityProviderAttack", "java.security.Security");
 		attacks.put("tested.robots.SocketAttack", "java.net.ServerSocket");
+		attacks.put("tested.robots.ZipFileDeleteAttack", "java.util.zip.ZipFile.<init>");
+		attacks.put("tested.robots.ZipFileSubclassAttack", "java.util.zip.ZipFile");
 		attacks.put("tested.robots.SystemPropertiesAttack", "java.lang.System.getProperties");
 		attacks.put("tested.robots.ThreadAttack", "java.lang.ThreadGroup");
 		attacks.put("tested.robots.ThreadGroupAttack", "java.lang.ThreadGroup");

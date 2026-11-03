@@ -137,6 +137,12 @@ public final class RobotClassVerifier {
 			"java/awt/AWTKeyStroke",
 			"java/util/logging/Level",
 			"java/util/logging/Logger",
+			// Used by existing robots, e.g. via the random number generators of Apache Commons Math
+			"java/security/GeneralSecurityException",
+			"java/security/MessageDigest",
+			"java/security/NoSuchAlgorithmException",
+			"java/security/NoSuchProviderException",
+			"java/security/SecureRandom",
 			// Used by the code generated for serializable lambdas
 			"java/lang/invoke/SerializedLambda"
 	));

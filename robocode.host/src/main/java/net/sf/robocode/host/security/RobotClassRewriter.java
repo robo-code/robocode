@@ -39,8 +39,8 @@ import java.util.*;
  * <li>Calls to methods of Java classes that existing robots use, but which robots cannot be allowed to use as they are,
  * e.g. {@code Thread.stop()} and {@code ImageIO.write()}, are replaced with calls to {@link robocode.util.RobotCompat}.
  * Existing robots do not need any changes for this.</li>
- * <li>Creating a {@code Scanner} of a file is replaced with a call to {@link robocode.util.RobotCompat}, which checks the
- * file, as {@code Scanner} is final, and hence cannot be replaced with a subclass. So is creating a
+ * <li>Creating a {@code Scanner} or {@code ZipFile} of a file is replaced with a call to {@link robocode.util.RobotCompat},
+ * which checks the file, as {@code Scanner} is final, and hence cannot be replaced with a subclass. So is creating a
  * {@code FileOutputStream} or {@code FileWriter}, which fails when the robot really tries to do it, as with the
  * SecurityManager. Robots must use {@code RobocodeFileOutputStream} or {@code RobocodeFileWriter} instead, but robots
  * that only have this in code that is not run must still work.</li>
@@ -177,6 +177,11 @@ final class RobotClassRewriter {
 				"(Ljava/io/FileDescriptor;)V");
 		addConstructorMethods("java/io/FileReader", "newFileReader",
 				"(Ljava/io/FileDescriptor;)V");
+		addConstructorMethods("java/util/zip/ZipFile", "newZipFile",
+				"(Ljava/lang/String;)V",
+				"(Ljava/io/File;)V",
+				"(Ljava/lang/String;Ljava/nio/charset/Charset;)V",
+				"(Ljava/io/File;Ljava/nio/charset/Charset;)V");
 	}
 
 	private static void addConstructorMethods(String className, String methodName, String... constructorDescriptors) {
@@ -198,6 +203,7 @@ final class RobotClassRewriter {
 	static {
 		FINAL_CLASSES.add("java/io/FileOutputStream");
 		FINAL_CLASSES.add("java/io/FileWriter");
+		FINAL_CLASSES.add("java/util/zip/ZipFile");
 	}
 
 	private static void addSubclass(String className, String subclassName, String... constructorDescriptors) {

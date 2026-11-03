@@ -20,8 +20,10 @@
     - Thanks go to [Julian Kent](https://github.com/jkflying) for fixing this.
 - #124: Fix existing robots being rejected since version 1.11.2, because they used something robots are not allowed to
   use, even in code that never runs. Robots do not need to be changed for this.
-    - Robots can use `Logger`, `Level`, `AWTKeyStroke`, and `ImageIO.write()` to a stream again, and `new Scanner(File)`
-      on their own files.
+    - Robots can use `Logger`, `Level`, `AWTKeyStroke`, `MessageDigest`, `SecureRandom`, and `ImageIO.write()` to a
+      stream again, and `new Scanner(File)` and `new ZipFile(File)` on their own files.
+    - Robots using time zones, e.g. via `ZipOutputStream`, are no longer punished with Java versions having the
+      SecurityManager, as Robocode now loads the time zone rules itself.
     - Robots can use `Thread.stop()` on their own threads. It interrupts the thread with Java 20 and newer, as Java can
       no longer stop threads.
     - Robots with `FileOutputStream` or `FileWriter` in their code can be loaded again, and are stopped if they really

@@ -20,11 +20,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.Scanner;
+import java.util.zip.ZipFile;
 
 
 /**
@@ -126,6 +128,24 @@ public final class RobotCompat {
 
 	public static Scanner newScanner(Object ignored1, Object ignored2, File source, String charsetName) throws FileNotFoundException {
 		return new Scanner(RobotFileAccess.checkRead(source), charsetName);
+	}
+
+	// java.util.zip.ZipFile, except the constructor with a mode, as this can delete the file
+
+	public static ZipFile newZipFile(Object ignored1, Object ignored2, String name) throws IOException {
+		return new ZipFile(RobotFileAccess.checkRead(name));
+	}
+
+	public static ZipFile newZipFile(Object ignored1, Object ignored2, File file) throws IOException {
+		return new ZipFile(RobotFileAccess.checkRead(file));
+	}
+
+	public static ZipFile newZipFile(Object ignored1, Object ignored2, String name, Charset charset) throws IOException {
+		return new ZipFile(RobotFileAccess.checkRead(name), charset);
+	}
+
+	public static ZipFile newZipFile(Object ignored1, Object ignored2, File file, Charset charset) throws IOException {
+		return new ZipFile(RobotFileAccess.checkRead(file), charset);
 	}
 
 	// java.io.FileOutputStream, which robots cannot use, but must only fail for when they really try to use it
