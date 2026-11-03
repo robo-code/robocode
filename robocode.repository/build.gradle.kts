@@ -8,6 +8,8 @@ dependencies {
     implementation(project(":robocode.core"))
     implementation(project(":robocode.host"))
     implementation(libs.picocontainer)
+    testImplementation(testLibs.junit.jupiter)
+    testRuntimeOnly(testLibs.junit.platform.launcher)
 }
 
 description = "Robocode Repository"

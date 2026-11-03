@@ -31,10 +31,12 @@ public interface IRepository {
 	 * Loads data into this repository, previously saved by {@link #save(OutputStream)}.
 	 * 
 	 * @param in is an input stream used for reading the data.
-	 * 
+	 * @return true if the data was loaded; false if the data could not be loaded, or if it was saved with another Java
+	 * version, in which case the robots must be checked again, as whether a robot is valid depends on the Java version.
+	 *
 	 * @see #save(OutputStream)
 	 */
-    void load(InputStream in);
+    boolean load(InputStream in);
 
 	/**
 	 * Saves the data in this repository to an output stream.
