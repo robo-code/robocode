@@ -48,95 +48,81 @@ public final class RobotFileAccess {
 	// File modifications
 
 	public static boolean delete(File file) {
-		checkWrite(file);
-		return file.delete();
+		return checkWrite(file).delete();
 	}
 
 	public static boolean mkdir(File file) {
-		checkWrite(file);
-		return file.mkdir();
+		return checkWrite(file).mkdir();
 	}
 
 	public static boolean mkdirs(File file) {
-		checkWrite(file);
-		return file.mkdirs();
+		return checkWrite(file).mkdirs();
 	}
 
 	// File information
 
 	public static boolean exists(File file) {
-		checkRead(file);
-		return file.exists();
+		return checkRead(file).exists();
 	}
 
 	public static boolean isFile(File file) {
-		checkRead(file);
-		return file.isFile();
+		return checkRead(file).isFile();
 	}
 
 	public static boolean isDirectory(File file) {
-		checkRead(file);
-		return file.isDirectory();
+		return checkRead(file).isDirectory();
 	}
 
 	public static boolean isHidden(File file) {
-		checkRead(file);
-		return file.isHidden();
+		return checkRead(file).isHidden();
 	}
 
 	public static boolean canRead(File file) {
-		checkRead(file);
-		return file.canRead();
+		return checkRead(file).canRead();
 	}
 
 	public static boolean canWrite(File file) {
-		checkRead(file);
-		return file.canWrite();
+		return checkRead(file).canWrite();
 	}
 
 	public static boolean canExecute(File file) {
-		checkRead(file);
-		return file.canExecute();
+		return checkRead(file).canExecute();
 	}
 
 	public static long length(File file) {
-		checkRead(file);
-		return file.length();
+		return checkRead(file).length();
 	}
 
 	public static long lastModified(File file) {
-		checkRead(file);
-		return file.lastModified();
+		return checkRead(file).lastModified();
 	}
 
 	public static String[] list(File file) {
-		checkRead(file);
-		return file.list();
+		return checkRead(file).list();
 	}
 
 	public static String[] list(File file, FilenameFilter filter) {
-		checkRead(file);
-		return file.list(filter);
+		return checkRead(file).list(filter);
 	}
 
 	public static File[] listFiles(File file) {
-		checkRead(file);
-		return file.listFiles();
+		return checkRead(file).listFiles();
 	}
 
 	public static File[] listFiles(File file, FilenameFilter filter) {
-		checkRead(file);
-		return file.listFiles(filter);
+		return checkRead(file).listFiles(filter);
 	}
 
 	public static File[] listFiles(File file, FileFilter filter) {
-		checkRead(file);
-		return file.listFiles(filter);
+		return checkRead(file).listFiles(filter);
 	}
 
+	// Returns a new File with the path that was checked, as the path of a subclass of File can change after the check
 	static File checkRead(File file) {
-		getThreadManager().checkRobotFileRead(file);
-		return file;
+		File checked = new File(file.getPath());
+
+		getThreadManager().checkRobotFileRead(checked);
+		return checked;
 	}
 
 	static String checkRead(String fileName) {
@@ -144,8 +130,12 @@ public final class RobotFileAccess {
 		return fileName;
 	}
 
-	private static void checkWrite(File file) {
-		getThreadManager().checkRobotFileWrite(file);
+	// Returns a new File with the path that was checked, as the path of a subclass of File can change after the check
+	private static File checkWrite(File file) {
+		File checked = new File(file.getPath());
+
+		getThreadManager().checkRobotFileWrite(checked);
+		return checked;
 	}
 
 	static IThreadManagerBase getThreadManager() {
