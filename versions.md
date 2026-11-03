@@ -1,5 +1,9 @@
 ## Version 1.12.0 (not released yet)
 
+### Security
+
+- The checks of the files that robots access are now more strict. Robots can only access the files that were checked.
+
 ### Bugfix
 
 - #117: With hidden enemy names, each event had a new String for the name of a robot, but robots may compare names
