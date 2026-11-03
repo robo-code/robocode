@@ -8,6 +8,10 @@
 package net.sf.robocode.host.security;
 
 
+import net.sf.robocode.core.Container;
+import net.sf.robocode.host.IThreadManager;
+import net.sf.robocode.io.RobocodeProperties;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessController;
@@ -37,8 +41,18 @@ public class SecureInputStream extends java.io.InputStream {
 		return in.available();
 	}
 
+	@SuppressWarnings("removal")
 	private void checkAccess() {
-		AccessController.checkPermission(inputPermission);
+		if (System.getSecurityManager() != null) {
+			AccessController.checkPermission(inputPermission);
+		} else if (RobocodeProperties.isSecurityOn()) {
+			// Java 24+ has no SecurityManager, and AccessController.checkPermission() always fails, even for Robocode itself
+			IThreadManager threadManager = Container.getComponent(IThreadManager.class);
+
+			if (threadManager != null && threadManager.getLoadedOrLoadingRobotProxy(Thread.currentThread()) != null) {
+				throw new SecurityException("Robots cannot read from System.in");
+			}
+		}
 	}
 
 	@Override
