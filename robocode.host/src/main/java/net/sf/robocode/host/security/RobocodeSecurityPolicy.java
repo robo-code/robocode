@@ -206,7 +206,7 @@ public class RobocodeSecurityPolicy extends Policy {
 		// There isn't one.  Deny access.
 		if (!threadManager.checkRobotFileStream()) {
 			final String message = "Preventing " + robotProxy.getStatics().getName() + " from access: " + filePermission
-					+ ". You must use a RobocodeOutputStream.";
+					+ ". You must use a RobocodeFileOutputStream or RobocodeFileWriter.";
 
 			robotProxy.punishSecurityViolation(message);
 			return false;

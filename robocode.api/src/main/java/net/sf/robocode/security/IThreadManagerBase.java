@@ -39,6 +39,23 @@ public interface IThreadManagerBase {
 	void checkRobotFileRead(File file);
 
 	/**
+	 * Punishes the current robot for accessing a file in a way that robots cannot, and prevents the access.
+	 *
+	 * @param target the file, file name, or file descriptor that the robot tried to access.
+	 * @param reason what the robot must do instead.
+	 * @throws SecurityException always.
+	 */
+	void denyRobotFileAccess(Object target, String reason);
+
+	/**
+	 * Checks that the current robot is allowed to stop a thread, i.e. that the thread is one of the robot's own threads.
+	 *
+	 * @param thread the thread to stop.
+	 * @throws SecurityException if the robot is not allowed to stop the thread.
+	 */
+	void checkRobotThreadStop(Thread thread);
+
+	/**
 	 * Returns the class loader of the current robot.
 	 *
 	 * @return the class loader of the robot.

@@ -9,16 +9,27 @@ package tested.robots;
 
 
 import robocode.AdvancedRobot;
+import robocode.RobocodeFileOutputStream;
 
+import javax.imageio.ImageIO;
 import java.awt.AWTKeyStroke;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
 /**
- * Uses the Java classes that existing robots use, like Logger and AWTKeyStroke, which must keep working with the robot
- * security.
+ * Uses the Java classes that existing robots use in the ways that must keep working with the robot security, as these
+ * robots cannot be expected to be updated.
  *
  * @author Flemming N. Larsen (original)
  */
@@ -27,15 +38,104 @@ public class LegacyApiUse extends AdvancedRobot {
 	public static final String OK_MESSAGE = "Legacy API use OK";
 
 	public void run() {
-		Logger.getLogger(LegacyApiUse.class.getName()).log(Level.FINEST, null, new CloneNotSupportedException());
-
-		AWTKeyStroke keyStroke = AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_A, 0);
-
-		if (keyStroke.getKeyCode() == KeyEvent.VK_A && keyStroke.getModifiers() == 0) {
+		try {
+			check(useLogger(), "Logger");
+			check(useKeyStroke(), "AWTKeyStroke");
+			check(useScanner(), "Scanner");
+			check(useImageIO(), "ImageIO");
+			check(stopOwnThread(), "Thread.stop");
 			out.println(OK_MESSAGE);
+		} catch (IOException e) {
+			e.printStackTrace(out);
+		} catch (InterruptedException e) {
+			return;
 		}
 		for (int i = 0; i < 10; i++) {
 			turnLeft(10);
 		}
+	}
+
+	private void check(boolean condition, String what) {
+		if (!condition) {
+			out.println("Failed: " + what);
+			throw new IllegalStateException(what);
+		}
+	}
+
+	private boolean useLogger() {
+		Logger.getLogger(LegacyApiUse.class.getName()).log(Level.FINEST, null, new CloneNotSupportedException());
+		return true;
+	}
+
+	private boolean useKeyStroke() {
+		AWTKeyStroke keyStroke = AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_A, 0);
+
+		return keyStroke.getKeyCode() == KeyEvent.VK_A && keyStroke.getModifiers() == 0;
+	}
+
+	private boolean useScanner() throws IOException {
+		File file = getDataFile("scanner.txt");
+		PrintStream ps = new PrintStream(new RobocodeFileOutputStream(file));
+
+		ps.println("hello");
+		ps.close();
+
+		Scanner scanner = new Scanner(file);
+
+		try {
+			return "hello".equals(scanner.nextLine());
+		} finally {
+			scanner.close();
+			file.delete();
+		}
+	}
+
+	private boolean useImageIO() throws IOException {
+		File file = getDataFile("image.png");
+		RobocodeFileOutputStream output = new RobocodeFileOutputStream(file);
+
+		try {
+			ImageIO.setUseCache(false);
+			return ImageIO.write(new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB), "png", output) && file.length() > 0;
+		} finally {
+			output.close();
+			file.delete();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private boolean stopOwnThread() throws InterruptedException {
+		Thread thread = new Thread(new Runnable() {
+			public void run() {
+				try {
+					Thread.sleep(60000);
+				} catch (InterruptedException ignore) {// Java 20+ cannot stop threads, so these are interrupted
+				}
+			}
+		});
+
+		thread.start();
+		thread.stop();
+		thread.join(10000);
+		return !thread.isAlive();
+	}
+
+	/**
+	 * Never called. Existing robots may have code like this, e.g. from a library, which must not prevent them from being
+	 * loaded. It is stopped if a robot runs it.
+	 */
+	@SuppressWarnings("unused")
+	private void notCalled() throws IOException {
+		new FileOutputStream("file").close();
+		new FileOutputStream(FileDescriptor.out).close();
+		new FileOutputStream("file", true).close();
+		new FileOutputStream(new File("file")).close();
+		new FileOutputStream(new File("file"), true).close();
+		new FileWriter("file").close();
+		new FileWriter("file", true).close();
+		new FileWriter(new File("file")).close();
+		new FileWriter(new File("file"), true).close();
+		new FileWriter(FileDescriptor.out).close();
+		new FileReader(FileDescriptor.in).close();
 	}
 }

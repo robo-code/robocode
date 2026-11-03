@@ -36,15 +36,28 @@ import java.util.*;
  * <li>{@code finalize()} methods, and calls to them, except calls to the ones of Java classes, are renamed to
  * {@code robocode$finalize()}, so they no longer override {@code Object.finalize()}. Otherwise, the JVM would call them
  * on its finalizer thread, where robot code is not checked like on the robot's own threads.</li>
+ * <li>Calls to methods of Java classes that existing robots use, but which robots cannot be allowed to use as they are,
+ * e.g. {@code Thread.stop()} and {@code ImageIO.write()}, are replaced with calls to {@link robocode.util.RobotCompat}.
+ * Existing robots do not need any changes for this.</li>
+ * <li>Creating a {@code Scanner} of a file is replaced with a call to {@link robocode.util.RobotCompat}, which checks the
+ * file, as {@code Scanner} is final, and hence cannot be replaced with a subclass. So is creating a
+ * {@code FileOutputStream} or {@code FileWriter}, which fails when the robot really tries to do it, as with the
+ * SecurityManager. Robots must use {@code RobocodeFileOutputStream} or {@code RobocodeFileWriter} instead, but robots
+ * that only have this in code that is not run must still work.</li>
  * </ul>
  * The rewrite changes the existing method references in the constant pool, and changes the instructions using them,
  * i.e. {@code invokevirtual} into {@code invokestatic}, and {@code new} of the Java class into {@code new} of the
  * subclass. These instructions have the same length and stack effect, so no other part of the class file needs to be
- * changed. Uses of these classes and methods that cannot be rewritten are rejected by the {@link RobotClassVerifier}.
+ * changed. A constructor replaced with a method is done by changing {@code new} into {@code aconst_null} followed by two
+ * {@code nop}, and {@code invokespecial} into {@code invokestatic} of a method that takes two more parameters and returns
+ * the object, which has the same length and stack effect too. Uses of these classes and methods that cannot be rewritten
+ * are rejected by the {@link RobotClassVerifier}, or by the JVM when it verifies the class.
  *
  * @author Flemming N. Larsen (original)
  */
 final class RobotClassRewriter {
+
+	private static final String COMPAT = "robocode/util/RobotCompat";
 
 	// Instance methods ("class.name" + descriptor) replaced with static methods of the same name in a Robocode class,
 	// which take the instance as the first parameter
@@ -104,6 +117,9 @@ final class RobotClassRewriter {
 				"setLong(Ljava/lang/Object;J)V",
 				"setFloat(Ljava/lang/Object;F)V",
 				"setDouble(Ljava/lang/Object;D)V");
+
+		addStaticMethods("java/lang/Thread", COMPAT,
+				"stop()V");
 	}
 
 	private static void addStaticMethods(String className, String staticClassName, String... methods) {
@@ -133,6 +149,55 @@ final class RobotClassRewriter {
 	static {
 		REPLACED_STATIC_METHODS.put("java/lang/Math.random()D", "robocode/util/RobotMath");
 		REPLACED_STATIC_METHODS.put("java/lang/StrictMath.random()D", "robocode/util/RobotMath");
+		REPLACED_STATIC_METHODS.put("javax/imageio/ImageIO.setUseCache(Z)V", COMPAT);
+		REPLACED_STATIC_METHODS.put("javax/imageio/ImageIO.write(Ljava/awt/image/RenderedImage;Ljava/lang/String;Ljava/io/OutputStream;)Z", COMPAT);
+	}
+
+	// Constructors ("class.<init>" + descriptor) replaced with static methods of RobotCompat
+	private static final Map<String, String> CONSTRUCTOR_METHODS = new HashMap<String, String>();
+
+	// The classes of the constructors above
+	private static final Set<String> CONSTRUCTOR_METHOD_CLASSES = new HashSet<String>();
+
+	static {
+		addConstructorMethods("java/util/Scanner", "newScanner",
+				"(Ljava/io/File;)V",
+				"(Ljava/io/File;Ljava/lang/String;)V");
+		addConstructorMethods("java/io/FileOutputStream", "newFileOutputStream",
+				"(Ljava/lang/String;)V",
+				"(Ljava/lang/String;Z)V",
+				"(Ljava/io/File;)V",
+				"(Ljava/io/File;Z)V",
+				"(Ljava/io/FileDescriptor;)V");
+		addConstructorMethods("java/io/FileWriter", "newFileWriter",
+				"(Ljava/lang/String;)V",
+				"(Ljava/lang/String;Z)V",
+				"(Ljava/io/File;)V",
+				"(Ljava/io/File;Z)V",
+				"(Ljava/io/FileDescriptor;)V");
+		addConstructorMethods("java/io/FileReader", "newFileReader",
+				"(Ljava/io/FileDescriptor;)V");
+	}
+
+	private static void addConstructorMethods(String className, String methodName, String... constructorDescriptors) {
+		CONSTRUCTOR_METHOD_CLASSES.add(className);
+		for (String descriptor : constructorDescriptors) {
+			CONSTRUCTOR_METHODS.put(className + ".<init>" + descriptor, methodName);
+		}
+	}
+
+	// The descriptor of the method replacing a constructor, see the description of the class
+	private static String constructorMethodDescriptor(String className, String constructorDescriptor) {
+		return "(Ljava/lang/Object;Ljava/lang/Object;" + constructorDescriptor.substring(1, constructorDescriptor.length() - 1)
+				+ "L" + className + ';';
+	}
+
+	// Classes that robots are not allowed to extend, as creating them is replaced by the rewrite
+	static final Set<String> FINAL_CLASSES = new HashSet<String>(SUBCLASSES.keySet());
+
+	static {
+		FINAL_CLASSES.add("java/io/FileOutputStream");
+		FINAL_CLASSES.add("java/io/FileWriter");
 	}
 
 	private static void addSubclass(String className, String subclassName, String... constructorDescriptors) {
@@ -149,6 +214,8 @@ final class RobotClassRewriter {
 	private static final int CONSTANT_Methodref = 10;
 	private static final int CONSTANT_NameAndType = 12;
 
+	private static final int NOP = 0x00;
+	private static final int ACONST_NULL = 0x01;
 	private static final int INVOKEVIRTUAL = 0xb6;
 	private static final int INVOKESPECIAL = 0xb7;
 	private static final int INVOKESTATIC = 0xb8;
@@ -200,6 +267,9 @@ final class RobotClassRewriter {
 		Map<Integer, String> methodClasses = new HashMap<Integer, String>(); // methodref -> new class, same name and type
 		Map<Integer, String> classSubclasses = new HashMap<Integer, String>(); // class -> subclass
 		Set<Integer> finalizeMethodRefs = new HashSet<Integer>();
+		Map<Integer, Integer> constructorClassIndexes = new HashMap<Integer, Integer>(); // constructor methodref -> class
+		Map<Integer, String> constructorMethodNames = new HashMap<Integer, String>(); // constructor methodref -> method
+		Map<Integer, String> constructorMethodDescriptors = new HashMap<Integer, String>();
 		boolean hasFinalize = false;
 
 		for (int i = 1; i < count; i++) {
@@ -219,8 +289,15 @@ final class RobotClassRewriter {
 				String descriptor = utf8(utf8s, u2(bytes, offsets[nameAndTypeIndex] + 3));
 
 				String staticClassName = STATIC_METHODS.get(className + '.' + name + descriptor);
+				String constructorMethod = CONSTRUCTOR_METHODS.get(className + '.' + name + descriptor);
 
-				if (staticClassName != null) {
+				if ("<init>".equals(name) && CONSTRUCTOR_METHOD_CLASSES.contains(className)) {
+					constructorClassIndexes.put(i, classIndex);
+				}
+				if (constructorMethod != null) {
+					constructorMethodNames.put(i, constructorMethod);
+					constructorMethodDescriptors.put(i, constructorMethodDescriptor(className, descriptor));
+				} else if (staticClassName != null) {
 					staticMethodNameIndexes.put(i, nameIndex);
 					staticMethodDescriptors.put(i, "(L" + className + ';' + descriptor.substring(1));
 					staticMethodClasses.put(i, staticClassName);
@@ -236,7 +313,8 @@ final class RobotClassRewriter {
 				}
 			}
 		}
-		if (staticMethodNameIndexes.isEmpty() && methodClasses.isEmpty() && classSubclasses.isEmpty() && !hasFinalize) {
+		if (staticMethodNameIndexes.isEmpty() && methodClasses.isEmpty() && classSubclasses.isEmpty()
+				&& constructorMethodNames.isEmpty() && !hasFinalize) {
 			return classFile;
 		}
 
@@ -253,6 +331,12 @@ final class RobotClassRewriter {
 		}
 		for (Map.Entry<Integer, String> entry : methodClasses.entrySet()) {
 			newMethodClassIndexes.put(entry.getKey(), cp.addClass(entry.getValue()));
+		}
+		for (Map.Entry<Integer, String> entry : constructorMethodNames.entrySet()) {
+			int methodRef = entry.getKey();
+			newMethodClassIndexes.put(methodRef, cp.addClass(COMPAT));
+			newNameAndTypeIndexes.put(methodRef,
+					cp.addNameAndType(cp.addUtf8(entry.getValue()), constructorMethodDescriptors.get(methodRef)));
 		}
 		Map<Integer, Integer> newClassIndexes = new HashMap<Integer, Integer>(); // class -> subclass class index
 		for (Map.Entry<Integer, String> entry : classSubclasses.entrySet()) {
@@ -316,7 +400,8 @@ final class RobotClassRewriter {
 					cr.pos += 4; // max stack, max locals
 					int codeLength = cr.u4();
 
-					rewriteInstructions(result, cr.pos, codeLength, staticMethodNameIndexes.keySet(), newClassIndexes);
+					rewriteInstructions(result, cr.pos, codeLength, staticMethodNameIndexes.keySet(), newClassIndexes,
+							constructorClassIndexes, constructorMethodNames.keySet());
 				}
 				cr.pos = attributeEnd;
 			}
@@ -383,17 +468,40 @@ final class RobotClassRewriter {
 	}
 
 	private static void rewriteInstructions(byte[] code, int start, int length, Set<Integer> staticMethodRefs,
-			Map<Integer, Integer> newClassIndexes) throws IOException {
+			Map<Integer, Integer> newClassIndexes, Map<Integer, Integer> constructorClassIndexes,
+			Set<Integer> constructorMethodRefs) throws IOException {
 		int end = start + length;
 		int pc = start;
+
+		// The new instructions waiting for their constructor call for each class. These are nested like parentheses. If
+		// one is not found, the instruction is left as it is, and the JVM rejects the class, as the constructor is gone.
+		Map<Integer, Deque<Integer>> pendingNews = new HashMap<Integer, Deque<Integer>>();
 
 		while (pc < end) {
 			int opcode = code[pc] & 0xFF;
 
-			if ((opcode == INVOKEVIRTUAL || opcode == INVOKESPECIAL) && staticMethodRefs.contains(u2(code, pc + 1))) {
+			if (opcode == INVOKESPECIAL && constructorClassIndexes.containsKey(u2(code, pc + 1))) {
+				Deque<Integer> news = pendingNews.get(constructorClassIndexes.get(u2(code, pc + 1)));
+				Integer newPc = news == null ? null : news.pollLast();
+
+				if (newPc != null && constructorMethodRefs.contains(u2(code, pc + 1))) {
+					code[newPc] = (byte) ACONST_NULL;
+					code[newPc + 1] = (byte) NOP;
+					code[newPc + 2] = (byte) NOP;
+					code[pc] = (byte) INVOKESTATIC;
+				}
+			} else if ((opcode == INVOKEVIRTUAL || opcode == INVOKESPECIAL) && staticMethodRefs.contains(u2(code, pc + 1))) {
 				code[pc] = (byte) INVOKESTATIC;
 			} else if (opcode == NEW) {
-				Integer newClassIndex = newClassIndexes.get(u2(code, pc + 1));
+				int classIndex = u2(code, pc + 1);
+
+				if (constructorClassIndexes.containsValue(classIndex)) {
+					if (!pendingNews.containsKey(classIndex)) {
+						pendingNews.put(classIndex, new ArrayDeque<Integer>());
+					}
+					pendingNews.get(classIndex).addLast(pc);
+				}
+				Integer newClassIndex = newClassIndexes.get(classIndex);
 				if (newClassIndex != null) {
 					putU2(code, pc + 1, newClassIndex);
 				}

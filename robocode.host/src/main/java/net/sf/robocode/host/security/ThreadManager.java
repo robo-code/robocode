@@ -234,6 +234,35 @@ public class ThreadManager implements IThreadManager {
 		}
 	}
 
+	public void denyRobotFileAccess(Object target, String reason) {
+		final IHostedThread robotProxy = getLoadedOrLoadingRobotProxy(Thread.currentThread());
+
+		if (robotProxy == null) {
+			throw new SecurityException("Preventing unknown thread " + Thread.currentThread().getName()
+					+ " from access: " + target);
+		}
+		final String message = "Preventing " + robotProxy.getStatics().getName() + " from access: " + target + ". " + reason + ".";
+
+		robotProxy.punishSecurityViolation(message);
+		throw new SecurityException(message);
+	}
+
+	public void checkRobotThreadStop(Thread thread) {
+		if (checkThreadAccess(thread)) {
+			return;
+		}
+		final IHostedThread robotProxy = getLoadedOrLoadingRobotProxy(Thread.currentThread());
+
+		if (robotProxy == null) {
+			throw new SecurityException("Preventing unknown thread " + Thread.currentThread().getName()
+					+ " from stopping: " + thread.getName());
+		}
+		final String message = "Preventing " + robotProxy.getStatics().getName() + " from stopping: " + thread.getName();
+
+		robotProxy.punishSecurityViolation(message);
+		throw new SecurityException(message);
+	}
+
 	public ClassLoader getRobotClassLoader() {
 		final IHostedThread robotProxy = getLoadedOrLoadingRobotProxy(Thread.currentThread());
 

@@ -157,8 +157,6 @@ public final class RobotClassVerifier {
 			"java/lang/Thread$Builder$OfVirtual",
 			"java/lang/ThreadGroup",
 			"java/lang/reflect/Proxy",
-			"java/io/FileOutputStream",
-			"java/io/FileWriter",
 			"java/io/RandomAccessFile",
 			"java/util/ServiceLoader"
 	));
@@ -278,8 +276,8 @@ public final class RobotClassVerifier {
 			"java/awt/AWTKeyStroke.registerSubclass"
 	));
 
-	// Classes that robots are not allowed to extend, as these are replaced with subclasses by the RobotClassRewriter
-	private static final Set<String> FINAL_CLASSES = RobotClassRewriter.SUBCLASSES.keySet();
+	// Classes that robots are not allowed to extend, as creating these is replaced by the RobotClassRewriter
+	private static final Set<String> FINAL_CLASSES = RobotClassRewriter.FINAL_CLASSES;
 
 	// Prefixes of members including their descriptor that robots are not allowed to use, written as "class.member(descriptor"
 	private static final String[] DENIED_MEMBER_PREFIXES = {
@@ -302,7 +300,9 @@ public final class RobotClassVerifier {
 			// the subclasses have already been replaced when the class is verified, e.g. FileInputStream(File), so only
 			// the unsupported ones are left, e.g. FileInputStream(FileDescriptor).
 			"java/io/FileInputStream.<init>",
+			"java/io/FileOutputStream.<init>",
 			"java/io/FileReader.<init>",
+			"java/io/FileWriter.<init>",
 			"java/io/ObjectInputStream.<init>",
 			// Loading of resource bundles
 			"java/util/logging/Level.<init>",

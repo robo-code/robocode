@@ -97,6 +97,31 @@ public class ThreadManagerTest {
 		});
 	}
 
+	@Test
+	public void aRobotCanOnlyStopItsOwnThreads() throws InterruptedException {
+		ThreadManager manager = new ThreadManager();
+		ThreadGroup robotGroup = new ThreadGroup("robot");
+		ThreadGroup otherGroup = new ThreadGroup("other");
+		final Thread own = new Thread(robotGroup, "own");
+		final Thread other = new Thread(otherGroup, "other");
+		final Throwable[] results = new Throwable[1];
+
+		manager.addThreadGroup(robotGroup, createAdvancedRobot(folder));
+
+		Thread robotThread = new Thread(robotGroup, () -> {
+			manager.checkRobotThreadStop(own);
+			try {
+				manager.checkRobotThreadStop(other);
+			} catch (SecurityException e) {
+				results[0] = e;
+			}
+		});
+
+		robotThread.start();
+		robotThread.join();
+		Assertions.assertNotNull(results[0], "A robot must not be able to stop a thread of another thread group");
+	}
+
 	@SuppressWarnings("unchecked")
 	private static <T> T stub(Class<T> type, InvocationHandler handler) {
 		return (T) Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type}, handler);
