@@ -14,6 +14,7 @@ import net.sf.robocode.repository.items.IRepositoryItem;
 import net.sf.robocode.repository.root.BaseRoot;
 import net.sf.robocode.repository.root.IRepositoryRoot;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -36,6 +37,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Flemming N. Larsen (contributor)
  */
 class Repository implements IRepository {
+
+	// Whether a robot is valid depends on the Java version, e.g. robots built for a newer Java version cannot be loaded
+	private static final String JAVA_VERSION = System.getProperty("java.specification.version");
 
 	private Map<String, IRepositoryRoot> roots = new ConcurrentHashMap<String, IRepositoryRoot>();
 	private final Map<String, IRepositoryItem> repositoryItems = new ConcurrentHashMap<String, IRepositoryItem>();
@@ -61,6 +65,7 @@ class Repository implements IRepository {
 			oos = new ObjectOutputStream(out);
 			oos.writeObject(uniqueRoots);
 			oos.writeObject(uniqueItems);
+			oos.writeObject(JAVA_VERSION);
 		} catch (IOException e) {
 			Logger.logError("Can't save robot database", e);
 		} finally {
@@ -72,7 +77,7 @@ class Repository implements IRepository {
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
-	public void load(InputStream in) {
+	public boolean load(InputStream in) {
 		Set<IRepositoryItem> uniqueItems;
 		Set<IRepositoryRoot> uniqueRoots;
 
@@ -83,6 +88,9 @@ class Repository implements IRepository {
 			uniqueRoots = (Set<IRepositoryRoot>) ois.readObject();
 			uniqueItems = (Set<IRepositoryItem>) ois.readObject();
 
+			if (!JAVA_VERSION.equals(readJavaVersion(ois))) {
+				return false;
+			}
 			for (IRepositoryRoot root : uniqueRoots) {
 				((BaseRoot) root).setRepository(this);
 
@@ -94,12 +102,22 @@ class Repository implements IRepository {
 			for (IRepositoryItem repositoryItem : uniqueItems) {
 				addOrUpdateItem(repositoryItem);
 			}
+			return true;
 		} catch (IOException e) {
 			Logger.logError("Can't load robot database: " + e.getMessage());
 		} catch (ClassNotFoundException e) {
 			Logger.logError("Can't load robot database: " + e.getMessage());
 		} finally {
 			FileUtil.cleanupStream(ois);
+		}
+		return false;
+	}
+
+	private static Object readJavaVersion(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+		try {
+			return ois.readObject();
+		} catch (EOFException e) {
+			return null; // The database was saved by a version of Robocode that did not save the Java version
 		}
 	}
 

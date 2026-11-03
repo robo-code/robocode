@@ -102,6 +102,7 @@ public class RobotClassVerifierTest {
 		attacks.put("tested.robots.SocketAttack", "java.net.ServerSocket");
 		attacks.put("tested.robots.ZipFileDeleteAttack", "java.util.zip.ZipFile.<init>");
 		attacks.put("tested.robots.ZipFileSubclassAttack", "java.util.zip.ZipFile");
+		attacks.put("tested.robots.SystemConsoleAttack", "java.lang.System.console");
 		attacks.put("tested.robots.SystemPropertiesAttack", "java.lang.System.getProperties");
 		attacks.put("tested.robots.ThreadAttack", "java.lang.ThreadGroup");
 		attacks.put("tested.robots.ThreadGroupAttack", "java.lang.ThreadGroup");

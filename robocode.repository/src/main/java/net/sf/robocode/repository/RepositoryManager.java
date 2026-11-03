@@ -142,7 +142,10 @@ public class RepositoryManager implements IRepositoryManager { // NO_UCD (use de
 			File file = new File(getRobotsDirectory(), DATABASE_FILENAME);
 			if (file.exists()) {
 				fis = new FileInputStream(file);
-				repository.load(fis);
+				if (!repository.load(fis)) {
+					Logger.logMessage("Rebuilding robot database, as it cannot be used with this version of Java...");
+					repository = null;
+				}
 			}
 		} catch (IOException e) {
 			Logger.logError("Can't load robot database", e);

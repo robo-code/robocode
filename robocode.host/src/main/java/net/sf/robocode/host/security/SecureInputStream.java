@@ -37,8 +37,13 @@ public class SecureInputStream extends java.io.InputStream {
 		return in.available();
 	}
 
+	@SuppressWarnings("removal")
 	private void checkAccess() {
-		AccessController.checkPermission(inputPermission);
+		// Java 24+ has no SecurityManager, and AccessController.checkPermission() always fails, even for Robocode itself.
+		// Robots cannot get this stream, as their use of System.in is replaced with RobotFileAccess.in when they are loaded.
+		if (System.getSecurityManager() != null) {
+			AccessController.checkPermission(inputPermission);
+		}
 	}
 
 	@Override

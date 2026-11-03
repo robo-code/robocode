@@ -207,6 +207,17 @@ public class ThreadManager implements IThreadManager {
 		}
 	}
 
+	public void denyRobotSystemIn() {
+		final IHostedThread robotProxy = getLoadedOrLoadingRobotProxy(Thread.currentThread());
+		final String name = robotProxy != null ? robotProxy.getStatics().getName() : Thread.currentThread().getName();
+		final String message = "Preventing " + name + " from reading from System.in.";
+
+		if (robotProxy != null) {
+			robotProxy.punishSecurityViolation(message);
+		}
+		throw new SecurityException(message);
+	}
+
 	public void checkRobotFileRead(File file) {
 		final IHostedThread robotProxy = getLoadedOrLoadingRobotProxy(Thread.currentThread());
 
