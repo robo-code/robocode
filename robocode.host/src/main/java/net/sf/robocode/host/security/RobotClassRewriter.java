@@ -13,6 +13,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.*;
+import java.util.function.Predicate;
 
 
 /**
@@ -41,19 +42,24 @@ import java.util.*;
  * <li>Calls to methods of Java classes that existing robots use, but which robots cannot be allowed to use as they are,
  * e.g. {@code Thread.stop()} and {@code ImageIO.write()}, are replaced with calls to {@link robocode.util.RobotCompat}.
  * Existing robots do not need any changes for this.</li>
- * <li>Creating a {@code Scanner} or {@code ZipFile} of a file is replaced with a call to {@link robocode.util.RobotCompat},
- * which checks the file, as {@code Scanner} is final, and hence cannot be replaced with a subclass. So is creating a
- * {@code FileOutputStream} or {@code FileWriter}, which fails when the robot really tries to do it, as with the
- * SecurityManager. Robots must use {@code RobocodeFileOutputStream} or {@code RobocodeFileWriter} instead, but robots
- * that only have this in code that is not run must still work.</li>
+ * <li>Creating a {@code FileOutputStream} or {@code FileWriter} is replaced with creating a subclass that stops the robot
+ * when it really tries to do it, as with the SecurityManager, as robots must still work with this in code that is not
+ * run. Creating a {@code ZipFile} is replaced with creating a subclass that checks the file.</li>
+ * <li>Creating a {@code Scanner} of a file is replaced with a call to {@link robocode.util.RobotCompat}, which checks the
+ * file, as {@code Scanner} is final, and hence cannot be replaced with a subclass.</li>
  * </ul>
  * The rewrite changes the existing method references in the constant pool, and changes the instructions using them,
  * i.e. {@code invokevirtual} into {@code invokestatic}, and {@code new} of the Java class into {@code new} of the
  * subclass. These instructions have the same length and stack effect, so no other part of the class file needs to be
- * changed. A constructor replaced with a method is done by changing {@code new} into {@code aconst_null} followed by two
+ * changed. Method handles of the methods replaced with static methods are changed to static ones too.
+ * <p>
+ * The {@code Scanner} is the exception. It is done by changing {@code new} into {@code aconst_null} followed by two
  * {@code nop}, and {@code invokespecial} into {@code invokestatic} of a method that takes two more parameters and returns
- * the object, which has the same length and stack effect too. Uses of these classes and methods that cannot be rewritten
- * are rejected by the {@link RobotClassVerifier}, or by the JVM when it verifies the class.
+ * the object, which has the same length and stack effect too. This requires {@code new} to be followed by {@code dup}, and
+ * that nothing branches before the constructor call, as the stack map of the class would otherwise refer to the replaced
+ * {@code new}. Other uses, and a method reference to the constructor, are rejected with an exception.
+ * <p>
+ * Uses of these classes and methods that cannot be rewritten are rejected by the {@link RobotClassVerifier}.
  *
  * @author Flemming N. Larsen (original)
  */
@@ -138,9 +144,20 @@ final class RobotClassRewriter {
 		addSubclass("java/io/FileInputStream", "robocode/util/RobotFileInputStream",
 				"(Ljava/lang/String;)V", "(Ljava/io/File;)V");
 		addSubclass("java/io/FileReader", "robocode/util/RobotFileReader",
-				"(Ljava/lang/String;)V", "(Ljava/io/File;)V");
+				"(Ljava/lang/String;)V", "(Ljava/io/File;)V", "(Ljava/io/FileDescriptor;)V");
 		addSubclass("java/io/ObjectInputStream", "robocode/util/RobotObjectInputStream",
 				"(Ljava/io/InputStream;)V");
+		addSubclass("java/io/FileOutputStream", "robocode/util/RobotFileOutputStream",
+				"(Ljava/lang/String;)V", "(Ljava/lang/String;Z)V", "(Ljava/io/File;)V", "(Ljava/io/File;Z)V",
+				"(Ljava/io/FileDescriptor;)V");
+		addSubclass("java/io/FileWriter", "robocode/util/RobotFileWriter",
+				"(Ljava/lang/String;)V", "(Ljava/lang/String;Z)V", "(Ljava/io/File;)V", "(Ljava/io/File;Z)V",
+				"(Ljava/io/FileDescriptor;)V", "(Ljava/lang/String;Ljava/nio/charset/Charset;)V",
+				"(Ljava/lang/String;Ljava/nio/charset/Charset;Z)V", "(Ljava/io/File;Ljava/nio/charset/Charset;)V",
+				"(Ljava/io/File;Ljava/nio/charset/Charset;Z)V");
+		addSubclass("java/util/zip/ZipFile", "robocode/util/RobotZipFile",
+				"(Ljava/lang/String;)V", "(Ljava/io/File;)V", "(Ljava/lang/String;Ljava/nio/charset/Charset;)V",
+				"(Ljava/io/File;Ljava/nio/charset/Charset;)V");
 	}
 
 	// Static methods ("class.name" + descriptor) replaced with static methods with the same name and descriptor in a
@@ -164,25 +181,7 @@ final class RobotClassRewriter {
 	static {
 		addConstructorMethods("java/util/Scanner", "newScanner",
 				"(Ljava/io/File;)V",
-				"(Ljava/io/File;Ljava/lang/String;)V");
-		addConstructorMethods("java/io/FileOutputStream", "newFileOutputStream",
-				"(Ljava/lang/String;)V",
-				"(Ljava/lang/String;Z)V",
-				"(Ljava/io/File;)V",
-				"(Ljava/io/File;Z)V",
-				"(Ljava/io/FileDescriptor;)V");
-		addConstructorMethods("java/io/FileWriter", "newFileWriter",
-				"(Ljava/lang/String;)V",
-				"(Ljava/lang/String;Z)V",
-				"(Ljava/io/File;)V",
-				"(Ljava/io/File;Z)V",
-				"(Ljava/io/FileDescriptor;)V");
-		addConstructorMethods("java/io/FileReader", "newFileReader",
-				"(Ljava/io/FileDescriptor;)V");
-		addConstructorMethods("java/util/zip/ZipFile", "newZipFile",
-				"(Ljava/lang/String;)V",
-				"(Ljava/io/File;)V",
-				"(Ljava/lang/String;Ljava/nio/charset/Charset;)V",
+				"(Ljava/io/File;Ljava/lang/String;)V",
 				"(Ljava/io/File;Ljava/nio/charset/Charset;)V");
 	}
 
@@ -199,15 +198,6 @@ final class RobotClassRewriter {
 				+ "L" + className + ';';
 	}
 
-	// Classes that robots are not allowed to extend, as creating them is replaced by the rewrite
-	static final Set<String> FINAL_CLASSES = new HashSet<String>(SUBCLASSES.keySet());
-
-	static {
-		FINAL_CLASSES.add("java/io/FileOutputStream");
-		FINAL_CLASSES.add("java/io/FileWriter");
-		FINAL_CLASSES.add("java/util/zip/ZipFile");
-	}
-
 	private static void addSubclass(String className, String subclassName, String... constructorDescriptors) {
 		SUBCLASSES.put(className, subclassName);
 		SUBCLASS_CONSTRUCTORS.put(className, new HashSet<String>(Arrays.asList(constructorDescriptors)));
@@ -222,9 +212,13 @@ final class RobotClassRewriter {
 	private static final int CONSTANT_Fieldref = 9;
 	private static final int CONSTANT_Methodref = 10;
 	private static final int CONSTANT_NameAndType = 12;
+	private static final int CONSTANT_MethodHandle = 15;
+
+	private static final byte REF_invokeStatic = 6;
 
 	private static final int NOP = 0x00;
 	private static final int ACONST_NULL = 0x01;
+	private static final int DUP = 0x59;
 	private static final int INVOKEVIRTUAL = 0xb6;
 	private static final int INVOKESPECIAL = 0xb7;
 	private static final int INVOKESTATIC = 0xb8;
@@ -236,11 +230,13 @@ final class RobotClassRewriter {
 	/**
 	 * Rewrites a robot class file if needed.
 	 *
-	 * @param classFile the class file.
+	 * @param classFile        the class file.
+	 * @param isThreadSubclass tells if a class, by its internal name, is a robot class that inherits from Thread, where
+	 *                         calls to e.g. stop() are compiled with this class as the owner.
 	 * @return the rewritten class file, or the same class file if nothing needed to be rewritten.
 	 * @throws IOException if the class file is invalid.
 	 */
-	static ByteBuffer rewrite(ByteBuffer classFile) throws IOException {
+	static ByteBuffer rewrite(ByteBuffer classFile, Predicate<String> isThreadSubclass) throws IOException {
 		byte[] bytes = new byte[classFile.limit()];
 		System.arraycopy(classFile.array(), classFile.arrayOffset(), bytes, 0, bytes.length);
 
@@ -297,7 +293,10 @@ final class RobotClassRewriter {
 				String name = utf8(utf8s, nameIndex);
 				String descriptor = utf8(utf8s, u2(bytes, offsets[nameAndTypeIndex] + 3));
 
-				String staticClassName = STATIC_METHODS.get(className + '.' + name + descriptor);
+				// Thread.stop() is final, so a call via a subclass is always this method
+				String staticOwner = "stop".equals(name) && "()V".equals(descriptor) && isThreadSubclass.test(className)
+						? "java/lang/Thread" : className;
+				String staticClassName = STATIC_METHODS.get(staticOwner + '.' + name + descriptor);
 				String constructorMethod = CONSTRUCTOR_METHODS.get(className + '.' + name + descriptor);
 
 				if ("<init>".equals(name) && CONSTRUCTOR_METHOD_CLASSES.contains(className)) {
@@ -308,7 +307,7 @@ final class RobotClassRewriter {
 					constructorMethodDescriptors.put(i, constructorMethodDescriptor(className, descriptor));
 				} else if (staticClassName != null) {
 					staticMethodNameIndexes.put(i, nameIndex);
-					staticMethodDescriptors.put(i, "(L" + className + ';' + descriptor.substring(1));
+					staticMethodDescriptors.put(i, "(L" + staticOwner + ';' + descriptor.substring(1));
 					staticMethodClasses.put(i, staticClassName);
 				} else if ("<init>".equals(name) && SUBCLASSES.containsKey(className)
 						&& SUBCLASS_CONSTRUCTORS.get(className).contains(descriptor)) {
@@ -384,6 +383,19 @@ final class RobotClassRewriter {
 		}
 		for (int methodRef : finalizeMethodRefs) {
 			putU2(result, offsets[methodRef] + 3, finalizeNameAndTypeIndex);
+		}
+
+		// Change the method handles, e.g. of method references like Thread::stop
+		for (int i = 1; i < count; i++) {
+			if (tags[i] == CONSTANT_MethodHandle) {
+				int methodRef = u2(bytes, offsets[i] + 2);
+
+				if (staticMethodNameIndexes.containsKey(methodRef)) {
+					result[offsets[i] + 1] = REF_invokeStatic;
+				} else if (constructorMethodNames.containsKey(methodRef)) {
+					throw new IOException("Robots are not allowed to use java.util.Scanner.<init> as a method reference");
+				}
+			}
 		}
 
 		// Change the instructions
@@ -490,8 +502,7 @@ final class RobotClassRewriter {
 		int end = start + length;
 		int pc = start;
 
-		// The new instructions waiting for their constructor call for each class. These are nested like parentheses. If
-		// one is not found, the instruction is left as it is, and the JVM rejects the class, as the constructor is gone.
+		// The new instructions waiting for their constructor call for each class. These are nested like parentheses.
 		Map<Integer, Deque<Integer>> pendingNews = new HashMap<Integer, Deque<Integer>>();
 
 		while (pc < end) {
@@ -501,7 +512,10 @@ final class RobotClassRewriter {
 				Deque<Integer> news = pendingNews.get(constructorClassIndexes.get(u2(code, pc + 1)));
 				Integer newPc = news == null ? null : news.pollLast();
 
-				if (newPc != null && constructorMethodRefs.contains(u2(code, pc + 1))) {
+				if (constructorMethodRefs.contains(u2(code, pc + 1))) {
+					if (newPc == null || (code[newPc + 3] & 0xFF) != DUP || hasBranch(code, start, newPc, pc)) {
+						throw new IOException("Robots are not allowed to use java.util.Scanner.<init> with these instructions");
+					}
 					code[newPc] = (byte) ACONST_NULL;
 					code[newPc + 1] = (byte) NOP;
 					code[newPc + 2] = (byte) NOP;
@@ -528,6 +542,18 @@ final class RobotClassRewriter {
 		if (pc != end) {
 			throw new IOException("Invalid code length");
 		}
+	}
+
+	private static boolean hasBranch(byte[] code, int codeStart, int from, int to) throws IOException {
+		for (int pc = from; pc < to; pc += instructionLength(code, codeStart, pc)) {
+			int opcode = code[pc] & 0xFF;
+
+			if (opcode >= 0x99 && opcode <= 0xab // if<cond>, if_<cmp>, goto, jsr, ret, tableswitch, lookupswitch
+					|| opcode >= 0xc6 && opcode <= 0xc9) { // ifnull, ifnonnull, goto_w, jsr_w
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

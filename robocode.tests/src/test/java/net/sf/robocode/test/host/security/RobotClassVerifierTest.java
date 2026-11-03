@@ -97,7 +97,10 @@ public class RobotClassVerifierTest {
 		attacks.put("tested.robots.ObjectInputStreamSubclassAttack", "java.io.ObjectInputStream");
 		attacks.put("tested.robots.PrintStreamFileAttack", "java.io.PrintStream.<init>");
 		attacks.put("tested.robots.ProcessExecAttack", "java.lang.ProcessBuilder");
+		attacks.put("tested.robots.LoggerBundleAttack", "java.util.logging.Logger.<init>");
+		attacks.put("tested.robots.ScannerConditionalAttack", "java.util.Scanner.<init>");
 		attacks.put("tested.robots.ScannerPathAttack", "java.util.Scanner.<init>");
+		attacks.put("tested.robots.ScannerReferenceAttack", "java.util.Scanner.<init>");
 		attacks.put("tested.robots.SecurityProviderAttack", "java.security.Security");
 		attacks.put("tested.robots.SocketAttack", "java.net.ServerSocket");
 		attacks.put("tested.robots.ZipFileDeleteAttack", "java.util.zip.ZipFile.<init>");

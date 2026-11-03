@@ -284,8 +284,8 @@ public final class RobotClassVerifier {
 			"java/awt/AWTKeyStroke.registerSubclass"
 	));
 
-	// Classes that robots are not allowed to extend, as creating these is replaced by the RobotClassRewriter
-	private static final Set<String> FINAL_CLASSES = RobotClassRewriter.FINAL_CLASSES;
+	// Classes that robots are not allowed to extend, as these are replaced with subclasses by the RobotClassRewriter
+	private static final Set<String> FINAL_CLASSES = RobotClassRewriter.SUBCLASSES.keySet();
 
 	// Prefixes of members including their descriptor that robots are not allowed to use, written as "class.member(descriptor"
 	private static final String[] DENIED_MEMBER_PREFIXES = {
@@ -302,7 +302,6 @@ public final class RobotClassVerifier {
 			// Constructors and methods that open a file for reading
 			"java/util/Scanner.<init>(Ljava/io/File;",
 			"java/util/Scanner.<init>(Ljava/nio/file/Path;",
-			"java/util/zip/ZipFile.<init>",
 			"java/awt/Font.createFont(ILjava/io/File;",
 			// Constructors of the classes replaced with subclasses by the RobotClassRewriter. Constructors supported by
 			// the subclasses have already been replaced when the class is verified, e.g. FileInputStream(File), so only
@@ -312,8 +311,10 @@ public final class RobotClassVerifier {
 			"java/io/FileReader.<init>",
 			"java/io/FileWriter.<init>",
 			"java/io/ObjectInputStream.<init>",
+			"java/util/zip/ZipFile.<init>",
 			// Loading of resource bundles
 			"java/util/logging/Level.<init>",
+			"java/util/logging/Logger.<init>",
 			"java/util/logging/Logger.getAnonymousLogger(Ljava/lang/String;",
 			"java/util/logging/Logger.getLogger(Ljava/lang/String;Ljava/lang/String;",
 	};
@@ -352,6 +353,16 @@ public final class RobotClassVerifier {
 	public RobotClassVerifier(RobotClassProvider robotClassProvider, ClassLoader hostClassLoader) {
 		this.robotClassProvider = robotClassProvider;
 		this.hostClassLoader = hostClassLoader;
+	}
+
+	/**
+	 * Checks if a class is a robot class that inherits from java.lang.Thread.
+	 *
+	 * @param internalName the internal class name, e.g. "sample/Worker".
+	 * @return true if the class is a robot class that inherits from Thread; false otherwise.
+	 */
+	boolean isThreadSubclass(String internalName) {
+		return isRobotClass(internalName) && getNearestHostAncestors(internalName).contains("java/lang/Thread");
 	}
 
 	/**

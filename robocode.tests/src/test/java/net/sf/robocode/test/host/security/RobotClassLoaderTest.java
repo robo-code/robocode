@@ -109,6 +109,25 @@ public class RobotClassLoaderTest {
 		Assert.assertThrows(NoSuchMethodException.class, () -> c.getDeclaredMethod("finalize"));
 	}
 
+	// These constructors do not exist in Java 8, which the test robots are built for
+	@Test
+	public void constructorsWithCharsetCanBeLoaded() throws Exception {
+		URL robotClassPath = compileRobot("charsets", "Charsets", "{\n"
+				+ "\tvoid notCalled() throws java.io.IOException {\n"
+				+ "\t\tjava.nio.charset.Charset charset = java.nio.charset.StandardCharsets.UTF_8;\n"
+				+ "\t\tnew java.io.FileWriter(\"file\", charset).close();\n"
+				+ "\t\tnew java.io.FileWriter(\"file\", charset, true).close();\n"
+				+ "\t\tnew java.io.FileWriter(new java.io.File(\"file\"), charset).close();\n"
+				+ "\t\tnew java.io.FileWriter(new java.io.File(\"file\"), charset, true).close();\n"
+				+ "\t\tnew java.util.Scanner(new java.io.File(\"file\"), charset).close();\n"
+				+ "\t\tnew java.util.zip.ZipFile(new java.io.File(\"file\"), charset).close();\n"
+				+ "\t}\n");
+
+		Class<?> c = new RobotClassLoader(robotClassPath, "charsets.Charsets").loadClass("charsets.Charsets", true);
+
+		c.getDeclaredConstructor().newInstance(); // The JVM must also accept the class after it has been rewritten
+	}
+
 	// Compiles a class outside the class path of the tests, as its classes are otherwise treated as system classes
 	private static URL compileRobot(String packageName, String className, String body) throws IOException {
 		Path dir = Files.createTempDirectory("robots");

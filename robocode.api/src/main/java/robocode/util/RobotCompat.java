@@ -13,11 +13,7 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -26,7 +22,6 @@ import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.Scanner;
-import java.util.zip.ZipFile;
 
 
 /**
@@ -82,7 +77,16 @@ public final class RobotCompat {
 			// used. Code of the robot called from here, e.g. its own OutputStream, still has only the robot's permissions.
 			return AccessController.doPrivileged(new PrivilegedExceptionAction<Boolean>() {
 				public Boolean run() throws IOException {
-					return ImageIO.write(image, formatName, stream);
+					// ImageIO looks up plugins with the context class loader, which must not be the robot's class loader
+					Thread thread = Thread.currentThread();
+					ClassLoader contextClassLoader = thread.getContextClassLoader();
+
+					thread.setContextClassLoader(RobotCompat.class.getClassLoader());
+					try {
+						return ImageIO.write(image, formatName, stream);
+					} finally {
+						thread.setContextClassLoader(contextClassLoader);
+					}
 				}
 			});
 		} catch (PrivilegedActionException e) {
@@ -103,8 +107,8 @@ public final class RobotCompat {
 	 */
 	@SuppressWarnings({"deprecation", "removal"})
 	public static void stop(final Thread thread) {
-		if (!thread.isAlive()) {
-			return; // Also, a thread that has terminated no longer belongs to a thread group
+		if (thread.getState() == Thread.State.TERMINATED) {
+			return; // A thread that has terminated no longer belongs to a thread group
 		}
 		RobotFileAccess.getThreadManager().checkRobotThreadStop(thread);
 		try {
@@ -130,77 +134,20 @@ public final class RobotCompat {
 		return new Scanner(RobotFileAccess.checkRead(source), charsetName);
 	}
 
-	// java.util.zip.ZipFile, except the constructor with a mode, as this can delete the file
-
-	public static ZipFile newZipFile(Object ignored1, Object ignored2, String name) throws IOException {
-		return new ZipFile(RobotFileAccess.checkRead(name));
+	public static Scanner newScanner(Object ignored1, Object ignored2, File source, Charset charset) throws FileNotFoundException {
+		return new Scanner(RobotFileAccess.checkRead(source), charset.name());
 	}
 
-	public static ZipFile newZipFile(Object ignored1, Object ignored2, File file) throws IOException {
-		return new ZipFile(RobotFileAccess.checkRead(file));
-	}
+	// Used by the subclasses of the Java classes that robots cannot write files with, but where robots must only be
+	// stopped when they really try it, as they must otherwise still work with it in code that is not run
 
-	public static ZipFile newZipFile(Object ignored1, Object ignored2, String name, Charset charset) throws IOException {
-		return new ZipFile(RobotFileAccess.checkRead(name), charset);
-	}
-
-	public static ZipFile newZipFile(Object ignored1, Object ignored2, File file, Charset charset) throws IOException {
-		return new ZipFile(RobotFileAccess.checkRead(file), charset);
-	}
-
-	// java.io.FileOutputStream, which robots cannot use, but must only fail for when they really try to use it
-
-	public static FileOutputStream newFileOutputStream(Object ignored1, Object ignored2, String name) {
-		throw denyWrite(name);
-	}
-
-	public static FileOutputStream newFileOutputStream(Object ignored1, Object ignored2, String name, boolean append) {
-		throw denyWrite(name);
-	}
-
-	public static FileOutputStream newFileOutputStream(Object ignored1, Object ignored2, File file) {
-		throw denyWrite(file);
-	}
-
-	public static FileOutputStream newFileOutputStream(Object ignored1, Object ignored2, File file, boolean append) {
-		throw denyWrite(file);
-	}
-
-	public static FileOutputStream newFileOutputStream(Object ignored1, Object ignored2, FileDescriptor fd) {
-		throw denyWrite(fd);
-	}
-
-	// java.io.FileWriter, which robots cannot use, but must only fail for when they really try to use it
-
-	public static FileWriter newFileWriter(Object ignored1, Object ignored2, String fileName) {
-		throw denyWrite(fileName);
-	}
-
-	public static FileWriter newFileWriter(Object ignored1, Object ignored2, String fileName, boolean append) {
-		throw denyWrite(fileName);
-	}
-
-	public static FileWriter newFileWriter(Object ignored1, Object ignored2, File file) {
-		throw denyWrite(file);
-	}
-
-	public static FileWriter newFileWriter(Object ignored1, Object ignored2, File file, boolean append) {
-		throw denyWrite(file);
-	}
-
-	public static FileWriter newFileWriter(Object ignored1, Object ignored2, FileDescriptor fd) {
-		throw denyWrite(fd);
-	}
-
-	// java.io.FileReader with a file descriptor, which robots cannot use. Reading a file is done with RobotFileReader.
-
-	public static FileReader newFileReader(Object ignored1, Object ignored2, FileDescriptor fd) {
-		RobotFileAccess.getThreadManager().denyRobotFileAccess(fd, "You may only read files in your own root package directory");
-		throw new SecurityException("Robots cannot read from a file descriptor");
-	}
-
-	private static SecurityException denyWrite(Object target) {
+	static <T> T denyWrite(T target) {
 		RobotFileAccess.getThreadManager().denyRobotFileAccess(target, USE_ROBOCODE_STREAMS);
-		return new SecurityException(USE_ROBOCODE_STREAMS);
+		throw new SecurityException(USE_ROBOCODE_STREAMS);
+	}
+
+	static <T> T denyRead(T target) {
+		RobotFileAccess.getThreadManager().denyRobotFileAccess(target, "You may only read files in your own root package directory");
+		throw new SecurityException("Robots cannot read from a file descriptor");
 	}
 }

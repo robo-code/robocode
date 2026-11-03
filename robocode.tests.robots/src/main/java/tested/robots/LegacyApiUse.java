@@ -26,6 +26,7 @@ import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Scanner;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -157,7 +158,46 @@ public class LegacyApiUse extends AdvancedRobot {
 		thread.start();
 		thread.stop();
 		thread.join(10000);
-		return !thread.isAlive();
+
+		// A call via a subclass of Thread is compiled with the subclass as the owner of the method
+		Worker worker = new Worker();
+
+		worker.start();
+		worker.stop();
+		worker.join(10000);
+
+		// A method reference is a method handle in the class file
+		Worker referenced = new Worker();
+		Consumer<Thread> stopper = Thread::stop;
+
+		referenced.start();
+		stopper.accept(referenced);
+		referenced.join(10000);
+
+		return !thread.isAlive() && !worker.isAlive() && !referenced.isAlive();
+	}
+
+	private static class Worker extends Thread {
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(60000);
+			} catch (InterruptedException ignore) {// Java 20+ cannot stop threads, so these are interrupted
+			}
+		}
+	}
+
+	private interface FileWriterFactory {
+		FileWriter create(String fileName) throws IOException;
+	}
+
+	/**
+	 * Never called, but a method reference to a constructor of a replaced class must not prevent the robot from being
+	 * loaded.
+	 */
+	@SuppressWarnings("unused")
+	private FileWriterFactory constructorReference() {
+		return FileWriter::new;
 	}
 
 	/**
