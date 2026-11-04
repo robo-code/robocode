@@ -41,7 +41,22 @@ public class HostManager implements IHostManager {
 
 	static {
 		initStreams();
+		initStackTraces();
 		initTimeZoneRules();
+	}
+
+	/**
+	 * Takes a stack trace through the JDK, so the classes needed for stack traces are initialized while there is plenty of
+	 * stack. If the first stack trace in the JVM is taken when the stack is nearly full, e.g. by a robot that catches a
+	 * StackOverflowError, initializing StackTraceElement$HashedModules fails, and then every stack trace in the JVM
+	 * fails with a NoClassDefFoundError, which also ruins the battles of other robots.
+	 */
+	private static void initStackTraces() {
+		try {
+			Integer.parseInt("x");
+		} catch (NumberFormatException e) {
+			e.getStackTrace();
+		}
 	}
 
 	/**

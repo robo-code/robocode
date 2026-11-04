@@ -16,6 +16,9 @@
 - With Java 24 and newer, a robot that wrote a file stayed in memory after the battle, as its thread was kept in a list
   that only the SecurityManager removed threads from. Long runs, e.g. of the RoboRumble client, ran out of memory and
   hung.
+- If a robot caught a `StackOverflowError` and then asked for the stack trace, and this was the first stack trace in
+  Java, it could fail for every robot in all later battles with a `NoClassDefFoundError`. Robocode now takes a stack
+  trace when it starts. Reported by Chase-san.
 - A robot built for a newer version of Java stayed invalid after changing to that version of Java, until the robot
   database was rebuilt by hand. The robot database is now rebuilt when the version of Java changes.
 - With Java 24 and newer, a program using the Robocode API could not read from `System.in`. Robots cannot read from it
