@@ -3,6 +3,8 @@
 ### Security
 
 - The checks of the files that robots access are now more strict. Robots can only access the files that were checked.
+- `getDataFile()` now keeps the file inside the robot's own data directory, also when the file name is formed so that it
+  only becomes a path outside the directory after Robocode has processed it. Reported by CyanM0un.
 
 ### Bugfix
 

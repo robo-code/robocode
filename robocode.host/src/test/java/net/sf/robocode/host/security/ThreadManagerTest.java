@@ -52,6 +52,19 @@ public class ThreadManagerTest {
 		Assertions.assertFalse(manager.checkRobotFileStream());
 	}
 
+	@Test
+	public void aDataFileMustBeInsideTheDataDirectory() {
+		File root = new File(folder, "data");
+
+		Assertions.assertTrue(root.mkdir());
+		RobotFileSystemManager manager = createAdvancedRobot(root).getRobotFileSystemManager();
+
+		for (String name : new String[] {"../outside", "sub/../../outside", ".*./outside"}) {
+			Assertions.assertThrows(SecurityException.class, () -> manager.getDataFile(name), name);
+		}
+		Assertions.assertFalse(new File(root, "outside").exists());
+	}
+
 	private static IHostedThread createAdvancedRobot(final File root) {
 		HiddenAccess.init();
 

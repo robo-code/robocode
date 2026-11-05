@@ -198,7 +198,7 @@ public class AdvancedRobotProxy extends StandardRobotProxy implements IAdvancedR
 	public File getDataFile(final String filename) {
 		getCall();
 		commands.setIORobot();
-		if (filename.contains("..")) {
+		if (filename.replace("*", "").contains("..")) { // The file system manager removes the wildcards
 			throw new AccessControlException("no relative path allowed");
 		}
 

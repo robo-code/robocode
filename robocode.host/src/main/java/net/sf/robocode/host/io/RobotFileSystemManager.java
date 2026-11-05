@@ -122,11 +122,34 @@ public class RobotFileSystemManager {
 		}
 	}
 
+	// The file is created below, with the permissions of Robocode, so this must be checked after the name has been processed
+	private void checkInsideDataDirectory(File dataDirectory, File file) {
+		boolean inside;
+
+		try {
+			inside = file.getCanonicalPath().startsWith(dataDirectory.getCanonicalPath() + File.separator);
+		} catch (IOException e) {
+			inside = false;
+		}
+		if (!inside) {
+			final String message = "Preventing " + robotProxy.getStatics().getName() + " from access: " + file
+					+ ". You may only use files in your own data directory: " + dataDirectory;
+
+			robotProxy.punishSecurityViolation(message);
+			throw new SecurityException(message);
+		}
+	}
+
 	public File getDataFile(String filename) {
 		filename = filename.replaceAll("\\*", "");
 
 		final File parent = getWritableDirectory();
 		File file = new File(parent, filename);
+
+		if (parent == null) {
+			return file; // This robot may not write any files, so it must not be created in the working directory
+		}
+		checkInsideDataDirectory(parent, file);
 
 		// TODO the file is never replaced from jar or directory after it was created
 		// TODO it would be good to replace it when it have bigger last modified date
