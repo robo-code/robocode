@@ -31,6 +31,17 @@
     - With Java 8 to 11, the cleanup after a robot could run its static initializers. Their output went to the main
       console instead of the robot's console, and building the robot database took longer.
     - Thanks go to [Julian Kent](https://github.com/jkflying) for fixing this.
+- #124: Fix existing robots being rejected since version 1.11.2, because they used something robots are not allowed to
+  use, even in code that never runs. Robots do not need to be changed for this.
+    - Robots can use `Logger`, `Level`, `AWTKeyStroke`, `MessageDigest`, `SecureRandom`, and `ImageIO.write()` to a
+      stream again, and `new Scanner(File)` and `new ZipFile(File)` on their own files.
+    - Robots using time zones, e.g. via `ZipOutputStream`, are no longer punished with Java versions having the
+      SecurityManager, as Robocode now loads the time zone rules itself.
+    - Robots can use `Thread.stop()` on their own threads, also via a subclass of `Thread`. It interrupts the thread with
+      Java 20 and newer, as Java can no longer stop threads.
+    - Robots with `FileOutputStream` or `FileWriter` in their code can be loaded again, and are stopped if they really
+      try to use them, as before. Robots must use `RobocodeFileOutputStream` or `RobocodeFileWriter`.
+    - Thanks go to [Chase-san](https://github.com/Chase-san) for finding and reporting this ❤️.
 
 ### Changes
 

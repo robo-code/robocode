@@ -23,6 +23,8 @@ import robocode.control.RobotSpecification;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.time.DateTimeException;
+import java.time.ZoneId;
 
 
 /**
@@ -40,6 +42,7 @@ public class HostManager implements IHostManager {
 	static {
 		initStreams();
 		initStackTraces();
+		initTimeZoneRules();
 	}
 
 	/**
@@ -53,6 +56,17 @@ public class HostManager implements IHostManager {
 			Integer.parseInt("x");
 		} catch (NumberFormatException e) {
 			e.getStackTrace();
+		}
+	}
+
+	/**
+	 * Loads the time zone rules, which are used by e.g. ZipOutputStream. Java looks up their providers on the class path
+	 * the first time they are used, which robots would be punished for with the SecurityManager, as they cannot read it.
+	 */
+	private static void initTimeZoneRules() {
+		try {
+			ZoneId.systemDefault().getRules();
+		} catch (DateTimeException ignore) { // The time zone of the system is not known to Java
 		}
 	}
 

@@ -207,7 +207,7 @@ public class RobotClassLoader extends URLClassLoader implements IRobotClassLoade
 
 	private ByteBuffer rewriteRobotClass(ByteBuffer classFile) throws ClassNotFoundException {
 		try {
-			return RobotClassRewriter.rewrite(classFile);
+			return RobotClassRewriter.rewrite(classFile, verifier::isThreadSubclass);
 		} catch (IOException | RuntimeException e) {
 			throw rejectRobotClass("Invalid class file: " + e, e);
 		}

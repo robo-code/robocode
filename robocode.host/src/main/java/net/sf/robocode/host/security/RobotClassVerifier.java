@@ -133,6 +133,16 @@ public final class RobotClassVerifier {
 			"java/awt/Shape",
 			"java/awt/Stroke",
 			"java/awt/Transparency",
+			// Used by existing robots. The members that change global state are denied, see DENIED_MEMBERS
+			"java/awt/AWTKeyStroke",
+			"java/util/logging/Level",
+			"java/util/logging/Logger",
+			// Used by existing robots, e.g. via the random number generators of Apache Commons Math
+			"java/security/GeneralSecurityException",
+			"java/security/MessageDigest",
+			"java/security/NoSuchAlgorithmException",
+			"java/security/NoSuchProviderException",
+			"java/security/SecureRandom",
 			// Used by the code generated for serializable lambdas
 			"java/lang/invoke/SerializedLambda"
 	));
@@ -153,8 +163,6 @@ public final class RobotClassVerifier {
 			"java/lang/Thread$Builder$OfVirtual",
 			"java/lang/ThreadGroup",
 			"java/lang/reflect/Proxy",
-			"java/io/FileOutputStream",
-			"java/io/FileWriter",
 			"java/io/RandomAccessFile",
 			"java/util/ServiceLoader"
 	));
@@ -261,7 +269,19 @@ public final class RobotClassVerifier {
 			"java/io/File.setLastModified",
 			"java/io/File.setReadOnly",
 			"java/io/File.setReadable",
-			"java/io/File.setWritable"
+			"java/io/File.setWritable",
+			// Global state, which the SecurityManager denied with LoggingPermission, and loading of resource bundles
+			"java/util/logging/Level.getLocalizedName",
+			"java/util/logging/Level.getResourceBundleName",
+			"java/util/logging/Logger.addHandler",
+			"java/util/logging/Logger.logrb",
+			"java/util/logging/Logger.removeHandler",
+			"java/util/logging/Logger.setFilter",
+			"java/util/logging/Logger.setLevel",
+			"java/util/logging/Logger.setParent",
+			"java/util/logging/Logger.setResourceBundle",
+			"java/util/logging/Logger.setUseParentHandlers",
+			"java/awt/AWTKeyStroke.registerSubclass"
 	));
 
 	// Classes that robots are not allowed to extend, as these are replaced with subclasses by the RobotClassRewriter
@@ -282,14 +302,21 @@ public final class RobotClassVerifier {
 			// Constructors and methods that open a file for reading
 			"java/util/Scanner.<init>(Ljava/io/File;",
 			"java/util/Scanner.<init>(Ljava/nio/file/Path;",
-			"java/util/zip/ZipFile.<init>",
 			"java/awt/Font.createFont(ILjava/io/File;",
 			// Constructors of the classes replaced with subclasses by the RobotClassRewriter. Constructors supported by
 			// the subclasses have already been replaced when the class is verified, e.g. FileInputStream(File), so only
 			// the unsupported ones are left, e.g. FileInputStream(FileDescriptor).
 			"java/io/FileInputStream.<init>",
+			"java/io/FileOutputStream.<init>",
 			"java/io/FileReader.<init>",
+			"java/io/FileWriter.<init>",
 			"java/io/ObjectInputStream.<init>",
+			"java/util/zip/ZipFile.<init>",
+			// Loading of resource bundles
+			"java/util/logging/Level.<init>",
+			"java/util/logging/Logger.<init>",
+			"java/util/logging/Logger.getAnonymousLogger(Ljava/lang/String;",
+			"java/util/logging/Logger.getLogger(Ljava/lang/String;Ljava/lang/String;",
 	};
 
 	// Members that robots are allowed to use in classes that are otherwise not allowed.
@@ -326,6 +353,16 @@ public final class RobotClassVerifier {
 	public RobotClassVerifier(RobotClassProvider robotClassProvider, ClassLoader hostClassLoader) {
 		this.robotClassProvider = robotClassProvider;
 		this.hostClassLoader = hostClassLoader;
+	}
+
+	/**
+	 * Checks if a class is a robot class that inherits from java.lang.Thread.
+	 *
+	 * @param internalName the internal class name, e.g. "sample/Worker".
+	 * @return true if the class is a robot class that inherits from Thread; false otherwise.
+	 */
+	boolean isThreadSubclass(String internalName) {
+		return isRobotClass(internalName) && getNearestHostAncestors(internalName).contains("java/lang/Thread");
 	}
 
 	/**

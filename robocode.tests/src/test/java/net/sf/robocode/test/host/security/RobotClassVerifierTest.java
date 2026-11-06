@@ -39,15 +39,22 @@ public class RobotClassVerifierTest {
 	static final List<String> RUNTIME_CHECKED_ATTACKS = java.util.Arrays.asList(
 			"ConstructorReflectionAttack.class",
 			"DeserializationAttack.class",
+			"FileAttack.class",
 			"FileDeleteAttack.class",
 			"FileListAttack.class",
+			"FileOutputStreamAttack.class",
+			"FileOutputStreamReflectionAttack.class",
 			"FileReadAttack.class",
+			"FileReaderDescriptorAttack.class",
+			"FileWriterAttack.class",
 			"ReflectionAccessibleAttack.class",
 			"ReflectionAttack.class",
 			"ReflectionExecAttack.class",
 			"ResourceTraversalAttack.class",
 			"RobocodeFileOutputStreamAttack.class",
-			"ThreadLimitAttack.class");
+			"ScannerReadAttack.class",
+			"ThreadLimitAttack.class",
+			"ZipFileReadAttack.class");
 
 	@BeforeAll
 	public static void init() throws IOException {
@@ -76,22 +83,34 @@ public class RobotClassVerifierTest {
 		attacks.put("tested.robots.ConstructorThreadAttack", "java.lang.ThreadGroup");
 		attacks.put("tested.robots.DnsAttack", "java.net.URL");
 		attacks.put("tested.robots.EnvAttack", "java.lang.System.setProperty");
-		attacks.put("tested.robots.FileAttack", "java.io.FileOutputStream");
 		attacks.put("tested.robots.FileDescriptorReadAttack", "java.io.FileInputStream.<init>");
-		attacks.put("tested.robots.FileOutputStreamAttack", "java.io.FileOutputStream");
+		attacks.put("tested.robots.FileOutputStreamSubclassAttack", "java.io.FileOutputStream");
 		attacks.put("tested.robots.FileSubclassDeleteAttack", "java.io.File.delete");
 		attacks.put("tested.robots.HttpAttack", "java.net.URL");
+		attacks.put("tested.robots.FileHandlerAttack", "java.util.logging.FileHandler");
+		attacks.put("tested.robots.ImageIoReadAttack", "javax.imageio.ImageIO.read");
 		attacks.put("tested.robots.IncludeNamespaceAttack", "net.sf.robocode.security.HiddenAccess");
+		attacks.put("tested.robots.KeyStrokeSubclassAttack", "java.awt.AWTKeyStroke.registerSubclass");
+		attacks.put("tested.robots.LogManagerAttack", "java.util.logging.LogManager");
+		attacks.put("tested.robots.LoggerGlobalStateAttack", "java.util.logging.Logger.addHandler");
 		attacks.put("tested.robots.MethodReferenceAttack", "java.lang.Runtime.exec");
 		attacks.put("tested.robots.ObjectInputStreamSubclassAttack", "java.io.ObjectInputStream");
 		attacks.put("tested.robots.PrintStreamFileAttack", "java.io.PrintStream.<init>");
 		attacks.put("tested.robots.ProcessExecAttack", "java.lang.ProcessBuilder");
+		attacks.put("tested.robots.LoggerBundleAttack", "java.util.logging.Logger.<init>");
+		attacks.put("tested.robots.ScannerConditionalAttack", "java.util.Scanner.<init>");
+		attacks.put("tested.robots.ScannerPathAttack", "java.util.Scanner.<init>");
+		attacks.put("tested.robots.ScannerReferenceAttack", "java.util.Scanner.<init>");
+		attacks.put("tested.robots.SecurityProviderAttack", "java.security.Security");
 		attacks.put("tested.robots.SocketAttack", "java.net.ServerSocket");
+		attacks.put("tested.robots.ZipFileDeleteAttack", "java.util.zip.ZipFile.<init>");
+		attacks.put("tested.robots.ZipFileSubclassAttack", "java.util.zip.ZipFile");
 		attacks.put("tested.robots.SystemConsoleAttack", "java.lang.System.console");
 		attacks.put("tested.robots.SystemPropertiesAttack", "java.lang.System.getProperties");
 		attacks.put("tested.robots.ThreadAttack", "java.lang.ThreadGroup");
 		attacks.put("tested.robots.ThreadGroupAttack", "java.lang.ThreadGroup");
 		attacks.put("tested.robots.ThreadInterruptAttack", "java.lang.Thread.getAllStackTraces");
+		attacks.put("tested.robots.ThreadSuspendAttack", "java.lang.Thread.suspend");
 
 		List<String> failures = new ArrayList<String>();
 

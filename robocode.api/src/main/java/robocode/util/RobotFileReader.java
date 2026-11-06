@@ -9,6 +9,7 @@ package robocode.util;
 
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
@@ -30,5 +31,15 @@ public class RobotFileReader extends FileReader {
 
 	public RobotFileReader(File file) throws FileNotFoundException {
 		super(RobotFileAccess.checkRead(file));
+	}
+
+	/**
+	 * Stops the robot, as robots cannot read from a file descriptor. Existing robots can have code using this that never
+	 * runs, and this must not prevent them from being loaded.
+	 *
+	 * @param fd the file descriptor.
+	 */
+	public RobotFileReader(FileDescriptor fd) {
+		super(RobotCompat.denyRead(fd));
 	}
 }

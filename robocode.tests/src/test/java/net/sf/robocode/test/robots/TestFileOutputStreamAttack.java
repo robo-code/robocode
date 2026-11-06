@@ -8,16 +8,23 @@
 package net.sf.robocode.test.robots;
 
 
-import net.sf.robocode.test.helpers.RobotRejectedTestBed;
+import net.sf.robocode.test.helpers.RobotPunishedTestBed;
 
 
 /**
+ * Tests that a robot is stopped when it tries to write a file with a FileOutputStream, even in its data directory.
+ *
  * @author Flemming N. Larsen (original)
  */
-public class TestFileOutputStreamAttack extends RobotRejectedTestBed {
+public class TestFileOutputStreamAttack extends RobotPunishedTestBed {
 
 	@Override
 	public String getRobotName() {
 		return "tested.robots.FileOutputStreamAttack";
+	}
+
+	@Override
+	protected String getExpectedMessage() {
+		return "You must use a RobocodeFileOutputStream or RobocodeFileWriter";
 	}
 }
