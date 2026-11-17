@@ -55,11 +55,14 @@ jobs:
 
       - uses: actions/checkout@v7
 
-      - name: Set up JDK 17
+      # JDK 8 compiles the product; the last listed version (17) runs Gradle and tests.
+      - name: Set up JDK 8 and 17
         uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: |
+            8
+            17
           cache: gradle
 
       - uses: gradle/actions/setup-gradle@v6.4.1
@@ -110,11 +113,14 @@ jobs:
 
       - uses: actions/checkout@v7
 
-      - name: Set up JDK 17
+      # JDK 8 compiles the product; the last listed version (17) runs Gradle.
+      - name: Set up JDK 8 and 17
         uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: |
+            8
+            17
           cache: gradle
 
       - uses: gradle/actions/setup-gradle@v6.4.1
