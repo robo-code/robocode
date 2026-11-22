@@ -572,6 +572,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 				// Immediately reasserts the exception by interrupting the caller thread itself
 				Thread.currentThread().interrupt();
 			}
+			// The battle thread is waiting in waitWakeup(), so the time cannot change while we read it
+			lastExecutionTime = currentExecutionTime;
+			currentExecutionTime = battle.getTime();
 			// Notify battle thread, which is waiting in
 			// our wakeup() call, to return.
 			// It's quite possible, by the way, that we'll be back in sleep (above)
@@ -625,10 +628,6 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	}
 
 	public void checkSkippedTurn() {
-		// Store last and current execution time for detecting skipped turns
-		lastExecutionTime = currentExecutionTime;
-		currentExecutionTime = battle.getTime();
-
 		int numSkippedTurns = (currentExecutionTime - lastExecutionTime) - 1;
 		if (numSkippedTurns >= 1) {
 			events.get().clear(false);
@@ -757,8 +756,10 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		scanArc.setAngleExtent(0);
 		scanArc.setFrame(-100, -100, 1, 1);
 
-		lastExecutionTime = -1;
-		currentExecutionTime = 0;
+		synchronized (isSleeping) {
+			lastExecutionTime = -1;
+			currentExecutionTime = 0;
+		}
 
 		status = new AtomicReference<RobotStatus>();
 
