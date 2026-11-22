@@ -560,15 +560,18 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			isSleeping.notifyAll();
 			// Notifying battle that we're asleep
 			// Sleeping and waiting for battle to wake us up.
+			// Keep waiting until waitWakeup() wakes us, so a spurious wakeup is ignored
 			try {
-				isSleeping.wait();
+				while (isSleeping.get()) {
+					isSleeping.wait();
+				}
 			} catch (InterruptedException e) {
 				// We are expecting this to happen when a round is ended!
+				isSleeping.set(false);
 
 				// Immediately reasserts the exception by interrupting the caller thread itself
 				Thread.currentThread().interrupt();
 			}
-			isSleeping.set(false);
 			// Notify battle thread, which is waiting in
 			// our wakeup() call, to return.
 			// It's quite possible, by the way, that we'll be back in sleep (above)
@@ -585,6 +588,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		synchronized (isSleeping) {
 			if (isSleeping()) {
 				// Wake up the thread
+				isSleeping.set(false);
 				isSleeping.notifyAll();
 				try {
 					isSleeping.wait(10000);
