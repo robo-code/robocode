@@ -754,6 +754,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		scanArc.setFrame(-100, -100, 1, 1);
 
 		lastExecutionTime = -1;
+		currentExecutionTime = 0;
 
 		status = new AtomicReference<RobotStatus>();
 
