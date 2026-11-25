@@ -347,11 +347,11 @@ public class RecordManager implements IRecordManager {
             return;
         }
 
+        boolean isZip = format == BattleRecordFormat.XML_ZIP;
         try (FileOutputStream fos = new FileOutputStream(recordFilename);
             BufferedOutputStream bos = new BufferedOutputStream(fos, 1024 * 1024);
-            ZipOutputStream zos = new ZipOutputStream(bos)) {
+            ZipOutputStream zos = isZip ? new ZipOutputStream(bos) : null) {
 
-            boolean isZip = format == BattleRecordFormat.XML_ZIP;
             if (isZip) {
                 zos.putNextEntry(new ZipEntry(dateFormat.format(calendar.getTime()) + "-robocode.xml"));
             }
