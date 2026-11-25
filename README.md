@@ -28,6 +28,7 @@ Get started with Robocode today and unleash your inner programmer!
 - [Facebook group] is a community for enthusiasts of the Robocode programming game
 - [Robocode Application Developers] is for people that want to develop or experiment with the Robocode application
 - [Robocode Guide for building Robocode], if you want to build Robocode yourself
+- [Run multiple Classic battles without a display](docs/headless-battles.md)
 
 ## Next Generation: Robocode Tank Royale
 
