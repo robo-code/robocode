@@ -179,7 +179,7 @@ public class BattleManager implements IBattleManager {
 		}
 	}
 
-	private void replayBattle() {
+	private void replayBattle(int initialRound) {
 		if (!recordManager.hasRecord()) {
 			return;
 		}
@@ -192,7 +192,9 @@ public class BattleManager implements IBattleManager {
 		Logger.setLogListener(battleEventDispatcher);
 
 		recordManager.detachRecorder();
-		battle = Container.createComponent(BattlePlayer.class);
+		BattlePlayer player = Container.createComponent(BattlePlayer.class);
+		player.setInitialRound(initialRound);
+		battle = player;
 
 		Thread battleThread = new Thread(Thread.currentThread().getThreadGroup(), battle);
 
@@ -314,7 +316,19 @@ public class BattleManager implements IBattleManager {
 	}
 
 	public synchronized void replay() {
-		replayBattle();
+		replayBattle(0);
+	}
+
+	@Override
+	public synchronized void replayFromRound(int round) {
+		int recordedRounds = recordManager.getRecordedRoundCount();
+		if (recordedRounds < 1) {
+			throw new IllegalArgumentException("No recorded rounds are available");
+		}
+		if (round < 1 || round > recordedRounds) {
+			throw new IllegalArgumentException("Replay round must be between 1 and " + recordedRounds);
+		}
+		replayBattle(round - 1);
 	}
 
 	private boolean isPaused() {

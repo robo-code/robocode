@@ -795,6 +795,7 @@ public class RobocodeFrame extends JFrame {
 		private boolean isBattleRunning;
 		private boolean isBattlePaused;
 		private boolean isBattleReplay;
+		private boolean firstRound;
 		private long lastTitleUpdateTime;
 
 		public BattleObserver() {
@@ -814,6 +815,8 @@ public class RobocodeFrame extends JFrame {
 			numberOfRounds = event.getBattleRules().getNumRounds();
 			isBattleRunning = true;
 			isBattleReplay = event.isReplay();
+			firstRound = true;
+			currentTurn = 0;
 
 			getStopButton().setEnabled(true);
 			getRestartButton().setEnabled(battleManager.getBattleProperties().getSelectedRobots() != null);
@@ -836,7 +839,8 @@ public class RobocodeFrame extends JFrame {
 		}
 
 		public void onRoundStarted(final RoundStartedEvent event) {
-			if (event.getRound() == 0) {
+			if (firstRound) {
+				firstRound = false;
 				getRobotButtonsPanel().removeAll();
 
 				final List<IRobotSnapshot> robots = Arrays.asList(event.getStartSnapshot().getRobots());

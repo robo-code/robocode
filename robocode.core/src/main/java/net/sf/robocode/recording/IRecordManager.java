@@ -41,4 +41,6 @@ public interface IRecordManager {
     void generateCsvRecord(OutputStream fosResults, OutputStream fosRounds, OutputStream fosRobots, OutputStream fosBullets, SerializableOptions options, CheckedConsumer<ITurnSnapshot> extension) throws IOException, ClassNotFoundException;
 
     boolean hasRecord();
+
+    int getRecordedRoundCount();
 }
