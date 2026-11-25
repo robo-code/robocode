@@ -199,8 +199,14 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 
 	public void saveToFile(String filename, boolean append) {
 		try {
-			PrintStream out = new PrintStream(new FileOutputStream(filename, append));
+			writeToFile(filename, append);
+		} catch (IOException e) {
+			Logger.logError(e);
+		}
+	}
 
+	public void writeToFile(String filename, boolean append) throws IOException {
+		try (PrintStream out = new PrintStream(new FileOutputStream(filename, append))) {
 			out.println(DateFormat.getDateTimeInstance().format(new Date()));
 
 			out.println(getTitle());
@@ -226,10 +232,9 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 
 			out.println("$");
 
-			out.close();
-
-		} catch (IOException e) {
-			Logger.logError(e);
+			if (out.checkError()) {
+				throw new IOException("Unable to write the report");
+			}
 		}
 	}
 
