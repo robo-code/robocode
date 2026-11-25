@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Properties;
+import java.util.function.Function;
 
 
 /**
@@ -334,14 +335,25 @@ public class BattleProperties implements Serializable {
 
 	public void load(FileInputStream in) throws IOException {
 		props.load(in);
-		battlefieldWidth = Integer.parseInt(props.getProperty(BATTLEFIELD_WIDTH, "800"));
-		battlefieldHeight = Integer.parseInt(props.getProperty(BATTLEFIELD_HEIGHT, "600"));
-		gunCoolingRate = Double.parseDouble(props.getProperty(BATTLE_GUNCOOLINGRATE, "0.1"));
-		inactivityTime = Long.parseLong(props.getProperty(BATTLE_RULES_INACTIVITYTIME, "450"));
+		battlefieldWidth = parseNumber(BATTLEFIELD_WIDTH, "800", Integer::parseInt);
+		battlefieldHeight = parseNumber(BATTLEFIELD_HEIGHT, "600", Integer::parseInt);
+		gunCoolingRate = parseNumber(BATTLE_GUNCOOLINGRATE, "0.1", Double::parseDouble);
+		inactivityTime = parseNumber(BATTLE_RULES_INACTIVITYTIME, "450", Long::parseLong);
 		hideEnemyNames = Boolean.parseBoolean(props.getProperty(BATTLE_HIDE_ENEMY_NAMES, "false"));
-		numRounds = Integer.parseInt(props.getProperty(BATTLE_NUMROUNDS, "10"));
+		numRounds = parseNumber(BATTLE_NUMROUNDS, "10", Integer::parseInt);
 		selectedRobots = props.getProperty(BATTLE_SELECTEDROBOTS, "");
 		initialPositions = props.getProperty(BATTLE_INITIAL_POSITIONS, "");
-		sentryBorderSize = Integer.parseInt(props.getProperty(BATTLE_SENTRY_BORDER_SIZE, "100"));
+		sentryBorderSize = parseNumber(BATTLE_SENTRY_BORDER_SIZE, "100", Integer::parseInt);
+	}
+
+	private <T extends Number> T parseNumber(String key, String defaultValue, Function<String, T> parser) {
+		String value = props.getProperty(key, defaultValue);
+		try {
+			return parser.apply(value);
+		} catch (NumberFormatException e) {
+			NumberFormatException error = new NumberFormatException("Invalid value '" + value + "' for " + key);
+			error.initCause(e);
+			throw error;
+		}
 	}
 }
