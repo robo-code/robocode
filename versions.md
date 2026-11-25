@@ -3,8 +3,9 @@
 ### Bugfix
 
 - #132: A silent installation of Robocode that failed ended with exit status 0, so scripts and tools like Chocolatey
-  saw it as a success. It now ends with exit status 1. Installing into a path that is a file now fails right away with
-  a clear message, instead of failing halfway through. Reported and fixed by henrivalle.
+  saw it as a success. It now ends with exit status 1.
+    - Thanks go to [Henrique Valle de Lima](https://github.com/henrivalle) for finding and fixing this ❤️.
+- Installing into a path that is a file now fails right away with a clear message, instead of failing halfway through.
 
 ## Version 1.12.0 (06-Nov-2026)
 
