@@ -9,6 +9,7 @@ package net.sf.robocode.ui.editor;
 
 
 import net.sf.robocode.ui.dialog.WindowUtil;
+import net.sf.robocode.ui.editor.theme.EditorThemePropertiesManager;
 import static net.sf.robocode.ui.util.ShortcutUtil.MENU_SHORTCUT_KEY_MASK;
 
 import javax.swing.*;
@@ -706,8 +707,28 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 			viewMenu.setMnemonic('V');
 
 			viewMenu.add(getViewEditorThemeConfigDialogMenuItem());
+			viewMenu.addSeparator();
+			addEditorFontSizeAction("Increase Editor Font Size", KeyEvent.VK_EQUALS, () -> zoomEditorFont(true));
+			addEditorFontSizeAction("Decrease Editor Font Size", KeyEvent.VK_MINUS, () -> zoomEditorFont(false));
+			addEditorFontSizeAction("Reset Editor Font Size", KeyEvent.VK_0,
+					() -> EditorThemePropertiesManager.setEditorFontSize(null));
 		}
 		return viewMenu;
+	}
+
+	private void addEditorFontSizeAction(String label, int keyCode, Runnable action) {
+		JMenuItem item = new JMenuItem(label);
+		item.setAccelerator(KeyStroke.getKeyStroke(keyCode, MENU_SHORTCUT_KEY_MASK));
+		item.addActionListener(event -> action.run());
+		viewMenu.add(item);
+	}
+
+	private void zoomEditorFont(boolean larger) {
+		int currentSize = EditorThemePropertiesManager.getEditorFont().getSize();
+		int target = EditorThemeConfigDialog.adjacentFontSize(currentSize, larger);
+		if (target != currentSize) {
+			EditorThemePropertiesManager.setEditorFontSize(target);
+		}
 	}
 
 	private JMenuItem getViewEditorThemeConfigDialogMenuItem() {

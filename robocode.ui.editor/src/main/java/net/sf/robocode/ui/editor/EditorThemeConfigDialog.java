@@ -54,6 +54,20 @@ public class EditorThemeConfigDialog extends JDialog {
 		"8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72"
 	};
 
+	static int adjacentFontSize(int currentSize, boolean larger) {
+		int target = currentSize;
+		for (String option : FONT_SIZES) {
+			int size = Integer.parseInt(option);
+			if (larger && size > currentSize) {
+				return size;
+			}
+			if (!larger && size < currentSize) {
+				target = size;
+			}
+		}
+		return target;
+	}
+
 	private JButton saveButton;
 	private JButton closeButton;
 
@@ -308,6 +322,7 @@ public class EditorThemeConfigDialog extends JDialog {
 					int newFontSize = Integer.parseInt((String) getFontSizeComboBox().getSelectedItem());
 					if (newFontSize != oldFontSize) {
 						themeProps.setFontSize(newFontSize);
+						EditorThemePropertiesManager.setEditorFontSize(null);
 						updateSaveButton();
 					}
 				}
