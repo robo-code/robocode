@@ -42,14 +42,14 @@ public final class Installer {
         }
 
         boolean installed = install(new File(suggestedDirName));
-        String message = installed ? "Installation successful" : "Installation cancelled";
         if (!isSilent) {
-            JOptionPane.showMessageDialog(null, message);
+            JOptionPane.showMessageDialog(null, installed ? "Installation successful" : "Installation cancelled");
+        } else if (installed) {
+            System.out.println("Installation successful");
         } else {
-            System.out.println(message);
-            if (!installed) {
-                System.exit(1);
-            }
+            // A silent installation cannot be cancelled, so it has failed
+            System.err.println("Installation failed");
+            System.exit(1);
         }
     }
 
@@ -85,6 +85,14 @@ public final class Installer {
             }
         }
 
+        if (installDir.exists() && !installDir.isDirectory()) {
+            String message = "Not a directory: " + installDir;
+            System.err.println(message);
+            if (!isSilent) {
+                JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            return false;
+        }
         if (!installDir.exists() && !installDir.mkdirs()) {
             System.err.println("Can't create dir: " + installDir);
             return false;
