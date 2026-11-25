@@ -32,6 +32,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
 
 
 /**
@@ -64,6 +69,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 		String recordXmlFilename;
 		String replayFilename;
 		String resultsFilename;
+		String csvResultsFilename;
 		int tps;
 	}
 
@@ -250,6 +256,12 @@ public final class RobocodeMain extends RobocodeMainBase {
 				if (soundManager != null) {
 					soundManager.setEnableSound(false);
 				}
+			} else if (currentArg.equalsIgnoreCase("-resultsCSV")) {
+				if (i + 1 >= args.length) {
+					System.err.println("Missing filename for " + currentArg);
+					System.exit(8);
+				}
+				setup.csvResultsFilename = args[++i];
 			} else if (currentArg.equals("-?") || currentArg.equalsIgnoreCase("-help")) {
 				printUsage();
 				System.exit(0);
@@ -258,6 +270,10 @@ public final class RobocodeMain extends RobocodeMainBase {
 				printUsage();
 				System.exit(8);
 			}
+		}
+		if (setup.csvResultsFilename != null && setup.battleFilename == null) {
+			System.err.println("-resultsCSV requires -battle");
+			System.exit(8);
 		}
 		File robotsDir = FileUtil.getRobotsDir();
 		if (robotsDir == null) {
@@ -301,7 +317,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 	private void printUsage() {
 		System.out.print(
-				"Usage: robocode [-?] [-help] [-cwd path] [-battle filename [-results filename]\n"
+				"Usage: robocode [-?] [-help] [-cwd path] [-battle filename [-results filename] [-resultsCSV filename]]\n"
 						+ "                [-record filename] [-recordXML filename] [-replay filename]\n"
 						+ "                [-tps tps] [-minimize] [-nodisplay] [-nosound]\n"
 						+ "\n"
@@ -310,6 +326,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 						+ "  -cwd <path>                Change the current working directory\n"
 						+ "  -battle <battle file>      Run the battle specified in a battle file\n"
 						+ "  -results <results file>    Save results to the specified text file\n"
+						+ "  -resultsCSV <csv file>     Save machine-readable UTF-8 CSV results from -battle\n"
 						+ "  -record <bin record file>  Record the battle into the specified file as binary\n"
 						+ "  -recordXML <xml rec file>  Record the battle into the specified file as XML\n"
 						+ "  -replay <record file>      Replay the specified battle record\n"
@@ -371,6 +388,15 @@ public final class RobocodeMain extends RobocodeMainBase {
 		}
 	}
 	
+	private void saveCsvResults(BattleCompletedEvent event) {
+		try (Writer output = Files.newBufferedWriter(Paths.get(setup.csvResultsFilename), StandardCharsets.UTF_8)) {
+			BattleResultsCsv.write(output, event.getSortedResults());
+		} catch (IOException | InvalidPathException e) {
+			System.err.println("Could not save CSV results to '" + setup.csvResultsFilename + "': " + e.getMessage());
+			System.exit(8);
+		}
+	}
+
 	private class BattleObserver extends BattleAdaptor {
 		boolean isReplay;
 
@@ -390,6 +416,9 @@ public final class RobocodeMain extends RobocodeMainBase {
 			}
 			if (setup.recordXmlFilename != null) {
 				recordManager.saveRecord(setup.recordXmlFilename, BattleRecordFormat.XML, new SerializableOptions(false));
+			}
+			if (!isReplay && setup.csvResultsFilename != null) {
+				saveCsvResults(event);
 			}
 		}
 
