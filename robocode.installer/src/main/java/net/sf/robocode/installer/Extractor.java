@@ -12,6 +12,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -88,7 +89,8 @@ public final class Extractor {
                         if (entryNameLC.endsWith(".sh") || entryNameLC.endsWith(".command")) {
                             dos2unix(outputFile.getAbsolutePath());
                             if (File.separatorChar == '/') {
-                                Runtime.getRuntime().exec("chmod 755 " + outputFile.getAbsolutePath());
+                                Files.setPosixFilePermissions(outputFile.toPath(),
+                                        PosixFilePermissions.fromString("rwxr-xr-x"));
                             }
                         }
                     }
