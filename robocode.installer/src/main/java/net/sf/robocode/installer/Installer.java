@@ -41,17 +41,15 @@ public final class Installer {
             System.setProperty("sun.java2d.opengl", "false");
         }
 
-        String message;
-        if (install(new File(suggestedDirName))) {
-            message = "Installation successful";
-        } else {
-            message = "Installation cancelled";
-        }
-
+        boolean installed = install(new File(suggestedDirName));
+        String message = installed ? "Installation successful" : "Installation cancelled";
         if (!isSilent) {
             JOptionPane.showMessageDialog(null, message);
         } else {
             System.out.println(message);
+            if (!installed) {
+                System.exit(1);
+            }
         }
     }
 
