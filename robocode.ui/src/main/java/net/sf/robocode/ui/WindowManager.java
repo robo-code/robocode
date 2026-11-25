@@ -521,7 +521,7 @@ public class WindowManager implements IWindowManagerExt {
 
 			String filename = chooser.getSelectedFile().getPath();
 
-			if (!filename.endsWith(".csv")) {
+			if (!filename.toLowerCase(Locale.ROOT).endsWith(".csv")) {
 				filename += ".csv";
 			}
 
