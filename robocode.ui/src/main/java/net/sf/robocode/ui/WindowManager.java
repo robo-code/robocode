@@ -527,7 +527,13 @@ public class WindowManager implements IWindowManagerExt {
 
 			boolean append = settingsManager.getOptionsCommonAppendWhenSavingResults();
 
-			tableModel.saveToFile(filename, append);
+			try {
+				tableModel.writeToFile(filename, append);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(getRobocodeFrame(),
+						"Could not save results to '" + filename + "': " + e.getMessage(),
+						"Save Battle Results", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
