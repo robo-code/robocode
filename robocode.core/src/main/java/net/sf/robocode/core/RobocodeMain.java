@@ -8,6 +8,7 @@
 package net.sf.robocode.core;
 
 
+import net.sf.robocode.battle.BattleProperties;
 import net.sf.robocode.battle.BattleResultsTableModel;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.host.ICpuManager;
@@ -145,8 +146,16 @@ public final class RobocodeMain extends RobocodeMainBase {
 				setup.exitOnComplete = true;
 
 				battleManager.setBattleFilename(setup.battleFilename);
-				if (new File(battleManager.getBattleFilename()).exists()) {
-					battleManager.startNewBattle(battleManager.loadBattleProperties(), false, enableCLIRecording);
+				if (new File(battleManager.getBattleFilename()).isFile()) {
+					BattleProperties battleProperties;
+					try {
+						battleProperties = battleManager.loadBattleProperties();
+					} catch (IllegalArgumentException e) {
+						System.err.println("Invalid battle file '" + setup.battleFilename + "': " + e.getMessage());
+						System.exit(8);
+						return;
+					}
+					battleManager.startNewBattle(battleProperties, false, enableCLIRecording);
 				} else {
 					System.err.println("The specified battle file '" + setup.battleFilename + "' was not found");
 					System.exit(8);
@@ -211,31 +220,30 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 		for (int i = 0; i < args.length; i++) {
 			String currentArg = args[i];
-			if (currentArg.equalsIgnoreCase("-cwd") && (i < args.length + 1)) {
-				changeDirectory(args[i + 1]);
-				i++;
-			} else if (currentArg.equalsIgnoreCase("-battle") && (i < args.length + 1)) {
-				setup.battleFilename = args[i + 1];
-				i++;
-			} else if (currentArg.equalsIgnoreCase("-record") && (i < args.length + 1)) {
-				setup.recordFilename = args[i + 1];
-				i++;
-			} else if (currentArg.equalsIgnoreCase("-recordXML") && (i < args.length + 1)) {
-				setup.recordXmlFilename = args[i + 1];
-				i++;
-			} else if (currentArg.equalsIgnoreCase("-replay") && (i < args.length + 1)) {
-				setup.replayFilename = args[i + 1];
-				i++;
-			} else if (currentArg.equalsIgnoreCase("-results") && (i < args.length + 1)) {
-				setup.resultsFilename = args[i + 1];
-				i++;
-			} else if (currentArg.equalsIgnoreCase("-tps") && (i < args.length + 1)) {
-				setup.tps = Integer.parseInt(args[i + 1]);
+			if (currentArg.equalsIgnoreCase("-cwd")) {
+				changeDirectory(optionValue(args, i++));
+			} else if (currentArg.equalsIgnoreCase("-battle")) {
+				setup.battleFilename = optionValue(args, i++);
+			} else if (currentArg.equalsIgnoreCase("-record")) {
+				setup.recordFilename = optionValue(args, i++);
+			} else if (currentArg.equalsIgnoreCase("-recordXML")) {
+				setup.recordXmlFilename = optionValue(args, i++);
+			} else if (currentArg.equalsIgnoreCase("-replay")) {
+				setup.replayFilename = optionValue(args, i++);
+			} else if (currentArg.equalsIgnoreCase("-results")) {
+				setup.resultsFilename = optionValue(args, i++);
+			} else if (currentArg.equalsIgnoreCase("-tps")) {
+				String value = optionValue(args, i++);
+				try {
+					setup.tps = Integer.parseInt(value);
+				} catch (NumberFormatException e) {
+					System.err.println("-tps expects a positive integer: " + value);
+					System.exit(8);
+				}
 				if (setup.tps < 1) {
 					Logger.logError("tps must be > 0");
 					System.exit(8);
 				}
-				i++;
 			} else if (currentArg.equalsIgnoreCase("-minimize")) {
 				setup.minimize = true;
 			} else if (currentArg.equalsIgnoreCase("-nodisplay")) {
@@ -288,6 +296,14 @@ public final class RobocodeMain extends RobocodeMainBase {
 			System.out.println("Warning: " + exMessage); // beside the log
 			Logger.logWarning(exMessage);
 		}
+	}
+
+	private static String optionValue(String[] args, int optionIndex) {
+		if (optionIndex + 1 >= args.length) {
+			System.err.println("Missing value for " + args[optionIndex]);
+			System.exit(8);
+		}
+		return args[optionIndex + 1];
 	}
 
 	private void changeDirectory(String robocodeDir) {
