@@ -25,6 +25,12 @@ Thanks go to [Henrique Valle de Lima](https://github.com/henrivalle) for finding
   from the current directory instead of the Robocode directory. It now ends with the exit status of Robocode and works
   when started from another directory.
 
+### Changes
+
+- The documentation of the Control API in the `robocode.control` package now explains how to run many battles with
+  the same `RobocodeEngine`, which is much faster than starting Robocode for each battle. It also shows how to compile
+  and run the example with Java 8 and newer. Suggested by Henrique Valle de Lima in #135.
+
 ## Version 1.12.0 (06-Nov-2026)
 
 ### Security
