@@ -89,8 +89,14 @@ public final class Extractor {
                         if (entryNameLC.endsWith(".sh") || entryNameLC.endsWith(".command")) {
                             dos2unix(outputFile.getAbsolutePath());
                             if (File.separatorChar == '/') {
-                                Files.setPosixFilePermissions(outputFile.toPath(),
-                                        PosixFilePermissions.fromString("rwxr-xr-x"));
+                                try {
+                                    Files.setPosixFilePermissions(outputFile.toPath(),
+                                            PosixFilePermissions.fromString("rwxr-xr-x"));
+                                } catch (IOException | UnsupportedOperationException e) {
+                                    // Some file systems, e.g. FAT, cannot store the permissions. The installation
+                                    // continues, as the script can still be started with 'sh'.
+                                    System.err.println("Can't make executable: " + outputFile);
+                                }
                             }
                         }
                     }
