@@ -2,10 +2,26 @@
 
 ### Bugfix
 
+Thanks go to [Henrique Valle de Lima](https://github.com/henrivalle) for finding and fixing #132, #134, #137, #140,
+#141 and #142 ❤️.
+
 - #132: A silent installation of Robocode that failed ended with exit status 0, so scripts and tools like Chocolatey
   saw it as a success. It now ends with exit status 1.
-    - Thanks go to [Henrique Valle de Lima](https://github.com/henrivalle) for finding and fixing this ❤️.
 - Installing into a path that is a file now fails right away with a clear message, instead of failing halfway through.
+- #141: A battle recorded as plain XML with `-recordXML` had an empty ZIP footer after the XML, so XML parsers
+  rejected the file.
+- #142: When saving the battle results from the Results dialog failed, the error was only written to the log, so it
+  looked as if the results were saved. An error dialog now shows the file and the reason.
+- #140: When the results could not be written to the file given with `-results`, Robocode still ended with exit
+  status 0. It now writes an error and ends with exit status 8. The Results dialog also added an extra `.csv` to a file
+  name ending with `.CSV`.
+- #137: A command-line option missing its value at the end of the command line, e.g. `-battle`, failed with an
+  exception. A non-numeric value for `-tps`, or an invalid number in a battle file, printed an exception, but Robocode
+  ended with exit status 0. These now give a clear error, naming the property and value for a battle file, and end with
+  exit status 8.
+- #134: `robocode.sh` always ended with exit status 0, also when Robocode failed, and it read `set_java_options.sh`
+  from the current directory instead of the Robocode directory. It now ends with the exit status of Robocode and works
+  when started from another directory.
 
 ## Version 1.12.0 (06-Nov-2026)
 
