@@ -2,12 +2,14 @@
 
 ### Bugfix
 
-Thanks go to [Henrique Valle de Lima](https://github.com/henrivalle) for finding and fixing #132, #134, #137, #140,
-#141 and #142 ❤️.
+Thanks go to [Henrique Valle de Lima](https://github.com/henrivalle) for finding and fixing #132, #133, #134, #137,
+#140, #141 and #142 ❤️.
 
 - #132: A silent installation of Robocode that failed ended with exit status 0, so scripts and tools like Chocolatey
   saw it as a success. It now ends with exit status 1.
 - Installing into a path that is a file now fails right away with a clear message, instead of failing halfway through.
+- #133: Installing Robocode on Linux or macOS into a path with spaces, e.g. `Robocode Lab`, left `robocode.sh` and the
+  other scripts without permission to run, so they failed with "Permission denied".
 - #141: A battle recorded as plain XML with `-recordXML` had an empty ZIP footer after the XML, so XML parsers
   rejected the file.
 - #142: When saving the battle results from the Results dialog failed, the error was only written to the log, so it
