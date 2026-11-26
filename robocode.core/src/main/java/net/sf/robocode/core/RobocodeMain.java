@@ -336,7 +336,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 	private void printResultsData(BattleCompletedEvent event) {
 		// Do not print out if no result file has been specified and the GUI is enabled
-		if ((setup.resultsFilename == null && (!setup.exitOnComplete || windowManager.isGUIEnabled()))) {
+		if (setup.resultsFilename == null && (!setup.exitOnComplete || (windowManager != null && windowManager.isGUIEnabled()))) {
 			return;
 		}
 
@@ -349,12 +349,8 @@ public final class RobocodeMain extends RobocodeMainBase {
 			} else {
 				File f = new File(setup.resultsFilename);
 	
-				try {
-					fos = new FileOutputStream(f);
-					out = new PrintStream(fos);
-				} catch (IOException e) {
-					Logger.logError(e);
-				}
+				fos = new FileOutputStream(f);
+				out = new PrintStream(fos);
 			}
 			if (out != null) {
 				BattleResultsTableModel resultsTable = new BattleResultsTableModel(event.getSortedResults(),
@@ -364,10 +360,20 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 				resultsTable.print(new PrintStream(baos));
 				out.append(StringUtil.toBasicLatin(baos.toString()));
+				if (fos != null && out.checkError()) {
+					throw new IOException("Unable to write the report");
+				}
+			}
+		} catch (IOException e) {
+			System.err.println("Could not save results to '" + setup.resultsFilename + "': " + e.getMessage());
+			if (setup.exitOnComplete) {
+				System.exit(8);
 			}
 		} finally {
-			FileUtil.cleanupStream(out);
-			FileUtil.cleanupStream(fos);			
+			if (fos != null) {
+				FileUtil.cleanupStream(out);
+				FileUtil.cleanupStream(fos);
+			}
 		}
 	}
 	
