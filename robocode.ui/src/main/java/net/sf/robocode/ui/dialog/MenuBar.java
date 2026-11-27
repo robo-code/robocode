@@ -419,8 +419,9 @@ public class MenuBar extends JMenuBar {
 			return;
 		}
 		JSpinner round = new JSpinner(new SpinnerNumberModel(1, 1, rounds, 1));
-		if (JOptionPane.showConfirmDialog(robocodeFrame, round, "Replay from Round", JOptionPane.OK_CANCEL_OPTION)
-				== JOptionPane.OK_OPTION) {
+		Object[] message = { "Start the replay at round (1 to " + rounds + "):", round };
+		if (JOptionPane.showConfirmDialog(robocodeFrame, message, "Replay from Round", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION) {
 			try {
 				round.commitEdit();
 				battleManager.replayFromRound((Integer) round.getValue());

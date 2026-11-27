@@ -262,13 +262,14 @@ public final class RobocodeMain extends RobocodeMainBase {
 			} else if (currentArg.equalsIgnoreCase("-minimize")) {
 				setup.minimize = true;
 			} else if (currentArg.equalsIgnoreCase("-replayRound")) {
+				String value = optionValue(args, i++);
 				try {
-					setup.replayStartRound = Integer.parseInt(++i < args.length ? args[i] : "");
+					setup.replayStartRound = Integer.parseInt(value);
 				} catch (NumberFormatException e) {
 					setup.replayStartRound = -1;
 				}
 				if (setup.replayStartRound < 1) {
-					System.err.println("-replayRound requires a positive integer");
+					System.err.println("-replayRound expects a positive integer: " + value);
 					System.exit(8);
 				}
 			} else if (currentArg.equalsIgnoreCase("-nodisplay")) {
@@ -358,7 +359,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 	private void printUsage() {
 		System.out.print(
 				"Usage: robocode [-?] [-help] [-cwd path] [-battle filename [-results filename] [-resultsCSV filename]]\n"
-						+ "                [-record filename] [-recordXML filename] [-replay filename]\n"
+						+ "                [-record filename] [-recordXML filename] [-replay filename [-replayRound round]]\n"
 						+ "                [-tps tps] [-minimize] [-nodisplay] [-nosound]\n"
 						+ "\n"
 						+ "where options include:\n"
@@ -370,7 +371,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 						+ "  -record <bin record file>  Record the battle into the specified file as binary\n"
 						+ "  -recordXML <xml rec file>  Record the battle into the specified file as XML\n"
 						+ "  -replay <record file>      Replay the specified battle record\n"
-						+ "  -replayRound <round>      Start -replay at the specified recorded round (1-based)\n"
+						+ "  -replayRound <round>       Start -replay at the specified round, where 1 is the first\n"
 						+ "  -tps <tps>                 Set the TPS > 0 (Turns Per Second)\n"
 						+ "  -minimize                  Run minimized when Robocode starts\n"
 						+ "  -nodisplay                 Run with the display / GUI disabled\n"
