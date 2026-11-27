@@ -126,14 +126,8 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 		BattleResults statistics = results[row];
 
 		switch (col) {
-		case 0: {
-			int place = row + 1;
-
-			while (place < getRowCount() && statistics.getScore() == results[place].getScore()) {
-				place++;
-			}
-			return getPlacementString(place);
-		}
+		case 0:
+			return getPlacementString(getPlace(results, row));
 
 		case 1:
 			return statistics.getTeamLeaderName();
@@ -236,6 +230,24 @@ public class BattleResultsTableModel extends javax.swing.table.AbstractTableMode
 				throw new IOException("Unable to write the report");
 			}
 		}
+	}
+
+	/**
+	 * Returns the placement of a result, where 1 is the winner.
+	 * Results with the same score share the placement of the last of them, e.g. 1, 3, 3, 4 for the scores
+	 * 300, 200, 200, 100.
+	 *
+	 * @param sortedResults the results sorted by score, with the highest score first.
+	 * @param index the index of the result in the sorted results.
+	 * @return the placement of the result.
+	 */
+	public static int getPlace(BattleResults[] sortedResults, int index) {
+		int place = index + 1;
+
+		while (place < sortedResults.length && sortedResults[index].getScore() == sortedResults[place].getScore()) {
+			place++;
+		}
+		return place;
 	}
 
 	private static String getPlacementString(int i) {
