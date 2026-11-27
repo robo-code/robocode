@@ -33,6 +33,8 @@ suggesting the Control API documentation in #135 ❤️.
   `.bullets.csv` file contained the robots.
 - The results from `-results` showed a percentage as e.g. `36 %` with languages that put a no-break space before
   `%`, like Danish. It is now written with a normal space.
+- Settings given with `-D` on the command line, e.g. `-Drobocode.options.common.recordingFormat=csv`, were ignored the
+  first time Robocode ran after it was installed, as there was no `config/robocode.properties` file yet.
 
 ### Changes
 
