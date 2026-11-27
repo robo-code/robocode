@@ -447,12 +447,12 @@ public class RecordManager implements IRecordManager {
             CsvWriter cwrRounds = new CsvWriter(oswRounds, false);
             cwrRounds.startDocument("version,battleId,roundIndex,robotCount,battlefieldWidth,battlefieldHeight,gunCoolingRate,inactivityTime,turnsInRound");
 
-            bosRobots = new BufferedOutputStream(fosBullets, 1024 * 1024);
+            bosRobots = new BufferedOutputStream(fosRobots, 1024 * 1024);
             oswRobots = new OutputStreamWriter(bosRobots, utf8);
             CsvWriter cwrRobots = new CsvWriter(oswRobots, false);
             cwrRobots.startDocument("version,battleId,roundIndex,turnIndex,robotIndex,robotName,energy,x,y,bodyHeading,gunHeading,radarHeading,gunHeat,velocity,score,survivalScore,bulletDamageScore,bulletKillBonus,rammingDamageScore,rammingKillBonus");
 
-            bosBullets = new BufferedOutputStream(fosRobots, 1024 * 1024);
+            bosBullets = new BufferedOutputStream(fosBullets, 1024 * 1024);
             oswBullets = new OutputStreamWriter(bosBullets, utf8);
             CsvWriter cwrBullets = new CsvWriter(oswBullets, false);
             cwrBullets.startDocument("version,battleId,roundIndex,turnIndex,bulletId,ownerIndex,ownerName,state,heading,x,y,victimIndex,victimName");
