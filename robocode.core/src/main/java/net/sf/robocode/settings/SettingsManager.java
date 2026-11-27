@@ -149,6 +149,7 @@ public class SettingsManager implements ISettingsManager {
 			this.load(in);
 		} catch (FileNotFoundException e) {
 			logError("No " + FileUtil.getRobocodeConfigFile().getName() + ". Using defaults.");
+			loadSystemProperties();
 		} catch (IOException e) {
 			logError("Error while reading " + FileUtil.getRobocodeConfigFile().getName() + ": " + e);
 		} finally {
@@ -159,6 +160,24 @@ public class SettingsManager implements ISettingsManager {
 				} catch (IOException e) {}
 			}
 		}
+	}
+
+	/**
+	 * Uses the settings given as system properties, e.g. -Drobocode.options.common.recordingFormat=csv, when there is
+	 * no properties file yet. With a properties file, load() uses them instead.
+	 */
+	private void loadSystemProperties() {
+		optionsBattleDesiredTPS = Integer.parseInt(
+				System.getProperty(OPTIONS_BATTLE_DESIREDTPS, "" + optionsBattleDesiredTPS));
+		String developmentPaths = System.getProperty(OPTIONS_DEVELOPMENT_PATH);
+		if (developmentPaths != null) {
+			optionsDevelopmentPaths = fromCommaSeparatedString(developmentPaths);
+		}
+		optionsCommonEnableReplayRecording = Boolean.valueOf(
+				System.getProperty(OPTIONS_COMMON_ENABLE_REPLAY_RECORDING, "" + optionsCommonEnableReplayRecording));
+		optionsCommonEnableAutoRecording = Boolean.valueOf(
+				System.getProperty(OPTIONS_COMMON_ENABLE_AUTO_RECORDING, "" + optionsCommonEnableAutoRecording));
+		optionsCommonRecordingFormat = System.getProperty(OPTIONS_COMMON_RECORDING_FORMAT, optionsCommonRecordingFormat);
 	}
 
 	public void saveProperties() {
