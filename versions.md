@@ -1,8 +1,8 @@
 ## Version 1.12.1 (not released yet)
 
 Thanks go to [Henrique Valle de Lima](https://github.com/henrivalle) for finding and fixing #132, #133, #134, #137,
-#140, #141 and #142, for adding `-resultsCSV` in #136 and font size controls to the Source Editor in #138, and for
-suggesting the Control API documentation in #135 ❤️.
+#140, #141 and #142, for adding `-resultsCSV` in #136, font size controls to the Source Editor in #138 and replays
+from a selected round in #143, and for suggesting the Control API documentation in #135 ❤️.
 
 ### Bugfix
 
@@ -44,6 +44,9 @@ suggesting the Control API documentation in #135 ❤️.
 - #138: The font size of the Source Editor can now be changed quickly with Ctrl+Plus, Ctrl+Minus and Ctrl+0 (Cmd on
   macOS), or from the View menu, e.g. when showing code on a projector. The change lasts until Robocode is closed,
   while the font size of the editor theme stays as it is.
+- #143: A battle record can now be replayed from a selected round in the menu Battle -> Replay from Round, or with the
+  new command-line option `-replayRound <round>` together with `-replay`, e.g. to show an interesting round without
+  watching the whole battle. The replay continues with the rounds after it.
 - #135: The documentation of the Control API in the `robocode.control` package now explains how to run many battles with
   the same `RobocodeEngine`, which is much faster than starting Robocode for each battle. It also shows how to compile
   and run the example with Java 8 and newer.
