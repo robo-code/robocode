@@ -465,9 +465,18 @@ public final class Battle extends BaseBattle {
 		for (int i = 0; i < contestants.size(); i++) {
 			results.add(null);
 		}
-		for (int rank = 0; rank < contestants.size(); rank++) {
-			ContestantPeer contestant = contestants.get(rank);
-			contestant.getStatistics().setRank(rank + 1);
+		// The rank is the placement by score, as in the results table, where contestants with the same score share
+		// the placement. The results stay in the order of the contestants.
+		BattleResults[] unranked = new BattleResults[contestants.size()];
+		for (int i = 0; i < contestants.size(); i++) {
+			unranked[i] = contestants.get(i).getStatistics().getFinalResults();
+		}
+		BattleResults[] sorted = unranked.clone();
+		Arrays.sort(sorted, Collections.reverseOrder());
+
+		for (int i = 0; i < contestants.size(); i++) {
+			ContestantPeer contestant = contestants.get(i);
+			contestant.getStatistics().setRank(BattleResultsTableModel.getPlace(sorted, indexOf(sorted, unranked[i])));
 			BattleResults battleResults = contestant.getStatistics().getFinalResults();
 
 			RobotSpecification robotSpec = null;
@@ -476,9 +485,18 @@ public final class Battle extends BaseBattle {
 			} else if (contestant instanceof TeamPeer) {
 				robotSpec = ((TeamPeer) contestant).getTeamLeader().getRobotSpecification();
 			}
-			results.set(rank, new RobotResults(robotSpec, battleResults));
+			results.set(i, new RobotResults(robotSpec, battleResults));
 		}
 		return results.toArray(new BattleResults[results.size()]);
+	}
+
+	private static int indexOf(BattleResults[] results, BattleResults result) {
+		for (int i = 0; i < results.length; i++) {
+			if (results[i] == result) {
+				return i;
+			}
+		}
+		throw new IllegalArgumentException("Result not found");
 	}
 
 	/**
