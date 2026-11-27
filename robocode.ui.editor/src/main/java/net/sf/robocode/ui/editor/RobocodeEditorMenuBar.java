@@ -17,6 +17,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 
@@ -708,19 +709,40 @@ public class RobocodeEditorMenuBar extends JMenuBar {
 
 			viewMenu.add(getViewEditorThemeConfigDialogMenuItem());
 			viewMenu.addSeparator();
-			addEditorFontSizeAction("Increase Editor Font Size", KeyEvent.VK_EQUALS, () -> zoomEditorFont(true));
-			addEditorFontSizeAction("Decrease Editor Font Size", KeyEvent.VK_MINUS, () -> zoomEditorFont(false));
-			addEditorFontSizeAction("Reset Editor Font Size", KeyEvent.VK_0,
-					() -> EditorThemePropertiesManager.setEditorFontSize(null));
+			// The standard keys Ctrl+Plus, Ctrl+Minus and Ctrl+0 (Cmd on macOS) are used, like in browsers and
+			// editors. Plus has its own key on e.g. a Danish or German keyboard, but is Shift+'=' on a US keyboard,
+			// where Ctrl+'=' is used as well. Hence, the keys for both keyboards are bound.
+			addEditorFontSizeAction("Increase Editor Font Size", () -> zoomEditorFont(true),
+					KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, MENU_SHORTCUT_KEY_MASK),
+					KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, MENU_SHORTCUT_KEY_MASK),
+					KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, MENU_SHORTCUT_KEY_MASK | InputEvent.SHIFT_MASK));
+			addEditorFontSizeAction("Decrease Editor Font Size", () -> zoomEditorFont(false),
+					KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, MENU_SHORTCUT_KEY_MASK));
+			addEditorFontSizeAction("Reset Editor Font Size", () -> EditorThemePropertiesManager.setEditorFontSize(null),
+					KeyStroke.getKeyStroke(KeyEvent.VK_0, MENU_SHORTCUT_KEY_MASK));
 		}
 		return viewMenu;
 	}
 
-	private void addEditorFontSizeAction(String label, int keyCode, Runnable action) {
+	/**
+	 * Adds a menu item for changing the font size. The first key is shown in the menu, and the other keys do the same.
+	 */
+	private void addEditorFontSizeAction(String label, Runnable action, KeyStroke shownKey, KeyStroke... otherKeys) {
 		JMenuItem item = new JMenuItem(label);
-		item.setAccelerator(KeyStroke.getKeyStroke(keyCode, MENU_SHORTCUT_KEY_MASK));
+		item.setAccelerator(shownKey);
 		item.addActionListener(event -> action.run());
 		viewMenu.add(item);
+
+		if (otherKeys.length > 0) {
+			getActionMap().put(label, new AbstractAction() {
+				public void actionPerformed(ActionEvent e) {
+					action.run();
+				}
+			});
+			for (KeyStroke key : otherKeys) {
+				getInputMap(WHEN_IN_FOCUSED_WINDOW).put(key, label);
+			}
+		}
 	}
 
 	private void zoomEditorFont(boolean larger) {
