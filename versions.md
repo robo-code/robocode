@@ -25,6 +25,14 @@ suggesting the Control API documentation in #135 ❤️.
 - #134: `robocode.sh` always ended with exit status 0, also when Robocode failed, and it read `set_java_options.sh`
   from the current directory instead of the Robocode directory. It now ends with the exit status of Robocode and works
   when started from another directory.
+- The rank in the battle results of the Control API, i.e. `BattleResults.getRank()` in `BattleCompletedEvent`, and in
+  battle records was the order of the robots in the battle, not their placement. It is now the placement by score, as
+  in the Results dialog, where robots with the same score share the placement. The rank that robots get in
+  `BattleEndedEvent` was already right.
+- With the recording format set to CSV, the `.robots.csv` file of a battle record contained the bullets, and the
+  `.bullets.csv` file contained the robots.
+- The results from `-results` showed a percentage as e.g. `36 %` with languages that put a no-break space before
+  `%`, like Danish. It is now written with a normal space.
 
 ### Changes
 
