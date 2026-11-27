@@ -130,6 +130,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 	// last and current execution time and detecting skipped turns
 	private int lastExecutionTime = -1;
 	private int currentExecutionTime;
+	private int skippedTurnTime = -1;
 
 	private boolean isExecFinishedAndDisabled;
 	private boolean isEnergyDrained;
@@ -493,9 +494,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			}
 		}
 
-		waitForNextTurn();
+		final boolean lastTurnLate = waitForNextTurn();
 
-		checkSkippedTurn();
+		checkSkippedTurn(lastTurnLate);
 
 		// from battle to robot
 		final ExecCommands resCommands = new ExecCommands(this.commands.get(), false);
@@ -551,7 +552,8 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		return bulletUpdates.getAndSet(new ArrayList<BulletStatus>());
 	}
 
-	private void waitForNextTurn() {
+	// Returns true if the robot took too long in its last turn
+	private boolean waitForNextTurn() {
 		synchronized (isSleeping) {
 			// Notify the battle that we are now asleep.
 			// This ends any pending wait() call in battle.runRound().
@@ -560,20 +562,29 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 			isSleeping.notifyAll();
 			// Notifying battle that we're asleep
 			// Sleeping and waiting for battle to wake us up.
+			// Keep waiting until waitWakeup() wakes us, so a spurious wakeup is ignored
 			try {
-				isSleeping.wait();
+				while (isSleeping.get()) {
+					isSleeping.wait();
+				}
 			} catch (InterruptedException e) {
 				// We are expecting this to happen when a round is ended!
+				isSleeping.set(false);
 
 				// Immediately reasserts the exception by interrupting the caller thread itself
 				Thread.currentThread().interrupt();
 			}
-			isSleeping.set(false);
+			boolean late = skippedTurnTime == currentExecutionTime;
+			skippedTurnTime = -1;
+			// The battle thread is waiting in waitWakeup(), so the time cannot change while we read it
+			lastExecutionTime = currentExecutionTime;
+			currentExecutionTime = battle.getTime();
 			// Notify battle thread, which is waiting in
 			// our wakeup() call, to return.
 			// It's quite possible, by the way, that we'll be back in sleep (above)
 			// before the battle thread actually wakes up
 			isSleeping.notifyAll();
+			return late;
 		}
 	}
 
@@ -585,6 +596,7 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		synchronized (isSleeping) {
 			if (isSleeping()) {
 				// Wake up the thread
+				isSleeping.set(false);
 				isSleeping.notifyAll();
 				try {
 					isSleeping.wait(10000);
@@ -610,6 +622,9 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 					if (!isSleeping() && isRunning()) {
 						isSleeping.wait(0, nanosWait);
 					}
+					if (!isSleeping() && isRunning() && skippedTurnTime < 0) {
+						skippedTurnTime = battle.getTime();
+					}
 				} catch (InterruptedException e) {
 					// Immediately reasserts the exception by interrupting the caller thread itself
 					Thread.currentThread().interrupt();
@@ -620,17 +635,18 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		}
 	}
 
-	public void checkSkippedTurn() {
-		// Store last and current execution time for detecting skipped turns
-		lastExecutionTime = currentExecutionTime;
-		currentExecutionTime = battle.getTime();
-
-		int numSkippedTurns = (currentExecutionTime - lastExecutionTime) - 1;
+	public void checkSkippedTurn(boolean lastTurnLate) {
+		int firstSkipped = lastExecutionTime + 1;
+		// Count the late turn too, unless the robot also missed the next wake-up
+		if (lastTurnLate && currentExecutionTime == firstSkipped) {
+			firstSkipped = lastExecutionTime;
+		}
+		int numSkippedTurns = currentExecutionTime - firstSkipped;
 		if (numSkippedTurns >= 1) {
 			events.get().clear(false);
 
 			if (isAlive()) {
-				for (int skippedTurn = lastExecutionTime + 1; skippedTurn < currentExecutionTime; skippedTurn++) {
+				for (int skippedTurn = firstSkipped; skippedTurn < currentExecutionTime; skippedTurn++) {
 					addEvent(new SkippedTurnEvent(skippedTurn));
 					println("SYSTEM: " + getShortName() + " skipped turn " + skippedTurn);
 				}
@@ -753,7 +769,11 @@ public final class RobotPeer implements IRobotPeerBattle, IRobotPeer {
 		scanArc.setAngleExtent(0);
 		scanArc.setFrame(-100, -100, 1, 1);
 
-		lastExecutionTime = -1;
+		synchronized (isSleeping) {
+			lastExecutionTime = -1;
+			currentExecutionTime = 0;
+			skippedTurnTime = -1;
+		}
 
 		status = new AtomicReference<RobotStatus>();
 
