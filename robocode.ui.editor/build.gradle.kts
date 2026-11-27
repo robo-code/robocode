@@ -8,6 +8,9 @@ dependencies {
     implementation(project(":robocode.core"))
     implementation(project(":robocode.ui"))
     implementation(libs.picocontainer)
+
+    testImplementation(testLibs.junit.jupiter)
+    testRuntimeOnly(testLibs.junit.platform.launcher)
 }
 
 description = "Robocode UI Robot editor"

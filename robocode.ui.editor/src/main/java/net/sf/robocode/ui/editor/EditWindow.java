@@ -11,7 +11,6 @@ package net.sf.robocode.ui.editor;
 import net.sf.robocode.io.FileUtil;
 import net.sf.robocode.io.Logger;
 import net.sf.robocode.repository.IRepositoryManager;
-import net.sf.robocode.ui.editor.theme.EditorThemeProperties;
 import net.sf.robocode.ui.editor.theme.EditorThemePropertiesManager;
 import net.sf.robocode.ui.editor.theme.EditorThemePropertyChangeAdapter;
 
@@ -108,9 +107,7 @@ public class EditWindow extends JInternalFrame {
 			editorPanel = new EditorPanel();
 			setContentPane(editorPanel);
 
-			EditorThemeProperties currentThemeProps = EditorThemePropertiesManager.getCurrentEditorThemeProperties();
-			Font font = currentThemeProps.getFont();
-			editorPanel.setFont(font);
+			editorPanel.setFont(EditorThemePropertiesManager.getEditorFont());
 
 			// Make sure the source editor window gets focus with a blinking cursor
 			SwingUtilities.invokeLater(new Runnable() {

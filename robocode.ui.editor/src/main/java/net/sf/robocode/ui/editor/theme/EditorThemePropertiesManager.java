@@ -39,6 +39,7 @@ public class EditorThemePropertiesManager {
 	private static final List<IEditorThemePropertyChangeListener> listeners = new ArrayList<IEditorThemePropertyChangeListener>();
 
 	private static EditorThemeProperties editorThemeProperties;
+	private static Integer editorFontSize;
 
 	public static void addListener(IEditorThemePropertyChangeListener listener) {
 		if (!listeners.contains(listener)) {
@@ -60,6 +61,16 @@ public class EditorThemePropertiesManager {
 		for (IEditorThemePropertyChangeListener listener : listeners) {
 			listener.onFontChanged(newFont);
 		}
+	}
+
+	public static Font getEditorFont() {
+		Font font = getCurrentEditorThemeProperties().getFont();
+		return editorFontSize == null ? font : font.deriveFont(editorFontSize.floatValue());
+	}
+
+	public static void setEditorFontSize(Integer size) {
+		editorFontSize = size;
+		notifyFontChanged(getEditorFont());
 	}
 
 	public static void notifyFontNameChanged(String newFontName) {
@@ -201,6 +212,7 @@ public class EditorThemePropertiesManager {
 			try {
 				in = new FileInputStream(filepath);
 				getCurrentEditorThemeProperties().load(in);
+				setEditorFontSize(null);
 			} catch (FileNotFoundException e) {
 				logError("Could not find file: " + file, e);
 			} catch (IOException e) {
