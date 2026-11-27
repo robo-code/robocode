@@ -1,9 +1,9 @@
 ## Version 1.12.1 (not released yet)
 
-### Bugfix
-
 Thanks go to [Henrique Valle de Lima](https://github.com/henrivalle) for finding and fixing #132, #133, #134, #137,
-#140, #141 and #142 ❤️.
+#140, #141 and #142, for adding `-resultsCSV` in #136, and for suggesting the Control API documentation in #135 ❤️.
+
+### Bugfix
 
 - #132: A silent installation of Robocode that failed ended with exit status 0, so scripts and tools like Chocolatey
   saw it as a success. It now ends with exit status 1.
@@ -29,10 +29,10 @@ Thanks go to [Henrique Valle de Lima](https://github.com/henrivalle) for finding
 
 - #136: New command-line option `-resultsCSV <file>` for saving the results of a battle started with `-battle` as a
   CSV file, which is easy to read from scripts and spreadsheets. It has one row per robot or team with the rank,
-  name, score and the other numbers from the Results dialog. Made by Henrique Valle de Lima.
-- The documentation of the Control API in the `robocode.control` package now explains how to run many battles with
+  name, score and the other numbers from the Results dialog.
+- #135: The documentation of the Control API in the `robocode.control` package now explains how to run many battles with
   the same `RobocodeEngine`, which is much faster than starting Robocode for each battle. It also shows how to compile
-  and run the example with Java 8 and newer. Suggested by Henrique Valle de Lima in #135.
+  and run the example with Java 8 and newer.
 
 ## Version 1.12.0 (06-Nov-2026)
 
