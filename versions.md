@@ -1,4 +1,4 @@
-## Version 1.12.1 (not released yet)
+## Version 1.13.0 (not released yet)
 
 Thanks go to [Henrique Valle de Lima](https://github.com/henrivalle) for finding and fixing #132, #133, #134, #137,
 #140, #141 and #142, for adding `-resultsCSV` in #136, font size controls to the Source Editor in #138 and replays
