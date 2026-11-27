@@ -604,6 +604,12 @@ public class RecordManager implements IRecordManager {
         return recordInfo != null;
     }
 
+    @Override
+    public int getRecordedRoundCount() {
+        BattleRecordInfo info = recordInfo;
+        return info == null || info.turnsInRounds == null ? 0 : Math.min(info.roundsCount, info.turnsInRounds.length);
+    }
+
     void createRecordInfo(BattleRules rules, int numRobots, UUID battleId) {
         try {
             createTempFile();

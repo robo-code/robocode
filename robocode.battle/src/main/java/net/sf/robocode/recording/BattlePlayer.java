@@ -12,6 +12,7 @@ import net.sf.robocode.battle.BaseBattle;
 import net.sf.robocode.battle.IBattleManager;
 import net.sf.robocode.battle.events.BattleEventDispatcher;
 import net.sf.robocode.battle.snapshot.RobotSnapshot;
+import net.sf.robocode.io.Logger;
 import net.sf.robocode.settings.ISettingsManager;
 import robocode.BattleResults;
 import robocode.control.events.*;
@@ -28,12 +29,17 @@ import java.util.List;
 public final class BattlePlayer extends BaseBattle {
 
 	private final RecordManager recordManager;
+	private int initialRound;
 	private boolean[] paint;
 
 	public BattlePlayer(ISettingsManager properties, IBattleManager battleManager, RecordManager recordManager, BattleEventDispatcher eventDispatcher) { // NO_UCD (unused code)
 		super(
 				properties, battleManager, eventDispatcher);
 		this.recordManager = recordManager;
+	}
+
+	public void setInitialRound(int roundIndex) {
+		initialRound = roundIndex;
 	}
 
 	@Override
@@ -48,6 +54,27 @@ public final class BattlePlayer extends BaseBattle {
 		if (isPaused) {
 			eventDispatcher.onBattlePaused(new BattlePausedEvent());
 		}
+		advanceToInitialRound();
+	}
+
+	private void advanceToInitialRound() {
+		for (int round = 0; round < initialRound; round++) {
+			int count = recordManager.recordInfo.turnsInRounds[round];
+			for (int index = 0; index < count; index++) {
+				processCommand();
+				if (isAborted) {
+					return;
+				}
+				if (recordManager.readSnapshot() == null) {
+					Logger.logError("Recording ended before round " + (initialRound + 1));
+					isAborted = true;
+					return;
+				}
+			}
+			// The first snapshot in each recorded round precedes the first turn.
+			totalTurns += Math.max(0, count - 1);
+		}
+		setRoundNum(initialRound);
 	}
 
 	@Override

@@ -47,6 +47,7 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem battleSaveAsMenuItem;
 	private JMenuItem battleExitMenuItem;
 	private JMenuItem battleOpenRecordMenuItem;
+	private JMenuItem replayFromRoundMenuItem;
 	private JMenuItem battleSaveRecordAsMenuItem;
 	private JMenuItem battleExportRecordMenuItem;
 	private JMenuItem battleImportRecordMenuItem;
@@ -170,6 +171,10 @@ public class MenuBar extends JMenuBar {
 
 		public void menuSelected(MenuEvent e) {
 			battleManager.pauseBattle();
+			if (e.getSource() == battleMenu) {
+				replayFromRoundMenuItem.setEnabled(robocodeFrame.getReplayButton().isEnabled()
+						&& recordManager.getRecordedRoundCount() > 0);
+			}
 		}
 
 		public void menuCanceled(MenuEvent e) {}
@@ -392,6 +397,10 @@ public class MenuBar extends JMenuBar {
 			battleMenu.add(getBattleSaveAsMenuItem());
 			battleMenu.add(new JSeparator());
 			battleMenu.add(getBattleOpenRecordMenuItem());
+			replayFromRoundMenuItem = new JMenuItem("Replay from Round...");
+			replayFromRoundMenuItem.setEnabled(false);
+			replayFromRoundMenuItem.addActionListener(event -> replayFromRound());
+			battleMenu.add(replayFromRoundMenuItem);
 			battleMenu.add(getBattleSaveRecordAsMenuItem());
 			battleMenu.add(getBattleImportRecordMenuItem());
 			battleMenu.add(getBattleExportRecordMenuItem());
@@ -402,6 +411,24 @@ public class MenuBar extends JMenuBar {
 			battleMenu.addMenuListener(eventHandler);
 		}
 		return battleMenu;
+	}
+
+	private void replayFromRound() {
+		int rounds = recordManager.getRecordedRoundCount();
+		if (rounds < 1) {
+			return;
+		}
+		JSpinner round = new JSpinner(new SpinnerNumberModel(1, 1, rounds, 1));
+		if (JOptionPane.showConfirmDialog(robocodeFrame, round, "Replay from Round", JOptionPane.OK_CANCEL_OPTION)
+				== JOptionPane.OK_OPTION) {
+			try {
+				round.commitEdit();
+				battleManager.replayFromRound((Integer) round.getValue());
+			} catch (java.text.ParseException | IllegalArgumentException e) {
+				JOptionPane.showMessageDialog(robocodeFrame, "Choose a round from 1 to " + rounds,
+						"Invalid Replay Round", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 
 	private JMenuItem getBattleNewMenuItem() {

@@ -72,6 +72,9 @@ public interface IBattleManager extends IBattleManagerBase {
 
 	void replay();
 
+	/** Starts playback at a recorded round, numbered from one. */
+	void replayFromRound(int round);
+
 	boolean isManagedTPS();
 
 	void setManagedTPS(boolean value);

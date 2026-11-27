@@ -366,7 +366,7 @@ public abstract class BaseBattle implements IBattle, Runnable {
 		pendingCommands.add(command);
 	}
 
-	private void processCommand() {
+	protected final void processCommand() {
 		Command command = pendingCommands.poll();
 
 		while (command != null) {

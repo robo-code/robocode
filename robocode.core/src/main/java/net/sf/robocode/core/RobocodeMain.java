@@ -69,6 +69,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 		String recordFilename;
 		String recordXmlFilename;
 		String replayFilename;
+		int replayStartRound;
 		String resultsFilename;
 		String csvResultsFilename;
 		int tps;
@@ -134,7 +135,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 
 				// Play the intro battle if a battle file is not specified and this is the first time Robocode is being run
 
-				if (setup.battleFilename == null && versionManager.isLastRunVersionChanged()) {
+				if (setup.battleFilename == null && setup.replayFilename == null && versionManager.isLastRunVersionChanged()) {
 					properties.saveProperties();
 					windowManager.runIntroBattle();
 				}
@@ -168,17 +169,25 @@ public final class RobocodeMain extends RobocodeMainBase {
 				}
 			} else if (setup.replayFilename != null) {
 				setup.exitOnComplete = true;
+				if (!new File(setup.replayFilename).isFile()) {
+					Logger.logError("The specified battle record file '" + setup.replayFilename + "' was not found");
+					System.exit(8);
+				}
 				if (setup.replayFilename.toLowerCase().endsWith("xml.zip")) {
 					recordManager.loadRecord(setup.replayFilename, BattleRecordFormat.XML_ZIP);
 				} else {
 					recordManager.loadRecord(setup.replayFilename, BattleRecordFormat.BINARY_ZIP);
 				}
 
-				if (new File(setup.replayFilename).exists()) {
+				if (setup.replayStartRound == 0) {
 					battleManager.replay();
 				} else {
-					Logger.logError("The specified battle record file '" + setup.replayFilename + "' was not found");
-					System.exit(8);
+					try {
+						battleManager.replayFromRound(setup.replayStartRound);
+					} catch (IllegalArgumentException e) {
+						System.err.println(e.getMessage());
+						System.exit(8);
+					}
 				}
 			}
 			Logger.initialized = true;
@@ -252,6 +261,16 @@ public final class RobocodeMain extends RobocodeMainBase {
 				}
 			} else if (currentArg.equalsIgnoreCase("-minimize")) {
 				setup.minimize = true;
+			} else if (currentArg.equalsIgnoreCase("-replayRound")) {
+				try {
+					setup.replayStartRound = Integer.parseInt(++i < args.length ? args[i] : "");
+				} catch (NumberFormatException e) {
+					setup.replayStartRound = -1;
+				}
+				if (setup.replayStartRound < 1) {
+					System.err.println("-replayRound requires a positive integer");
+					System.exit(8);
+				}
 			} else if (currentArg.equalsIgnoreCase("-nodisplay")) {
 				if (windowManager != null) {
 					windowManager.setEnableGUI(false);
@@ -289,6 +308,11 @@ public final class RobocodeMain extends RobocodeMainBase {
 			System.exit(8);
 		} else if (!(robotsDir.exists() && robotsDir.isDirectory())) {
 			System.err.println('\'' + robotsDir.getAbsolutePath() + "' is not a valid robot directory");
+			System.exit(8);
+		}
+
+		if (setup.replayStartRound != 0 && setup.replayFilename == null) {
+			System.err.println("-replayRound requires -replay");
 			System.exit(8);
 		}
 
@@ -346,6 +370,7 @@ public final class RobocodeMain extends RobocodeMainBase {
 						+ "  -record <bin record file>  Record the battle into the specified file as binary\n"
 						+ "  -recordXML <xml rec file>  Record the battle into the specified file as XML\n"
 						+ "  -replay <record file>      Replay the specified battle record\n"
+						+ "  -replayRound <round>      Start -replay at the specified recorded round (1-based)\n"
 						+ "  -tps <tps>                 Set the TPS > 0 (Turns Per Second)\n"
 						+ "  -minimize                  Run minimized when Robocode starts\n"
 						+ "  -nodisplay                 Run with the display / GUI disabled\n"
