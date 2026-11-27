@@ -18,6 +18,7 @@ public final class StringUtil {
 	/**
 	 * Returns a string encoded into Basic Latin, where characters that cannot
 	 * be represented in Basic Latin are represented as encoded unicode characters.
+	 * Spaces, like the no-break space, are represented as a normal space.
 	 * 
 	 * @param sequence
 	 * @return
@@ -30,6 +31,9 @@ public final class StringUtil {
 
 			if (Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.BASIC_LATIN) {
 				out.append(ch);
+			} else if (Character.getType(ch) == Character.SPACE_SEPARATOR) {
+				// e.g. the no-break space that some languages put before '%' when formatting a percentage
+				out.append(' ');
 			} else {
 				int codepoint = Character.codePointAt(sequence, i);
 
